@@ -12,8 +12,8 @@ else
 		if [[ $? != 0 ]]; then
 			echo "ERROR" && exit
 		fi
+		mv -f "$(echo "$arg" | rev | cut -d. -f2- | rev).cor" .
 		champ[i]="$(basename "$arg" .s).cor"
-		mv -f ${champ[$i]} . 2>/dev/null
 		i=$(($i + 1))
 	done
 	echo "./corewar ${@:$((i + 1))} ${champ[*]}"
