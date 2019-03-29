@@ -49,6 +49,9 @@
 [._]ss[a-gi-z]
 [._]sw[a-p]
 
+# Corewar
+*.cor
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
