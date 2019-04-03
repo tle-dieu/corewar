@@ -14,9 +14,10 @@ SOURCES_FOLDER = sources/
 INCLUDES_FOLDER = includes/
 OBJECTS_FOLDER = objects/
 
-ASM_SOURCES = main.c
-
 vpath %.c $(SOURCES_FOLDER)
+
+ASM_SOURCES = main.c \
+			  debug.c
 
 VM_SOURCES = main.c
 
@@ -25,11 +26,8 @@ INCLUDES = $(LIBINC)libft.h $(INCLUDES_FOLDER)op.h
 VM_SOURCES := $(addprefix $(VM_FOLDER), $(VM_SOURCES))
 ASM_SOURCES := $(addprefix $(ASM_FOLDER), $(ASM_SOURCES))
 
-ASM_OBJECTS := $(addprefix $(OBJECTS_FOLDER), $(ASM_SOURCES:.c=.o))
-VM_OBJECTS := $(addprefix $(OBJECTS_FOLDER), $(VM_SOURCES:.c=.o))
-
-VM_SOURCES := $(addprefix $(SOURCES_FOLDER), $(VM_SOURCES))
-ASM_SOURCES := $(addprefix $(SOURCES_FOLDER), $(ASM_SOURCES))
+ASM_OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(ASM_SOURCES:.c=.o))
+VM_OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(VM_SOURCES:.c=.o))
 
 LIBDIR = libft/
 LIBFT = $(LIBDIR)libft.a
@@ -41,6 +39,10 @@ RED = \033[38;2;255;60;51m
 BLUE = \033[38;2;0;188;218m
 RMLINE = \033[2K
 RESET = \033[0m
+
+ifneq (,$(filter $(flags),n no))
+	CFLAG :=
+endif
 
 ifneq (,$(filter $(fsanitize),y yes))
 	CFLAG += -g3

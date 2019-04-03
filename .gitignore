@@ -51,6 +51,11 @@
 
 # Corewar
 *.cor
+asm
+corewar
+
+#Macos
+.DS_Store
 
 # Kernel Module Compile Results
 *.mod*
