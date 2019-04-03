@@ -1,25 +1,25 @@
-NAME := libft.a
-CC := gcc
-FLAG := -Wall -Werror -Wextra
+NAME = libft.a
+CC = gcc
+FLAG = -Wall -Werror -Wextra
 
-AR := ar rc
-RLIB := ranlib
-RM := rm -rf
+AR = ar rc
+RLIB = ranlib
+RM = rm -rf
 
-SOURCES_FOLDER := sources/
-OBJECTS_FOLDER := objects/
-INCLUDES_FOLDER := includes/
+SOURCES_FOLDER = sources/
+OBJECTS_FOLDER = objects/
+INCLUDES_FOLDER = includes/
 
 vpath %.c $(SOURCES_FOLDER)
 
-STRING := string/
-NUMERIC := numeric/
-FT_PRINTF := ft_printf/
-UTILS := utils/
-LIST := list/
-MEMORY := memory/
+STRING = string/
+NUMERIC = numeric/
+FT_PRINTF = ft_printf/
+UTILS = utils/
+LIST = list/
+MEMORY = memory/
 
-SOURCES := $(FT_PRINTF)buff.c \
+SOURCES = $(FT_PRINTF)buff.c \
 		  $(FT_PRINTF)colors.c \
 		  $(FT_PRINTF)conv_cs.c \
 		  $(FT_PRINTF)conv_di.c \
@@ -109,14 +109,14 @@ SOURCES := $(FT_PRINTF)buff.c \
 		  $(UTILS)ft_putnbr_fd.c \
 		  $(UTILS)get_next_line.c
 
-INCLUDES := $(addprefix $(INCLUDES_FOLDER), libft.h ft_printf.h get_next_line.h)
-OBJECTS := $(addprefix $(OBJECTS_FOLDER), $(SOURCES:.c=.o))
+INCLUDES = $(addprefix $(INCLUDES_FOLDER), libft.h ft_printf.h get_next_line.h)
+OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(SOURCES:.c=.o))
 
-GREEN := \033[38;2;12;231;58m
-RED := \033[38;2;255;60;51m
-YELLOW := \033[38;2;251;196;15m
+GREEN = \033[38;2;12;231;58m
+RED = \033[38;2;255;60;51m
+YELLOW = \033[38;2;251;196;15m
 RMLINE = \033[2K
-NC := \033[0m
+NC = \033[0m
 
 all: $(NAME)
 
