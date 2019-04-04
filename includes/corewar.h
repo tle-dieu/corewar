@@ -1,20 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   corewar.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/04 11:47:41 by matleroy         ###   ########.fr       */
+/*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
+/*   Updated: 2019/04/04 11:46:52 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "corewar.h"
+#ifndef COREWAR_H
+# define COREWAR_H
 
-int main(int ac, char **av)
-{
-	usage(ac, av);	
-	return (0);
-}
+int	usage(int ac, char **av);
+#endif
