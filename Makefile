@@ -17,17 +17,20 @@ DEPS_FOLDER = .d/
 
 vpath %.c $(SOURCES_FOLDER)
 
+SOURCES = $(ASM_SOURCES) $(VM_SOURCES)
+
 ASM_SOURCES = main.c \
 			  debug.c
 
 VM_SOURCES = main.c \
 			 options.c
 
-DEPS = $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(patsubst %.o, %.d, $@))
+DEPS = $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(OBJECTS:%.o=%.d))
 
 VM_SOURCES := $(addprefix $(VM_FOLDER), $(VM_SOURCES))
 ASM_SOURCES := $(addprefix $(ASM_FOLDER), $(ASM_SOURCES))
 
+OBJECTS = $(ASM_OBJECTS) $(VM_OBJECTS)
 ASM_OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(ASM_SOURCES:.c=.o))
 VM_OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(VM_SOURCES:.c=.o))
 
@@ -60,9 +63,11 @@ endif
 # 	RUN_OPTION := time -p
 # endif
 
+-include 
 $(shell mkdir -p $(DEPS_FOLDER)$(VM_FOLDER) $(DEPS_FOLDER)$(ASM_FOLDER) 2> /dev/null)
 
 all: $(PROGRAMMES) Makefile
+	echo "deps: $(DEPS)"
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
 	tput cnorm
@@ -76,11 +81,11 @@ $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
 	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n"
 
-objects/%.o: %.c includes/asm.h
+objects/%.o: %.c
 	tput civis
 	mkdir -p $(dir $@)
 	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBINC) -o $@ -c $<
-	$(CC) -MM -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(DEPS)
+	$(CC) -MMD -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(DEPS)
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
 	sleep 0.02
 
@@ -108,4 +113,8 @@ re: fclean all
 
 .PHONY: all clean fclean
 
-.SILENT: $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
+.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
+
+rm:
+	echo "LOL"
+	rm -rf *
