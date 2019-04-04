@@ -63,7 +63,6 @@ endif
 # 	RUN_OPTION := time -p
 # endif
 
--include 
 $(shell mkdir -p $(DEPS_FOLDER)$(VM_FOLDER) $(DEPS_FOLDER)$(ASM_FOLDER) 2> /dev/null)
 
 all: $(PROGRAMMES) Makefile
@@ -85,7 +84,7 @@ objects/%.o: %.c
 	tput civis
 	mkdir -p $(dir $@)
 	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBINC) -o $@ -c $<
-	$(CC) -MMD -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(DEPS)
+	$(CC) -MMD -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(patsubst %.o, %.d, $@))
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
 	sleep 0.02
 
