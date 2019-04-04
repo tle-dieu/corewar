@@ -23,7 +23,8 @@ ASM_SOURCES = main.c \
 			  debug.c
 
 VM_SOURCES = main.c \
-			 options.c
+			 options.c \
+			 debug.c
 
 DEPS = $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(OBJECTS:%.o=%.d))
 
@@ -66,7 +67,7 @@ endif
 $(shell mkdir -p $(DEPS_FOLDER)$(VM_FOLDER) $(DEPS_FOLDER)$(ASM_FOLDER) 2> /dev/null)
 
 all: $(PROGRAMMES) Makefile
-	echo "deps: $(DEPS)"
+	# echo "deps: $(DEPS)"
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
 	tput cnorm
@@ -84,7 +85,7 @@ objects/%.o: %.c
 	tput civis
 	mkdir -p $(dir $@)
 	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBINC) -o $@ -c $<
-	$(CC) -MMD -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(patsubst %.o, %.d, $@))
+	# $(CC) -MMD -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(patsubst %.o, %.d, $@))
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
 	sleep 0.02
 
@@ -113,7 +114,3 @@ re: fclean all
 .PHONY: all clean fclean
 
 .SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
-
-rm:
-	echo "LOL"
-	rm -rf *
