@@ -4,40 +4,49 @@ ASM = asm
 
 CFLAG = -Wall -Werror -Wextra
 CC = gcc $(CFLAG)
-LDFLAG = -L./$(LIBDIR) -lft
+LDFLAG = -L./$(LIBFT_FOLDER) -lft
 
 RM = rm -rf
 
 ASM_FOLDER = asm/
-VM_FOLDER = VM/
+VM_FOLDER = corewar/
+
+# --------------- Sources --------------- #
+
+ASM_SOURCES_FILES = main.c \
+					debug.c
+
+VM_SOURCES_FILES = main.c \
+				   options.c \
+				   debug.c
+
 SOURCES_FOLDER = sources/
-INCLUDES_FOLDER = includes/
+VM_SOURCES_FOLDER = $(SOURCES_FOLDER)$(VM_FOLDER)
+ASM_SOURCES_FOLDER = $(SOURCES_FOLDER)$(ASM_FOLDER)
+VM_SOURCES = $(addprefix $(VM_SOURCES_FOLDER), $(VM_SOURCES_FILES))
+ASM_SOURCES = $(addprefix $(ASM_SOURCES_FOLDER), $(ASM_SOURCES_FILES))
+
+# --------------- Objects --------------- #
+
 OBJECTS_FOLDER = objects/
-DEPS_FOLDER = .d/
+VM_OBJECTS_FOLDER = $(OBJECTS_FOLDER)$(VM_FOLDER)
+ASM_OBJECTS_FOLDER = $(OBJECTS_FOLDER)$(ASM_FOLDER)
+VM_OBJECTS = $(addprefix $(VM_OBJECTS_FOLDER), $(VM_SOURCES_FILES:.c=.o))
+ASM_OBJECTS = $(addprefix $(ASM_OBJECTS_FOLDER), $(ASM_SOURCES_FILES:.c=.o))
 
-vpath %.c $(SOURCES_FOLDER)
+# --------------- Includes -------------- #
 
-SOURCES = $(ASM_SOURCES) $(VM_SOURCES)
+INCLUDES_FOLDER = includes/
+ASM_INCLUDES = $(addprefix $(INCLUDES_FOLDER), asm.h op.h) $(LIBFT_INCLUDES)
+VM_INCLUDES = $(addprefix $(INCLUDES_FOLDER), corewar.h op.h) $(LIBFT_INCLUDES)
 
-ASM_SOURCES = main.c \
-			  debug.c
+# -------------- Libraries -------------- #
 
-VM_SOURCES = main.c \
-			 options.c \
-			 debug.c
+LIBFT_FOLDER = libft/
+LIBFT = $(LIBFT_FOLDER)libft.a
+LIBFT_INCLUDES = $(LIBFT_FOLDER)includes/
 
-DEPS = $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(OBJECTS:%.o=%.d))
-
-VM_SOURCES := $(addprefix $(VM_FOLDER), $(VM_SOURCES))
-ASM_SOURCES := $(addprefix $(ASM_FOLDER), $(ASM_SOURCES))
-
-OBJECTS = $(ASM_OBJECTS) $(VM_OBJECTS)
-ASM_OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(ASM_SOURCES:.c=.o))
-VM_OBJECTS = $(addprefix $(OBJECTS_FOLDER), $(VM_SOURCES:.c=.o))
-
-LIBDIR = libft/
-LIBFT = $(LIBDIR)libft.a
-LIBINC = $(LIBDIR)includes/
+# --------------- Colors ---------------- #
 
 GREEN = \033[38;2;12;231;58m
 YELLOW = \033[38;2;251;196;15m
@@ -46,8 +55,10 @@ BLUE = \033[38;2;0;188;218m
 RMLINE = \033[2K
 RESET = \033[0m
 
+# --------------- Options --------------- #
+
 ifneq (,$(filter $(flags),n no))
-	CFLAG :=
+	CFLAG =
 endif
 
 ifneq (,$(filter $(fsanitize),y yes))
@@ -61,13 +72,12 @@ endif
 # endif
 
 # ifneq (,$(filter $(time),y yes))
-# 	RUN_OPTION := time -p
+# 	RUN_OPTION = time -p
 # endif
-
-$(shell mkdir -p $(DEPS_FOLDER)$(VM_FOLDER) $(DEPS_FOLDER)$(ASM_FOLDER) 2> /dev/null)
+#
 
 all: $(PROGRAMMES) Makefile
-	# echo "deps: $(DEPS)"
+
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
 	tput cnorm
@@ -81,28 +91,34 @@ $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
 	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n"
 
-objects/%.o: %.c
+$(ASM_OBJECTS_FOLDER)%.o: $(ASM_SOURCES_FOLDER)%.c $(ASM_INCLUDES) Makefile
 	tput civis
 	mkdir -p $(dir $@)
-	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBINC) -o $@ -c $<
-	# $(CC) -MMD -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(patsubst %.o, %.d, $@))
+	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBFT_INCLUDES) -o $@ -c $<
+	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
+	sleep 0.02
+
+$(VM_OBJECTS_FOLDER)%.o: $(VM_SOURCES_FOLDER)%.c $(VM_INCLUDES) Makefile
+	tput civis
+	mkdir -p $(dir $@)
+	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBFT_INCLUDES) -o $@ -c $<
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
 	sleep 0.02
 
 $(LIBFT): force
-	$(MAKE) -C $(LIBDIR)
+	$(MAKE) -C $(LIBFT_FOLDER)
 
 force:
 	true
 
 clean:
-	$(MAKE) $@ -C $(LIBDIR)
+	$(MAKE) $@ -C $(LIBFT_FOLDER)
 	$(RM) $(OBJECTS_FOLDER)
 	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
 	printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
 
 fclean:
-	$(MAKE) $@ -C $(LIBDIR)
+	$(MAKE) $@ -C $(LIBFT_FOLDER)
 	$(RM) $(OBJECTS_FOLDER) $(PROGRAMMES)
 	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
 	printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
@@ -113,4 +129,4 @@ re: fclean all
 
 .PHONY: all clean fclean
 
-.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
+.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean $(DEPS)
