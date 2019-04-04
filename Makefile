@@ -19,7 +19,8 @@ vpath %.c $(SOURCES_FOLDER)
 ASM_SOURCES = main.c \
 			  debug.c
 
-VM_SOURCES = main.c
+VM_SOURCES = main.c \
+			 options.c
 
 INCLUDES = $(LIBINC)libft.h $(INCLUDES_FOLDER)op.h
 
