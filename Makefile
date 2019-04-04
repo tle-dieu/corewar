@@ -129,4 +129,4 @@ re: fclean all
 
 .PHONY: all clean fclean
 
-.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean $(DEPS)
+.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
