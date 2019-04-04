@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/04 16:12:37 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/04 16:42:29 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ typedef	struct s_proc
 {
 	int				id;
 	int				live;
-	struct s_proc   next;
 	unsigned char	registre[16];
 	int				pc;
 	int				carry;
+	struct s_proc   *next;
 }				t_proc;
 
 typedef	struct	s_champ

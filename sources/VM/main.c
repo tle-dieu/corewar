@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/04 15:41:47 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/04 20:05:10 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,24 @@ void place_champ(t_env *env)
 		champ++;
 	}
 }
+int play(t_env *env)
+{
+	int i;
+	int live;
+
+	live = 0;
+	i = 0;
+	while (env->c < env->c_to_die)
+	{
+		env->c++;
+		if (env->c == env->c_to_die && live)
+		{
+			env->c = 0;
+			env->c_to_die -= CYCLE_DELTA;
+		}
+	}
+	return (0);
+}
 
 int main(int ac, char **av)
 {
@@ -53,10 +71,11 @@ int main(int ac, char **av)
 		return (1);
 	while (i < env.nb_champ)
 	{
-		env.champs[i] = (t_champ){"zork", "un commentaire", (unsigned char*)"bonjour\0", i, 7};
+		env.champs[i] = (t_champ){"zork", "un commentaire", (unsigned char*)"bonjour\0", i, 7, NULL};
 		i++;
 	}
 	place_champ(&env);
+	play(&env);
 	print_env(env);
 	return (0);
 }
