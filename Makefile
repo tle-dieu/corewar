@@ -13,6 +13,7 @@ VM_FOLDER = VM/
 SOURCES_FOLDER = sources/
 INCLUDES_FOLDER = includes/
 OBJECTS_FOLDER = objects/
+DEPS_FOLDER = .d/
 
 vpath %.c $(SOURCES_FOLDER)
 
@@ -22,7 +23,7 @@ ASM_SOURCES = main.c \
 VM_SOURCES = main.c \
 			 options.c
 
-INCLUDES = $(LIBINC)libft.h $(INCLUDES_FOLDER)op.h
+DEPS = $(patsubst $(OBJECTS_FOLDER)%, $(DEPS_FOLDER)%, $(patsubst %.o, %.d, $@))
 
 VM_SOURCES := $(addprefix $(VM_FOLDER), $(VM_SOURCES))
 ASM_SOURCES := $(addprefix $(ASM_FOLDER), $(ASM_SOURCES))
@@ -59,47 +60,52 @@ endif
 # 	RUN_OPTION := time -p
 # endif
 
+$(shell mkdir -p $(DEPS_FOLDER)$(VM_FOLDER) $(DEPS_FOLDER)$(ASM_FOLDER) 2> /dev/null)
+
 all: $(PROGRAMMES) Makefile
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
-	@tput cnorm
-	@printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n"
-	@$(CC) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
-	@printf "$(GREEN)$(ASM) has been created$(RESET)\n"
+	tput cnorm
+	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n"
+	$(CC) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
+	printf "$(GREEN)$(ASM) has been created$(RESET)\n"
 
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
-	@tput cnorm
-	@printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n"
-	@$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
-	@printf "$(GREEN)$(VM) has been created$(RESET)\n"
+	tput cnorm
+	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n"
+	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
+	printf "$(GREEN)$(VM) has been created$(RESET)\n"
 
-objects/%.o: %.c $(INCLUDES)
-	@tput civis
-	@mkdir -p $(dir $@)
-	@$(CC) -I $(INCLUDES_FOLDER) -I $(LIBINC) -o $@ -c $<
-	@printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
-	@sleep 0.02
+objects/%.o: %.c includes/asm.h
+	tput civis
+	mkdir -p $(dir $@)
+	$(CC) -I $(INCLUDES_FOLDER) -I $(LIBINC) -o $@ -c $<
+	$(CC) -MM -I $(INCLUDES_FOLDER) -I $(LIBINC) $< > $(DEPS)
+	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
+	sleep 0.02
 
 $(LIBFT): force
-	@$(MAKE) -C $(LIBDIR)
+	$(MAKE) -C $(LIBDIR)
 
 force:
-	@true
+	true
 
 clean:
-	@$(MAKE) $@ -C $(LIBDIR)
-	@$(RM) $(OBJECTS_FOLDER)
-	@printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
-	@printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
+	$(MAKE) $@ -C $(LIBDIR)
+	$(RM) $(OBJECTS_FOLDER)
+	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
+	printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
 
 fclean:
-	@$(MAKE) $@ -C $(LIBDIR)
-	@$(RM) $(OBJECTS_FOLDER) $(PROGRAMMES)
-	@printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
-	@printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
-	@printf "$(RED)$(ASM) has been removed$(RESET)\n"
-	@printf "$(RED)$(VM) has been removed$(RESET)\n"
+	$(MAKE) $@ -C $(LIBDIR)
+	$(RM) $(OBJECTS_FOLDER) $(PROGRAMMES)
+	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
+	printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
+	printf "$(RED)$(ASM) has been removed$(RESET)\n"
+	printf "$(RED)$(VM) has been removed$(RESET)\n"
 
 re: fclean all
 
-.PHONY: all clean fclean run visu
+.PHONY: all clean fclean
+
+.SILENT: $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
