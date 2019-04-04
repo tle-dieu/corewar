@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:13:16 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/03 17:14:12 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:40:30 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,5 @@ int	usage(int ac, char **av)
 	}
 	if (show || champ_nb < 2 || champ_nb > 4)
 		ft_printf("usage:\n	%s [-dump nbr_cycles] [[-n number] champion1.cor] ...\n	You must enter between 2 and 4 champions\n	Champions must have the .cor extension\n\n", av[0]);
-	return (0);
+	return (show || champ_nb < 2 || champ_nb > 4);
 }
