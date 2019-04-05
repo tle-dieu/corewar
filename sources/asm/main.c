@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/03 20:54:50 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:16:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 #include "asm.h"
 #include <stdlib.h>
 #include <fcntl.h>
+#include <errno.h>
+#include <stdio.h>
 
 
-void	help(char *filename)
+#define ERR "{bold}{#ff6b6b}"
+
+int		usage(char *ex_name)
 {
-	ft_printf("Usage: %s <sourcefile.s>\n", filename);
+	ft_printf("usage: %s [-a] [-x] sourcefile.s\n", ex_name);
+	ft_printf("       %s [-d] sourcefile.cor\n", ex_name);
+	ft_printf("Try `%s (-h | --help)' for more information.\n", ex_name);
+	return (0);
+}
+
+void	help(char *ex_name)
+{
+	usage(ex_name);
 	exit(0);
 }
 
@@ -38,7 +50,7 @@ int		assign_option(t_file *option, t_file *tmp, char *s, char c)
 	return (1);
 }
 
-int		get_short_option(t_file *option, char *s, char *filename)
+int		get_short_option(t_file *option, char *s, char *ex_name)
 {
 	t_file tmp;
 
@@ -52,7 +64,7 @@ int		get_short_option(t_file *option, char *s, char *filename)
 		else if (*s == 'x')
 			tmp.dump = 1;
 		else if (*s == 'h')
-			help(filename);
+			help(ex_name);
 		else
 			return (assign_option(option, &tmp, NULL, *s));
 		s++;
@@ -60,7 +72,7 @@ int		get_short_option(t_file *option, char *s, char *filename)
 	return (assign_option(option, &tmp, NULL, 0));
 }
 
-int		get_long_option(t_file *option, char *s, char *filename)
+int		get_long_option(t_file *option, char *s, char *ex_name)
 {
 	t_file tmp;
 
@@ -72,31 +84,34 @@ int		get_long_option(t_file *option, char *s, char *filename)
 	else if (!ft_strcmp(s, "disassembly"))
 		tmp.disas = 1;
 	else if (!ft_strcmp(s, "help"))
-		help(filename);
+		help(ex_name);
 	else
 		return (assign_option(option, &tmp, s, 0));
 	return (assign_option(option, &tmp, NULL, 0));
 }
 
-int		get_option(t_file *option, char *s, char *filename)
+int		get_option(t_file *option, char *s, char *ex_name)
 {
 	if (!*s || (!*(s + 1) && *s == '-')
-	|| !(*s == '-' ? get_long_option(option, s + 1, filename)
-	: get_short_option(option, s, filename)))
+			|| !(*s == '-' ? get_long_option(option, s + 1, ex_name)
+				: get_short_option(option, s, ex_name)))
 		return (0);
 	return (1);
 }
 
-int		error_option(t_file *option, char *filename)
+int		error_file(t_file *option, char *ex_name, char *file)
 {
-	if (option && (option->error || option->file))
+	ft_printf("%s: "ERR"error: {reset}", ex_name);
+	if (option->error || option->file)
 	{
 		if (option->error)
-			ft_printf("%s: illegal option - %c\n", filename, option->error);
+			ft_printf("unknow option - %c\n", option->error);
 		else
-			ft_printf("%s: illegal option -- %s\n", filename, option->file);
+			ft_printf("unknow option -- %s\n", option->file);
+		usage(ex_name);
 	}
-	ft_printf("Usage: %s <sourcefile.s>\n", filename);
+	else
+		ft_printf("%s: '%s'\n", strerror(errno), file);
 	return (1);
 }
 
@@ -117,7 +132,9 @@ t_file	*parse_command_line(int ac, char **av)
 		if ((*av[i] != '-' || !get_option(&option, av[i] + 1, *av)))
 		{
 			if ((fd = open(av[i], O_RDONLY)) == -1)
-				exit(error_option(&option, *av));
+			{
+				exit(error_file(&option, *av, av[i]));
+			}
 			print_option(&option, av[i]);
 			option = (t_file){NULL, 0, 0, 0, 0, NULL};
 		}
@@ -129,7 +146,7 @@ int		main(int ac, char **av)
 {
 	t_file *file;
 
-	file = parse_command_line(ac, av);
 	if (ac < 2)
-		error_option(NULL, *av);
+		return (usage(av[0]));
+	file = parse_command_line(ac, av);
 }
