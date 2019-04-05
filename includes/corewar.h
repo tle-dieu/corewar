@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 16:30:12 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/05 18:38:56 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,15 @@ typedef struct		s_ocp
 	int				param3;
 }					t_ocp;
 
-typedef struct 		s_inst
-{
-	int				opcode;
-	int				cycle;
-	struct s_inst	*next;
-}					t_inst;
-
 typedef	struct		s_proc
 {
 	int				id;
 	int				live;
-	unsigned char	registre[16];
+	int				r[16];
 	int				pc;
 	int				carry;
+	int				op;
+	int				cycle;
 	struct s_proc   *next;
 }					t_proc;
 
@@ -60,7 +55,7 @@ typedef	struct		s_champ
 
 typedef	struct		s_env
 {
-	int				c;
+	int				cycle;
 	int				living;
 	int				c_to_die;
 	int				c_total;

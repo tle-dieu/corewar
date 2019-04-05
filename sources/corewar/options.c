@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:13:16 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 16:09:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/05 18:30:15 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int				check_params(t_env *e, int ac, char **av, int elem, int *show)
 		if (!ft_strcmp(av[elem], "-n"))
 		{
 			if (strisdigit(av[elem + 1]) && ac > elem + 2)
+			{
+				e->champs[e->nb_champ].id = ft_atoi(av[elem + 1]);
 				elem += 2;
+			}
 			else
 				*show = 1;
 		}

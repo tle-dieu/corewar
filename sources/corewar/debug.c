@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:59:33 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 16:05:26 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:48:06 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,58 @@ void		print_chmp(t_env *e, int full, int only_chmp, int cursor)
 	printf("\n");
 }
 
+void print_proc(t_env *e)
+{
+	int reg;
+	int champ;
+
+	champ = 0;
+	while (champ < e->nb_champ)
+	{
+		reg = -1;
+		ft_printf("{#009688}proc_id{#ffffff} = %d\n",e->champs[champ].proc->id);
+		ft_printf("{#009688}proc_liv{#ffffff}e = %d\n",e->champs[champ].proc->live);
+		ft_printf("{#009688}proc_registre:\n");
+		while (++reg < 16)
+			ft_printf("{#009688}[%d]{#ffffff} = %d\n", reg, e->champs[champ].proc->r[reg]);
+		ft_printf("{#009688}proc_pc{#ffffff} = %d\n",e->champs[champ].proc->pc);
+		ft_printf("{#009688}proc_carry{#ffffff} = %d\n",e->champs[champ].proc->carry);
+		ft_printf("{#009688}proc_op{#ffffff} = %d\n",e->champs[champ].proc->op);
+		ft_printf("{#009688}proc_cycle{#ffffff} = %d\n",e->champs[champ].proc->cycle);
+		ft_printf("{#009688}proc_next{#ffffff} = %p\n",e->champs[champ].proc->next);
+		champ++;
+		ft_printf("\n");
+	}
+}
+
 void		print_env(t_env e)
 {
 	int i;
+	int champ;
+	int color;
+	char colors[4][12]={"{#ff3333}\0","{yellow}","{blue}\0", "{yellow}\0"};
 
-	i = 0;
-	while (i < MEM_SIZE)
+	i = -1;
+	print_proc(&e);
+	while (++i < MEM_SIZE)
 	{
-		if (!(i % 64))
+		champ = -1;
+		color = 0;
+		if (i % 64 == 0)
 			ft_printf("\n");
-		if ((int)e.mem[i] == 0)
-			ft_printf("{#666666}%02x ", (int)e.mem[i]);
-		else 
-			ft_printf("{reset}%02x ", (int)e.mem[i]);
-		i++;
+		while (++champ < e.nb_champ)
+		{
+			if (i >= e.champs[champ].proc->pc && i <= e.champs[champ].proc->pc + (int)e.champs[champ].size)
+			{
+				ft_printf(colors[champ]);
+				ft_printf("%02x ", e.mem[i]);
+				color = 1;
+			}
+		}
+		if (!color)
+			ft_printf("{#666666}%02x ",e.mem[i]);
 	}
-	ft_printf("{reset}\ntotal cycles: %-10d cyles to die: %d / %-10d \n", e.c_total, e.c, e.c_to_die);
+	ft_printf("{reset}\ntotal cycles: %-10d cycles to die: %d / %-10d \n", e.c_total, e.cycle, e.c_to_die);
 }
 
 void		print_split_champ(t_env *e, int i)
