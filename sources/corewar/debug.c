@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:59:33 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 12:34:29 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:05:26 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,26 @@ void		print_env(t_env e)
 		i++;
 	}
 	ft_printf("{reset}\ntotal cycles: %-10d cyles to die: %d / %-10d \n", e.c_total, e.c, e.c_to_die);
+}
+
+void		print_split_champ(t_env *e, int i)
+{
+	int		j;
+	int		count;
+
+	j = -1;
+	ft_printf("NAME\n%s\n\n", e->champs[i].name);
+	ft_printf("COMMENT\n%s\n\n", e->champs[i].comment);
+	ft_printf("CONTENT\n");
+	while (++j < CHAMP_MAX_SIZE)
+	{
+		ft_printf("%02x ", e->champs[i].content[j]);
+		if (count == 16)
+		{
+			count = 0;
+			ft_printf("\n");
+		}
+		count++;
+	}
+	ft_printf("\n\n");
 }

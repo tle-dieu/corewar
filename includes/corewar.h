@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 13:02:20 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:22:26 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ typedef	struct		s_proc
 
 typedef	struct		s_champ
 {
-	char			*name;
-	char			*com;
-	unsigned char	*content;
+	char			name[PROG_NAME_LENGTH];
+	char			comment[COMMENT_LENGTH];
+	unsigned char	content[CHAMP_MAX_SIZE];
+	int				file;
 	int				id;
-	int				size;
+	unsigned int	size;
 	t_proc			*proc;	
 }					t_champ;
 
@@ -63,23 +64,21 @@ typedef	struct		s_env
 	int				c_to_die;
 	int				c_total;
 	int				nb_champ;
-	t_champ			*champs;
-	unsigned char	*mem;
-	unsigned char	*line;
-	unsigned int	chmp_size;
+	t_champ			champs[4];
+	unsigned char	mem[MEM_SIZE];
+	unsigned char	line[MAX_SIZE];
 }					t_env;
 
-int					usage(int ac, char **av);
+int					parse_args(t_env *e, int ac, char **av);
 
 /*
  ** CHECK.C
  */
-void				check_instructions(t_env *e);
-int					check_magic_number(t_env *e);
-int					check_chmp_size(t_env *e, int ret);
+int					check_champ(t_env *e, char *arg, int i);
 
 /*
  ** OP_CODES.C
+	
  */
 void				live(t_env *e, int *i);
 void				ld(t_env *e, int *i);
@@ -104,5 +103,6 @@ void				aff(t_env *e, int *i);
 
 void				print_chmp(t_env *e, int full, int only_chmp, int cursor);
 void				print_env(t_env env);
+void				print_split_champ(t_env *e, int i);
 
 #endif

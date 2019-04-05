@@ -6,13 +6,22 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 13:02:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:06:23 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void place_champ(t_env *e)
+void				init(t_env *e)
+{
+	e->c = 0;
+	e->c_to_die = CYCLE_TO_DIE;
+	e->c_total = 0;
+	e->nb_champ = 0;
+	ft_bzero(e->mem, MEM_SIZE);
+}
+
+void				place_champ(t_env *e)
 {
 	int part;
 	int champ;
@@ -57,36 +66,23 @@ int					main(int ac, char **av)
 {
 	t_env			e;
 	int				i;
-	int				fd;
-	int				ret;
-	unsigned char	mem[MEM_SIZE];
-	unsigned char	line[MAX_SIZE];
-	
-	i = 0;
-	e = (t_env){0, 1536, 0, 4, NULL, mem, line, 0};
-	if (usage(ac, av))
-		exit(1);
-	ft_bzero(e.line, MAX_SIZE);
-	ft_bzero(e.mem, MEM_SIZE);
-	if (!(e.champs = (t_champ*)malloc(sizeof(t_champ) * e.nb_champ)))
+
+	init(&e);
+	i = -1;
+	if (!(parse_args(&e, ac, av)))
 		return (1);
-	while (i < e.nb_champ)
+	while (++i < e.nb_champ)
 	{
-		e.champs[i] = (t_champ){"zork", "un commentaire", (unsigned char*)"bonjour\0", i, 7, NULL};
-		i++;
+		if (!(check_champ(&e, av[e.champs[i].file], i)))
+		{
+			ft_printf("{#ff3333}PARSE KO{reset}\n\n");
+			return (1);
+		}
+		else
+			ft_printf("{green}PARSE OK{reset}\n\n");
 	}
-	fd = open(av[1], O_RDONLY);
-	ret = read(fd, e.line, MAX_SIZE + 1);
-	if (!(check_chmp_size(&e, ret)))
-	{
-		printf("Champ too big -> %d\n", e.chmp_size);
-		return (0);
-	}
-	if (!(check_magic_number(&e)))
-		printf("Wrong magic number\n");
-	check_instructions(&e);
-	place_champ(&e);
+	/*place_champ(&e);
 	play(&e);
-	print_env(e);
+	print_env(e);*/
 	return (0);
 }
