@@ -18,7 +18,9 @@ ASM_SOURCES_FILES = main.c \
 
 VM_SOURCES_FILES = main.c \
 				   options.c \
-				   debug.c
+				   debug.c \
+				   check.c \
+				   op_codes.c \
 
 SOURCES_FOLDER = sources/
 VM_SOURCES_FOLDER = $(SOURCES_FOLDER)$(VM_FOLDER)

@@ -6,11 +6,11 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:13:16 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/04 14:40:30 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/05 12:35:09 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "corewar.h"
 
 int	strisdigit(char *str)
 {
