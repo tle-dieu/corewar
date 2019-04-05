@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 16:22:26 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:30:12 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef	struct		s_champ
 typedef	struct		s_env
 {
 	int				c;
+	int				living;
 	int				c_to_die;
 	int				c_total;
 	int				nb_champ;
@@ -98,6 +99,13 @@ void				lfork(t_env *e, int *i);
 void				aff(t_env *e, int *i);
 
 /*
+ ** ---------PLAY----------
+ */
+
+void				play(t_env *e);
+
+/*
+ *
  ** ---------DEBUG----------
  */
 

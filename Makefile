@@ -21,6 +21,7 @@ VM_SOURCES_FILES = main.c \
 				   debug.c \
 				   check.c \
 				   op_codes.c \
+				   play.c
 
 SOURCES_FOLDER = sources/
 VM_SOURCES_FOLDER = $(SOURCES_FOLDER)$(VM_FOLDER)
