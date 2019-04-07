@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:48:55 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/05 16:09:16 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/07 18:52:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		ld(t_env *e, int *i)
 void		st(t_env *e, int *i)
 {
 	t_ocp	check;
-	
+
 	ft_printf("in st :: ");
 	check = check_ocp(e->line[*i + 1]);
 	if (!check.param1 || !check.param2 || check.param3 || check.param1 != 64)
@@ -92,7 +92,7 @@ void		st(t_env *e, int *i)
 void		add(t_env *e, int *i)
 {
 	t_ocp	check;
-	
+
 	ft_printf("in add :: ");
 	check = check_ocp(e->line[*i + 1]);
 	if (check.param1 != 64 || check.param2 != 16 || check.param3 != 4)
@@ -209,14 +209,14 @@ void		ldi(t_env *e, int *i)
 		ft_printf("OK");
 		*i = (check.param1 == 128 || check.param1 == 192) ? *i + 2 : *i + 1;
 		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-	   	*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
+		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
 	}
 }
 
 void		sti(t_env *e, int *i)
 {
 	t_ocp	check;
-	
+
 	ft_printf("in sti :: ");
 	check = check_ocp(e->line[*i + 1]);
 	if (!check.param1 || !check.param2 || !check.param3)
@@ -226,7 +226,7 @@ void		sti(t_env *e, int *i)
 		ft_printf("OK");
 		*i = (check.param1 == 192 || check.param1 == 128) ? *i + 2 : *i + 1;
 		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-	   	*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
+		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
 	}
 }
 
@@ -278,11 +278,8 @@ void		lldi(t_env *e, int *i)
 		ft_printf("OK");
 		*i = (check.param1 == 128 || check.param1 == 192) ? *i + 2 : *i + 1;
 		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-	   	*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
+		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
 	}
-
-	(void)e;
-	(void)i;
 }
 
 void		lfork(t_env *e, int *i)

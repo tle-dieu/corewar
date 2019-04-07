@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/05 16:06:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/07 19:40:46 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void		split_champ(t_env *e, int i)
 	int		j;
 	int		k;
 
-	j = 3;	
+	j = 3;
 	k = 0;
 	while (++j < MAX_SIZE)
 	{
@@ -31,19 +31,20 @@ static void		split_champ(t_env *e, int i)
 		else if (j > PROG_NAME_LENGTH + 11)
 			e->champs[i].comment[k++] = e->line[j];
 	}
-	print_split_champ(e, i);
 }
 
-static int		check_instructions(t_env *e)
+static int		check_instructions(t_env *e, int j)
 {
-	int		i;
-	int		tmp;
-	int		inst;
-	void	(*ft_ptr[16])() = {live, ld, st, add, sub, and, or, xor,
-		zjmp, ldi, sti, op_fork, lld, lldi, lfork, aff};
+	unsigned int	i;
+	unsigned int	tmp;
+	unsigned int	begin;
+	int				inst;
+	void			(*ft_ptr[16])() = {live, ld, st, add, sub, and,
+		or, xor, zjmp, ldi, sti, op_fork, lld, lldi, lfork, aff};
 
 	i = COMMENT_LENGTH + PROG_NAME_LENGTH + 16;
 	inst = 0;
+	begin = i;
 	while (e->line[i] - 1 >= 0 && e->line[i] - 1 < 16)
 	{
 		tmp = i;
@@ -51,12 +52,13 @@ static int		check_instructions(t_env *e)
 		inst++;
 		if (i == tmp)
 		{
-			ft_printf("ERROR :: wrong instruction (number %d, opcode %d)\n",
-					inst, e->line[i] - 1);
+			ft_printf("ERROR :: inst %d - op %d\n", inst, e->line[i] - 1);
 			return (0);
 		}
-		printf("\n");
+		ft_printf("\n");
 	}
+	if (i - begin != e->champs[j].size)
+		return (0);
 	return (1);
 }
 
@@ -101,7 +103,8 @@ int				check_champ(t_env *e, char *arg, int i)
 	ret = read(fd, e->line, MAX_SIZE + 1);
 	if (!(check_champ_size(e, ret, i)))
 	{
-		ft_printf("Champ too big -> %d > %d\n", e->champs[i].size, CHAMP_MAX_SIZE);
+		ft_printf("Champ too big -> %d > %d\n",
+				e->champs[i].size, CHAMP_MAX_SIZE);
 		return (0);
 	}
 	if (!(check_magic_number(e)))
@@ -109,9 +112,9 @@ int				check_champ(t_env *e, char *arg, int i)
 		ft_printf("Wrong magic number\n");
 		return (0);
 	}
-	if (!(check_instructions(e)))
+	if (!(check_instructions(e, i)))
 		return (0);
 	split_champ(e, i);
-//	print_chmp(e, 0, 1, i);
+	print_chmp(e, -1);
 	return (1);
 }

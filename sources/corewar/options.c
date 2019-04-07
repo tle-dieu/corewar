@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:13:16 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 18:30:15 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/07 19:42:27 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@ int				strisdigit(char *str)
 {
 	int i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	if (str[i] == '-')
+		i++;
+	while (str[i])
+	{
 		if (str[i] < '0' || str[i] > '9')
 			return (0);
+		i++;
+	}
 	return (1);
 }
 
@@ -33,25 +38,22 @@ int				check_params(t_env *e, int ac, char **av, int elem, int *show)
 		{
 			if (strisdigit(av[elem + 1]) && ac > elem + 2)
 			{
-				e->champs[e->nb_champ].id = ft_atoi(av[elem + 1]);
+				e->champs[e->nb_champ].chosen_id[0] = 1;
+				e->champs[e->nb_champ].chosen_id[1] = ft_atoi(av[elem + 1]);
 				elem += 2;
 			}
 			else
 				*show = 1;
 		}
 		if ((tmp = ft_strrchr(av[elem], '.')) && !ft_strcmp(tmp, ".cor"))
-		{
-			e->champs[e->nb_champ].file = elem;
-			++elem;
-			e->nb_champ++;
-		}
+			e->champs[e->nb_champ++].file = elem++;
 		else
 			*show = 1;
 	}
 	return (1);
 }
 
-int			parse_args(t_env *e, int ac, char **av)
+int				parse_args(t_env *e, int ac, char **av)
 {
 	int show;
 	int elem;
@@ -70,7 +72,7 @@ int			parse_args(t_env *e, int ac, char **av)
 		}
 		if (!(check_params(e, ac, av, elem, &show)))
 		{
-			printf("wrong champ\n");
+			ft_printf("wrong champ\n");
 			return (0);
 		}
 	}

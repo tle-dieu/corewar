@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/05 18:38:56 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/07 19:42:00 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@
 # include <fcntl.h>
 # include "op.h"
 # define MAX_SIZE CHAMP_MAX_SIZE + COMMENT_LENGTH + PROG_NAME_LENGTH + 16
-
-/* ************************************************************************** */
-# include <stdio.h>
-/* ************************************************************************** */
 
 typedef struct		s_ocp
 {
@@ -49,6 +45,7 @@ typedef	struct		s_champ
 	unsigned char	content[CHAMP_MAX_SIZE];
 	int				file;
 	int				id;
+	int				chosen_id[2];
 	unsigned int	size;
 	t_proc			*proc;	
 }					t_champ;
@@ -104,7 +101,7 @@ void				play(t_env *e);
  ** ---------DEBUG----------
  */
 
-void				print_chmp(t_env *e, int full, int only_chmp, int cursor);
+void				print_chmp(t_env *e, int cursor);
 void				print_env(t_env env);
 void				print_split_champ(t_env *e, int i);
 
