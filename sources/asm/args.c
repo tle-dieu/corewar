@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 15:07:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:14:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static t_file	*add_file(t_file **file, t_file *last, char *name, t_file *opt)
 	new->annot = opt->annot;
 	new->dump = opt->dump;
 	new->disas = opt->disas;
+	new->fd = opt->fd;
 	new->error = 0;
 	new->msg = NULL;
 	if (*file)

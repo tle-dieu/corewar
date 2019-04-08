@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 15:02:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 18:07:52 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # define RED_ERR "{bold}{#ff6b6b}"
+# define BS_ASM 1000
 //option output a rajouter pour preciser fichier ou mettre
 
 typedef struct		s_file
@@ -34,6 +35,7 @@ typedef struct		s_file
 */
 void				print_option(t_file *option, char *s);
 void				print_files(t_file *file);
+void				print_bin(unsigned char *buff, int size);
 
 /*
 ** ---------- FREE -----------

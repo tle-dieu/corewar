@@ -6,21 +6,24 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 15:10:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 15:17:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <errno.h>
+#include <stdlib.h>
 
 int		usage(char *ex_name, int help)
 {
 	ft_printf("usage: %s [-a] [-x] sourcefile.s\n", ex_name);
 	ft_printf("       %s [-d] sourcefile.cor\n", ex_name);
 	if (help)
+	{
 		ft_printf("HELP\n"); // help a faire
-	else
-		ft_printf("Try `%s (-h | --help)' for more information.\n", ex_name);
+		exit(0);
+	}
+	ft_printf("Try `%s (-h | --help)' for more information.\n", ex_name);
 	return (0);
 }
 
