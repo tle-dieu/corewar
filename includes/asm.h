@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 13:51:39 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 15:02:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,6 @@ t_file				*parse_command_line(int ac, char **av);
 
 int					usage(char *ex_name, int help);
 void				*alloc_error(char *ex_name);
-int					error_file(t_file *option, char *ex_name, char *file, t_file *lst);
-
-/*
-** ---------- FILE -----------
-*/
-
-t_file				*add_file(t_file **file, t_file *last, char *name, t_file *option);
-
+int					error_file(t_file *option, char *ex_name,
+					char *file, t_file *lst);
 #endif

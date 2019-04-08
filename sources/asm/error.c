@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 13:52:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 15:10:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <errno.h>
 
-int     usage(char *ex_name, int help)
+int		usage(char *ex_name, int help)
 {
 	ft_printf("usage: %s [-a] [-x] sourcefile.s\n", ex_name);
 	ft_printf("       %s [-d] sourcefile.cor\n", ex_name);
@@ -24,7 +24,7 @@ int     usage(char *ex_name, int help)
 	return (0);
 }
 
-int     error_file(t_file *option, char *ex_name, char *file, t_file *lst)
+int		error_file(t_file *option, char *ex_name, char *file, t_file *lst)
 {
 	free_lst_file(lst);
 	ft_printf("%s: "RED_ERR"error: {reset}", ex_name);
@@ -41,7 +41,7 @@ int     error_file(t_file *option, char *ex_name, char *file, t_file *lst)
 	return (1);
 }
 
-void    *alloc_error(char *ex_name)
+void	*alloc_error(char *ex_name)
 {
 	ft_printf("%s: "RED_ERR"error: {reset}", ex_name);
 	ft_printf("%s\n", strerror(errno));
