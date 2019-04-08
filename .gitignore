@@ -51,6 +51,9 @@
 
 # Corewar
 *.cor
+asm
+corewar
+!sources/*
 
 #Macos
 .DS_Store
