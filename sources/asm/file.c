@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 13:44:06 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/08 13:36:11 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/08 13:52:55 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "asm.h"
 #include <stdlib.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <stdio.h>
-#include <unistd.h>
 
-
-
-int		main(int ac, char **av)
+t_file  *add_file(t_file **file, t_file *last, char *name, t_file *option)
 {
-	t_file *file;
+	t_file *new;
 
-	if (ac < 2)
-		return (usage(av[0], 0));
-	if (!(file = parse_command_line(ac, av)))
-		return (EXIT_FAILURE);
-	print_files(file);
-	free_lst_file(file);
+	if (!(new = (t_file *)malloc(sizeof(t_file))))
+		return (NULL);
+	new->next = NULL;
+	new->name = name;
+	new->annot = option->annot;
+	new->dump = option->dump;
+	new->disas = option->disas;
+	new->error = 0;
+	new->msg = NULL;
+	if (*file)
+		last->next = new;
+	else
+		*file = new;
+	return (new);
 }

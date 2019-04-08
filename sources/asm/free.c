@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 13:44:06 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/05 18:47:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "asm.h"
 #include <stdlib.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <stdio.h>
-#include <unistd.h>
 
-
-
-int		main(int ac, char **av)
+void    free_lst_file(t_file *file)
 {
-	t_file *file;
+	t_file *next;
 
-	if (ac < 2)
-		return (usage(av[0], 0));
-	if (!(file = parse_command_line(ac, av)))
-		return (EXIT_FAILURE);
-	print_files(file);
-	free_lst_file(file);
+	while (file)
+	{
+		next = file->next;
+		free(file);
+		file = next;
+	}
 }

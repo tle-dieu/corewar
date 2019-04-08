@@ -14,7 +14,11 @@ VM_DIR = corewar/
 # --------------- Sources --------------- #
 
 ASM_SOURCES_FILES = main.c \
-					debug.c
+					free.c \
+					debug.c \
+					option.c \
+					error.c \
+					file.c
 
 VM_SOURCES_FILES = main.c \
 				   options.c \
@@ -127,6 +131,6 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean
+.PHONY: all clean fclean run
 
-.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean
+.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean run

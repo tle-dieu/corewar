@@ -6,24 +6,59 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/03 20:49:54 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 13:51:39 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASM_H
 # define ASM_H
 
+# include "libft.h"
+# define RED_ERR "{bold}{#ff6b6b}"
 //option output a rajouter pour preciser fichier ou mettre
 
-typedef struct	s_file
+typedef struct		s_file
 {
-	char		*file;
-	char		annot;
-	char		disas;
-	char		dump; //gerer hexa(-x) et binaire(-b) ?
-	int			error;
-	char		*msg;
-}				t_file;
+	char			*name;
+	int				fd;
+	char			annot;
+	char			disas;
+	char			dump; //gerer hexa(-x) et binaire(-b) ?
+	int				error;
+	char			*msg;
+	struct s_file	*next;
+}					t_file;
 
-void			print_option(t_file *option, char *s);
+/*
+** ---------- DEBUG ----------
+*/
+void				print_option(t_file *option, char *s);
+void				print_files(t_file *file);
+
+/*
+** ---------- FREE -----------
+*/
+
+void				free_lst_file(t_file *file);
+
+/*
+** --------- OPTION ----------
+*/
+
+t_file				*parse_command_line(int ac, char **av);
+
+/*
+** ---------- ERROR ----------
+*/
+
+int					usage(char *ex_name, int help);
+void				*alloc_error(char *ex_name);
+int					error_file(t_file *option, char *ex_name, char *file, t_file *lst);
+
+/*
+** ---------- FILE -----------
+*/
+
+t_file				*add_file(t_file **file, t_file *last, char *name, t_file *option);
+
 #endif
