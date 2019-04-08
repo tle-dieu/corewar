@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/08 20:10:47 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 21:04:11 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ static int		exec_cycle(t_env *e)
 	void	(*ft_ptr[16])() = {live, ld, st, add, sub, and, or, xor,
 		zjmp, ldi, sti, op_fork, lld, lldi, lfork, aff};
 
-	i = -1;
-	while (++i < e->nb_champ)
+	i = e->nb_champ;
+	while (i--)
 	{
 		ptr = e->champs[i].proc;
 		while (ptr)
@@ -97,7 +97,7 @@ static int		exec_cycle(t_env *e)
 					e->champs[i].name, ptr->cycle, ptr->op);
 			if (!ptr->cycle)
 			{
-				ft_printf("PLAYER %d ===> OP %d\n", i, ptr->op);
+				ft_printf("PLAYER %s ===> OP %d\n", e->champs[i].name, ptr->op);
 				if (ptr->pc + 12 > MEM_SIZE)
 					ptr->pc = ptr->pc % MEM_SIZE;
 				(*ft_ptr[e->mem[ptr->pc] - 1])(e, &ptr->pc, ptr);

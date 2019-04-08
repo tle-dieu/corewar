@@ -6,117 +6,137 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:15:29 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/08 14:15:52 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 21:01:11 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void		ldi(t_env *e, int *i)
+void		ldi(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
+	int sum;
+	int m;
+	int err;
 
+	err = 0;
+	m = 0;
+	sum = 0;
 	ft_printf("in ldi :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || !check.param2 || !check.param3)
-		ft_printf("ERROR :: Must have 3 parameters\n");
-	else
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
+	if (check.p1 && check.p2 && check.p3)
 	{
-		ft_printf("OK");
-		*i = (check.param1 == 128 || check.param1 == 192) ? *i + 2 : *i + 1;
-		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
+		m = 1;
+		if (check.p3 == 64 && check.p2 <= 32)
+		{
+			if (check.p3 == 4)
+				sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p3)];
+			else if (check.p3 > 4)
+				sum += e->mem[*pc + param_sum(e, (*pc + m) % MEM_SIZE, check.p3)];
+			else
+				sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p3);
+			m += check.s3;
+			if (!err && check.p2 == 32)
+				sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p2);
+			else if (!err && check.p2 > 32)
+				sum += e->mem[*pc + param_sum(e, (*pc + m) % MEM_SIZE, check.p2)];
+			else
+				err = 1;
+			if (!err && check.p1 == 64)
+				ptr->r[param_sum(e, *pc % MEM_SIZE, check.p1)] = sum;
+			else
+				err = 1;
+			ptr->carry = !sum;
+		}
+		move_pc(check, pc, 1);
 	}
 }
 
-void		sti(t_env *e, int *i)
+//fait
+
+void		sti(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
+	int sum;
+	int err;
+	int m;
 
+	err = 0;
+	m = 0;
+	sum = 0;
 	ft_printf("in sti :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || !check.param2 || !check.param3)
-		ft_printf("ERROR :: Must have 3 parameters\n");
-	else
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
+	if (check.p1 == 64 && check.p2  && check.p3 < 12 && check.p3)
 	{
-		ft_printf("OK");
-		*i = (check.param1 == 192 || check.param1 == 128) ? *i + 2 : *i + 1;
-		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
+		ft_printf("OK ");
+		m = 1;
+		if (check.p2 == 4)
+			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p2)];
+		else if (check.p2 > 4)
+			sum += e->mem[*pc + param_sum(e, (*pc + m) % MEM_SIZE, check.p2)];
+		else
+			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p2);
+		if (!err && check.p3 == 32)
+			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p3);
+		else if (!err && check.p3 > 32)
+			sum += e->mem[*pc + param_sum(e, (*pc + m) % MEM_SIZE, check.p3)];
+		else
+			err = 1;
+		if ((e->mem[*pc + m] = ptr->r[param_sum(e, *pc % MEM_SIZE, 1)]))
+			ptr->carry = 0;
+		else
+			ptr->carry = 1;
 	}
+	else
+		ft_printf("ERROR ");
+	move_pc(check, pc, 1);
 }
 
-void		op_fork(t_env *e, int *i)
+void		op_fork(t_env *e, int *i, t_proc *ptr)
 {
-	ft_printf("in fork :: ");
-	*i += 3;
-	ft_printf("OK");
+	ft_printf("in op_fork :: ");
 	(void)e;
+	(void)i;
+	(void)ptr;
 }
 
-void		lld(t_env *e, int *i)
+void		lld(t_env *e, int *i, t_proc *ptr)
 {
-	t_ocp	check;
-
 	ft_printf("in lld :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || check.param2 != 16 || check.param3)
-	{
-		if (!check.param1)
-			ft_printf("ERROR:: no parameter 1\n");
-		if (check.param2 != 16)
-			ft_printf("ERROR:: parameter 2 must be a register\n");
-		if (check.param3)
-			ft_printf("ERROR:: only 2 parameters accepted\n");
-	}
-	else
-	{
-		ft_printf("OK");
-		if (check.param1 == 128)
-			*i += 7;
-		if (check.param1 == 192)
-			*i += 5;
-		if (check.param1 == 64)
-			*i += 4;
-	}
+	(void)e;
+	(void)i;
+	(void)ptr;
 }
 
-void		lldi(t_env *e, int *i)
+void		lldi(t_env *e, int *i, t_proc *ptr)
 {
-	t_ocp	check;
-
 	ft_printf("in lldi :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || !check.param2 || !check.param3)
-		ft_printf("ERROR :: Must have 3 parameters\n");
-	else
-	{
-		ft_printf("OK");
-		*i = (check.param1 == 128 || check.param1 == 192) ? *i + 2 : *i + 1;
-		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
-	}
+	(void)e;
+	(void)i;
+	(void)ptr;
 }
 
-void		lfork(t_env *e, int *i)
+void		lfork(t_env *e, int *i, t_proc *ptr)
 {
 	ft_printf("in lfork :: ");
-	*i += 3;
-	ft_printf("OK");
 	(void)e;
+	(void)i;
+	(void)ptr;
 }
 
-void		aff(t_env *e, int *i)
+// FAIT!
+void		aff(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 
 	ft_printf("in aff :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (check.param1 != 64 || check.param2 || check.param3)
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
+	if (check.p1 != 64 || check.p2 || check.p3)
 		ft_printf("ERROR :: wrong args, must have one register\n");
 	else
 	{
-		ft_printf("OK");
-		*i += 2;
+		*pc += 2;
+		if (ptr)
+			ft_printf("%c", ptr->r[e->mem[*pc % MEM_SIZE]] % 256);
 	}
 }

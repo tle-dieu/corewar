@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/08 19:45:05 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 20:50:21 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ int					check_champ(t_env *e, char *arg, int i);
  ** OP_CODES.C
 	
  */
+t_ocp				check_ocp(int ocp, int on_two);
+void				move_pc(t_ocp check, int *pc, int on_two);
+int					param_sum(t_env *e, int pc, int size);
 void				live(t_env *e, int *pc, t_proc *ptr);
 void				ld(t_env *e, int *pc, t_proc *ptr);
 void				st(t_env *e, int *pc, t_proc *ptr);

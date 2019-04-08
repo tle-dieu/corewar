@@ -6,23 +6,23 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:14:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/08 20:02:25 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 20:58:57 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int			param_sum(t_env *e, int *pc, int size)
+int			param_sum(t_env *e, int pc, int size)
 {
 	int		res;
 	int		j;
 
-	res = e->mem[*pc % MEM_SIZE];
+	res = e->mem[pc % MEM_SIZE];
 	j = 1;
 	while (--size)
 	{
 		res *= 256;
-		res += e->mem[(*pc + j++) % MEM_SIZE];
+		res += e->mem[(pc + j++) % MEM_SIZE];
 	}
 	return (res);
 }
@@ -37,18 +37,18 @@ int			find_param_value(t_env *e, t_ocp check, int to_find, int *pc, t_proc *ptr)
 		if (check.s1 == 1)
 			value = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
 		else if (check.s1 == 2)
-			value = e->mem[param_sum(e, pc + 2, check.s1)];
+			value = e->mem[param_sum(e, *pc + 2, check.s1)];
 		else if (check.s1 == 4)
-			value = param_sum(e, pc + 2, check.s1);
+			value = param_sum(e, *pc + 2, check.s1);
 	}
 	else if (to_find == 2)
 	{
 		if (check.s2 == 1)
 			value = ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]];
 		else if (check.s2 == 2)
-			value = e->mem[param_sum(e, pc + 2 + check.s1, check.s2)];
+			value = e->mem[param_sum(e, *pc + 2 + check.s1, check.s2)];
 		else if (check.s2 == 4)
-			value = param_sum(e, pc + 2 + check.s1, check.s2);
+			value = param_sum(e, *pc + 2 + check.s1, check.s2);
 	}
 	return (value);
 }
@@ -87,8 +87,7 @@ t_ocp		check_ocp(int ocp, int on_two)
 	if (ocp >= 192 || ocp < 64)
 		check.p1 = (ocp >= 192) ? 192 : 0;
 	else
-		if (ocp >= 128)
-			check.p1 = (ocp >= 128) ? 128 : 64;
+		check.p1 = (ocp >= 128) ? 128 : 64;
 	if (ocp - check.p1 >= 48 || ocp - check.p1 < 16)
 		check.p2 = (ocp - check.p1 >= 48) ? 48 : 0;
 	else
