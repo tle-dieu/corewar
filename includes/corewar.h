@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/08 13:41:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:45:05 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,20 @@
 
 typedef struct		s_ocp
 {
-	int				param1;
-	int				param2;
-	int				param3;
+	int				p1;
+	int				s1;
+	int				p2;
+	int				s2;
+	int				p3;
+	int				s3;
 }					t_ocp;
 
 typedef	struct		s_proc
 {
+	int				owner;
 	int				id;
 	int				live;
-	int				r[16];
+	int				r[17];
 	int				pc;
 	int				carry;
 	int				op;
@@ -43,6 +47,7 @@ typedef	struct		s_champ
 	char			name[PROG_NAME_LENGTH];
 	char			comment[COMMENT_LENGTH];
 	unsigned char	content[CHAMP_MAX_SIZE];
+	int				alive;
 	int				file;
 	int				id;
 	int				chosen_id[2];
@@ -73,22 +78,22 @@ int					check_champ(t_env *e, char *arg, int i);
  ** OP_CODES.C
 	
  */
-void				live(t_env *e, int *i);
-void				ld(t_env *e, int *i);
-void				st(t_env *e, int *i);
-void				add(t_env *e, int *i);
-void				sub(t_env *e, int *i);
-void				and(t_env *e, int *i);
-void				or(t_env *e, int *i);
-void				xor(t_env *e, int *i);
-void				zjmp(t_env *e, int *i);
-void				ldi(t_env *e, int *i);
-void				sti(t_env *e, int *i);
-void				op_fork(t_env *e, int *i);
-void				lld(t_env *e, int *i);
-void				lldi(t_env *e, int *i);
-void				lfork(t_env *e, int *i);
-void				aff(t_env *e, int *i);
+void				live(t_env *e, int *pc, t_proc *ptr);
+void				ld(t_env *e, int *pc, t_proc *ptr);
+void				st(t_env *e, int *pc, t_proc *ptr);
+void				add(t_env *e, int *pc, t_proc *ptr);
+void				sub(t_env *e, int *pc, t_proc *ptr);
+void				and(t_env *e, int *pc, t_proc *ptr);
+void				or(t_env *e, int *pc, t_proc *ptr);
+void				xor(t_env *e, int *pc, t_proc *ptr);
+void				zjmp(t_env *e, int *pc, t_proc *ptr);
+void				ldi(t_env *e, int *pc, t_proc *ptr);
+void				sti(t_env *e, int *pc, t_proc *ptr);
+void				op_fork(t_env *e, int *pc, t_proc *ptr);
+void				lld(t_env *e, int *pc, t_proc *ptr);
+void				lldi(t_env *e, int *pc, t_proc *ptr);
+void				lfork(t_env *e, int *pc, t_proc *ptr);
+void				aff(t_env *e, int *pc, t_proc *ptr);
 
 /*
  ** ---------PLAY----------

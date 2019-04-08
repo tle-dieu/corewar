@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/08 14:16:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 20:10:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ static int		choose_cycle(int op)
 		return (800);
 	else if (op == 15)
 		return (1000);
+	return (-1);
 }
 
-static int		init_proc(t_env *e, int j, int pc)
+static int		init_proc(t_env *e, int j, int begin)
 {
 	int		i;
 	t_proc	*new;
@@ -42,11 +43,17 @@ static int		init_proc(t_env *e, int j, int pc)
 
 	i = 0;
 	ptr = e->champs[j].proc;
-	if (!(new = (t_proc*)ft_memmalloc(sizeof(t_proc))))
+	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);
-	new->id = 1;
-	new->r[0] = e->champs[j].id;
-	new->pc = pc;
+	if (!ptr)
+	{
+		new->id = 1;
+		new->r[1] = e->champs[j].id;
+	}
+	else
+		new->id = ptr->id + 1;
+	new->pc = begin;
+	new->owner = e->champs[j].id;
 	new->op = e->champs[j].content[0];
 	new->cycle = choose_cycle(new->op);
 	new->next = ptr;
@@ -64,7 +71,7 @@ static void		place_champ(t_env *e)
 	while (++champ < e->nb_champ)
 	{
 		j = 0;
-		i = champ * (MEM_SIZE / e->nb_champs);
+		i = champ * (MEM_SIZE / e->nb_champ);
 		if (!(init_proc(e, champ, i)))
 			ft_printf("malloc error - to free\n");
 		while (j < CHAMP_MAX_SIZE)
@@ -85,10 +92,21 @@ static int		exec_cycle(t_env *e)
 		ptr = e->champs[i].proc;
 		while (ptr)
 		{
-			if (!ptr.proc->cycle)
-				(*ft_ptr[e->line[i] - 1])(e, &ptr->pc, ptr);
+			if (ptr->cycle)
+				ft_printf("Player %-25s :: remaining cycles %d, waiting for op %d\n",
+					e->champs[i].name, ptr->cycle, ptr->op);
+			if (!ptr->cycle)
+			{
+				ft_printf("PLAYER %d ===> OP %d\n", i, ptr->op);
+				if (ptr->pc + 12 > MEM_SIZE)
+					ptr->pc = ptr->pc % MEM_SIZE;
+				(*ft_ptr[e->mem[ptr->pc] - 1])(e, &ptr->pc, ptr);
+				ptr->op = e->mem[ptr->pc];
+				ptr->cycle = choose_cycle(e->mem[ptr->pc]);
+				ft_printf("\n\n");
+			}
 			else
-				ptr.proc->cycle--;
+				ptr->cycle--;
 			ptr = ptr->next;
 		}
 	}
@@ -119,6 +137,9 @@ void			play(t_env *e)
 				e->c_to_die -= CYCLE_DELTA;
 		}
 		e->cycle++;
-		print_env(*e);
+		if (e->cycle == 30)
+			break ;
+		ft_printf("\n");
 	}
+	print_env(*e);
 }

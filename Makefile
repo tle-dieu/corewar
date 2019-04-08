@@ -21,6 +21,7 @@ VM_SOURCES_FILES = main.c \
 				   debug.c \
 				   check.c \
 				   op_codes.c \
+				   op_codes2.c \
 				   play.c
 
 SOURCES_FOLDER = sources/
