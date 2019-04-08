@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/07 19:40:46 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/08 14:16:24 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void		split_champ(t_env *e, int i)
 		else if (j > PROG_NAME_LENGTH + 11)
 			e->champs[i].comment[k++] = e->line[j];
 	}
+	e->champs[i].proc = NULL;
 }
 
 static int		check_instructions(t_env *e, int j)
@@ -48,7 +49,7 @@ static int		check_instructions(t_env *e, int j)
 	while (e->line[i] - 1 >= 0 && e->line[i] - 1 < 16)
 	{
 		tmp = i;
-		(*ft_ptr[e->line[i] - 1])(e, &i);
+		(*ft_ptr[e->line[i] - 1])(e, &i, NULL);
 		inst++;
 		if (i == tmp)
 		{

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op.c                                               :+:      :+:    :+:   */
+/*   op_codes.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/04 14:48:55 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/07 18:52:17 by acompagn         ###   ########.fr       */
+/*   Created: 2019/04/08 14:14:09 by acompagn          #+#    #+#             */
+/*   Updated: 2019/04/08 14:16:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,36 @@ t_ocp		check_ocp(int ocp)
 	return (check);
 }
 
-void		live(t_env *e, int *i)
+void		live(t_env *e, int *i, t_proc *ptr)
 {
-	ft_printf("in live :: ");
+	int		player_nb;
+
+	if (ptr)
+	{
+		player_nb = e->mem[
+	}
 	*i += 5;
-	ft_printf("OK");
-	(void)e;
 }
 
-void		ld(t_env *e, int *i)
+void		ld(t_env *e, int *i, t_proc *ptr)
 {
 	t_ocp	check;
+	int		tmp;
 
-	ft_printf("in ld :: ");
 	check = check_ocp(e->line[*i + 1]);
+	tmp = *i + 1;
 	if (!check.param1 || check.param2 != 16 || check.param3)
-	{
-		if (!check.param1)
-			ft_printf("ERROR:: no parameter 1\n");
-		if (check.param2 != 16)
-			ft_printf("ERROR:: parameter 2 must be a register\n");
-		if (check.param3)
-			ft_printf("ERROR:: only 2 parameters accepted\n");
-	}
+			ft_printf("ERROR::\n");
 	else
 	{
-		ft_printf("OK");
 		if (check.param1 == 128)
 			*i += 7;
-		if (check.param1 == 192)
+		else if (check.param1 == 192)
 			*i += 5;
-		if (check.param1 == 64)
+		else if (check.param1 == 64)
 			*i += 4;
+		if (ptr && *i - 1 > 0 && *i - 1 < 16)
+			ptr->r[e->mem[*i - 1]] = e->mem[tmp];
 	}
 }
 
@@ -82,9 +80,9 @@ void		st(t_env *e, int *i)
 		*i += 3;
 		if (check.param2 == 32)
 			*i += 4;
-		if (check.param2 == 16)
+		else if (check.param2 == 16)
 			*i += 1;
-		if (check.param2 == 48)
+		else if (check.param2 == 48)
 			*i += 2;
 	}
 }
@@ -194,113 +192,4 @@ void		zjmp(t_env *e, int *i)
 	*i += 3;
 	(void)e;
 	ft_printf("OK");
-}
-
-void		ldi(t_env *e, int *i)
-{
-	t_ocp	check;
-
-	ft_printf("in ldi :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || !check.param2 || !check.param3)
-		ft_printf("ERROR :: Must have 3 parameters\n");
-	else
-	{
-		ft_printf("OK");
-		*i = (check.param1 == 128 || check.param1 == 192) ? *i + 2 : *i + 1;
-		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
-	}
-}
-
-void		sti(t_env *e, int *i)
-{
-	t_ocp	check;
-
-	ft_printf("in sti :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || !check.param2 || !check.param3)
-		ft_printf("ERROR :: Must have 3 parameters\n");
-	else
-	{
-		ft_printf("OK");
-		*i = (check.param1 == 192 || check.param1 == 128) ? *i + 2 : *i + 1;
-		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
-	}
-}
-
-void		op_fork(t_env *e, int *i)
-{
-	ft_printf("in fork :: ");
-	*i += 3;
-	ft_printf("OK");
-	(void)e;
-}
-
-void		lld(t_env *e, int *i)
-{
-	t_ocp	check;
-
-	ft_printf("in lld :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || check.param2 != 16 || check.param3)
-	{
-		if (!check.param1)
-			ft_printf("ERROR:: no parameter 1\n");
-		if (check.param2 != 16)
-			ft_printf("ERROR:: parameter 2 must be a register\n");
-		if (check.param3)
-			ft_printf("ERROR:: only 2 parameters accepted\n");
-	}
-	else
-	{
-		ft_printf("OK");
-		if (check.param1 == 128)
-			*i += 7;
-		if (check.param1 == 192)
-			*i += 5;
-		if (check.param1 == 64)
-			*i += 4;
-	}
-}
-
-void		lldi(t_env *e, int *i)
-{
-	t_ocp	check;
-
-	ft_printf("in lldi :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (!check.param1 || !check.param2 || !check.param3)
-		ft_printf("ERROR :: Must have 3 parameters\n");
-	else
-	{
-		ft_printf("OK");
-		*i = (check.param1 == 128 || check.param1 == 192) ? *i + 2 : *i + 1;
-		*i = (check.param2 == 32 || check.param2 == 48) ? *i + 3 : *i + 2;
-		*i = (check.param3 == 8 || check.param3 == 12) ? *i + 3 : *i + 2;
-	}
-}
-
-void		lfork(t_env *e, int *i)
-{
-	ft_printf("in lfork :: ");
-	*i += 3;
-	ft_printf("OK");
-	(void)e;
-}
-
-void		aff(t_env *e, int *i)
-{
-	t_ocp	check;
-
-	ft_printf("in aff :: ");
-	check = check_ocp(e->line[*i + 1]);
-	if (check.param1 != 64 || check.param2 || check.param3)
-		ft_printf("ERROR :: wrong args, must have one register\n");
-	else
-	{
-		ft_printf("OK");
-		*i += 2;
-	}
 }
