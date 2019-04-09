@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/09 18:01:44 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/09 18:52:50 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef	struct		s_champ
 typedef	struct		s_env
 {
 	int				nb_live;
+	int				last_live;
 	int				cycle;
 	int				living;
 	int				c_to_die;

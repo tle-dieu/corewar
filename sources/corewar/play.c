@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/09 18:01:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/09 19:55:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void			print_register(t_env *e)
 {
 	int		i;
 	int		j;
+	t_proc	*ptr;
 
 	i = e->nb_champ;
 	while (i--)
@@ -134,64 +135,110 @@ void			print_register(t_env *e)
 	}
 }
 
+void			destroy_process(t_env *e, int i, t_proc *to_del)
+{
+	t_proc	*ptr;
+	t_proc	*tmp;
+
+	ft_printf("\n\n>> Killing one process of player %s <<\n\n", e->champs[i].name);
+	ptr = e->champs[i].proc;
+	if (ptr == to_del)
+	{
+		tmp = ptr;
+		ptr = ptr->next;
+		free(tmp);
+		return ;
+	}
+	while (ptr->next)
+	{
+		if (ptr->next == to_del)
+		{
+			tmp = ptr->next;
+			ptr->next = ptr->next->next;
+			free(tmp);
+		}
+		ptr = ptr->next;
+	}
+}
+
+void			destroy_all(t_env *e, int i)
+{
+	t_proc	*ptr;
+	t_proc	*tmp;
+
+	ft_printf("\n\n>> Killing all processes of player %s <<\n\n", e->champs[i].name);
+	ptr = e->champs[i].proc;
+	while (ptr)
+	{
+		tmp = ptr;
+		ptr = ptr->next;
+		free(tmp);
+	}
+	e->champs[i].proc = NULL;
+}
+
 void			is_alive(t_env *e, int *living)
 {
 	int		i;
+	int		tmp;
 	t_proc	*ptr;
 
 	i = -1;
 	*living = 0;
 	while (++i < e->nb_champ)
 	{
+		tmp = 0;
 		ptr = e->champs[i].proc;
-		if (e->champs[i].alive)
+		while (ptr)
 		{
-			while (ptr)
+			ft_printf("ptr->live = %d\n", ptr->live);
+			if (ptr->live)
 			{
-				if (ptr->live)
-					ptr->live = 0;
-				else
-					destroy_process(e, ptr);
-				ptr = ptr->next;
+				tmp++;
+				ptr->live = 0;
 			}
-			*living++;
-			e->champs[i].alive = 0;
+			else
+				destroy_process(e, i, ptr);
+			ptr = ptr->next;
 		}
-		else
-			destroy_all(e, i);
+		if (tmp)
+			*living = *living + 1;
+		e->champs[i].alive = 0;
 	}
 }
 
 void			play(t_env *e)
 {
-	int		check_nb;
+	int		nb_check;
 	int		living;
-	t_proc	*ptr;
+	int		i;
 
 	place_champ(e);
 	e->cycle = 0;
+	e->last_live = 0;
 	nb_check = 0;
 	living = e->nb_champ;
-	while (living > 1)
+	ft_printf("living = %d\n", living);
+	while (living > 1 && e->c_to_die > 0)
 	{
 		exec_cycle(e);
-		if (e->nb_live <= NBR_LIVE)
+		if (e->cycle == e->c_to_die)
 		{
-			e->c_to_die -= CYCLE_DELTA;
-			nb_check = 0;
-		}
-		else
-		{
-			++nb_check;
-			if (!(nb_check % MAX_CHECKS))
+			if (e->nb_live >= NBR_LIVE)
 				e->c_to_die -= CYCLE_DELTA;
+			is_alive(e, &living);
+			e->c_to_die -= CYCLE_DELTA;
+			e->cycle = 0;
+			e->nb_live = 0;
+			++nb_check;
 		}
-		living = is_alive(e, &living);
+		if (nb_check && !(nb_check % MAX_CHECKS))
+			e->c_to_die -= CYCLE_DELTA;
 		e->cycle++;
-		if (e->cycle == 150)
-			break ;
 	}
-   	while (++i < e->nb_champ)
+   	i = -1;
+	while (++i < e->nb_champ)
 		print_chmp(e, i, 0);
+	ft_printf("\nCTD = %d\n\n\nLAST LIVE from player %d\n", e->c_to_die, e->last_live);
 //	print_env(*e);
 }

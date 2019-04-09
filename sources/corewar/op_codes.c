@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:14:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/09 18:01:47 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/09 19:55:52 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			find_param_value(t_env *e, t_ocp check, int to_find, int *pc, t_proc *ptr)
 		if (check.s2 == 1)
 			value = ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]];
 		else if (check.s2 == 2)
-			value = e->mem[param_sum(e, *pc + 2 + check.s1, check.s2)];
+			value = e->mem[param_sum(e, *pc + 2 + check.s1, check.s2) % MEM_SIZE];
 		else if (check.s2 == 4)
 			value = param_sum(e, *pc + 2 + check.s1, check.s2);
 	}
@@ -117,14 +117,16 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 	*pc += 1;
 	j = -1;
 	e->nb_live++;
+	ptr->live++;
 	player_nb = param_sum(e, *pc, 4);
 	ft_printf("player = %d\n", player_nb);
-	if (player_nb == ptr->owner)
-		ptr->live++;
-	else
-		while (++j < e->nb_champ)
-			if (player_nb == e->champs[j].id)
-				e->champs[j].alive = 1;
+	e->last_live = player_nb;
+	while (++j < e->nb_champ)
+		if (player_nb == e->champs[j].id)
+		{
+			e->champs[j].alive = 1;
+			e->last_live = e->champs[j].id;
+		}
 	ft_printf("{#40e886}LIVE{reset} from process :: for player %d\n", player_nb);
 	*pc += 4;
 }
@@ -182,7 +184,10 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 	if (!error && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 	{
 		if (check.s2 == 1 && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+		{
+			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
+				ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+		}
 		else if (check.s2 == 2)
 		{
 			value = param_sum(e, *pc + (addr % IDX_MOD), REG_SIZE);

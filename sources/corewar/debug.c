@@ -6,25 +6,25 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:59:33 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/07 19:48:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/09 19:00:06 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void			print_chmp(t_env *e, int cursor)
+void			print_chmp(t_env *e, int c, unsigned int cursor)
 {
-	int		i;
-	int		count;
+	unsigned int		i;
+	unsigned int		count;
 
 	count = 0;
-	ft_printf("\n\n=== CHMP ===\n");
-	i = PROG_NAME_LENGTH + COMMENT_LENGTH + 16;
-	while (i++ < MAX_SIZE - 1)
+	ft_printf("\n\n=== %s %d ===\n", e->champs[c].name, e->champs[c].id);
+	i = 0;
+	while (i++ < e->champs[c].size)
 	{
 		count++;
 		(i == cursor) ? ft_printf(">> ") : 1;
-		ft_printf("%02x ", e->line[i]);
+		ft_printf("%02x ", e->champs[c].content[i]);
 		(i == cursor) ? ft_printf("<< ") : 1;
 		if (count == 16)
 		{
@@ -34,7 +34,7 @@ void			print_chmp(t_env *e, int cursor)
 	}
 	ft_printf("\n");
 }
-
+/*
 static void		print_process(t_env *e)
 {
 	int reg;
@@ -56,7 +56,7 @@ static void		print_process(t_env *e)
 		ft_printf("{#009688}next{#ffffff} = %p\n\n", e->champs[champ].proc->next);
 	}
 }
-
+*/
 void			print_env(t_env e)
 {
 	int		i;
@@ -65,7 +65,7 @@ void			print_env(t_env e)
 	char	colors[4][12] = {"{#ff3333}\0", "{yellow}", "{blue}\0", "{yellow}\0"};
 
 	i = -1;
-	print_process(&e);
+//	print_process(&e);
 	while (++i < MEM_SIZE)
 	{
 		j = -1;
