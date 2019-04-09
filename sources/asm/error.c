@@ -30,7 +30,7 @@ int		usage(char *ex_name, int help)
 int		error_file(t_file *option, char *ex_name, char *file, t_file *lst)
 {
 	free_lst_file(lst);
-	ft_printf("%s: "RED_ERR"error: {reset}", ex_name);
+	ft_printf("%s: "RED_ERR"error: {R}", ex_name);
 	if (option->error || option->name)
 	{
 		if (option->error)
@@ -46,7 +46,7 @@ int		error_file(t_file *option, char *ex_name, char *file, t_file *lst)
 
 void	*alloc_error(char *ex_name)
 {
-	ft_printf("%s: "RED_ERR"error: {reset}", ex_name);
+	ft_printf("%s: "RED_ERR"error: {R}", ex_name);
 	ft_printf("%s\n", strerror(errno));
 	return (NULL);
 }

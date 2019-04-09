@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 19:14:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:12:46 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ static t_file	*add_file(t_file **file, t_file *last, char *name, t_file *opt)
 		free_lst_file(*file);
 		return (NULL);
 	}
-	new->next = NULL;
 	new->name = name;
-	new->annot = opt->annot;
-	new->dump = opt->dump;
-	new->disas = opt->disas;
 	new->fd = opt->fd;
+	new->annot = opt->annot;
+	new->disas = opt->disas;
+	new->dump = opt->dump;
 	new->error = 0;
-	new->msg = NULL;
+	new->begin = NULL;
+	new->last = NULL;
+	new->next = NULL;
 	if (*file)
 		last->next = new;
 	else
@@ -59,7 +60,7 @@ static int		get_short_option(t_file *option, char *s, char *ex_name)
 {
 	t_file tmp;
 
-	tmp = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL};
+	tmp = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 	while (*s)
 	{
 		if (*s == 'a')
@@ -81,7 +82,7 @@ static int		get_long_option(t_file *option, char *s, char *ex_name)
 {
 	t_file tmp;
 
-	tmp = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL};
+	tmp = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 	if (!ft_strcmp(s, "annotated"))
 		tmp.annot = 1;
 	else if (!ft_strcmp(s, "dump"))
@@ -105,7 +106,7 @@ t_file			*parse_command_line(int ac, char **av)
 
 	i = 0;
 	file = NULL;
-	option = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL};
+	option = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 	while (++i < ac)
 	{
 		s = av[i];
@@ -118,7 +119,7 @@ t_file			*parse_command_line(int ac, char **av)
 				exit(error_file(&option, *av, av[i], file));
 			if (!(last = add_file(&file, last, av[i], &option)))
 				return (alloc_error(av[0]));
-			option = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL};
+			option = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 		}
 	}
 	return (file);

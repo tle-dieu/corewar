@@ -15,16 +15,16 @@
 
 void			print_option(t_file *option, char *s)
 {
-	ft_printf(BLUE"filename: {reset}%s\n", s);
-	ft_printf(BLUE"  => annot: {reset}%d\n", option->annot);
-	ft_printf(BLUE"  => disas: {reset}%d\n", option->disas);
-	ft_printf(BLUE"  => dump:  {reset}%d\n", option->dump);
+	ft_printf(BLUE"filename: {R}%s\n", s);
+	ft_printf(BLUE"  => annot: {R}%d\n", option->annot);
+	ft_printf(BLUE"  => disas: {R}%d\n", option->disas);
+	ft_printf(BLUE"  => dump:  {R}%d\n", option->dump);
 	ft_printf("\n");
 }
 
 void			print_files(t_file *file)
 {
-	ft_printf("{yellow}----- Print File -----{reset}\n");
+	ft_printf("{yellow}----- Print File -----{R}\n");
 	while (file)
 	{
 		print_option(file, file->name);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:24:00 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/03/07 15:24:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/09 15:04:09 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char		*get_style(char *color)
 		return (ft_strdup("\x1b[36m"));
 	if (!ft_strcmp("{white}", color) || !ft_strcmp("{white:bg}", color))
 		return (ft_strdup("\x1b[37m"));
-	if (!ft_strcmp("{reset}", color))
+	if (!ft_strcmp("{reset}", color) || !ft_strcmp("{R}", color))
 		return (ft_strdup("\x1b[0m"));
 	if (!ft_strcmp("{bold}", color))
 		return (ft_strdup("\x1b[1m"));

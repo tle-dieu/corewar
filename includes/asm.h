@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 22:38:52 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/09 18:45:33 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 # define ASM_H
 
 # include "libft.h"
-# define RED_ERR "{bold}{#ff6b6b}"
-# define BS_ASM 1000
+# define RED_ERR "{bold}{rgb(255,109,103)}"
 //option output a rajouter pour preciser fichier ou mettre
+
+typedef struct		s_line
+{
+	char			*s;
+	int				y;
+	struct s_line	*next;
+}					t_line;
 
 typedef struct		s_file
 {
@@ -26,7 +32,8 @@ typedef struct		s_file
 	char			disas;
 	char			dump; //gerer hexa(-x) et binaire(-b) ?
 	int				error;
-	char			*msg;
+	t_line			*begin;
+	t_line			*last;
 	struct s_file	*next;
 }					t_file;
 

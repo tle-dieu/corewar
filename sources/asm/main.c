@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 22:35:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/09 20:02:02 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,17 @@
 
 //error a gerer
 
-char *check_end_str(char *s)
+int		error_header(t_file *file, int error, char *extra)
+{
+	ft_printf("error header\n");
+	if (error == 1)
+	{
+		ft_printf(RED_ERR"error: %s: {R}char after name\n");
+	}
+	return (0);
+}
+
+char	*check_end_str(char *s)
 {
 	ft_printf("check: %s\n", s);
 	while (*s == ' ' || *s == '\t')
@@ -31,7 +41,36 @@ char *check_end_str(char *s)
 		return (s);
 	}
 }
-int		multi_line(int fd, char *buff, int max_size, int i)
+
+int		add_line(char **line, t_file *file)
+{
+	t_line	*new;
+
+	*line = NULL;
+	if (get_next_line(file->fd, line) != 1)
+		return (1);
+	if (!(new = (t_line *)malloc(sizeof(t_line))))
+	{
+		free(*line);
+		return (1);
+	}
+	new->next = NULL;
+	new->s = *line;
+	if (!file->begin)
+	{
+		new->y = 1;
+		file->begin = new;
+	}
+	else
+	{
+		new->y = file->last->y + 1;
+		file->last->next = new;
+	}
+	file->last = new;
+	return (0);
+}
+
+int		multi_line(t_file *file, char *buff, int max_size, int i)
 {
 	char *line;
 	char *s;
@@ -40,15 +79,14 @@ int		multi_line(int fd, char *buff, int max_size, int i)
 	end = -1;
 	while (end == -1)
 	{
-		if (get_next_line(fd, &line) != 1)
+		if (add_line(&line, file) != 1)
 			return (0);
 		s = line;
 		while (*s && *s != '"')
 		{
 			if (i >= max_size)
 			{
-				free(line);
-				ft_printf(RED_ERR"name too long\n{reset}"); //fonction err
+				ft_printf(RED_ERR"error: {R}name too long\n"); //fonction err
 				return (0);
 			}
 			buff[i++] = *s++;
@@ -58,14 +96,12 @@ int		multi_line(int fd, char *buff, int max_size, int i)
 		free(line);
 	}
 	buff[i] = '\0';
-	if (!end)
-		ft_printf(RED_ERR"char after name\n{reset}"); // fonction err
-	return (end);
+	return (error_header(file, !end, s));
 }
 
 //return ou exit mais envoie de line dans ce cas pour free
 //peut etre meilleur moyen de gerer les erreurs
-int		get_name(int fd, char *s, unsigned char *cp)
+int		get_name(t_file *file, char *s, unsigned char *cp)
 {
 	char	buff[PROG_NAME_LENGTH + 1];
 	int		i;
@@ -75,41 +111,41 @@ int		get_name(int fd, char *s, unsigned char *cp)
 	i = 0;
 	if (!(s = ft_strchr(s, '"')))
 	{
-		ft_printf(RED_ERR"no string after name\n{reset}"); //fontion err
+		ft_printf(RED_ERR"no string after name\n{R}"); //fontion err
 		return (0);
 	}
 	while (*++s && *s != '"')
 	{
 		if (i >= PROG_NAME_LENGTH)
 		{
-			ft_printf(RED_ERR"name too long\n{reset}"); //fonction err
+			ft_printf(RED_ERR"name too long\n{R}"); //fonction err
 			return (0);
 		}
 		buff[i++] = *s;
 	}
 	if (!*s)
 	{
-		if (!(multi_line(fd, buff, PROG_NAME_LENGTH, i)))
+		if (!(multi_line(file, buff, PROG_NAME_LENGTH, i)))
 			return (0);
 	}
 	else
 		buff[i] = '\0';
 	if (check_end_str(s + 1))
 	{
-		ft_printf(RED_ERR"char after name\n{reset}"); // fonction err
+		ft_printf(RED_ERR"char after name\n{R}"); // fonction err
 		return (0);
 	}
 	return (1);
 }
 
-int		get_header(int fd, unsigned char *cp)
+int		get_header(t_file *file, unsigned char *cp)
 {
 	char	*line;
 	int		i;
 
 	(void)cp;
 	line = NULL;
-	while (get_next_line(fd, &line) == 1)
+	while (add_line(&line, file) == 1)
 	{
 		i = 0;
 		ft_printf("line: %s\n", line);
@@ -120,7 +156,7 @@ int		get_header(int fd, unsigned char *cp)
 				ft_printf("line: %s\n", line + i);
 				if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
 				{
-					if (!(get_name(fd, line + i + sizeof(NAME_CMD_STRING), cp)))
+					if (!(get_name(file, line + i + sizeof(NAME_CMD_STRING), cp)))
 						exit(0);
 					break ;
 				}
@@ -147,7 +183,7 @@ void	compile(t_file *file)
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_header(file->fd, cp);
+	get_header(file, cp);
 	print_bin(bin, cp - bin);
 }
 
