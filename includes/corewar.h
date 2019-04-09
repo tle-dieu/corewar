@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/08 20:50:21 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/09 18:01:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef	struct		s_champ
 
 typedef	struct		s_env
 {
+	int				nb_live;
 	int				cycle;
 	int				living;
 	int				c_to_die;
@@ -109,7 +110,7 @@ void				play(t_env *e);
  ** ---------DEBUG----------
  */
 
-void				print_chmp(t_env *e, int cursor);
+void				print_chmp(t_env *e, int c, unsigned int cursor);
 void				print_env(t_env env);
 void				print_split_champ(t_env *e, int i);
 

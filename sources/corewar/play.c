@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/08 21:04:11 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/09 18:01:40 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ static int		exec_cycle(t_env *e)
 		ptr = e->champs[i].proc;
 		while (ptr)
 		{
-			if (ptr->cycle)
-				ft_printf("Player %-25s :: remaining cycles %d, waiting for op %d\n",
-					e->champs[i].name, ptr->cycle, ptr->op);
 			if (!ptr->cycle)
 			{
-				ft_printf("PLAYER %s ===> OP %d\n", e->champs[i].name, ptr->op);
+				if (i == 0)
+					ft_printf("{#f40202}%s{reset} ===> OP %d\n", e->champs[i].name, ptr->op);
+				else if (i == 1)
+					ft_printf("{#f4c302}%s{reset} ===> OP %d\n", e->champs[i].name, ptr->op);
 				if (ptr->pc + 12 > MEM_SIZE)
 					ptr->pc = ptr->pc % MEM_SIZE;
 				(*ft_ptr[e->mem[ptr->pc] - 1])(e, &ptr->pc, ptr);
@@ -113,33 +113,85 @@ static int		exec_cycle(t_env *e)
 	return (0);
 }
 
+void			print_register(t_env *e)
+{
+	int		i;
+	int		j;
+
+	i = e->nb_champ;
+	while (i--)
+	{
+		ptr = e->champs[i].proc;
+		ft_printf("\nREGISTERS of champ: %s\n", e->champs[i].name);
+		while (ptr)
+		{
+			j = -1;
+			while (++j < 17)
+				ft_printf("r[%d] = %d ", j, ptr->r[j]);
+			ptr = ptr->next;
+			ft_printf("\n");
+		}
+	}
+}
+
+void			is_alive(t_env *e, int *living)
+{
+	int		i;
+	t_proc	*ptr;
+
+	i = -1;
+	*living = 0;
+	while (++i < e->nb_champ)
+	{
+		ptr = e->champs[i].proc;
+		if (e->champs[i].alive)
+		{
+			while (ptr)
+			{
+				if (ptr->live)
+					ptr->live = 0;
+				else
+					destroy_process(e, ptr);
+				ptr = ptr->next;
+			}
+			*living++;
+			e->champs[i].alive = 0;
+		}
+		else
+			destroy_all(e, i);
+	}
+}
+
 void			play(t_env *e)
 {
 	int		check_nb;
-	int		nb_live;
+	int		living;
+	t_proc	*ptr;
 
 	place_champ(e);
 	e->cycle = 0;
-	check_nb = 0;
-	e->living = e->nb_champ;
-	while (1)
+	nb_check = 0;
+	living = e->nb_champ;
+	while (living > 1)
 	{
-		nb_live = exec_cycle(e);
-		if (nb_live <= NBR_LIVE)
+		exec_cycle(e);
+		if (e->nb_live <= NBR_LIVE)
 		{
 			e->c_to_die -= CYCLE_DELTA;
-			check_nb = 0;
+			nb_check = 0;
 		}
 		else
 		{
-			++check_nb;
-			if (!(check_nb % MAX_CHECKS))
+			++nb_check;
+			if (!(nb_check % MAX_CHECKS))
 				e->c_to_die -= CYCLE_DELTA;
 		}
+		living = is_alive(e, &living);
 		e->cycle++;
-		if (e->cycle == 30)
+		if (e->cycle == 150)
 			break ;
-		ft_printf("\n");
 	}
-	print_env(*e);
+   	while (++i < e->nb_champ)
+		print_chmp(e, i, 0);
+//	print_env(*e);
 }
