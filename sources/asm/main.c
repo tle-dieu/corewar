@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/09 20:02:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/10 19:58:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,22 @@
 
 int		error_header(t_file *file, int error, char *extra)
 {
-	ft_printf("error header\n");
+	ft_printf(FT_C"error_header\n{R}");
 	if (error == 1)
 	{
-		ft_printf(RED_ERR"error: %s: {R}char after name\n");
+		ft_printf("{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexcepted expression after .name declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1);
+		ft_printf("%s\n", file->last->s);
+		ft_printf(GREEN_CURS"%*c{R}\n", extra - file->last->s, '^');
+		ft_printf("extra: |%s| addr: %p s: %p\n", extra, extra, file->last->s);
 	}
 	return (0);
 }
 
-char	*check_end_str(char *s)
+char	*check_end_str(char **end)
 {
+	char *s;
+
+	s = *end + 1;
 	ft_printf("check: %s\n", s);
 	while (*s == ' ' || *s == '\t')
 		s++;
@@ -38,6 +44,7 @@ char	*check_end_str(char *s)
 	else
 	{
 		ft_printf("%hhd\n", *s);
+		*end = s;
 		return (s);
 	}
 }
@@ -48,11 +55,11 @@ int		add_line(char **line, t_file *file)
 
 	*line = NULL;
 	if (get_next_line(file->fd, line) != 1)
-		return (1);
+		return (0);
 	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
 		free(*line);
-		return (1);
+		return (0);
 	}
 	new->next = NULL;
 	new->s = *line;
@@ -67,7 +74,7 @@ int		add_line(char **line, t_file *file)
 		file->last->next = new;
 	}
 	file->last = new;
-	return (0);
+	return (1);
 }
 
 int		multi_line(t_file *file, char *buff, int max_size, int i)
@@ -77,6 +84,7 @@ int		multi_line(t_file *file, char *buff, int max_size, int i)
 	int	end;
 
 	end = -1;
+	ft_printf(FT_C"multi_line{R}\n");
 	while (end == -1)
 	{
 		if (add_line(&line, file) != 1)
@@ -92,8 +100,7 @@ int		multi_line(t_file *file, char *buff, int max_size, int i)
 			buff[i++] = *s++;
 		}
 		if (*s == '"')
-			end = !check_end_str(s + 1);
-		free(line);
+			end = !check_end_str(&s);
 	}
 	buff[i] = '\0';
 	return (error_header(file, !end, s));
@@ -107,7 +114,7 @@ int		get_name(t_file *file, char *s, unsigned char *cp)
 	int		i;
 
 	(void)cp;
-	ft_printf("get name: %s\n", s);
+	ft_printf(FT_C"get_name: %s\n{R}", s);
 	i = 0;
 	if (!(s = ft_strchr(s, '"')))
 	{
@@ -130,7 +137,7 @@ int		get_name(t_file *file, char *s, unsigned char *cp)
 	}
 	else
 		buff[i] = '\0';
-	if (check_end_str(s + 1))
+	if (check_end_str(&s))
 	{
 		ft_printf(RED_ERR"char after name\n{R}"); // fonction err
 		return (0);
@@ -145,15 +152,15 @@ int		get_header(t_file *file, unsigned char *cp)
 
 	(void)cp;
 	line = NULL;
+	ft_printf(FT_C"get_header\n{R}");
 	while (add_line(&line, file) == 1)
 	{
 		i = 0;
-		ft_printf("line: %s\n", line);
+		ft_printf("new line\n");
 		while (line[i])
 		{
 			if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
 			{
-				ft_printf("line: %s\n", line + i);
 				if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
 				{
 					if (!(get_name(file, line + i + sizeof(NAME_CMD_STRING), cp)))
