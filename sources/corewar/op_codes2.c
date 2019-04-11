@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 20:19:06 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/09 20:23:46 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:52:07 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void insert(t_env *e, int pc, void *ptr, int size)
 	char *tmp;
 	tmp = (char*)ptr;
 	while (size--)
-		e->mem[pc + size] = *tmp;
+		e->mem[pc + size] = *tmp++;
 }
 
 void        sti(t_env *e, int *pc, t_proc *ptr)
@@ -49,7 +49,7 @@ void        sti(t_env *e, int *pc, t_proc *ptr)
 		else
 			err = 1;
 		m = 2;
-		insert(e, (*pc + (sum %IDX_MOD)) %MEM_SIZE, (void*)&ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, 1)], 4);
+		insert(e, (*pc + (sum %IDX_MOD)) % MEM_SIZE, (void*)&ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, 1)], 4);
 	}
 	else
 		ft_printf("ERROR ");
