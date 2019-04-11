@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 20:19:06 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 16:11:22 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/11 16:12:41 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,14 +144,6 @@ void        lldi(t_env *e, int *pc, t_proc *ptr)
 		ptr->carry = !sum;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
-}
-
-void        lldi(t_env *e, int *i, t_proc *ptr)
-{
-	ft_printf("in lldi :: ");
-	(void)e;
-	(void)i;
-	(void)ptr;
 }
 
 void        lfork(t_env *e, int *i, t_proc *ptr)
