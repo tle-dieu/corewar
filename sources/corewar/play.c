@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/09 19:55:54 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:18:33 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,13 @@ void			destroy_process(t_env *e, int i, t_proc *to_del)
 	if (ptr == to_del)
 	{
 		tmp = ptr;
-		ptr = ptr->next;
+		e->champs[i].proc = ptr->next;
 		free(tmp);
 		return ;
 	}
 	while (ptr->next)
 	{
+		ft_printf("B\n");
 		if (ptr->next == to_del)
 		{
 			tmp = ptr->next;
@@ -191,8 +192,7 @@ void			is_alive(t_env *e, int *living)
 		ptr = e->champs[i].proc;
 		while (ptr)
 		{
-			ft_printf("ptr->live = %d\n", ptr->live);
-			if (ptr->live)
+			if (ptr->live && !ptr->cycle)
 			{
 				tmp++;
 				ptr->live = 0;
@@ -218,8 +218,7 @@ void			play(t_env *e)
 	e->last_live = 0;
 	nb_check = 0;
 	living = e->nb_champ;
-	ft_printf("living = %d\n", living);
-	while (living > 1 && e->c_to_die > 0)
+	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
 		if (e->cycle == e->c_to_die)
@@ -238,7 +237,8 @@ void			play(t_env *e)
 	}
    	i = -1;
 	while (++i < e->nb_champ)
-		print_chmp(e, i, 0);
+		ft_printf("Player %d == %s\n", e->champs[i].id, e->champs[i].name);
+//		print_chmp(e, i, 0);
+//	print_register(e);
 	ft_printf("\nCTD = %d\n\n\nLAST LIVE from player %d\n", e->c_to_die, e->last_live);
-//	print_env(*e);
 }

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:14:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/09 19:55:52 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:18:24 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,9 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 	e->nb_live++;
 	ptr->live++;
 	player_nb = param_sum(e, *pc, 4);
-	ft_printf("player = %d\n", player_nb);
-	e->last_live = player_nb;
+	ft_printf("live with id %d\n", player_nb);
+	if (player_nb == ptr->owner)
+		e->last_live = player_nb;
 	while (++j < e->nb_champ)
 		if (player_nb == e->champs[j].id)
 		{
@@ -141,8 +142,6 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 	ft_printf("in ld ::");
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
 	addr = find_param_value(e, check, 1, pc, ptr);
-	if (!check.p1 || check.p2 != 16 || check.p3)
-		ptr->carry = 0;
 	error = (!check.p1 || check.p2 != 16 || check.p3) ? 1 : 0;
 	if (!error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
 	{
@@ -150,7 +149,8 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 		{
 			ft_printf("LOAD what's in r%d in r%d\n", e->mem[(*pc + 2) % MEM_SIZE],
 					e->mem[(*pc + 2 + check.s1) % MEM_SIZE]);
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+			value = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
 		}
 		else if (check.s1 == 2)
 		{
@@ -167,7 +167,7 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
 	error ? ft_printf(" ERROR") : ft_printf(" OK");
-	!error ? ptr->carry = 1 : 1;
+	ptr->carry = (!error && !value) ? 1 : 0;
 }
 
 void		st(t_env *e, int *pc, t_proc *ptr)
@@ -204,26 +204,23 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 	int		error;
+	int		v1;
+	int		v2;
 
-	ft_printf("in add ::");
+	ft_printf("in add ::\n");
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	if (check.p1 != 64 || check.p2 != 16 || check.p3 != 4)
-		ptr->carry = 0;
 	error = (check.p1 != 64 || check.p2 != 16 || check.p3 != 4) ? 1 : 0;
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE]) || !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
 			|| !check_reg(e->mem[(*pc + 4) % MEM_SIZE]))
 		error = 1;
 	if (!error)
 	{
-		ft_printf("adding r%d + r%d in r%d\n", e->mem[(*pc + 2) % MEM_SIZE], e->mem[(*pc + 3) % MEM_SIZE],
-				e->mem[(*pc + 4) % MEM_SIZE]);
-		ft_printf("r%d contains %d\n", e->mem[(*pc + 2) % MEM_SIZE], ptr->r[e->mem[(*pc + 2) % MEM_SIZE]]);
-		ft_printf("r%d contains %d\n", e->mem[(*pc + 3) % MEM_SIZE], ptr->r[e->mem[(*pc + 3) % MEM_SIZE]]);
-		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]]
-			+ ptr->r[e->mem[(*pc + 3) % MEM_SIZE]];
+		v1 = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+		v2 = ptr->r[e->mem[(*pc + 3) % MEM_SIZE]];
+		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = v1 + v2;
 	}
-	!error ? ptr->carry = 1 : 1; 
-	error ? ft_printf(" ERROR") : ft_printf(" OK");
+	ptr->carry = (!error && (!v1 || !v2)) ? 1 : 0; 
+	error ? ft_printf("ERROR\n") : ft_printf("OK\n");
 	*pc += 5;
 }
 
@@ -231,25 +228,22 @@ void		sub(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 	int		error;
+	int		v1;
+	int		v2;
 
 	ft_printf("in sub :: ");
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	if (check.p1 != 64 || check.p2 != 16 || check.p3 != 4)
-		ptr->carry = 0;
 	error = (check.p1 != 64 || check.p2 != 16 || check.p3 != 4) ? 1 : 0;
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE]) || !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
 			|| !check_reg(e->mem[(*pc + 4) % MEM_SIZE]))
 		error = 1;
 	if (!error)
 	{
-		ft_printf("substracting r%d - r%d in r%d\n", e->mem[(*pc + 2) % MEM_SIZE], e->mem[(*pc + 3) % MEM_SIZE],
-				e->mem[(*pc + 4) % MEM_SIZE]);
-		ft_printf("r%d contains %d\n", e->mem[(*pc + 2) % MEM_SIZE], ptr->r[e->mem[(*pc + 2) % MEM_SIZE]]);
-		ft_printf("r%d contains %d\n", e->mem[(*pc + 3) % MEM_SIZE], ptr->r[e->mem[(*pc + 3) % MEM_SIZE]]);
-		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]]
-			- ptr->r[e->mem[(*pc + 3) % MEM_SIZE]];
+		v1 = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+		v2 = ptr->r[e->mem[(*pc + 3) % MEM_SIZE]];
+		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = v1 - v2;
 	}
-	!error ? ptr->carry = 1 : 0;
+	ptr->carry = (!error && (!v1 || !v2)) ? 1 : 0;
 	error ? ft_printf(" ERROR") : ft_printf(" OK");
 	*pc += 5;
 }
@@ -263,8 +257,6 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 
 	ft_printf("in and :: ");
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	if (!check.p1 || !check.p2 || check.p3 != 4)
-		ptr->carry = 0;
 	error = (!check.p1 || !check.p2 || check.p3 != 4) ? 1 : 0;
 	if (!error)
 	{
@@ -274,7 +266,7 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
 	error ? ft_printf(" ERROR") : ft_printf(" OK");
-	!error ? ptr->carry = 1 : 0;
+	ptr->carry = (!error && (!v1 || !v2)) ? 1 : 0;
 }
 
 void		or(t_env *e, int *pc, t_proc *ptr)
@@ -286,8 +278,6 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 
 	ft_printf("in or :: ");
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	if (!check.p1 || !check.p2 || check.p3 != 4)
-		ptr->carry = 0;
 	error = (!check.p1 || !check.p2 || check.p3 != 4) ? 1 : 0;
 	if (!error)
 	{
@@ -297,7 +287,7 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
 	error ? ft_printf(" ERROR") : ft_printf(" OK");
-	!error ? ptr->carry = 1 : 0;
+	ptr->carry = (!error && (!v1 || !v2)) ? 1 : 0;
 }
 
 void		xor(t_env *e, int *pc, t_proc *ptr)
@@ -309,8 +299,6 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 
 	ft_printf("in xor :: ");
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	if (!check.p1 || !check.p2 || check.p3 != 4)
-		ptr->carry = 0;
 	error = (!check.p1 || !check.p2 || check.p3 != 4) ? 1 : 0;
 	if (!error && check_reg(e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]))
 	{
@@ -320,7 +308,7 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
 	error ? ft_printf(" ERROR") : ft_printf(" OK");
-	!error ? ptr->carry = 1 : 0;
+	ptr->carry = (!error && (!v1 || !v2)) ? 1 : 0;
 }
 
 void		zjmp(t_env *e, int *pc, t_proc *ptr)
@@ -336,8 +324,8 @@ void		zjmp(t_env *e, int *pc, t_proc *ptr)
 		addr = -addr - 1;
 	}
 	ft_printf("addr = %d\n", addr);
-	ptr->carry ? ft_printf("going from %d to %d\n", *pc, (*pc + (addr % IDX_MOD)) % MEM_SIZE) : ft_printf("go to pc + 3\n");
-	if (ptr->carry == 1)
+	!ptr->carry ? ft_printf("going from %d to %d\n", *pc, (*pc + (addr % IDX_MOD)) % MEM_SIZE) : ft_printf("go to pc + 3\n");
+	if (ptr->carry == 0)
 		*pc = (*pc + (addr % IDX_MOD)) % MEM_SIZE;
 	else
 		*pc += 3;
