@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 15:18:33 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/11 17:06:11 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ static int		choose_cycle(int op)
 
 static int		init_proc(t_env *e, int j, int begin)
 {
-	int		i;
 	t_proc	*new;
 	t_proc	*ptr;
 
-	i = 0;
 	ptr = e->champs[j].proc;
 	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);
