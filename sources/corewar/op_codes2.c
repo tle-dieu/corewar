@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 20:19:06 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 15:52:07 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/11 16:11:22 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void        ldi(t_env *e, int *pc, t_proc *ptr)
 		if (check.p1 == 4)
 			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p1)];
 		else if (check.p1 > 8)
-			sum += e->mem[(*pc + param_sum(e, (*pc + m) % MEM_SIZE, IND_SIZE)) % MEM_SIZE];
+			sum += e->mem[(*pc + param_sum(e, (*pc + m) % MEM_SIZE, IND_SIZE) % IDX_MOD) % MEM_SIZE];
 		else
 			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p3);
 		m = 2 + check.s1;
@@ -107,6 +107,43 @@ void        lld(t_env *e, int *i, t_proc *ptr)
 	(void)e;
 	(void)i;
 	(void)ptr;
+}
+
+void        lldi(t_env *e, int *pc, t_proc *ptr)
+{
+	t_ocp   check;
+	int sum;
+	int m;
+	int err;
+
+	err = 0;
+	sum = 0;
+	ft_printf("in lldi :: ");
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
+	if (check.p3 == 4 && check.p2 <= 32 && check.p3)
+	{
+		m = 2;
+		if (check.p1 == 4)
+			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p1)];
+		else if (check.p1 > 8)
+			sum += e->mem[(*pc + param_sum(e, (*pc + m) % MEM_SIZE, IND_SIZE)) % MEM_SIZE];
+		else
+			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p3);
+		m = 2 + check.s1;
+		if (!err && check.p2 == 16)
+			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p2)];
+		else if (!err && check.p2 == 32)
+			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p2);
+		else
+			err = 1;
+		m = 2 + check.s1 + check.s2;
+		if (!err && check.p3 == 64)
+			ptr->r[param_sum(e, *pc % MEM_SIZE, check.p3)] = sum;
+		else
+			err = 1;
+		ptr->carry = !sum;
+	}
+	*pc += 2 + check.s1 + check.s2 + check.s3;
 }
 
 void        lldi(t_env *e, int *i, t_proc *ptr)
