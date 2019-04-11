@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   options.c                                          :+:      :+:    :+:   */
+/*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 16:13:16 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/07 19:42:27 by acompagn         ###   ########.fr       */
+/*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
+/*   Updated: 2019/04/11 20:57:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int				strisdigit(char *str)
+static int		strisdigit(char *str)
 {
 	int i;
 
@@ -28,7 +28,7 @@ int				strisdigit(char *str)
 	return (1);
 }
 
-int				check_params(t_env *e, int ac, char **av, int elem, int *show)
+static int		check_params(t_env *e, int ac, char **av, int elem, int *show)
 {
 	char	*tmp;
 

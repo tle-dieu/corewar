@@ -6,11 +6,16 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/08 19:55:00 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/11 20:58:26 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+int				check_reg(int reg)
+{
+	return (reg > 0 && reg < 17);
+}
 
 static void		split_champ(t_env *e, int i)
 {
@@ -85,6 +90,5 @@ int				check_champ(t_env *e, char *arg, int i)
 		return (0);
 	}
 	split_champ(e, i);
-//	print_chmp(e, -1);
 	return (1);
 }
