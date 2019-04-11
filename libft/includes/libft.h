@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/03 13:54:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/08 21:12:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,7 @@ char			*ft_strupper(char *str);
 int				ft_printf(char const *format, ...);
 int				ft_dprintf(int fd, char const *format, ...);
 int				get_next_line(const int fd, char **line);
+int				gnl_newline(const int fd, char **line);
+char			*ft_strjoin_nl(char const *s1, char const *s2);
 
 #endif

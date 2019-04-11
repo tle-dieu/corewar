@@ -6,130 +6,209 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/03 20:54:50 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/10 19:58:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "asm.h"
-#include <stdlib.h>
-#include <fcntl.h>
+#include "op.h"
+#include <unistd.h>
 
+#include <stdlib.h> // tmp
 
-void	help(char *filename)
+//error a gerer
+
+int		error_header(t_file *file, int error, char *extra)
 {
-	ft_printf("Usage: %s <sourcefile.s>\n", filename);
-	exit(0);
-}
-
-int		assign_option(t_file *option, t_file *tmp, char *s, char c)
-{
-	if (c || s)
+	ft_printf(FT_C"error_header\n{R}");
+	if (error == 1)
 	{
-		if (c)
-			option->error = c;
-		else
-			option->file = s;
-		return (0);
+		ft_printf("{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexcepted expression after .name declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1);
+		ft_printf("%s\n", file->last->s);
+		ft_printf(GREEN_CURS"%*c{R}\n", extra - file->last->s, '^');
+		ft_printf("extra: |%s| addr: %p s: %p\n", extra, extra, file->last->s);
 	}
-	option->annot = tmp->annot | option->annot;
-	option->dump = tmp->dump | option->dump;
-	option->disas = tmp->disas | option->disas;
-	return (1);
+	return (0);
 }
 
-int		get_short_option(t_file *option, char *s, char *filename)
+char	*check_end_str(char **end)
 {
-	t_file tmp;
+	char *s;
 
-	tmp = (t_file){NULL, 0, 0, 0, 0, NULL};
-	while (*s)
-	{
-		if (*s == 'a')
-			tmp.annot = 1;
-		else if (*s == 'd')
-			tmp.disas = 1;
-		else if (*s == 'x')
-			tmp.dump = 1;
-		else if (*s == 'h')
-			help(filename);
-		else
-			return (assign_option(option, &tmp, NULL, *s));
+	s = *end + 1;
+	ft_printf("check: %s\n", s);
+	while (*s == ' ' || *s == '\t')
 		s++;
-	}
-	return (assign_option(option, &tmp, NULL, 0));
-}
-
-int		get_long_option(t_file *option, char *s, char *filename)
-{
-	t_file tmp;
-
-	tmp = (t_file){NULL, 0, 0, 0, 0, NULL};
-	if (!ft_strcmp(s, "annotated"))
-		tmp.annot = 1;
-	else if (!ft_strcmp(s, "dump"))
-		tmp.dump = 1;
-	else if (!ft_strcmp(s, "disassembly"))
-		tmp.disas = 1;
-	else if (!ft_strcmp(s, "help"))
-		help(filename);
+	if (!*s)
+		return (NULL);
 	else
-		return (assign_option(option, &tmp, s, 0));
-	return (assign_option(option, &tmp, NULL, 0));
+	{
+		ft_printf("%hhd\n", *s);
+		*end = s;
+		return (s);
+	}
 }
 
-int		get_option(t_file *option, char *s, char *filename)
+int		add_line(char **line, t_file *file)
 {
-	if (!*s || (!*(s + 1) && *s == '-')
-	|| !(*s == '-' ? get_long_option(option, s + 1, filename)
-	: get_short_option(option, s, filename)))
+	t_line	*new;
+
+	*line = NULL;
+	if (get_next_line(file->fd, line) != 1)
 		return (0);
-	return (1);
-}
-
-int		error_option(t_file *option, char *filename)
-{
-	if (option && (option->error || option->file))
+	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
-		if (option->error)
-			ft_printf("%s: illegal option - %c\n", filename, option->error);
-		else
-			ft_printf("%s: illegal option -- %s\n", filename, option->file);
+		free(*line);
+		return (0);
 	}
-	ft_printf("Usage: %s <sourcefile.s>\n", filename);
+	new->next = NULL;
+	new->s = *line;
+	if (!file->begin)
+	{
+		new->y = 1;
+		file->begin = new;
+	}
+	else
+	{
+		new->y = file->last->y + 1;
+		file->last->next = new;
+	}
+	file->last = new;
 	return (1);
 }
 
-t_file	*parse_command_line(int ac, char **av)
+int		multi_line(t_file *file, char *buff, int max_size, int i)
 {
-	t_file	*file;
-	t_file	*last;
-	t_file	option;
-	int		i;
-	int		fd;
+	char *line;
+	char *s;
+	int	end;
 
-	i = 0;
-	(void)last;
-	(void)file;
-	option = (t_file){NULL, 0, 0, 0, 0, NULL};
-	while (++i < ac)
+	end = -1;
+	ft_printf(FT_C"multi_line{R}\n");
+	while (end == -1)
 	{
-		if ((*av[i] != '-' || !get_option(&option, av[i] + 1, *av)))
+		if (add_line(&line, file) != 1)
+			return (0);
+		s = line;
+		while (*s && *s != '"')
 		{
-			if ((fd = open(av[i], O_RDONLY)) == -1)
-				exit(error_option(&option, *av));
-			print_option(&option, av[i]);
-			option = (t_file){NULL, 0, 0, 0, 0, NULL};
+			if (i >= max_size)
+			{
+				ft_printf(RED_ERR"error: {R}name too long\n"); //fonction err
+				return (0);
+			}
+			buff[i++] = *s++;
 		}
+		if (*s == '"')
+			end = !check_end_str(&s);
 	}
-	return (NULL);
+	buff[i] = '\0';
+	return (error_header(file, !end, s));
+}
+
+//return ou exit mais envoie de line dans ce cas pour free
+//peut etre meilleur moyen de gerer les erreurs
+int		get_name(t_file *file, char *s, unsigned char *cp)
+{
+	char	buff[PROG_NAME_LENGTH + 1];
+	int		i;
+
+	(void)cp;
+	ft_printf(FT_C"get_name: %s\n{R}", s);
+	i = 0;
+	if (!(s = ft_strchr(s, '"')))
+	{
+		ft_printf(RED_ERR"no string after name\n{R}"); //fontion err
+		return (0);
+	}
+	while (*++s && *s != '"')
+	{
+		if (i >= PROG_NAME_LENGTH)
+		{
+			ft_printf(RED_ERR"name too long\n{R}"); //fonction err
+			return (0);
+		}
+		buff[i++] = *s;
+	}
+	if (!*s)
+	{
+		if (!(multi_line(file, buff, PROG_NAME_LENGTH, i)))
+			return (0);
+	}
+	else
+		buff[i] = '\0';
+	if (check_end_str(&s))
+	{
+		ft_printf(RED_ERR"char after name\n{R}"); // fonction err
+		return (0);
+	}
+	return (1);
+}
+
+int		get_header(t_file *file, unsigned char *cp)
+{
+	char	*line;
+	int		i;
+
+	(void)cp;
+	line = NULL;
+	ft_printf(FT_C"get_header\n{R}");
+	while (add_line(&line, file) == 1)
+	{
+		i = 0;
+		ft_printf("new line\n");
+		while (line[i])
+		{
+			if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+			{
+				if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
+				{
+					if (!(get_name(file, line + i + sizeof(NAME_CMD_STRING), cp)))
+						exit(0);
+					break ;
+				}
+				else if (!ft_strncmp(COMMENT_CMD_STRING, line + i, sizeof(COMMENT_CMD_STRING) - 1))
+					ft_printf("COMMENT: %s\n", line + i);
+				else
+					return (0);
+			}
+			i++;
+		}
+		line = NULL;
+	}
+	return (1);
+}
+
+void	compile(t_file *file)
+{
+	unsigned char	*cp;
+	unsigned char	bin[BIN_MAX_SIZE];
+	int				i;
+
+	ft_bzero(bin, BIN_MAX_SIZE);
+	i = 4;
+	cp = bin;
+	while (i--)
+		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
+	get_header(file, cp);
+	print_bin(bin, cp - bin);
 }
 
 int		main(int ac, char **av)
 {
-	t_file *file;
+	t_file	*file;
+	t_file	*actual;
 
-	file = parse_command_line(ac, av);
 	if (ac < 2)
-		error_option(NULL, *av);
+		return (usage(av[0], 0));
+	if (!(file = parse_command_line(ac, av)))
+		return (1);
+	print_files(file);
+	actual = file;
+	while (actual)
+	{
+		compile(actual);
+		actual = actual->next;
+	}
+	free_lst_file(file);
 }
