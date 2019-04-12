@@ -6,11 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 22:42:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/12 19:13:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/12 19:29:46 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_count_occ(char const *s, char c, int n)
+int		ft_ncount_occ(char const *s, char c, int n)
 {
 	int occ;
 	int i;

@@ -1,5 +1,4 @@
-.name "bonjour
-	zork"fin
+.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 .comment "Hello, i'm Kroz"
 		
 l2:	sti	r1, %:live,%1
