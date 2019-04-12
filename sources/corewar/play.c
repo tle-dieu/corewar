@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 21:15:35 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 03:27:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,11 @@ static int		exec_cycle(t_env *e)
 static void		is_alive(t_env *e)
 {
 	int		i;
-	int		tmp;
 	t_proc	*ptr;
 
 	i = -1;
 	while (++i < e->nb_champ)
 	{
-		tmp = 0;
 		ptr = e->champs[i].proc;
 		while (ptr)
 		{

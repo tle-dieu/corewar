@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 21:05:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 03:27:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,9 @@ void			init(t_env *e)
 
 int				init_proc(t_env *e, int j, int begin)
 {
-	int		i;
 	t_proc	*new;
 	t_proc	*ptr;
 
-	i = 0;
 	ptr = e->champs[j].proc;
 	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);
