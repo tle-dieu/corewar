@@ -69,7 +69,6 @@ RESET = \033[0m
 HIDE = tput civis
 SHOW = tput cnorm
 SLEEP = sleep 0.01
-CL = && sh sources/asm/.exec_clear.sh > /dev/null 2>&1
 
 
 # --------------- Options --------------- #
@@ -102,13 +101,13 @@ all: $(PROGRAMMES) Makefile
 
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
-	$(SHOW) $(CL)
+	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(CC) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(ASM) has been created$(RESET)\n" $(REDIRECT)
 
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
-	$(SHOW) $(CL)
+	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)
@@ -128,7 +127,7 @@ $(VM_OBJECTS_DIR)%.o: $(VM_SOURCES_DIR)%.c $(VM_INCLUDES) Makefile
 	$(SLEEP)
 
 $(LIBFT): force
-	$(MAKE) silent=$(silent) fsanitize=$(fsanitize) flags=$(flags) -C $(LIBFT_DIR) $(CL)
+	$(MAKE) silent=$(silent) fsanitize=$(fsanitize) flags=$(flags) -C $(LIBFT_DIR)
 
 force:
 	true

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/10 19:58:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/12 19:26:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,74 @@
 #include <stdlib.h> // tmp
 
 //error a gerer
+//verifier que asm passe seulement ' ' et '\t'
+
+void	print_synth(char *s, char replace)
+{
+	char	buff[100];
+	int		i;
+	int		j;
+
+	while (*s)
+	{
+		i = 0;
+		while (i + TAB_SIZE < 100 && *s)
+		{
+			if (*s == '\t')
+			{
+				j = 0;
+				while (j++ < TAB_SIZE)
+					buff[i++] = replace ? replace : ' ';
+			}
+			else
+				buff[i++] = !replace ? *s : ' ';
+			s++;
+		}
+		write(2, buff, i);
+	}
+	write(2, "\n", 1);
+}
+
+void	print_pointer(char *s, char *end)
+{
+	print_synth(s, 0);
+	ft_ncount_occ(s, '\t', end - s);
+	ft_printf("\x1b[%dC", end - s);
+	ft_printf(GREEN_CURS"%c{R}", '^');
+}
+
+void	print_wave(char *s)
+{
+	int i;
+
+	i = 0;
+	ft_printf(GREEN_CURS);
+	while (*s)
+	{
+		i = *s == '\t' ? TAB_SIZE : 1;
+		while (i--)
+			write(1, "~", 1);
+		s++;
+	}
+	ft_printf("{R}");
+}
 
 int		error_header(t_file *file, int error, char *extra)
 {
 	ft_printf(FT_C"error_header\n{R}");
+	file->error = 1;
 	if (error == 1)
 	{
-		ft_printf("{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexcepted expression after .name declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1);
-		ft_printf("%s\n", file->last->s);
-		ft_printf(GREEN_CURS"%*c{R}\n", extra - file->last->s, '^');
-		ft_printf("extra: |%s| addr: %p s: %p\n", extra, extra, file->last->s);
+		ft_printf("{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexpected expression after .name declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1);
+		print_pointer(file->last->s, extra);
 	}
+	else if (error == 2)
+	{
+		ft_printf("{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}.name declaration too long{R}\n", file->name, file->begin->y, extra - file->begin->s + 1);
+		print_pointer(file->begin->s, extra++);
+		print_wave(extra);
+	}
+	write(1, "\n", 1);
 	return (0);
 }
 
@@ -93,10 +150,7 @@ int		multi_line(t_file *file, char *buff, int max_size, int i)
 		while (*s && *s != '"')
 		{
 			if (i >= max_size)
-			{
-				ft_printf(RED_ERR"error: {R}name too long\n"); //fonction err
-				return (0);
-			}
+				return (error_header(file, 2, ft_strchr(file->begin->s, '"')));
 			buff[i++] = *s++;
 		}
 		if (*s == '"')
@@ -112,15 +166,17 @@ int		get_name(t_file *file, char *s, unsigned char *cp)
 {
 	char	buff[PROG_NAME_LENGTH + 1];
 	int		i;
+	char	*t;
 
 	(void)cp;
-	ft_printf(FT_C"get_name: %s\n{R}", s);
+	ft_printf(FT_C"get_name | line: %s\n{R}", s);
 	i = 0;
-	if (!(s = ft_strchr(s, '"')))
+	if (!(t = ft_strchr(s, '"')))
 	{
 		ft_printf(RED_ERR"no string after name\n{R}"); //fontion err
-		return (0);
+		return (error_header(file, 3, s));
 	}
+	s = t;
 	while (*++s && *s != '"')
 	{
 		if (i >= PROG_NAME_LENGTH)

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/10 19:38:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/12 16:22:43 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define ASM_H
 
 # include "libft.h"
-# define RED_ERR "{bold}{rgb(255,109,103)}"
-# define GREEN_CURS "{bold}{rgb(95,250,104)}"
+# define RED_ERR "{bold}{red}"
+# define GREEN_CURS "{bold}{green}"
+# define TAB_SIZE 8
 //option output a rajouter pour preciser fichier ou mettre
 
 typedef struct		s_line
