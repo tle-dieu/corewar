@@ -20,10 +20,16 @@ ASM_SOURCES_FILES = main.c \
 					error.c
 
 VM_SOURCES_FILES = main.c \
-				   options.c \
+				   init.c \
+				   print.c \
+				   clean.c \
+				   args.c \
+				   debug.c \
 				   check.c \
-				   op_codes.c \
-				   op_codes2.c \
+				   op_utils.c \
+				   op_1_5.c \
+				   op_6_10.c \
+				   op_11_15.c \
 				   play.c
 
 SOURCES_DIR = sources/
@@ -52,7 +58,7 @@ LIBFT_DIR = libft/
 LIBFT = $(LIBFT_DIR)libft.a
 LIBFT_INCLUDES = $(LIBFT_DIR)includes/
 
-# --------------- Colors ---------------- #
+# --------------- Style ---------------- #
 
 GREEN = \033[38;2;12;231;58m
 YELLOW = \033[38;2;251;196;15m
@@ -60,6 +66,11 @@ RED = \033[38;2;255;60;51m
 BLUE = \033[38;2;0;188;218m
 RMLINE = \033[2K
 RESET = \033[0m
+HIDE = tput civis
+SHOW = tput cnorm
+SLEEP = sleep 0.01
+CL = && sh sources/asm/.exec_clear.sh > /dev/null 2>&1
+
 
 # --------------- Options --------------- #
 
@@ -70,6 +81,11 @@ endif
 ifneq (,$(filter $(fsanitize),y yes))
 	CFLAG += -g3
 	CFLAG += -fsanitize=address
+endif
+
+ifneq (,$(filter $(silent), y yes))
+	HIDE :=
+	REDIRECT := > /dev/null
 endif
 
 # ifneq (,$(filter $(valgrind),y yes))
@@ -86,33 +102,33 @@ all: $(PROGRAMMES) Makefile
 
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
-	tput cnorm
-	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n"
+	$(SHOW) $(CL)
+	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(CC) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
-	printf "$(GREEN)$(ASM) has been created$(RESET)\n"
+	printf "$(GREEN)$(ASM) has been created$(RESET)\n" $(REDIRECT)
 
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
-	tput cnorm
-	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n"
+	$(SHOW) $(CL)
+	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
-	printf "$(GREEN)$(VM) has been created$(RESET)\n"
+	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)
 
 $(ASM_OBJECTS_DIR)%.o: $(ASM_SOURCES_DIR)%.c $(ASM_INCLUDES) Makefile
-	tput civis
+	$(HIDE)
 	mkdir -p $(dir $@)
 	$(CC) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $<
-	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
-	sleep 0.02
+	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
+	$(SLEEP)
 
 $(VM_OBJECTS_DIR)%.o: $(VM_SOURCES_DIR)%.c $(VM_INCLUDES) Makefile
-	tput civis
+	$(HIDE)
 	mkdir -p $(dir $@)
 	$(CC) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $<
-	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r"
-	sleep 0.02
+	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
+	$(SLEEP)
 
 $(LIBFT): force
-	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) silent=$(silent) fsanitize=$(fsanitize) flags=$(flags) -C $(LIBFT_DIR) $(CL)
 
 force:
 	true
@@ -120,19 +136,19 @@ force:
 clean:
 	$(MAKE) $@ -C $(LIBFT_DIR)
 	$(RM) $(OBJECTS_DIR)
-	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
-	printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
+	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n" $(REDIRECT)
+	printf "$(RED)The $(VM) objects have been removed$(RESET)\n" $(REDIRECT)
 
 fclean:
 	$(MAKE) $@ -C $(LIBFT_DIR)
 	$(RM) $(OBJECTS_DIR) $(PROGRAMMES)
-	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n"
-	printf "$(RED)The $(VM) objects have been removed$(RESET)\n"
-	printf "$(RED)$(ASM) has been removed$(RESET)\n"
-	printf "$(RED)$(VM) has been removed$(RESET)\n"
+	printf "$(RED)The $(ASM) objects have been removed$(RESET)\n" $(REDIRECT)
+	printf "$(RED)The $(VM) objects have been removed$(RESET)\n" $(REDIRECT)
+	printf "$(RED)$(ASM) has been removed$(RESET)\n" $(REDIRECT)
+	printf "$(RED)$(VM) has been removed$(RESET)\n" $(REDIRECT)
 
 re: fclean all
 
-.PHONY: all clean fclean run
+.PHONY: all clean fclean
 
-.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(VM_OBJECTS) $(LIBFT) force clean fclean run
+.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(LIBFT) $(VM_OBJECTS) force clean fclean run

@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 21:15:42 by acompagn         ###   ########.fr       */
+/*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
+/*   Updated: 2019/04/11 20:58:49 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int					main(int ac, char **av)
+void		aff(t_env *e, int *pc, t_proc *ptr)
 {
-	t_env			e;
-	int				i;
+	t_ocp	check;
 
-	init(&e);
-	i = -1;
-	if (!(parse_args(&e, ac, av)))
-		return (1);
-	while (++i < e.nb_champ)
-	{
-		if (!(check_champ(&e, av[e.champs[i].file], i)))
-			return (1);
-	}
-	attribute_id(&e);
-	play(&e);
-	return (0);
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
+	if (check.p1 == 64 && !check.p2 && !check.p3)
+		ft_printf("%c", ptr->r[e->mem[*pc % MEM_SIZE]] % 256);
+	*pc += 2;
 }
