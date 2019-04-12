@@ -69,8 +69,6 @@ RESET = \033[0m
 HIDE = tput civis
 SHOW = tput cnorm
 SLEEP = sleep 0.01
-CL = && sh sources/asm/.exec_clear.sh > /dev/null 2>&1
-
 
 # --------------- Options --------------- #
 
@@ -128,7 +126,7 @@ $(VM_OBJECTS_DIR)%.o: $(VM_SOURCES_DIR)%.c $(VM_INCLUDES) Makefile
 	$(SLEEP)
 
 $(LIBFT): force
-	$(MAKE) silent=$(silent) fsanitize=$(fsanitize) flags=$(flags) -C $(LIBFT_DIR) $(CL)
+	$(MAKE) silent=$(silent) fsanitize=$(fsanitize) flags=$(flags) -C $(LIBFT_DIR)
 
 force:
 	true
