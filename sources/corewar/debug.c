@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:59:33 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/09 19:00:06 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/11 21:06:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,28 @@ void			print_chmp(t_env *e, int c, unsigned int cursor)
 	}
 	ft_printf("\n");
 }
-/*
-static void		print_process(t_env *e)
-{
-	int reg;
-	int champ;
 
-	champ = -1;
-	while (++champ < e->nb_champ)
+void			print_process(t_env *e)
+{
+	int		i;
+	t_proc	*ptr;
+
+	i = -1;
+	ft_printf("\n\n>>> PRINT PROCESS - CYCLE %d <<<\n", e->cycle);
+	while (++i < e->nb_champ)
 	{
-		reg = -1;
-		ft_printf("{#009688}proc_id{#ffffff} = %d\n", e->champs[champ].proc->id);
-		ft_printf("{#009688}live{#ffffff} = %d\n", e->champs[champ].proc->live);
-		ft_printf("{#009688}registre:\n");
-		while (++reg < 16)
-			ft_printf("{#009688}[%d]{#ffffff} = %d\n", reg, e->champs[champ].proc->r[reg]);
-		ft_printf("{#009688}pc{#ffffff} = %d\n", e->champs[champ].proc->pc);
-		ft_printf("{#009688}carry{#ffffff} = %d\n", e->champs[champ].proc->carry);
-		ft_printf("{#009688}op{#ffffff} = %d\n", e->champs[champ].proc->op);
-		ft_printf("{#009688}cycle{#ffffff} = %d\n", e->champs[champ].proc->cycle);
-		ft_printf("{#009688}next{#ffffff} = %p\n\n", e->champs[champ].proc->next);
+		ptr = e->champs[i].proc;
+		while (ptr)
+		{
+			ft_printf("Player %s(%d) :: pc = %-10d live = %-10d op = %-10d cycle = %-10d\n",
+					e->champs[i].name, e->champs[i].id, ptr->pc, ptr->live, ptr->op, ptr->cycle);
+			ptr = ptr->next;
+		}
 	}
+	ft_printf("\n");
 }
-*/
-void			print_env(t_env e)
+
+void			print_env(t_env e, int cursor)
 {
 	int		i;
 	int		j;
@@ -65,7 +63,6 @@ void			print_env(t_env e)
 	char	colors[4][12] = {"{#ff3333}\0", "{yellow}", "{blue}\0", "{yellow}\0"};
 
 	i = -1;
-//	print_process(&e);
 	while (++i < MEM_SIZE)
 	{
 		j = -1;
@@ -76,16 +73,20 @@ void			print_env(t_env e)
 			if (i >= e.champs[j].proc->pc && i <= e.champs[j].proc->pc + (int)e.champs[j].size)
 			{
 				ft_printf(colors[j]);
+				(i == cursor) ? ft_printf(">>> ") : 1;
 				ft_printf("%02x ", e.mem[i]);
+				(i == cursor) ? ft_printf("<<< ") : 1;
 				color = 1;
 			}
 		}
+		(i == cursor) ? ft_printf(">>> ") : 1;
 		(!color) ? ft_printf("{#666666}%02x ", e.mem[i]) : 1;
+		(i == cursor) ? ft_printf("<<< ") : 1;
 	}
 	ft_printf("{reset}\nCYCLES: %-10d CTD: %d / %-10d \n", e.c_total, e.cycle, e.c_to_die);
 }
 
-void		print_split_champ(t_env *e, int i)
+void			print_split_champ(t_env *e, int i)
 {
 	int		j;
 	int		count;

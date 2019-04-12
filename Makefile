@@ -20,10 +20,16 @@ ASM_SOURCES_FILES = main.c \
 					error.c
 
 VM_SOURCES_FILES = main.c \
-				   options.c \
+				   init.c \
+				   print.c \
+				   clean.c \
+				   args.c \
+				   debug.c \
 				   check.c \
-				   op_codes.c \
-				   op_codes2.c \
+				   op_utils.c \
+				   op_1_5.c \
+				   op_6_10.c \
+				   op_11_15.c \
 				   play.c
 
 SOURCES_DIR = sources/
@@ -143,6 +149,6 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean run
+.PHONY: all clean fclean
 
 .SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(LIBFT) $(VM_OBJECTS) force clean fclean run
