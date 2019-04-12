@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 20:52:09 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 13:44:42 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,34 +93,26 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 	int		sum;
-	int		m;
-	int		err;
+	int		p;
+	int		reg;
 
-	err = 0;
+	reg = 1;
 	sum = 0;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
-	if (check.p3 == 4 && check.p2 <= 32 && check.p3)
+	if (check.p3 == 4 && check.p2 && check.p2 <= 32 && check.p3)
 	{
-		m = 2;
-		if (check.p1 == 4)
-			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p1)];
-		else if (check.p1 > 8)
-			sum += e->mem[(*pc + param_sum(e,
-						(*pc + m) % MEM_SIZE, IND_SIZE) % IDX_MOD) % MEM_SIZE];
-		else
-			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p3);
-		m = 2 + check.s1;
-		if (!err && check.p2 == 16)
-			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p2)];
-		else if (!err && check.p2 == 32)
-			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p2);
-		else
-			err = 1;
-		m = 2 + check.s1 + check.s2;
-		if (!err && check.p3 == 64)
-			ptr->r[param_sum(e, *pc % MEM_SIZE, check.p3)] = sum;
-		else
-			err = 1;
+		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
+		if (check.p1 == 64 && (reg = check_reg(p)))
+			sum += ptr->r[p];
+		else if (check.p1 > 128 && reg)
+			sum += e->mem[(*pc + (p % IDX_MOD)) % MEM_SIZE];
+		else if (reg)
+			sum += p;
+		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
+		sum += (check.p2 == 16 && reg && check_reg(p)) ? ptr->r[p] : p;
+		p = param_sum(e, *pc % MEM_SIZE, check.s3);
+		if (check.p3 == 4 && reg && check_reg(p))
+			ptr->r[p] = sum;
 		ptr->carry = !sum;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
