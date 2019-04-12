@@ -6,11 +6,45 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 20:58:49 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 12:01:13 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+void		print_memory(t_env *e)
+{
+	int		i;
+
+	i = -1;
+	while (++i < MEM_SIZE)
+	{
+		if (i && !(i % 32))
+			ft_printf("\n", e->mem[i]);
+		ft_printf("%02x ", e->mem[i]);
+	}	
+}
+
+void		print_winner(t_env *e)
+{
+	int		i;
+
+	i = -1;
+	ft_printf("\n\n");
+	if (!e->total_live)
+		ft_printf("NOBODY WINS\n");
+	else
+	{
+		while (++i < e->nb_champ)
+		{
+			if (e->last_live == e->champs[i].id)
+				ft_printf("WINNER {#0bd185}%s(%d){reset}\n", e->champs[i].name, e->champs[i].id);
+			else
+				ft_printf("LOOSER {#f48042}%s(%d){reset}\n", e->champs[i].name, e->champs[i].id);
+		}
+		ft_printf("\n\n");
+	}
+}
 
 void		aff(t_env *e, int *pc, t_proc *ptr)
 {

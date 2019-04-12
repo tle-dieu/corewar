@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 21:06:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 13:34:02 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,17 @@ typedef	struct		s_champ
 	t_proc			*proc;	
 }					t_champ;
 
+typedef struct		s_ft
+{
+	void			(*ft_ptr[16])();
+}					t_ft;
+
 typedef	struct		s_env
 {
+	int				dump;
+	int				total_live;
 	int				nb_live;
+	int				nb_check;
 	int				last_live;
 	int				cycle;
 	int				c_to_die;
@@ -118,8 +126,10 @@ void				lldi(t_env *e, int *pc, t_proc *ptr);
 void				lfork(t_env *e, int *pc, t_proc *ptr);
 
 /*
- ** PRINT.C (1)
+ ** PRINT.C (3)
  */
+void				print_memory(t_env *e);
+void				print_winner(t_env *e);
 void				aff(t_env *e, int *pc, t_proc *ptr);
 
 /*

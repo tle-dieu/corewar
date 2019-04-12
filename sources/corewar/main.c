@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 21:15:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 13:34:04 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ int					main(int ac, char **av)
 			return (1);
 	}
 	attribute_id(&e);
+	place_champ(&e);
 	play(&e);
+	print_winner(&e);
+	freedom(&e);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 03:27:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/12 12:02:34 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,11 @@ void			init(t_env *e)
 		e->champs[i].chosen_id[0] = 0;
 		e->champs[i].chosen_id[1] = 0;
 	}
+	e->nb_check = 0;
 	e->cycle = 0;
-	//if player nb is 0
+	e->dump = -1;
+	e->nb_live = 0;
+	e->total_live = 0;
 	e->last_live = 0;
 	e->c_to_die = CYCLE_TO_DIE;
 	e->c_total = 0;
@@ -99,9 +102,11 @@ void			init(t_env *e)
 
 int				init_proc(t_env *e, int j, int begin)
 {
+	int		i;
 	t_proc	*new;
 	t_proc	*ptr;
 
+	i = 0;
 	ptr = e->champs[j].proc;
 	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);

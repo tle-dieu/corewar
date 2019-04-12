@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/12 03:27:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/12 13:34:06 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,33 @@ int				choose_cycle(int op)
 	return (0);
 }
 
+static void		init_ft_ptr(void (*ft_ptr[])(t_env *e, int *pc, t_proc *ptr))
+{
+	ft_ptr[0] = live;
+	ft_ptr[1] = ld;
+	ft_ptr[2] = st;
+	ft_ptr[3] = add;
+	ft_ptr[4] = sub;
+	ft_ptr[5] = and;
+	ft_ptr[6] = or;
+	ft_ptr[7] = xor;
+	ft_ptr[8] = zjmp;
+	ft_ptr[9] = ldi;
+	ft_ptr[10] = sti;
+	ft_ptr[11] = op_fork;
+	ft_ptr[12] = lld;
+	ft_ptr[13] = lldi;
+	ft_ptr[14] = lfork;
+	ft_ptr[15] = aff;
+}
+
 static int		exec_cycle(t_env *e)
 {
 	int		i;
 	t_proc	*ptr;
-	void	(*ft_ptr[16])() = {live, ld, st, add, sub, and, or, xor,
-		zjmp, ldi, sti, op_fork, lld, lldi, lfork, aff};
+	void	(*ft_ptr[16])();
 
+	init_ft_ptr(ft_ptr);
 	i = e->nb_champ;
 	while (i--)
 	{
@@ -50,13 +70,10 @@ static int		exec_cycle(t_env *e)
 		{
 			if (!ptr->cycle)
 			{
-				if (PRINT)
-				{
-					if (i == 0)
-						ft_printf("{#0bd185}%-25s{reset} ===> OP %d\n", e->champs[i].name, ptr->op);
-					else if (i == 1)
-						ft_printf("{#f4c302}%-25s{reset} ===> OP %d\n", e->champs[i].name, ptr->op);
-				}
+				(PRINT && !i) ? ft_printf("{#0bd185}%-25s{reset} ===> OP %d\n",
+						e->champs[i].name, ptr->op) : 1;
+				(PRINT && i == 1) ? ft_printf("{#f4c302}%-25s{reset} ===> OP %d\n",
+						e->champs[i].name, ptr->op) : 1;
 				if (ptr->pc + 12 > MEM_SIZE)
 					ptr->pc = ptr->pc % MEM_SIZE;
 				if (ptr->op < 1 || ptr->op > 16)
@@ -77,11 +94,13 @@ static int		exec_cycle(t_env *e)
 static void		is_alive(t_env *e)
 {
 	int		i;
+	int		tmp;
 	t_proc	*ptr;
 
 	i = -1;
 	while (++i < e->nb_champ)
 	{
+		tmp = 0;
 		ptr = e->champs[i].proc;
 		while (ptr)
 		{
@@ -96,11 +115,6 @@ static void		is_alive(t_env *e)
 
 void			play(t_env *e)
 {
-	int		nb_check;
-	int		i;
-
-	place_champ(e);
-	nb_check = 0;
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
@@ -110,22 +124,19 @@ void			play(t_env *e)
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
 			e->c_to_die -= CYCLE_DELTA;
-			if (nb_check && !(nb_check % MAX_CHECKS))
+			if (e->nb_check && !(e->nb_check % MAX_CHECKS))
 				e->c_to_die -= CYCLE_DELTA;
 			e->cycle = 0;
+			e->total_live += e->nb_live;
 			e->nb_live = 0;
-			++nb_check;
+			++e->nb_check;
 		}
+		if (e->dump != -1 && e->c_total == e->dump)
+		{
+			print_memory(e);
+			break ;
+		}
+		e->c_total++;
 		e->cycle++;
 	}
-	i = -1;
-	ft_printf("\n\n");
-	while (++i < e->nb_champ)
-	{
-		if (e->last_live == e->champs[i].id)
-			ft_printf("WINNER {#0bd185}%s(%d){reset}\n", e->champs[i].name, e->champs[i].id);
-		else
-			ft_printf("LOOSER {#f48042}%s(%d){reset}\n", e->champs[i].name, e->champs[i].id);
-	}
-	ft_printf("\n\n");
 }
