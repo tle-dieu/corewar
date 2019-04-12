@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 21:04:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 19:28:34 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 	int		value;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	addr = find_param_value(e, check, 1, pc, ptr);
+	addr = param_value(e, check, 1, ptr);
 	error = (!check.p1 || check.p2 != 16 || check.p3) ? 1 : 0;
 	if (!error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
 	{
@@ -56,7 +56,10 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
-	ptr->carry = (!error && !value) ? 1 : 0;
+	if (check.s1 == 4)
+		ptr->carry = (!error && !addr);
+	else
+		ptr->carry = (!error && !value);
 }
 
 void		st(t_env *e, int *pc, t_proc *ptr)
@@ -68,7 +71,7 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
 	error = (check.p1 != 64 || !check.p2 || check.p3) ? 1 : 0;
-	addr = find_param_value(e, check, 2, pc, ptr);
+	addr = param_value(e, check, 2, ptr);
 	if (!error && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 	{
 		if (check.s2 == 1 && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))

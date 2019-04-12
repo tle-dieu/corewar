@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 11:17:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:03:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ int				parse_args(t_env *e, int ac, char **av)
 	if (ac > 2)
 		check_params(e, ac, av, &show);
 	if (show || e->nb_champ < 2 || e->nb_champ > 4)
-		ft_printf("usage:\n	%s [-dump nbr_cycles] [[-n number] champion1.cor] ...\n	You must enter between 2 and 4 champions\n	Champions must have the .cor extension\n\n", av[0]);
+		usage(av[0]);
 	return (!(show || e->nb_champ < 2 || e->nb_champ > 4));
 }

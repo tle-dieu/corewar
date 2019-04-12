@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 20:58:26 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:04:01 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,17 @@ static int		check_champ_size(t_env *e, int ret, int i)
 	}
 }
 
-int				check_champ(t_env *e, char *arg, int i)
+int				check_champ(t_env *e, char *arg, int i, char **av)
 {
 	int		fd;
 	int		ret;
 
 	fd = open(arg, O_RDONLY);
 	if (fd == -1 || !fd)
+	{
+		usage(av[0]);
 		return (0);
+	}
 	ft_bzero(e->line, MAX_SIZE);
 	ret = read(fd, e->line, MAX_SIZE + 1);
 	if (!(check_champ_size(e, ret, i)))

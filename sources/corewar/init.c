@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 12:02:34 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 20:02:07 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 		{
 			tmp = e->champs[i].proc;
 			new->id = tmp->id + 1;
-			new->next = tmp;
+			new->next = e->champs[i].proc;
 			e->champs[i].proc = new;
+			break ;
 		}
 	}
 	return (1);

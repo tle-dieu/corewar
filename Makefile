@@ -26,6 +26,7 @@ VM_SOURCES_FILES = main.c \
 				   args.c \
 				   debug.c \
 				   check.c \
+				   op.c \
 				   op_utils.c \
 				   op_1_5.c \
 				   op_6_10.c \

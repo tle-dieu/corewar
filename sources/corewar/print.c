@@ -6,11 +6,17 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 12:01:13 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 20:23:29 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+void		usage(char *path)
+{
+	if (path)
+		ft_printf("usage:\n	%s [-dump nbr_cycles] [[-n number] champion1.cor] ...\n	You must enter between 2 and 4 champions\n	Champions must have the .cor extension\n\n", path);	
+}
 
 void		print_memory(t_env *e)
 {
@@ -19,7 +25,7 @@ void		print_memory(t_env *e)
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		if (i && !(i % 32))
+		if (i && !(i % 64))
 			ft_printf("\n", e->mem[i]);
 		ft_printf("%02x ", e->mem[i]);
 	}	
@@ -49,9 +55,11 @@ void		print_winner(t_env *e)
 void		aff(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
+	int		p;
 
+	p = e->mem[(*pc + 2) % MEM_SIZE];
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	if (check.p1 == 64 && !check.p2 && !check.p3)
-		ft_printf("%c", ptr->r[e->mem[*pc % MEM_SIZE]] % 256);
-	*pc += 2;
+	if (check.p1 == 64 && check_reg(p) && !check.p2 && !check.p3)
+		ft_printf("%c", ptr->r[p] % 256);
+	*pc += 3;
 }

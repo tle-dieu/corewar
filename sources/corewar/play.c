@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/12 13:34:06 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 20:16:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,10 @@
 
 int				choose_cycle(int op)
 {
-	if (op == 16)
-		return (2);
-	else if (op == 2 || op == 3)
-		return (5);
-	else if (op == 6 || op == 7 || op == 8)
-		return (6);
-	else if (op == 1 || op == 4 || op == 5 || op == 13)
-		return (10);
-	else if (op == 9)
-		return (20);
-	else if (op == 10 || op == 11)
-		return (25);
-	else if (op == 14)
-		return (50);
-	else if (op == 12)
-		return (800);
-	else if (op == 15)
-		return (1000);
-	return (0);
+	if (op > 0 && op < 17)
+		return (g_op_tab[op - 1].nb_cycle);
+	else
+		return (0);
 }
 
 static void		init_ft_ptr(void (*ft_ptr[])(t_env *e, int *pc, t_proc *ptr))
@@ -70,16 +55,20 @@ static int		exec_cycle(t_env *e)
 		{
 			if (!ptr->cycle)
 			{
-				(PRINT && !i) ? ft_printf("{#0bd185}%-25s{reset} ===> OP %d\n",
-						e->champs[i].name, ptr->op) : 1;
+				(PRINT && !i) ? ft_printf("{#0bd185}%-25s{reset} ===> OP %d PROCESS %d \n",
+						e->champs[i].name, ptr->op, ptr->id) : 1;
 				(PRINT && i == 1) ? ft_printf("{#f4c302}%-25s{reset} ===> OP %d\n",
 						e->champs[i].name, ptr->op) : 1;
 				if (ptr->pc + 12 > MEM_SIZE)
 					ptr->pc = ptr->pc % MEM_SIZE;
-				if (ptr->op < 1 || ptr->op > 16)
+				if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc] < 1 || e->mem[ptr->pc] > 17)
 					ptr->pc++;
 				else
+				{
+					if (ptr->owner == -1)
+						ft_printf("========= CASE MEMOIRE %d  | PC %d | OP %d | ID %d\n", e->mem[ptr->pc], ptr->pc, ptr->op, ptr->id);
 					(*ft_ptr[e->mem[ptr->pc] - 1])(e, &ptr->pc, ptr);
+				}
 				ptr->op = e->mem[ptr->pc % MEM_SIZE];
 				ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 			}
@@ -120,6 +109,7 @@ void			play(t_env *e)
 		exec_cycle(e);
 		if (e->cycle == e->c_to_die)
 		{
+			ft_printf("\n>>>>>>>>>>>>>>>>>>>>>>>>> %d <<<<<<<<<<<<<<<<<<<<<<<<<<<<\n", e->c_to_die);
 			if (e->nb_live >= NBR_LIVE)
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
@@ -139,4 +129,5 @@ void			play(t_env *e)
 		e->c_total++;
 		e->cycle++;
 	}
+	ft_printf("e->dump = %d\ne->nb_live = %d\n", e->dump, e->nb_live);
 }

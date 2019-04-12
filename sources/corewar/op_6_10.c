@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 13:44:42 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/12 20:19:15 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 	error = (!check.p1 || !check.p2 || check.p3 != 4) ? 1 : 0;
 	if (!error)
 	{
-		v1 = find_param_value(e, check, 1, pc, ptr);
-		v2 = find_param_value(e, check, 2, pc, ptr);
+		v1 = param_value(e, check, 1, ptr);
+		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 & v2;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
@@ -43,8 +43,8 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 	error = (!check.p1 || !check.p2 || check.p3 != 4) ? 1 : 0;
 	if (!error)
 	{
-		v1 = find_param_value(e, check, 1, pc, ptr);
-		v2 = find_param_value(e, check, 2, pc, ptr);
+		v1 = param_value(e, check, 1, ptr);
+		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 | v2;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
@@ -63,8 +63,8 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 	error = (!check.p1 || !check.p2 || check.p3 != 4) ? 1 : 0;
 	if (!error && check_reg(e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]))
 	{
-		v1 = find_param_value(e, check, 1, pc, ptr);
-		v2 = find_param_value(e, check, 2, pc, ptr);
+		v1 = param_value(e, check, 1, ptr);
+		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 ^ v2;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
@@ -74,19 +74,19 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 
 void		zjmp(t_env *e, int *pc, t_proc *ptr)
 {
-	int		addr;
+	short	addr;
 
-	if (!(e->mem[(*pc + 1) % MEM_SIZE]))
-		addr = param_sum(e, *pc + 1, 2);
-	else
+	addr = (short)param_sum(e, *pc + 1, 2);
+	if (ptr->carry == 1)
 	{
-		addr = e->mem[(*pc + 1) % MEM_SIZE] - e->mem[(*pc + 2) % MEM_SIZE];
-		addr = -addr - 1;
-	}
-	if (ptr->carry == 0)
 		*pc = (*pc + (addr % IDX_MOD)) % MEM_SIZE;
+		if (*pc < 0)
+			*pc = *pc % MEM_SIZE + MEM_SIZE;
+	}
 	else
 		*pc += 3;
+	if (ptr->id == 6 && ptr->owner == -1)
+		ft_printf(">>>>>>>>>> pc = %d | ptr->op %d JUMPPPPPPPPPPPP %d\n", *pc, ptr->op, addr);
 }
 
 void		ldi(t_env *e, int *pc, t_proc *ptr)
@@ -110,10 +110,9 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
 		sum += (check.p2 == 16 && reg && check_reg(p)) ? ptr->r[p] : p;
-		p = param_sum(e, *pc % MEM_SIZE, check.s3);
+		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
 		if (check.p3 == 4 && reg && check_reg(p))
 			ptr->r[p] = sum;
-		ptr->carry = !sum;
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
 }
