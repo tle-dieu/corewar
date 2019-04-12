@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/12 21:23:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/12 22:24:15 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,32 @@ void	print_wave(char *s)
 	ft_dprintf(2, "{R}");
 }
 
-int		error_header(t_file *file, int error, char *extra)
+int		error_header(t_file *file, int error, char *extra, int cmd)
 {
+	char *scmd;
+
+	scmd = cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING;
 	ft_printf(FT_C"error_header\n{R}");
 	file->error = 1;
 	if (error == 1)
 	{
-		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexpected expression after .name declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1);
+		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexpected expression after %s declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1, scmd);
 		print_pointer(file->last->s, extra);
 	}
 	else if (error == 2)
 	{
-		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}.name declaration too long{R}\n", file->name, file->begin->y, extra - file->begin->s + 1);
+		ft_printf("fldsakjflajsfljasflsj");
+		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}%s declaration too long (Max length: %d){R}\n", file->name, file->begin->y, extra - file->begin->s + 1, scmd, cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH);
 		print_pointer(file->begin->s, extra++);
 		print_wave(extra);
 	}
 	else if (error == 3)
 	{
-		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}expected string after .name{R}\n", file->name, file->begin->y, extra - file->begin->s + 1);
+		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}expected string after %s{R}\n", file->name, file->begin->y, extra - file->begin->s + 1, scmd);
 		print_pointer(file->begin->s, extra);
 	}
 	write(1, "\n", 1);
-	return (0);
+	return (!error);
 }
 
 char	*check_end_str(char **end)
@@ -132,7 +136,7 @@ int		add_line(char **line, t_file *file)
 	return (1);
 }
 
-int		multi_line(t_file *file, char *buff, int max_size, int i)
+int		multi_line(t_file *file, char *buff, int i, int cmd)
 {
 	char *line;
 	char *s;
@@ -144,23 +148,24 @@ int		multi_line(t_file *file, char *buff, int max_size, int i)
 	{
 		if (add_line(&line, file) != 1)
 			return (0);
+		buff[i++] = '\n';
 		s = line;
 		while (*s && *s != '"')
 		{
-			if (i >= max_size)
-				return (error_header(file, 2, ft_strchr(file->begin->s, '"')));
+			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
+				return (error_header(file, 2, ft_strchr(file->begin->s, '"'), cmd));
 			buff[i++] = *s++;
 		}
 		if (*s == '"')
 			end = !check_end_str(&s);
 	}
 	buff[i] = '\0';
-	return (error_header(file, !end, s));
+	return (error_header(file, !end, s, cmd));
 }
 
 //return ou exit mais envoie de line dans ce cas pour free
 //peut etre meilleur moyen de gerer les erreurs
-int		get_name(t_file *file, char *s, unsigned char **cp)
+int		get_name(t_file *file, char *s, unsigned char *cp, int cmd)
 {
 	char	buff[PROG_NAME_LENGTH + 1];
 	int		i;
@@ -170,30 +175,30 @@ int		get_name(t_file *file, char *s, unsigned char **cp)
 	ft_printf(FT_C"get_name | line: %s\n{R}", s);
 	i = 0;
 	if (!(t = ft_strchr(s, '"')))
-		return (error_header(file, 3, s));
+		return (error_header(file, 3, s, cmd));
 	s = t;
 	while (*++s && *s != '"')
 	{
-		if (i >= PROG_NAME_LENGTH)
-			return (error_header(file, 2, ft_strchr(file->begin->s, '"')));
+		if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
+			return (error_header(file, 2, ft_strchr(file->begin->s, '"'), cmd));
 		buff[i++] = *s;
 	}
 	if (!*s)
 	{
-		if (!(multi_line(file, buff, PROG_NAME_LENGTH, i)))
+		if (!(multi_line(file, buff, i, cmd)))
 			return (0);
 	}
 	else
 		buff[i] = '\0';
 	if (check_end_str(&s))
-		return (error_header(file, 1, s));
+		return (error_header(file, 1, s, cmd));
 	i = 0;
 	while (buff[i])
-		*((*cp)++) = buff[i++];
+		*cp++ = buff[i++];
 	return (1);
 }
 
-int		get_header(t_file *file, unsigned char **cp)
+int		get_header(t_file *file, unsigned char *cp)
 {
 	char	*line;
 	int		i;
@@ -211,14 +216,16 @@ int		get_header(t_file *file, unsigned char **cp)
 			{
 				if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
 				{
-					if (!(get_name(file, line + i + sizeof(NAME_CMD_STRING), cp)))
+					if (!(get_name(file, line + i + sizeof(NAME_CMD_STRING), cp, 0)))
 						exit(0);
 					break ;
 				}
 				else if (!ft_strncmp(COMMENT_CMD_STRING, line + i, sizeof(COMMENT_CMD_STRING) - 1))
-					ft_printf("COMMENT: %s\n", line + i);
-				else
-					return (0);
+				{
+					if (!(get_name(file, line + i + sizeof(COMMENT_CMD_STRING), cp + PROG_NAME_LENGTH + 4, 1)))
+						exit(0);
+					break ;
+				}
 			}
 			i++;
 		}
@@ -238,8 +245,8 @@ void	compile(t_file *file)
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_header(file, &cp);
-	print_bin(bin, cp - bin);
+	get_header(file, cp);
+	print_bin(bin, BIN_MAX_SIZE);
 }
 
 int		main(int ac, char **av)
