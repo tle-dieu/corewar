@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 20:26:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/12 22:48:41 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void			insert(t_env *e, int pc, void *ptr, int size)
 	tmp = (unsigned char*)ptr;
 	if (pc < 0)
 		pc = pc % MEM_SIZE + MEM_SIZE;
-	ft_printf("pc = %d\n", pc);
 	while (size--)
 		e->mem[(pc + size) % MEM_SIZE] = *tmp++;
 }
