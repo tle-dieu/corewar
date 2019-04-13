@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 21:16:04 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/13 12:53:22 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,25 +90,27 @@ void		lldi(t_env *e, int *pc, t_proc *ptr)
 	reg = 1;
 	sum = 0;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
-	if (check.p3 == 4 && check.p2 && check.p2 <= 32 && check.p3)
+	if (check.p3 == 4 && check.p2 <= 32 && check.p1)
 	{
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (check.p1 == 64 && (reg = check_reg(p)))
 			sum += ptr->r[p];
-		else if (check.p1 > 128 && reg)
+		else if (reg && check.p1 > 128)
 			sum += e->mem[(*pc + p) % MEM_SIZE];
 		else if (reg)
 			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
-		sum += (check.p2 == 16 && reg && check_reg(p)) ? ptr->r[p] : p;
+		if (check.p2 == 16 && reg && check_reg(p))
+			sum += ptr->r[p];
+		else if (reg)
+			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
 		if (check.p3 == 4 && reg && check_reg(p))
-			ptr->r[p] = sum;
+			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, 4);
 		ptr->carry = (reg && !sum);
 	}
 	*pc += 2 + check.s1 + check.s2 + check.s3;
 }
-
 void		lfork(t_env *e, int *pc, t_proc *ptr)
 {
 	short	addr;
