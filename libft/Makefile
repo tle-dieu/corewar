@@ -123,6 +123,7 @@ RMLINE = \033[2K
 RESET = \033[0m
 HIDE = tput civis
 SHOW = tput cnorm
+SLEEP = sleep 0.01
 
 ifneq (,$(filter $(flags),n no))
 	CFLAG =
@@ -135,6 +136,7 @@ endif
 
 ifneq (,$(filter $(silent), y yes))
 	HIDE :=
+	SLEEP :=
 	REDIRECT := > /dev/null
 endif
 
@@ -142,29 +144,29 @@ all: $(NAME) Makefile
 
 $(NAME): $(OBJECTS) Makefile
 	$(SHOW)
-	$(PRINT) "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
+	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(AR) $(NAME) $(OBJECTS)
-	$(PRINT) "$(GREEN)$(NAME) has been created$(RESET)\n" $(REDIRECT)
+	printf "$(GREEN)$(NAME) has been created$(RESET)\n" $(REDIRECT)
 	$(RLIB) $(NAME)
-	$(PRINT) "$(GREEN)$(NAME) has been indexed$(RESET)\n" $(REDIRECT)
+	printf "$(GREEN)$(NAME) has been indexed$(RESET)\n" $(REDIRECT)
 
 objects/%.o: %.c $(IRESETLUDES) Makefile
 	mkdir -p $(dir $@)
 	$(CC) $(FLAG) -I $(IRESETLUDES_FOLDER) -o $@ -c $<
 	$(HIDE)
-	$(PRINT) "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
-	sleep 0.01
+	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
+	$(SLEEP)
 
 clean:
 	$(RM) $(OBJECTS_FOLDER)
-	$(PRINT) "$(RED)The libft objects have been removed$(RESET)\n" $(REDIRECT)
+	printf "$(RED)The libft objects have been removed$(RESET)\n" $(REDIRECT)
 
 fclean: clean
 	$(RM) $(NAME)
-	$(PRINT) "$(RED)$(NAME) has been removed$(RESET)\n" $(REDIRECT)
+	printf "$(RED)$(NAME) has been removed$(RESET)\n" $(REDIRECT)
 
 re: fclean all
 
-.PHONY: clean
+.PHONY: all clean fclean re
 
 .SILENT: $(NAME) $(OBJECTS) clean fclean

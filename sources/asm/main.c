@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/12 22:24:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/13 14:13:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,6 @@ void	print_pointer(char *s, char *end)
 
 void	print_wave(char *s)
 {
-	int i;
-
-	i = 0;
 	ft_dprintf(2, GREEN_CURS);
 	put_strtab(s, '~');
 	ft_dprintf(2, "{R}");
@@ -222,7 +219,7 @@ int		get_header(t_file *file, unsigned char *cp)
 				}
 				else if (!ft_strncmp(COMMENT_CMD_STRING, line + i, sizeof(COMMENT_CMD_STRING) - 1))
 				{
-					if (!(get_name(file, line + i + sizeof(COMMENT_CMD_STRING), cp + PROG_NAME_LENGTH + 4, 1)))
+					if (!(get_name(file, line + i + sizeof(COMMENT_CMD_STRING), cp + PROG_NAME_LENGTH + 8, 1)))
 						exit(0);
 					break ;
 				}

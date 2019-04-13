@@ -83,6 +83,7 @@ ifneq (,$(filter $(fsanitize),y yes))
 endif
 
 ifneq (,$(filter $(silent), y yes))
+	SLEEP :=
 	HIDE :=
 	REDIRECT := > /dev/null
 endif
