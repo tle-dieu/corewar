@@ -5,48 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/08 15:17:22 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/13 15:25:58 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "op.h"
 #include <errno.h>
-#include <stdlib.h>
 
-int		usage(char *ex_name, int help)
+void    *alloc_error(char *ex_name)
 {
-	ft_printf("usage: %s [-a] [-x] sourcefile.s\n", ex_name);
-	ft_printf("       %s [-d] sourcefile.cor\n", ex_name);
-	if (help)
-	{
-		ft_printf("HELP\n"); // help a faire
-		exit(0);
-	}
-	ft_printf("Try `%s (-h | --help)' for more information.\n", ex_name);
-	return (0);
+    ft_printf("%s: "RED_ERR"error: {R}", ex_name);
+    ft_printf("%s\n", strerror(errno));
+    return (NULL);
 }
 
-int		error_file(t_file *option, char *ex_name, char *file, t_file *lst)
+int		error_header(t_file *file, int error, char *extra, int cmd)
 {
-	free_lst_file(lst);
-	ft_printf("%s: "RED_ERR"error: {R}", ex_name);
-	if (option->error || option->name)
-	{
-		if (option->error)
-			ft_printf("unknow option - %c\n", option->error);
-		else
-			ft_printf("unknow option -- %s\n", option->name);
-		usage(ex_name, 0);
-	}
-	else
-		ft_printf("%s: '%s'\n", strerror(errno), file);
-	return (1);
-}
+	char *scmd;
 
-void	*alloc_error(char *ex_name)
-{
-	ft_printf("%s: "RED_ERR"error: {R}", ex_name);
-	ft_printf("%s\n", strerror(errno));
-	return (NULL);
+	scmd = cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING;
+	ft_printf(FT_C"error_header\n{R}");
+	file->error = 1;
+	if (error == 1)
+	{
+		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}unexpected expression after %s declaration{R}\n", file->name, file->last->y, extra - file->last->s + 1, scmd);
+		err_pointer(file->last->s, extra);
+	}
+	else if (error == 2)
+	{
+		ft_printf("fldsakjflajsfljasflsj");
+		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}%s declaration too long (Max length: %d){R}\n", file->name, file->begin->y, extra - file->begin->s + 1, scmd, cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH);
+		err_pointer(file->begin->s, extra++);
+		err_wave(extra);
+	}
+	else if (error == 3)
+	{
+		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}expected string after %s{R}\n", file->name, file->begin->y, extra - file->begin->s + 1, scmd);
+		err_pointer(file->begin->s, extra);
+	}
+	ft_putchar('\n');
+	return (!error);
 }

@@ -17,7 +17,10 @@ ASM_SOURCES_FILES = main.c \
 					free.c \
 					debug.c \
 					args.c \
-					error.c
+					error.c \
+					utils_error.c \
+					error_args.c \
+					header.c
 
 VM_SOURCES_FILES = main.c \
 				   init.c \

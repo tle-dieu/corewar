@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/12 20:52:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/13 15:30:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,29 @@ typedef struct		s_file
 /*
 ** ---------- DEBUG ----------
 */
+
+# define FT_C "{#2ecc71}"
+
 void				print_option(t_file *option, char *s);
 void				print_files(t_file *file);
 void				print_bin(unsigned char *buff, int size);
 
-# define FT_C "{#2ecc71}"
+//----------------------------
 
-/*
-** ---------- FREE -----------
-*/
 
 void				free_lst_file(t_file *file);
-
-/*
-** --------- OPTION ----------
-*/
-
 t_file				*parse_command_line(int ac, char **av);
-
-/*
-** ---------- ERROR ----------
-*/
-
 int					usage(char *ex_name, int help);
 void				*alloc_error(char *ex_name);
-int					error_file(t_file *option, char *ex_name,
-					char *file, t_file *lst);
+int					error_file(t_file *option, char *ex_name, char *file, t_file *lst);
+int					get_header(t_file *file, unsigned char *cp);
+void				err_pointer(char *s, char *end);
+void				err_wave(char *s);
+char				*check_end_str(char **end);
+void				put_strtab(char *s, char replace);
+int					error_header(t_file *file, int error, char *extra, int cmd);
+int					add_line(char **line, t_file *file);
+
+//verifier include dans .c et verifier proto fonctions
+
 #endif
