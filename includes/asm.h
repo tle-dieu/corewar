@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/13 15:30:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:03:31 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ typedef struct		s_file
 */
 
 # define FT_C "{#2ecc71}"
+# define STR_C "{#0bd195}"
+# define NAME_C "{#f1c40f}"
+# define COMMENT_C "{#3498f0}"
+# define CHAMP_C "{#e74c3c}"
+# define SIZE_C "{#2ecc71}"
+# define MAGIC_C "{#9b59b6}"
 
 void				print_option(t_file *option, char *s);
 void				print_files(t_file *file);

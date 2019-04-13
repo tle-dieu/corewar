@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/11 17:19:09 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/14 00:25:29 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ typedef char			t_arg_type;
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define BIN_MAX_SIZE			PROG_NAME_LENGTH + COMMENT_LENGTH + CHAMP_MAX_SIZE + 16
+
+# if PROG_NAME_LENGTH > COMMENT_LENGTH
+# define BS_HEADER PROG_NAME_LENGTH
+# else
+# define BS_HEADER COMMENT_LENGTH
+# endif
 
 typedef struct			s_header
 {

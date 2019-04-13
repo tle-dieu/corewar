@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/13 15:30:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/14 00:26:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		multi_line(t_file *file, char *buff, int i, int cmd)
 
 int		get_name(t_file *file, char *s, unsigned char *cp, int cmd)
 {
-	char	buff[PROG_NAME_LENGTH + 1];
+	char	buff[BS_HEADER + 1];
 	int		i;
 	char	*t;
 
