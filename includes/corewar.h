@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/13 16:51:00 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:05:01 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ typedef	struct		s_champ
 	int				id;
 	int				chosen_id[2];
 	unsigned int	size;
-	int				nb_proc;
-	t_proc			*proc;
 }					t_champ;
 
 typedef	struct		s_env
@@ -73,6 +71,8 @@ typedef	struct		s_env
 	int				c_total;
 	int				nb_champ;
 	t_champ			champs[4];
+	t_proc			*proc;
+	int				nb_proc;
 	unsigned char	mem[MEM_SIZE];
 	unsigned char	line[MAX_SIZE];
 }					t_env;
@@ -159,11 +159,10 @@ void				print_env(t_env env, int cursor);
 void				print_split_champ(t_env *e, int i);
 
 /*
-** CLEAN (3)
+** CLEAN (2)
 */
 void				freedom(t_env *e);
-void				destroy_process(t_env *e, int i, t_proc *to_del);
-void				destroy_all(t_env *e, int i);
+void				destroy_process(t_env *e, t_proc *to_del);
 
 extern t_op			g_op_tab[17];
 

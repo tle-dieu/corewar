@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 16:50:57 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:04:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ int				param_value(t_env *e, t_ocp check, int to_find, t_proc *ptr)
 
 static t_ocp	find_param_size(t_ocp check, int ocp, int on_two)
 {
+	check.s1 = 0;
+	check.s2 = 0;
+	check.s3 = 0;
 	if (ocp >= 192 || ocp < 64)
 		check.s1 = (ocp >= 192) ? 2 : 0;
 	else
@@ -88,8 +91,6 @@ static t_ocp	find_param_size(t_ocp check, int ocp, int on_two)
 		check.s3 = (check.p3 == 12) ? 2 : 1;
 	else if (check.p3 == 8)
 		check.s3 = on_two ? 2 : 4;
-	else if (!check.p3)
-		check.s3 = 0;
 	return (check);
 }
 
@@ -98,6 +99,9 @@ t_ocp			check_ocp(int ocp, int on_two)
 	t_ocp	check;
 
 	check.error = 0;
+	check.p1 = 0;
+	check.p2 = 0;
+	check.p3 = 0;
 	if (ocp < 64)
 		check.error = 1;
 	if (ocp >= 192 || ocp < 64)

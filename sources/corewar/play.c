@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/13 16:51:01 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:05:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,39 +40,43 @@ static void		init_ft_ptr(void (*ft_ptr[])(t_env *e, int *pc, t_proc *ptr))
 	ft_ptr[15] = aff;
 }
 
+static void		print_game(t_proc *ptr)
+{
+	if (ptr->owner == -1)
+		ft_printf("{#0bd185}%-25d{reset} ===> OP %d PROCESS %d \n",
+			ptr->owner, ptr->op, ptr->id);
+	else
+		ft_printf("{#f4428c}%-25d{reset} ===> OP %d PROCESS %d \n",
+			ptr->owner, ptr->op, ptr->id);
+}
+
 static int		exec_cycle(t_env *e)
 {
-	int		i;
 	t_proc	*ptr;
 	void	(*ft_ptr[16])();
+	int		tmp;
 
 	init_ft_ptr(ft_ptr);
-	i = e->nb_champ;
-	while (i--)
+	ptr = e->proc;
+	while (ptr)
 	{
-		ptr = e->champs[i].proc;
-		while (ptr)
+		if (!ptr->cycle)
 		{
-			if (!ptr->cycle)
-			{
-				(PRINT && !i && ptr->op) ? ft_printf("{#0bd185}%-25s{reset} ===> OP %d PROCESS %d \n",
-						e->champs[i].name, ptr->op, ptr->id) : 1;
-				(PRINT && i == 1 && ptr->op) ? ft_printf("{#f4c302}%-25s{reset} ===> OP %d PROCESS %d\n",
-						e->champs[i].name, ptr->op, ptr->id) : 1;
-				
-				if (ptr->pc >= MEM_SIZE)
-					ptr->pc = ptr->pc % MEM_SIZE;
-				if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1 || e->mem[ptr->pc % MEM_SIZE] > 17)
-					ptr->pc++;
-				else
-					(*ft_ptr[e->mem[ptr->pc % MEM_SIZE] - 1])(e, &ptr->pc, ptr);
-				ptr->op = e->mem[ptr->pc % MEM_SIZE];
-				ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
-			}
+			PRINT && ptr->op ? print_game(ptr) : 1;
+			tmp = ptr->pc;
+			if (ptr->pc >= MEM_SIZE)
+				ptr->pc = ptr->pc % MEM_SIZE;
+			if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1
+					|| e->mem[ptr->pc % MEM_SIZE] > 17)
+				ptr->pc++;
 			else
-				ptr->cycle--;
-			ptr = ptr->next;
+				(*ft_ptr[e->mem[ptr->pc % MEM_SIZE] - 1])(e, &ptr->pc, ptr);
+			ptr->op = e->mem[ptr->pc % MEM_SIZE];
+			ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 		}
+		else
+			ptr->cycle--;
+		ptr = ptr->next;
 	}
 	return (0);
 }
@@ -80,22 +84,21 @@ static int		exec_cycle(t_env *e)
 static void		is_alive(t_env *e)
 {
 	int		i;
-	int		tmp;
+	t_proc	*tmp;
 	t_proc	*ptr;
 
 	i = -1;
-	while (++i < e->nb_champ)
+	ptr = e->proc;
+	while (ptr)
 	{
-		tmp = 0;
-		ptr = e->champs[i].proc;
-		while (ptr)
-		{
-			if (ptr->live)
-				ptr->live = 0;
-			else
-				destroy_process(e, i, ptr);
-			ptr = ptr->next;
-		}
+		tmp = NULL;
+		if (ptr->live)
+			ptr->live = 0;
+		else
+			tmp = ptr;
+		ptr = ptr->next;
+		if (tmp)
+			destroy_process(e, tmp);
 	}
 }
 
@@ -108,27 +111,20 @@ void			play(t_env *e)
 		exec_cycle(e);
 		if (e->cycle == e->c_to_die)
 		{
-			ft_printf("\n>>>>>>>>>>>>>>>>>>>>>>>>> CTD %d <<<<<<<<<<<<<<<<<<<<<<<<<<<<\n", e->c_to_die);
+			ft_printf("\n>>>>>>>>>>>>>>>>>> CTD %d | C_TOTAL %d <<<<<<<<<<<<<<<<<<<<<<\n",
+					e->c_to_die, e->c_total);
+			ft_printf("Currently => %d\n", e->nb_proc);
 			i = -1;
-			while (++i < e->nb_champ)
-				ft_printf("Player %s(%d) has %d process(es)\n", e->champs[i].name,
-						e->champs[i].id, e->champs[i].nb_proc);
-			ft_printf("\n\n");
 			if (e->nb_live >= NBR_LIVE)
 				e->c_to_die -= CYCLE_DELTA;
-			is_alive(e);
 			if (e->nb_check && !(e->nb_check % MAX_CHECKS))
 				e->c_to_die -= CYCLE_DELTA;
+			is_alive(e);
+			ft_printf("After kills => %d\n", e->nb_proc);
 			e->cycle = 0;
 			e->total_live += e->nb_live;
 			e->nb_live = 0;
 			++e->nb_check;
-			i = -1;
-			while (++i < e->nb_champ)
-				ft_printf("Player %s(%d) has now %d process(es)\n", e->champs[i].name,
-						e->champs[i].id, e->champs[i].nb_proc);
-			ft_printf("\n\n");
-
 		}
 		if (e->dump != -1 && e->c_total == e->dump)
 		{

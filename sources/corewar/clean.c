@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 14:11:39 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:04:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,29 @@
 
 void			freedom(t_env *e)
 {
-	ft_printf("free\n");
-	(void)e;
+	t_proc	*ptr;
+	t_proc	*tmp;
+
+	ptr = e->proc;
+	while (ptr)
+	{
+		tmp = ptr;
+		ptr = ptr->next;
+		free(tmp);
+	}
 }
 
-void			destroy_process(t_env *e, int i, t_proc *to_del)
+void			destroy_process(t_env *e, t_proc *to_del)
 {
 	t_proc	*ptr;
 	t_proc	*tmp;
 
-	ptr = e->champs[i].proc;
-	e->champs[i].nb_proc--;
+	ptr = e->proc;
+	e->nb_proc--;
 	if (ptr == to_del)
 	{
 		tmp = ptr;
-		e->champs[i].proc = ptr->next;
+		e->proc = ptr->next;
 		free(tmp);
 		return ;
 	}
@@ -39,22 +47,8 @@ void			destroy_process(t_env *e, int i, t_proc *to_del)
 			tmp = ptr->next;
 			ptr->next = to_del->next;
 			free(tmp);
+			return ;
 		}
 		ptr = ptr->next;
 	}
-}
-
-void			destroy_all(t_env *e, int i)
-{
-	t_proc	*ptr;
-	t_proc	*tmp;
-
-	ptr = e->champs[i].proc;
-	while (ptr)
-	{
-		tmp = ptr;
-		ptr = ptr->next;
-		free(tmp);
-	}
-	e->champs[i].proc = NULL;
 }

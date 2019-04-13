@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 16:51:03 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:04:57 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 {
 	int		i;
 	t_proc	*new;
-	t_proc	*tmp;
 
 	i = -1;
+	e->nb_proc++;
 	if (!(new = (t_proc *)ft_memalloc(sizeof(t_proc))))
 		return (0);
 	new->owner = ptr->owner;
@@ -60,22 +60,12 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->carry = ptr->carry;
 	new->op = e->mem[pc];
 	new->cycle = choose_cycle(new->op);
-	while (++i < 17)
-		new->r[i] = ptr->r[i];
+	while (++i <= 17)
+	new->r[i] = ptr->r[i];
 	new->pc = pc;
-	i = -1;
-	while (++i < e->nb_champ)
-	{
-		if (e->champs[i].id == ptr->owner)
-		{
-			e->champs[i].nb_proc++;
-			tmp = e->champs[i].proc;
-			new->id = tmp->id + 1;
-			new->next = e->champs[i].proc;
-			e->champs[i].proc = new;
-			break ;
-		}
-	}
+	new->id = e->proc->id + 1;
+	new->next = e->proc;
+	e->proc = new;
 	return (1);
 }
 
@@ -84,9 +74,8 @@ void			init(t_env *e)
 	int		i;
 
 	i = -1;
-	while (++i < 4)
+	while (++i <= 4)
 	{
-		e->champs[i].nb_proc = 0;
 		e->champs[i].id = 0;
 		e->champs[i].chosen_id[0] = 0;
 		e->champs[i].chosen_id[1] = 0;
@@ -101,6 +90,8 @@ void			init(t_env *e)
 	e->c_to_die = CYCLE_TO_DIE;
 	e->c_total = 0;
 	e->nb_champ = 0;
+	e->proc = NULL;
+	e->nb_proc = 0;
 	ft_bzero(e->mem, MEM_SIZE);
 }
 
@@ -108,7 +99,6 @@ int				init_proc(t_env *e, int j, int begin)
 {
 	t_proc	*new;
 
-	e->champs[j].nb_proc = 1;
 	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);
 	new->id = 1;
@@ -117,8 +107,8 @@ int				init_proc(t_env *e, int j, int begin)
 	new->owner = e->champs[j].id;
 	new->op = e->champs[j].content[0];
 	new->cycle = choose_cycle(new->op);
-	new->next = NULL;
-	e->champs[j].proc = new;
+	new->next = e->proc;
+	e->proc = new;
 	return (1);
 }
 
@@ -129,6 +119,7 @@ void			place_champ(t_env *e)
 	int		j;
 
 	champ = -1;
+	e->nb_proc = e->nb_champ;
 	while (++champ < e->nb_champ)
 	{
 		j = 0;

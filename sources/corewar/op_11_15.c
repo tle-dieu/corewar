@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 16:51:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:37:05 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		if (check.p2 == 16 && (reg = check_reg(p)))
 			sum += ptr->r[p];
 		else if (reg && check.p2 > 32)
-			sum += (short)e->mem[*pc + (p % IDX_MOD)];
+			sum += e->mem[*pc + (p % IDX_MOD)];
 		else if (reg)
-			sum += (short)p;
+			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
-		sum += reg && check.p3 != 8 && check_reg(p) ? ptr->r[p] : (short)p;
+		sum += reg && check.p3 != 8 && check_reg(p) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (reg)
 			insert(e, (*pc + sum) % MEM_SIZE,
@@ -77,10 +77,13 @@ void		lld(t_env *e, int *pc, t_proc *ptr)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
 	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
-	if (check.s1 == 4)
-		ptr->carry = (!error && !addr);
-	else
-		ptr->carry = (!error && !value);
+	if (!error)
+	{
+		if (check.s1 == 4)
+			ptr->carry = !addr;
+		else
+			ptr->carry = !value;
+	}
 }
 
 void		lldi(t_env *e, int *pc, t_proc *ptr)

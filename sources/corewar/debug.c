@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:59:33 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/11 21:06:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:10:48 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			print_chmp(t_env *e, int c, unsigned int cursor)
 	ft_printf("\n");
 }
 
-void			print_process(t_env *e)
+/*void			print_process(t_env *e)
 {
 	int		i;
 	t_proc	*ptr;
@@ -70,7 +70,7 @@ void			print_env(t_env e, int cursor)
 		(i % 64 == 0) ? ft_printf("\n") : 1;
 		while (++j < e.nb_champ)
 		{
-			if (i >= e.champs[j].proc->pc && i <= e.champs[j].proc->pc + (int)e.champs[j].size)
+			if (i >= e->proc->pc && i <= e.champs[j].proc->pc + (int)e.champs[j].size)
 			{
 				ft_printf(colors[j]);
 				(i == cursor) ? ft_printf(">>> ") : 1;
@@ -85,7 +85,7 @@ void			print_env(t_env e, int cursor)
 	}
 	ft_printf("{reset}\nCYCLES: %-10d CTD: %d / %-10d \n", e.c_total, e.cycle, e.c_to_die);
 }
-
+*/
 void			print_split_champ(t_env *e, int i)
 {
 	int		j;
