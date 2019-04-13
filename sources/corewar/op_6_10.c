@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 22:46:20 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/13 13:46:16 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ void		zjmp(t_env *e, int *pc, t_proc *ptr)
 	}
 	else
 		*pc += 3;
-	if (ptr->id == 6 && ptr->owner == -1)
-		ft_printf(">>>>>>>>>> pc = %d | ptr->op %d JUMPPPPPPPPPPPP %d\n", *pc, ptr->op, addr);
 }
 
 void		ldi(t_env *e, int *pc, t_proc *ptr)

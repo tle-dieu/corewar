@@ -101,13 +101,13 @@ all: $(PROGRAMMES) Makefile
 
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
-	$(SHOW) $(CL)
+	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(CC) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(ASM) has been created$(RESET)\n" $(REDIRECT)
 
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
-	$(SHOW) $(CL)
+	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
 	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)

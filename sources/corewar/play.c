@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/12 20:16:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 13:46:23 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,7 @@ static int		exec_cycle(t_env *e)
 				if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc] < 1 || e->mem[ptr->pc] > 17)
 					ptr->pc++;
 				else
-				{
-					if (ptr->owner == -1)
-						ft_printf("========= CASE MEMOIRE %d  | PC %d | OP %d | ID %d\n", e->mem[ptr->pc], ptr->pc, ptr->op, ptr->id);
 					(*ft_ptr[e->mem[ptr->pc] - 1])(e, &ptr->pc, ptr);
-				}
 				ptr->op = e->mem[ptr->pc % MEM_SIZE];
 				ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 			}
@@ -109,11 +105,10 @@ void			play(t_env *e)
 		exec_cycle(e);
 		if (e->cycle == e->c_to_die)
 		{
-			ft_printf("\n>>>>>>>>>>>>>>>>>>>>>>>>> %d <<<<<<<<<<<<<<<<<<<<<<<<<<<<\n", e->c_to_die);
+			ft_printf("\n>>>>>>>>>>>>>>>>>>>>>>>>> CTD %d <<<<<<<<<<<<<<<<<<<<<<<<<<<<\n", e->c_to_die);
 			if (e->nb_live >= NBR_LIVE)
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
-			e->c_to_die -= CYCLE_DELTA;
 			if (e->nb_check && !(e->nb_check % MAX_CHECKS))
 				e->c_to_die -= CYCLE_DELTA;
 			e->cycle = 0;
@@ -129,5 +124,5 @@ void			play(t_env *e)
 		e->c_total++;
 		e->cycle++;
 	}
-	ft_printf("e->dump = %d\ne->nb_live = %d\n", e->dump, e->nb_live);
+	ft_printf("\n\ne->dump = %d\ne->nb_live = %d\ne->c_total = %d\n", e->dump, e->nb_live, e->c_total);
 }

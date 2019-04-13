@@ -54,6 +54,7 @@
 asm
 corewar
 !sources/*
+!ressources/cor/*
 
 #Macos
 .DS_Store
@@ -66,3 +67,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
