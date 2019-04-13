@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/12 19:37:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:51:00 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 typedef struct		s_ocp
 {
+	int				error;
 	int				p1;
 	int				s1;
 	int				p2;
@@ -55,6 +56,7 @@ typedef	struct		s_champ
 	int				id;
 	int				chosen_id[2];
 	unsigned int	size;
+	int				nb_proc;
 	t_proc			*proc;
 }					t_champ;
 
@@ -62,6 +64,7 @@ typedef	struct		s_env
 {
 	int				dump;
 	int				total_live;
+	int				total_proc;
 	int				nb_live;
 	int				nb_check;
 	int				last_live;
@@ -88,7 +91,6 @@ int					check_reg(int reg);
 /*
 ** OP.C (5)
 */
-void				tarace(t_env *e);
 
 /*
 ** OP_UTILS.C (5)

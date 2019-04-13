@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/13 13:46:23 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:51:01 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,17 @@ static int		exec_cycle(t_env *e)
 		{
 			if (!ptr->cycle)
 			{
-				(PRINT && !i) ? ft_printf("{#0bd185}%-25s{reset} ===> OP %d PROCESS %d \n",
+				(PRINT && !i && ptr->op) ? ft_printf("{#0bd185}%-25s{reset} ===> OP %d PROCESS %d \n",
 						e->champs[i].name, ptr->op, ptr->id) : 1;
-				(PRINT && i == 1) ? ft_printf("{#f4c302}%-25s{reset} ===> OP %d\n",
-						e->champs[i].name, ptr->op) : 1;
-				if (ptr->pc + 12 > MEM_SIZE)
+				(PRINT && i == 1 && ptr->op) ? ft_printf("{#f4c302}%-25s{reset} ===> OP %d PROCESS %d\n",
+						e->champs[i].name, ptr->op, ptr->id) : 1;
+				
+				if (ptr->pc >= MEM_SIZE)
 					ptr->pc = ptr->pc % MEM_SIZE;
-				if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc] < 1 || e->mem[ptr->pc] > 17)
+				if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1 || e->mem[ptr->pc % MEM_SIZE] > 17)
 					ptr->pc++;
 				else
-					(*ft_ptr[e->mem[ptr->pc] - 1])(e, &ptr->pc, ptr);
+					(*ft_ptr[e->mem[ptr->pc % MEM_SIZE] - 1])(e, &ptr->pc, ptr);
 				ptr->op = e->mem[ptr->pc % MEM_SIZE];
 				ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 			}
@@ -100,12 +101,19 @@ static void		is_alive(t_env *e)
 
 void			play(t_env *e)
 {
+	int		i;
+
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
 		if (e->cycle == e->c_to_die)
 		{
 			ft_printf("\n>>>>>>>>>>>>>>>>>>>>>>>>> CTD %d <<<<<<<<<<<<<<<<<<<<<<<<<<<<\n", e->c_to_die);
+			i = -1;
+			while (++i < e->nb_champ)
+				ft_printf("Player %s(%d) has %d process(es)\n", e->champs[i].name,
+						e->champs[i].id, e->champs[i].nb_proc);
+			ft_printf("\n\n");
 			if (e->nb_live >= NBR_LIVE)
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
@@ -115,6 +123,12 @@ void			play(t_env *e)
 			e->total_live += e->nb_live;
 			e->nb_live = 0;
 			++e->nb_check;
+			i = -1;
+			while (++i < e->nb_champ)
+				ft_printf("Player %s(%d) has now %d process(es)\n", e->champs[i].name,
+						e->champs[i].id, e->champs[i].nb_proc);
+			ft_printf("\n\n");
+
 		}
 		if (e->dump != -1 && e->c_total == e->dump)
 		{
@@ -124,5 +138,5 @@ void			play(t_env *e)
 		e->c_total++;
 		e->cycle++;
 	}
-	ft_printf("\n\ne->dump = %d\ne->nb_live = %d\ne->c_total = %d\n", e->dump, e->nb_live, e->c_total);
+	ft_printf("\n\ne->dump = %d\ne->c_total = %d\n", e->dump, e->c_total);
 }

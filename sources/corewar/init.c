@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 20:02:07 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:51:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->carry = ptr->carry;
 	new->op = e->mem[pc];
 	new->cycle = choose_cycle(new->op);
-	while (++i < 16)
+	while (++i < 17)
 		new->r[i] = ptr->r[i];
 	new->pc = pc;
 	i = -1;
@@ -68,6 +68,7 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 	{
 		if (e->champs[i].id == ptr->owner)
 		{
+			e->champs[i].nb_proc++;
 			tmp = e->champs[i].proc;
 			new->id = tmp->id + 1;
 			new->next = e->champs[i].proc;
@@ -85,16 +86,18 @@ void			init(t_env *e)
 	i = -1;
 	while (++i < 4)
 	{
+		e->champs[i].nb_proc = 0;
 		e->champs[i].id = 0;
 		e->champs[i].chosen_id[0] = 0;
 		e->champs[i].chosen_id[1] = 0;
 	}
-	e->nb_check = 0;
-	e->cycle = 0;
 	e->dump = -1;
-	e->nb_live = 0;
 	e->total_live = 0;
+	e->total_proc = 0;
+	e->nb_live = 0;
+	e->nb_check = 0;
 	e->last_live = 0;
+	e->cycle = 0;
 	e->c_to_die = CYCLE_TO_DIE;
 	e->c_total = 0;
 	e->nb_champ = 0;
@@ -103,26 +106,18 @@ void			init(t_env *e)
 
 int				init_proc(t_env *e, int j, int begin)
 {
-	int		i;
 	t_proc	*new;
-	t_proc	*ptr;
 
-	i = 0;
-	ptr = e->champs[j].proc;
+	e->champs[j].nb_proc = 1;
 	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);
-	if (!ptr)
-	{
-		new->id = 1;
-		new->r[1] = e->champs[j].id;
-	}
-	else
-		new->id = ptr->id + 1;
+	new->id = 1;
+	new->r[1] = e->champs[j].id;
 	new->pc = begin;
 	new->owner = e->champs[j].id;
 	new->op = e->champs[j].content[0];
 	new->cycle = choose_cycle(new->op);
-	new->next = ptr;
+	new->next = NULL;
 	e->champs[j].proc = new;
 	return (1);
 }

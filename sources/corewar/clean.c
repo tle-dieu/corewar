@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 18:01:46 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 14:11:39 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void			destroy_process(t_env *e, int i, t_proc *to_del)
 	t_proc	*tmp;
 
 	ptr = e->champs[i].proc;
+	e->champs[i].nb_proc--;
 	if (ptr == to_del)
 	{
 		tmp = ptr;

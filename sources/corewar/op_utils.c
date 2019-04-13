@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/12 22:48:41 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/13 16:50:57 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void			insert(t_env *e, int pc, void *ptr, int size)
 
 int				param_sum(t_env *e, int pc, int size)
 {
-	unsigned int	res;
-	int				j;
+	int		res;
+	int		j;
 
 	res = e->mem[pc % MEM_SIZE];
 	j = 1;
@@ -35,7 +35,7 @@ int				param_sum(t_env *e, int pc, int size)
 		res *= 256;
 		res += e->mem[(pc + j++) % MEM_SIZE];
 	}
-	return ((int)res);
+	return ((size == 2) ? (short)res : res);
 }
 
 int				param_value(t_env *e, t_ocp check, int to_find, t_proc *ptr)
@@ -48,7 +48,7 @@ int				param_value(t_env *e, t_ocp check, int to_find, t_proc *ptr)
 		if (check.s1 == 1)
 			value = ptr->r[e->mem[(ptr->pc + 2) % MEM_SIZE]];
 		else if (check.s1 == 2)
-			value = e->mem[param_sum(e, ptr->pc + 2, check.s1)];
+			value = e->mem[param_sum(e, ptr->pc + 2, check.s1) % MEM_SIZE];
 		else if (check.s1 == 4)
 			value = param_sum(e, ptr->pc + 2, check.s1);
 	}
@@ -97,6 +97,9 @@ t_ocp			check_ocp(int ocp, int on_two)
 {
 	t_ocp	check;
 
+	check.error = 0;
+	if (ocp < 64)
+		check.error = 1;
 	if (ocp >= 192 || ocp < 64)
 		check.p1 = (ocp >= 192) ? 192 : 0;
 	else
