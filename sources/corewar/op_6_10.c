@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 20:04:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:43:16 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 & v2;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
 		ptr->carry = (!v1 || !v2);
 }
@@ -47,7 +47,7 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 | v2;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
 		ptr->carry = (!v1 || !v2);
 }
@@ -67,7 +67,7 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 ^ v2;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
 		ptr->carry = (!v1 || !v2);
 }
@@ -93,12 +93,14 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	int		sum;
 	int		p;
 	int		reg;
+	int		error;
 
 	reg = 1;
 	sum = 0;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
 	if (!check.error && check.p3 == 4 && check.p2 <= 32 && check.p1)
 	{
+		error = 0;
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (check.p1 == 64 && (reg = check_reg(p)))
 			sum += ptr->r[p];
@@ -115,5 +117,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 		if (check.p3 == 4 && reg && check_reg(p))
 			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, 4);
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		error = 1;
+	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
 }

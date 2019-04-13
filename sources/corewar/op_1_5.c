@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 20:04:47 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:43:18 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 		else if (check.s1 == 4)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
 	{
 		if (check.s1 == 4)
@@ -94,7 +94,7 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 		else if (check.s2 == 4)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
+	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
 }
 
 void		add(t_env *e, int *pc, t_proc *ptr)
@@ -118,7 +118,7 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 	}
 	if (!error)
 		ptr->carry = (!v1 || !v2);
-	*pc = check.error ? *pc + 1 : *pc + 5;
+	*pc = error ? *pc + 1 : *pc + 5;
 }
 
 void		sub(t_env *e, int *pc, t_proc *ptr)
@@ -142,5 +142,5 @@ void		sub(t_env *e, int *pc, t_proc *ptr)
 	}
 	if (!error)
 		ptr->carry = (!v1 || !v2);
-	*pc = check.error ? *pc + 1 : *pc + 5;
+	*pc = error ? *pc + 1 : *pc + 5;
 }

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/13 20:05:03 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:43:06 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,9 @@ static int		exec_cycle(t_env *e)
 
 static void		is_alive(t_env *e)
 {
-	int		i;
 	t_proc	*tmp;
 	t_proc	*ptr;
 
-	i = -1;
 	ptr = e->proc;
 	while (ptr)
 	{
@@ -109,6 +107,8 @@ void			play(t_env *e)
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
+		if (e->c_total == 25794)
+			ft_printf("END FOR REAL VM = GAGNANT vs GAGNANT\n");
 		if (e->cycle == e->c_to_die)
 		{
 			ft_printf("\n>>>>>>>>>>>>>>>>>> CTD %d | C_TOTAL %d <<<<<<<<<<<<<<<<<<<<<<\n",
@@ -117,10 +117,12 @@ void			play(t_env *e)
 			i = -1;
 			if (e->nb_live >= NBR_LIVE)
 				e->c_to_die -= CYCLE_DELTA;
-			if (e->nb_check && !(e->nb_check % MAX_CHECKS))
+			else if (e->nb_check && !(e->nb_check % MAX_CHECKS))
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
 			ft_printf("After kills => %d\n", e->nb_proc);
+			if (!e->nb_proc)
+				break ;
 			e->cycle = 0;
 			e->total_live += e->nb_live;
 			e->nb_live = 0;
