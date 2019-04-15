@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/13 20:38:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 13:34:24 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define NAME_COMM_SIZE PROG_NAME_LENGTH + COMMENT_LENGTH
 # define MAX_SIZE CHAMP_MAX_SIZE + NAME_COMM_SIZE + 16
 /* ************************************************************************** */
-# define PRINT 1
+# define PRINT 0
 /* ************************************************************************** */
 
 typedef struct		s_ocp

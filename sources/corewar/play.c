@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/13 20:43:06 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 13:49:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int		exec_cycle(t_env *e)
 	{
 		if (!ptr->cycle)
 		{
-			PRINT && ptr->op ? print_game(ptr) : 1;
+			PRINT ? print_game(ptr) : 1;
 			tmp = ptr->pc;
 			if (ptr->pc >= MEM_SIZE)
 				ptr->pc = ptr->pc % MEM_SIZE;
@@ -70,7 +70,7 @@ static int		exec_cycle(t_env *e)
 					|| e->mem[ptr->pc % MEM_SIZE] > 17)
 				ptr->pc++;
 			else
-				(*ft_ptr[e->mem[ptr->pc % MEM_SIZE] - 1])(e, &ptr->pc, ptr);
+				(*ft_ptr[ptr->op - 1])(e, &ptr->pc, ptr);
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
 			ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 		}
@@ -91,7 +91,10 @@ static void		is_alive(t_env *e)
 	{
 		tmp = NULL;
 		if (ptr->live)
+		{
 			ptr->live = 0;
+			ft_printf("Process %d of owner %d lives\n", ptr->id, ptr->owner);
+		}
 		else
 			tmp = ptr;
 		ptr = ptr->next;
@@ -107,8 +110,8 @@ void			play(t_env *e)
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
-		if (e->c_total == 25794)
-			ft_printf("END FOR REAL VM = GAGNANT vs GAGNANT\n");
+		e->c_total++;
+		e->cycle++;
 		if (e->cycle == e->c_to_die)
 		{
 			ft_printf("\n>>>>>>>>>>>>>>>>>> CTD %d | C_TOTAL %d <<<<<<<<<<<<<<<<<<<<<<\n",
@@ -121,8 +124,6 @@ void			play(t_env *e)
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
 			ft_printf("After kills => %d\n", e->nb_proc);
-			if (!e->nb_proc)
-				break ;
 			e->cycle = 0;
 			e->total_live += e->nb_live;
 			e->nb_live = 0;
@@ -133,8 +134,6 @@ void			play(t_env *e)
 			print_memory(e);
 			break ;
 		}
-		e->c_total++;
-		e->cycle++;
 	}
-	ft_printf("\n\ne->dump = %d\ne->c_total = %d\n", e->dump, e->c_total);
+	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\n", e->dump, e->c_total, e->c_to_die);
 }

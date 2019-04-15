@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 20:43:18 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 13:50:02 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 	ptr->live = 1;
 	player_nb = param_sum(e, *pc, 4);
 	if (player_nb == ptr->owner)
+	{
 		e->last_live = player_nb;
+		ft_printf("un processus dit que le joueur %d est en vie\n",
+		player_nb);
+	}
 	while (++j < e->nb_champ)
 		if (player_nb == e->champs[j].id)
-		{
-		//	ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
-		//			e->champs[j].id, e->champs[j].name);
 			e->last_live = e->champs[j].id;
-		}
 	*pc += 4;
 }
 
@@ -59,7 +59,7 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 		else if (check.s1 == 4)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
-	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
 	{
 		if (check.s1 == 4)
@@ -94,7 +94,7 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 		else if (check.s2 == 4)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
-	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
+	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
 }
 
 void		add(t_env *e, int *pc, t_proc *ptr)
@@ -118,7 +118,7 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 	}
 	if (!error)
 		ptr->carry = (!v1 || !v2);
-	*pc = error ? *pc + 1 : *pc + 5;
+	*pc = check.error ? *pc + 1 : *pc + 5;
 }
 
 void		sub(t_env *e, int *pc, t_proc *ptr)
@@ -142,5 +142,5 @@ void		sub(t_env *e, int *pc, t_proc *ptr)
 	}
 	if (!error)
 		ptr->carry = (!v1 || !v2);
-	*pc = error ? *pc + 1 : *pc + 5;
+	*pc = check.error ? *pc + 1 : *pc + 5;
 }
