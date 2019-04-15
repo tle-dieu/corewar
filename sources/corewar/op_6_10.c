@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/15 13:50:05 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:14:48 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 & v2;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
-		ptr->carry = (!v1 || !v2);
+		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]]);
 }
 
 void		or(t_env *e, int *pc, t_proc *ptr)
@@ -47,9 +50,12 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 | v2;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
-		ptr->carry = (!v1 || !v2);
+		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]]);
 }
 
 void		xor(t_env *e, int *pc, t_proc *ptr)
@@ -67,9 +73,12 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 ^ v2;
 	}
-	*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 	if (!error)
-		ptr->carry = (!v1 || !v2);
+		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]]);
 }
 
 void		zjmp(t_env *e, int *pc, t_proc *ptr)
@@ -79,7 +88,9 @@ void		zjmp(t_env *e, int *pc, t_proc *ptr)
 	addr = param_sum(e, *pc + 1, 2);
 	if (ptr->carry == 1)
 	{
+	//	ft_printf("zjump from %d ", *pc);
 		*pc = (*pc + (addr % IDX_MOD)) % MEM_SIZE;
+	//	ft_printf("to %d\n", *pc);
 		if (*pc < 0)
 			*pc = *pc % MEM_SIZE + MEM_SIZE;
 	}
@@ -119,5 +130,8 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	}
 	else
 		error = 1;
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }

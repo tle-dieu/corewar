@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/15 13:34:24 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:15:00 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define MAX_SIZE CHAMP_MAX_SIZE + NAME_COMM_SIZE + 16
 /* ************************************************************************** */
 # define PRINT 0
+# define ERROR_NOT 0
 /* ************************************************************************** */
 
 typedef struct		s_ocp
@@ -72,6 +73,7 @@ typedef	struct		s_env
 	int				nb_champ;
 	t_champ			champs[4];
 	t_proc			*proc;
+	t_proc			*new_proc;
 	int				nb_proc;
 	unsigned char	mem[MEM_SIZE];
 	unsigned char	line[MAX_SIZE];

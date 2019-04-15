@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/15 13:50:02 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:14:46 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 	e->nb_live++;
 	ptr->live = 1;
 	player_nb = param_sum(e, *pc, 4);
-	if (player_nb == ptr->owner)
-	{
-		e->last_live = player_nb;
-		ft_printf("un processus dit que le joueur %d est en vie\n",
-		player_nb);
-	}
 	while (++j < e->nb_champ)
 		if (player_nb == e->champs[j].id)
 			e->last_live = e->champs[j].id;
@@ -49,17 +43,23 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 		if (check.s1 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 		{
 			value = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+			//a checker si pareil
+			ft_printf("value = %d | addr = %d\n", value, addr);
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
 		}
 		else if (check.s1 == 2)
 		{
 			value = param_sum(e, *pc + (addr % IDX_MOD), REG_SIZE);
+			ft_printf("value = %d\n", value);
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
 		}
 		else if (check.s1 == 4)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2;
 	if (!error)
 	{
 		if (check.s1 == 4)
@@ -73,28 +73,31 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 	int		error;
-	int		addr;
-	int		value;
+	short	addr;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	error = (check.error || check.p1 != 64 || !check.p2 || check.p3);
-	addr = param_value(e, check, 2, ptr);
-	if (!error && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
+	error = (check.error || check.p1 != 64 || check.p2 == 32 || check.p3);
+	if (!error)
 	{
-		if (check.s2 == 1 && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
+		if (check.s2 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]
+			&& check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE])))
 		{
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
 				ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
 		}
-		else if (check.s2 == 2)
+		else if (check.s2 == 2 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 		{
-			value = param_sum(e, *pc + (addr % IDX_MOD), REG_SIZE);
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
+			addr = param_sum(e, *pc + 3, 2);
+			insert(e, (*pc + (addr % IDX_MOD)) % MEM_SIZE,
+				(void*)&ptr->r[e->mem[(*pc + 2) % MEM_SIZE]], REG_SIZE);
 		}
-		else if (check.s2 == 4)
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
+		else
+			error = 1;
 	}
-	*pc = check.error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2;
 }
 
 void		add(t_env *e, int *pc, t_proc *ptr)
@@ -117,8 +120,11 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = v1 + v2;
 	}
 	if (!error)
-		ptr->carry = (!v1 || !v2);
-	*pc = check.error ? *pc + 1 : *pc + 5;
+		ptr->carry = (!ptr->r[e->mem[(*pc + 4) % MEM_SIZE]]);
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
 
 void		sub(t_env *e, int *pc, t_proc *ptr)
@@ -141,6 +147,9 @@ void		sub(t_env *e, int *pc, t_proc *ptr)
 		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = v1 - v2;
 	}
 	if (!error)
-		ptr->carry = (!v1 || !v2);
-	*pc = check.error ? *pc + 1 : *pc + 5;
+		ptr->carry = (!ptr->r[e->mem[(*pc + 4) % MEM_SIZE]]);
+	if (ERROR_NOT)
+		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;
+	else
+		*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }

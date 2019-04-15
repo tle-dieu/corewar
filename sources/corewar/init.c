@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 20:43:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:14:56 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->op = e->mem[pc];
 	new->cycle = choose_cycle(new->op);
 	while (++i <= 17)
-	new->r[i] = ptr->r[i];
+		new->r[i] = ptr->r[i];
 	new->pc = pc;
 	new->id = e->proc->id + 1;
-	new->next = e->proc;
-	e->proc = new;
+	new->next = e->new_proc;
+	e->new_proc = new;
 	return (1);
 }
 
@@ -90,6 +90,7 @@ void			init(t_env *e)
 	e->c_to_die = CYCLE_TO_DIE;
 	e->c_total = 0;
 	e->nb_champ = 0;
+	e->new_proc = NULL;
 	e->proc = NULL;
 	e->nb_proc = 0;
 	ft_bzero(e->mem, MEM_SIZE);

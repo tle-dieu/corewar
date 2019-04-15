@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/15 13:49:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:14:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int				choose_cycle(int op)
 	if (op > 0 && op < 17)
 		return (g_op_tab[op - 1].nb_cycle);
 	else
-		return (0);
+		return (1);
 }
 
 static void		init_ft_ptr(void (*ft_ptr[])(t_env *e, int *pc, t_proc *ptr))
@@ -40,14 +40,14 @@ static void		init_ft_ptr(void (*ft_ptr[])(t_env *e, int *pc, t_proc *ptr))
 	ft_ptr[15] = aff;
 }
 
-static void		print_game(t_proc *ptr)
+static void		print_game(t_env *e, t_proc *ptr)
 {
 	if (ptr->owner == -1)
 		ft_printf("{#0bd185}%-25d{reset} ===> OP %d PROCESS %d \n",
 			ptr->owner, ptr->op, ptr->id);
 	else
-		ft_printf("{#f4428c}%-25d{reset} ===> OP %d PROCESS %d \n",
-			ptr->owner, ptr->op, ptr->id);
+		ft_printf("{#f4428c}%-25d{reset} ===> OP %d PROCESS %d  | CYCLE %d\n",
+			ptr->owner, ptr->op, ptr->id, e->c_total);
 }
 
 static int		exec_cycle(t_env *e)
@@ -60,9 +60,10 @@ static int		exec_cycle(t_env *e)
 	ptr = e->proc;
 	while (ptr)
 	{
+		ptr->cycle--;
 		if (!ptr->cycle)
 		{
-			PRINT ? print_game(ptr) : 1;
+			PRINT && ptr->op ? print_game(e, ptr) : 1;
 			tmp = ptr->pc;
 			if (ptr->pc >= MEM_SIZE)
 				ptr->pc = ptr->pc % MEM_SIZE;
@@ -74,8 +75,6 @@ static int		exec_cycle(t_env *e)
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
 			ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 		}
-		else
-			ptr->cycle--;
 		ptr = ptr->next;
 	}
 	return (0);
@@ -91,11 +90,8 @@ static void		is_alive(t_env *e)
 	{
 		tmp = NULL;
 		if (ptr->live)
-		{
 			ptr->live = 0;
-			ft_printf("Process %d of owner %d lives\n", ptr->id, ptr->owner);
-		}
-		else
+		else if (!ptr->live || ptr->cycle)
 			tmp = ptr;
 		ptr = ptr->next;
 		if (tmp)
@@ -103,37 +99,43 @@ static void		is_alive(t_env *e)
 	}
 }
 
+void			add_new_proc(t_env *e)
+{
+	t_proc		*ptr;
+
+	ptr = e->new_proc;
+	while (ptr && ptr->next)
+		ptr = ptr->next;
+	ptr->next = e->proc;
+	e->proc = e->new_proc;
+	e->new_proc = NULL;
+}
+
 void			play(t_env *e)
 {
-	int		i;
-
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
-		e->c_total++;
-		e->cycle++;
+		if (e->new_proc)
+			add_new_proc(e);
 		if (e->cycle == e->c_to_die)
 		{
-			ft_printf("\n>>>>>>>>>>>>>>>>>> CTD %d | C_TOTAL %d <<<<<<<<<<<<<<<<<<<<<<\n",
-					e->c_to_die, e->c_total);
-			ft_printf("Currently => %d\n", e->nb_proc);
-			i = -1;
-			if (e->nb_live >= NBR_LIVE)
-				e->c_to_die -= CYCLE_DELTA;
-			else if (e->nb_check && !(e->nb_check % MAX_CHECKS))
+			if (e->nb_live < NBR_LIVE)
+				++e->nb_check;
+			if (e->nb_live >= NBR_LIVE || (e->nb_check && !(e->nb_check % MAX_CHECKS)))
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
-			ft_printf("After kills => %d\n", e->nb_proc);
-			e->cycle = 0;
 			e->total_live += e->nb_live;
+			e->cycle = 0;
 			e->nb_live = 0;
-			++e->nb_check;
 		}
 		if (e->dump != -1 && e->c_total == e->dump)
 		{
 			print_memory(e);
 			break ;
 		}
+		e->c_total++;
+		e->cycle++;
 	}
 	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\n", e->dump, e->c_total, e->c_to_die);
 }
