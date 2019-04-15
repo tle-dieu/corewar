@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_memdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/08 18:12:09 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 02:23:00 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/14 17:48:03 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/15 01:55:53 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include <stdlib.h>
 
-void	*ft_memchr(const void *s, int c, size_t n)
+void	*ft_memdup(const void *src, size_t n)
 {
-	unsigned char const *search;
-	unsigned char		comp;
+	void 				*new;
+	unsigned char		*ds;
+	unsigned char const	*sr;
 
-	search = (unsigned char const *)s;
-	comp = (unsigned char)c;
+	if (!src || !(new = malloc(n)))
+		return (NULL);
+	ds = (unsigned char *)new;
+	sr = (unsigned char const *)src;
 	while (n--)
-	{
-		if (*search == comp)
-			return ((void *)search);
-		search++;
-	}
-	return (NULL);
+		*ds++ = *sr++;
+	return (new);
 }
