@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/16 13:40:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 19:04:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # define MAX_SIZE CHAMP_MAX_SIZE + NAME_COMM_SIZE + 16
 /* ************************************************************************** */
 # define PRINT 0
-# define ERROR_NOT 0
 /* ************************************************************************** */
 
 typedef struct		s_ocp
@@ -133,7 +132,7 @@ void				lfork(t_env *e, int *pc, t_proc *ptr);
 ** PRINT.C (4)
 */
 void				usage(char *path);
-void				print_memory(t_env *e);
+void				print_memory(t_env *e, int cursor);
 void				print_winner(t_env *e);
 void				aff(t_env *e, int *pc, t_proc *ptr);
 

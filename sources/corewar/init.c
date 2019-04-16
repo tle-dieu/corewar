@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 13:58:26 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:06:18 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int				init_proc(t_env *e, int j, int begin)
 
 	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
 		return (0);
-	new->id = 1;
+	new->id = j + 1;
 	new->r[1] = e->champs[j].id;
 	new->pc = begin;
 	new->owner = e->champs[j].id;
