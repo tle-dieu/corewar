@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 18:55:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:05:48 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		get_name(t_file *file, char *s, unsigned char *cp, int cmd)
 	char	*t;
 
 	i = 0;
+	ft_printf("get %s\n", cmd ? COMMENT_CMD_STRING :  NAME_CMD_STRING);
 	if (!(t = ft_strchr(s, '"')))
 		return (error_header(file, 3, s, cmd));
 	s = t;

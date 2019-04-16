@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/18 16:37:36 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 19:27:30 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/16 18:00:31 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/16 18:00:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int				get_next_line(const int fd, char **line)
 	t_gnl			*actual;
 	char			*tmp;
 
-	if ((fd < 0 || !line || read(fd, buff, 0) < 0 || BS_GNL <= 0) && !(ret = 0))
+	if (!(ret = 0) && (fd < 0 || !line || read(fd, buff, 0) < 0 || BS_GNL <= 0))
 		return (-1);
 	if (!(actual = choose_fd(&list, fd)))
 		return (-1);

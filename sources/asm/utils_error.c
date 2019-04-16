@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 18:46:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:16:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	put_strtab(char *s, char replace)
 		}
 		write(2, buff, i);
 	}
-	write(2, "\n", 1);
 }
 
 char	*check_end_str(char **end)
@@ -60,6 +59,7 @@ char	*check_end_str(char **end)
 void	err_pointer(char *s, char *end)
 {
 	put_strtab(s, 0);
+	write(2, "\n", 1);
 	ft_dprintf(2, "\x1b[%dC", end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1));
 	ft_dprintf(2, GREEN_CURS"%c{R}", '^');
 }

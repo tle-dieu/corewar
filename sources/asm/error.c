@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/13 15:25:58 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:17:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		error_header(t_file *file, int error, char *extra, int cmd)
 	char *scmd;
 
 	scmd = cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING;
-	ft_printf(FT_C"error_header\n{R}");
 	file->error = 1;
 	if (error == 1)
 	{
@@ -35,7 +34,6 @@ int		error_header(t_file *file, int error, char *extra, int cmd)
 	}
 	else if (error == 2)
 	{
-		ft_printf("fldsakjflajsfljasflsj");
 		ft_dprintf(2, "{bold}%s:%d:%d: "RED_ERR"error: {R}{bold}%s declaration too long (Max length: %d){R}\n", file->name, file->begin->y, extra - file->begin->s + 1, scmd, cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH);
 		err_pointer(file->begin->s, extra++);
 		err_wave(extra);

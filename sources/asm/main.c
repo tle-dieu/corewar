@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 05:50:34 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:05:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		add_line(char **line, t_file *file)
 	t_line	*new;
 
 	*line = NULL;
-	if (get_next_line(file->fd, line) < 1)
+	if (get_next_line(file->fd, line) <= 0)
 	{
 		free(*line);
 		return (0);
