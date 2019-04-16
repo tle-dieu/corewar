@@ -2,8 +2,8 @@ PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
 
-CFLAG = -Wall -Werror -Wextra
-CC = gcc $(CFLAG)
+CFLAGS = -Wall -Werror -Wextra
+CC = gcc $(CFLAGS)
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
 RM = rm -rf
@@ -77,12 +77,12 @@ SLEEP = sleep 0.01
 # --------------- Options --------------- #
 
 ifneq (,$(filter $(flags),n no))
-	CFLAG =
+	CFLAGS =
 endif
 
 ifneq (,$(filter $(fsanitize),y yes))
-	CFLAG += -g3
-	CFLAG += -fsanitize=address -fsanitize=memory -fsanitize=undefined
+	CFLAGS += -g3
+	CFLAGS += -fsanitize=address -fsanitize=memory
 endif
 
 ifneq (,$(filter $(silent), y yes))
@@ -93,7 +93,7 @@ endif
 
 # ifneq (,$(filter $(valgrind),y yes))
 # 	RUN_OPTION += valgrind --leak-check=full --track-origins=yes --read-inline-info=yes --read-var-info=yes --num-callers=100 --show-possibly-lost=no
-# 	CFLAG += -g3
+# 	CFLAGS += -g3
 # endif
 
 # ifneq (,$(filter $(time),y yes))
@@ -119,7 +119,7 @@ $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
 $(ASM_OBJECTS_DIR)%.o: $(ASM_SOURCES_DIR)%.c $(ASM_INCLUDES) Makefile
 	$(HIDE)
 	mkdir -p $(dir $@)
-	$(CC) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $<
+	$(CC) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $< 
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
 	$(SLEEP)
 

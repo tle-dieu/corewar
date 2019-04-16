@@ -6,78 +6,82 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/16 18:05:40 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 23:48:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
 #include <stdlib.h> // tmp
+#include <unistd.h>
 
 //verifier que asm passe seulement ' ' et '\t'
 
-int		add_line(char **line, t_file *file)
+int		add_line(t_env *e, char **line)
 {
 	t_line	*new;
+	int		ret;
 
 	*line = NULL;
-	if (get_next_line(file->fd, line) <= 0)
-	{
-		free(*line);
-		return (0);
-	}
+	if ((ret = get_next_line(e->actual->fd, line)) <= 0)
+		return (ret == -1 ? alloc_error(e) : 0);
 	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
 		free(*line);
-		return (0);
+		alloc_error(e);
 	}
+	ft_printf(COMMENT_C"line: %s\n{R}", *line);
 	new->next = NULL;
 	new->s = *line;
-	if (!file->begin)
+	if (!e->actual->begin)
 	{
-		new->y = 1;
-		file->begin = new;
+		new->y = ++e->line_nb;
+		e->actual->begin = new;
 	}
 	else
 	{
-		new->y = file->last->y + 1;
-		file->last->next = new;
+		new->y = ++e->line_nb;
+		e->file->last->next = new;
 	}
-	file->last = new;
+	e->actual->last = new;
 	return (1);
 }
 
-
-void	compile(t_file *file)
+void	compile(t_env *e)
 {
 	unsigned char	*cp;
 	unsigned char	bin[BIN_MAX_SIZE];
 	int				i;
 
+	ft_printf("{yellow}----------COMPILE----------\n{R}");
 	ft_bzero(bin, BIN_MAX_SIZE);
 	i = 4;
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_header(file, cp);
-	print_bin(bin, BIN_MAX_SIZE);
+	get_header(e, cp);
+	ft_printf(STR_C"file: %s\n", e->actual->name);
+	ft_printf(STR_C"error: %d\n", e->actual->error);
+	if (!e->actual->error)
+		print_bin(bin, BIN_MAX_SIZE);
+	ft_printf("\n"); // a retirer
 }
 
 int		main(int ac, char **av)
 {
-	t_file	*file;
-	t_file	*actual;
+	t_env	e;
 
+	e = (t_env){1, isatty(2), 1, NULL, NULL, av[0]};
 	if (ac < 2)
 		return (usage(av[0], 0));
-	if (!(file = parse_command_line(ac, av)))
+	if (!parse_command_line(&e, ac, av))
 		return (1);
-	print_files(file);
-	actual = file;
-	while (actual)
+	print_files(e.file);
+	e.actual = e.file;
+	while (e.actual)
 	{
-		compile(actual);
-		actual = actual->next;
+		compile(&e);
+		e.actual = e.actual->next;
 	}
-	free_lst_file(file);
+	free_lst_file(e.file);
 }

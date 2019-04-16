@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/09 13:12:46 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 23:28:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static t_file	*add_file(t_file **file, t_file *last, char *name, t_file *opt)
+static t_file	*add_file(t_env *e, char *name, t_file *opt)
 {
 	t_file *new;
 
 	if (!(new = (t_file *)malloc(sizeof(t_file))))
-	{
-		free_lst_file(*file);
-		return (NULL);
-	}
+		alloc_error(e);
 	new->name = name;
 	new->fd = opt->fd;
 	new->annot = opt->annot;
@@ -33,10 +30,10 @@ static t_file	*add_file(t_file **file, t_file *last, char *name, t_file *opt)
 	new->begin = NULL;
 	new->last = NULL;
 	new->next = NULL;
-	if (*file)
-		last->next = new;
+	if (e->file)
+		e->actual->next = new;
 	else
-		*file = new;
+		e->file = new;
 	return (new);
 }
 
@@ -60,7 +57,7 @@ static int		get_short_option(t_file *option, char *s, char *ex_name)
 {
 	t_file tmp;
 
-	tmp = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
+	tmp = (t_file){NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 	while (*s)
 	{
 		if (*s == 'a')
@@ -82,7 +79,7 @@ static int		get_long_option(t_file *option, char *s, char *ex_name)
 {
 	t_file tmp;
 
-	tmp = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
+	tmp = (t_file){NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 	if (!ft_strcmp(s, "annotated"))
 		tmp.annot = 1;
 	else if (!ft_strcmp(s, "dump"))
@@ -96,31 +93,27 @@ static int		get_long_option(t_file *option, char *s, char *ex_name)
 	return (assign_option(option, &tmp, NULL, 0));
 }
 
-t_file			*parse_command_line(int ac, char **av)
+int		parse_command_line(t_env *e, int ac, char **av)
 {
-	t_file	*file;
-	t_file	*last;
 	t_file	option;
 	int		i;
 	char	*s;
 
 	i = 0;
-	file = NULL;
-	option = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
+	option = (t_file){NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 	while (++i < ac)
 	{
 		s = av[i];
 		if (*s != '-' || !*++s || (*s == '-' && !*(s + 1))
-		|| !(*s == '-' ? get_long_option(&option, s + 1, av[0])
-		: get_short_option(&option, s, av[0])))
+		|| !(*s == '-' ? get_long_option(&option, s + 1, e->exname)
+		: get_short_option(&option, s, e->exname)))
 		{
 			if ((option.fd = open(av[i], O_RDONLY)) == -1
 			|| read(option.fd, av[i], 0) < 0)
-				exit(error_file(&option, *av, av[i], file));
-			if (!(last = add_file(&file, last, av[i], &option)))
-				return (alloc_error(av[0]));
-			option = (t_file){NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL};
+				return (error_file(&option, e->exname, av[i], e->file));
+			e->actual = add_file(e, av[i], &option);
+			option = (t_file){NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL};
 		}
 	}
-	return (file);
+	return (1);
 }
