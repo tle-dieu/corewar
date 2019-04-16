@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/13 17:32:54 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:46:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*check_end_str(char **end)
 {
 	char *s;
 
+	ft_printf("check: %s\n", *end);
 	s = *end + 1;
 	while (*s == ' ' || *s == '\t')
 		s++;
@@ -50,7 +51,7 @@ char	*check_end_str(char **end)
 		return (NULL);
 	else
 	{
-		ft_printf("%hhd\n", *s);
+		ft_printf("%hhd: %c\n", *s, *s);
 		*end = s;
 		return (s);
 	}

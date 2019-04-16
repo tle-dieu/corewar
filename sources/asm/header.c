@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/14 00:26:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:55:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int		multi_line(t_file *file, char *buff, int i, int cmd)
+int		multi_line(t_file *file, char *buff, int *i, int cmd)
 {
 	char *line;
 	char *s;
@@ -26,18 +26,17 @@ int		multi_line(t_file *file, char *buff, int i, int cmd)
 	{
 		if (add_line(&line, file) != 1)
 			return (0);
-		buff[i++] = '\n';
+		buff[(*i)++] = '\n';
 		s = line;
 		while (*s && *s != '"')
 		{
-			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
+			if (*i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
 				return (error_header(file, 2, ft_strchr(file->begin->s, '"'), cmd));
-			buff[i++] = *s++;
+			buff[(*i)++] = *s++;
 		}
 		if (*s == '"')
 			end = !check_end_str(&s);
 	}
-	buff[i] = '\0';
 	return (error_header(file, !end, s, cmd));
 }
 
@@ -59,16 +58,13 @@ int		get_name(t_file *file, char *s, unsigned char *cp, int cmd)
 	}
 	if (!*s)
 	{
-		if (!(multi_line(file, buff, i, cmd)))
+		if (!(multi_line(file, buff, &i, cmd)))
 			return (0);
 	}
-	else
-		buff[i] = '\0';
-	if (check_end_str(&s))
+	else if (check_end_str(&s))
 		return (error_header(file, 1, s, cmd));
-	i = 0;
-	while (buff[i])
-		*cp++ = buff[i++];
+	while (i--)
+		*(cp + i) = buff[i];
 	return (1);
 }
 
