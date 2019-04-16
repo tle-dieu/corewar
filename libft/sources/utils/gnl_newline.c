@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/18 16:37:36 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 19:36:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 20:46:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int				gnl_newline(const int fd, char **line)
 	t_gnl			*actual;
 	char			*tmp;
 
-	if ((fd < 0 || !line || read(fd, buff, 0) < 0 || BS_GNL <= 0) && !(ret = 0))
+	if (!(ret = 0) && (fd < 0 || !line || read(fd, buff, 0) < 0 || BS_GNL <= 0))
 		return (-1);
 	if (!(actual = choose_fd(&list, fd)))
 		return (-1);
@@ -107,7 +107,7 @@ int				gnl_newline(const int fd, char **line)
 		actual->len += ret;
 		free(tmp);
 		if (actual->len > MAX_SIZE_STATIC)
-			return (free_fd(&list, actual));
+			return (!free_fd(&list, actual));
 	}
 	if ((ret = check_line(actual, ret, line, tmp)) <= 0)
 		free_fd(&list, actual);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 17:27:49 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 03:29:11 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 21:27:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define BS_GNL 100
 # define MAX_SIZE_STATIC 10000
 
-#include <string.h>
+# include <string.h>
 
 typedef struct		s_gnl
 {

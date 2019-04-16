@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 14:41:45 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/16 00:19:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 21:28:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strcpy(char *dest, char const *src)
 	char *d;
 
 	d = dest;
-  	while ((*d++ = *src++))
-    	;
+	while ((*d++ = *src++))
+		;
 	return (dest);
 }
