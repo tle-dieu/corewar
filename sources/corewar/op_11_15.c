@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/15 18:14:50 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:58:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		if (check.p2 == 16 && (reg = check_reg(p)))
 			sum += ptr->r[p];
 		else if (reg && check.p2 > 32)
-			sum += e->mem[*pc + (p % IDX_MOD)];
+			sum += e->mem[(*pc + (p % IDX_MOD)) % MEM_SIZE];
 		else if (reg)
 			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
-		sum += reg && check.p3 != 8 && check_reg(p) ? ptr->r[p] : p;
+		sum += (reg && check.p3 != 8 && check_reg(p)) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (reg)
-			insert(e, (*pc + (sum % IDX_MOD)) % MEM_SIZE,
+			insert(e, (*pc + sum) % MEM_SIZE,
 					(void*)&ptr->r[p], 4);
 	}
 	else
@@ -83,10 +83,7 @@ void		lld(t_env *e, int *pc, t_proc *ptr)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
 		}
 		else if (check.s1 == 4)
-		{
-	//		ft_printf("addr = %d\n", addr);
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
-		}
 	}
 	if (ERROR_NOT)
 		*pc = error ? *pc + 1 : *pc + 2 + check.s1 + check.s2 + check.s3;

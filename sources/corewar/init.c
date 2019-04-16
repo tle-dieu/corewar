@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/15 18:14:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:58:26 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int			create_new_process(t_env *e, int pc, t_proc *ptr)
 	while (++i <= 17)
 		new->r[i] = ptr->r[i];
 	new->pc = pc;
-	new->id = e->proc->id + 1;
+	new->id = e->nb_proc;
 	new->next = e->new_proc;
 	e->new_proc = new;
 	return (1);

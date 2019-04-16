@@ -6,13 +6,13 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/15 18:14:54 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:58:25 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int				choose_cycle(int op)
+int							choose_cycle(int op)
 {
 	if (op > 0 && op < 17)
 		return (g_op_tab[op - 1].nb_cycle);
@@ -20,27 +20,7 @@ int				choose_cycle(int op)
 		return (1);
 }
 
-static void		init_ft_ptr(void (*ft_ptr[])(t_env *e, int *pc, t_proc *ptr))
-{
-	ft_ptr[0] = live;
-	ft_ptr[1] = ld;
-	ft_ptr[2] = st;
-	ft_ptr[3] = add;
-	ft_ptr[4] = sub;
-	ft_ptr[5] = and;
-	ft_ptr[6] = or;
-	ft_ptr[7] = xor;
-	ft_ptr[8] = zjmp;
-	ft_ptr[9] = ldi;
-	ft_ptr[10] = sti;
-	ft_ptr[11] = op_fork;
-	ft_ptr[12] = lld;
-	ft_ptr[13] = lldi;
-	ft_ptr[14] = lfork;
-	ft_ptr[15] = aff;
-}
-
-static void		print_game(t_env *e, t_proc *ptr)
+static void					print_game(t_env *e, t_proc *ptr)
 {
 	if (ptr->owner == -1)
 		ft_printf("{#0bd185}%-25d{reset} ===> OP %d PROCESS %d \n",
@@ -50,13 +30,11 @@ static void		print_game(t_env *e, t_proc *ptr)
 			ptr->owner, ptr->op, ptr->id, e->c_total);
 }
 
-static int		exec_cycle(t_env *e)
+static inline int			exec_cycle(t_env *e)
 {
 	t_proc	*ptr;
-	void	(*ft_ptr[16])();
 	int		tmp;
 
-	init_ft_ptr(ft_ptr);
 	ptr = e->proc;
 	while (ptr)
 	{
@@ -69,9 +47,9 @@ static int		exec_cycle(t_env *e)
 				ptr->pc = ptr->pc % MEM_SIZE;
 			if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1
 					|| e->mem[ptr->pc % MEM_SIZE] > 17)
-				ptr->pc++;
+					ptr->pc++;
 			else
-				(*ft_ptr[ptr->op - 1])(e, &ptr->pc, ptr);
+				g_op_tab[ptr->op - 1].ft_ptr(e, &ptr->pc, ptr);
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
 			ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
 		}
@@ -80,7 +58,7 @@ static int		exec_cycle(t_env *e)
 	return (0);
 }
 
-static void		is_alive(t_env *e)
+static inline void			is_alive(t_env *e)
 {
 	t_proc	*tmp;
 	t_proc	*ptr;
@@ -91,7 +69,7 @@ static void		is_alive(t_env *e)
 		tmp = NULL;
 		if (ptr->live)
 			ptr->live = 0;
-		else if (!ptr->live || ptr->cycle)
+		else
 			tmp = ptr;
 		ptr = ptr->next;
 		if (tmp)
@@ -99,7 +77,7 @@ static void		is_alive(t_env *e)
 	}
 }
 
-void			add_new_proc(t_env *e)
+static inline void			add_new_proc(t_env *e)
 {
 	t_proc		*ptr;
 
@@ -122,7 +100,8 @@ void			play(t_env *e)
 		{
 			if (e->nb_live < NBR_LIVE)
 				++e->nb_check;
-			if (e->nb_live >= NBR_LIVE || (e->nb_check && !(e->nb_check % MAX_CHECKS)))
+			if (e->nb_live >= NBR_LIVE
+					|| (e->nb_check && !(e->nb_check % MAX_CHECKS)))
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e);
 			e->total_live += e->nb_live;
@@ -137,5 +116,5 @@ void			play(t_env *e)
 		e->c_total++;
 		e->cycle++;
 	}
-	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\n", e->dump, e->c_total, e->c_to_die);
+	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\nnb_proc = %d\n\n", e->dump, e->c_total, e->c_to_die, e->nb_proc);
 }

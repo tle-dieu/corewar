@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/15 18:14:48 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:58:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,7 @@ void		zjmp(t_env *e, int *pc, t_proc *ptr)
 	addr = param_sum(e, *pc + 1, 2);
 	if (ptr->carry == 1)
 	{
-	//	ft_printf("zjump from %d ", *pc);
 		*pc = (*pc + (addr % IDX_MOD)) % MEM_SIZE;
-	//	ft_printf("to %d\n", *pc);
 		if (*pc < 0)
 			*pc = *pc % MEM_SIZE + MEM_SIZE;
 	}
@@ -116,7 +114,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 		if (check.p1 == 64 && (reg = check_reg(p)))
 			sum += ptr->r[p];
 		else if (reg && check.p1 > 128)
-			sum += e->mem[(*pc + (p % IDX_MOD)) % MEM_SIZE];
+			sum += param_sum(e, (*pc + (p % IDX_MOD)) % MEM_SIZE, 2);
 		else if (reg)
 			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
@@ -125,8 +123,10 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 		else if (reg)
 			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
-		if (check.p3 == 4 && reg && check_reg(p))
+		if (reg && check_reg(p))
 			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, 4);
+		else
+			error = 1;
 	}
 	else
 		error = 1;

@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/04/13 19:42:33 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:48:04 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct			s_op
 	int					param[3];
 	int					op_code;
 	int					nb_cycle;
-	char				*desc;
+	void				(*ft_ptr)();
 	int					jsaispas;
 	int					dir_size;
 }						t_op;
