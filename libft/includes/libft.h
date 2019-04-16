@@ -6,12 +6,21 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 05:41:28 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 05:18:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+# define OSX 1
+# define LINUX 2
+# ifdef __linux__
+# define OS LINUX
+# elif __APPLE__
+# else
+# define OS 0
+# endif
 
 # include <string.h>
 

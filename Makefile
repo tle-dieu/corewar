@@ -82,7 +82,7 @@ endif
 
 ifneq (,$(filter $(fsanitize),y yes))
 	CFLAG += -g3
-	CFLAG += -fsanitize=address
+	CFLAG += -fsanitize=address -fsanitize=memory -fsanitize=undefined
 endif
 
 ifneq (,$(filter $(silent), y yes))

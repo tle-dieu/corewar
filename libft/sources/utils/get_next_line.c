@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/18 16:37:36 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 05:04:39 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/15 19:27:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ int				get_next_line(const int fd, char **line)
 	t_gnl			*actual;
 	char			*tmp;
 
-	if (fd < 0 || !line || read(fd, buff, 0) < 0 || BS_GNL <= 0)
+	if ((fd < 0 || !line || read(fd, buff, 0) < 0 || BS_GNL <= 0) && !(ret = 0))
 		return (-1);
-	if (!(ret = 0) && !(actual = choose_fd(&list, fd)))
+	if (!(actual = choose_fd(&list, fd)))
 		return (-1);
 	while (!(tmp = ft_memchr(actual->str, '\n', actual->len)))
 	{
