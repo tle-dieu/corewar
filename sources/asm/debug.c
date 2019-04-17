@@ -6,19 +6,19 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/13 20:50:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 17:04:09 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
 
-void			print_option(t_file *option, char *s)
+void			print_option(unsigned options, char *s)
 {
 	ft_printf(STR_C"filename: {R}%s\n", s);
-	ft_printf(STR_C"  => annot: {R}%d\n", option->annot);
-	ft_printf(STR_C"  => disas: {R}%d\n", option->disas);
-	ft_printf(STR_C"  => dump:  {R}%d\n", option->dump);
+	ft_printf(STR_C"  => annot: {R}%s\n", options & O_ANNOT ? "yes" : "no");
+	ft_printf(STR_C"  => disas: {R}%s\n", options & O_DISAS ? "yes" : "no");
+	ft_printf(STR_C"  => dump:  {R}%s\n", options & O_DUMP ? "yes" : "no");
 	ft_printf("\n");
 }
 
@@ -27,7 +27,7 @@ void			print_files(t_file *file)
 	ft_printf("{yellow}----- Print File -----{R}\n");
 	while (file)
 	{
-		print_option(file, file->name);
+		print_option(file->options, file->name);
 		file = file->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/16 23:31:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 18:10:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # define TAB_SIZE 8
 //option output a rajouter pour preciser fichier ou mettre
 
+# define O_ANNOT 1
+# define O_DUMP 2 //gerer hexa(-x) et binaire(-b) ?
+# define O_DISAS 4
+# define O_SHORT_ERR 128
+# define O_LONG_ERR 256
+
 typedef struct		s_line
 {
 	char			*s;
@@ -32,9 +38,7 @@ typedef struct		s_file
 {
 	char			*name;
 	int				fd;
-	char			annot;
-	char			disas;
-	char			dump; //gerer hexa(-x) et binaire(-b) ?
+	unsigned		options;
 	int				fatal_error;
 	int				error;
 	t_line			*begin;
@@ -65,20 +69,21 @@ typedef struct		s_env
 # define SIZE_C "{#2ecc71}"
 # define MAGIC_C "{#9b59b6}"
 
-void				print_option(t_file *option, char *s);
 void				print_files(t_file *file);
 void				print_bin(unsigned char *buff, int size);
+void	            print_option(unsigned options, char *s);
+
 
 //----------------------------
 
 
+int					usage(char *ex_name, int err);
 void				free_lst_file(t_file *file);
 int					parse_command_line(t_env *e, int ac, char **av);
-int					usage(char *ex_name, int help);
-int					error_file(t_file *option, char *ex_name, char *file, t_file *lst);
 void				err_pointer(char *s, char *end);
 void				err_wave(char *s);
 char				*check_end_str(char **end);
+int					error_file(t_env *e, char *error, char *file, unsigned opt);
 void				put_strtab(char *s, char replace);
 int					error_header(t_file *file, int error, char *extra, int cmd);
 void				free_line(t_file *file);

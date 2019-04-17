@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/13 14:39:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 18:10:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,37 @@
 #include <errno.h>
 #include <stdlib.h>
 
-int		usage(char *ex_name, int help)
+int		usage(char *ex_name, int err)
 {
-	ft_printf("usage: %s [-a] [-x] sourcefile.s\n", ex_name);
-	ft_printf("       %s [-d] sourcefile.cor\n", ex_name);
-	if (help)
+	if (err == 3)
+	{
+		ft_dprintf(--err, "%s: "RED_ERR"error: {R}", ex_name);
+		ft_dprintf(err, "no input files\n");
+	}
+	ft_dprintf(err, "usage: %s [-a] [-x] sourcefile.s\n", ex_name);
+	ft_dprintf(err, "       %s [-d] sourcefile.cor\n", ex_name);
+	if (err == 1)
 	{
 		ft_printf("HELP\n"); // help a faire
 		exit(0);
 	}
-	ft_printf("Try `%s (-h | --help)' for more information.\n", ex_name);
-	return (0);
+	ft_dprintf(err, "Try `%s (-h | --help)' for more information.\n", ex_name);
+	return (1);
 }
 
-int		error_file(t_file *option, char *ex_name, char *file, t_file *lst)
+int		error_file(t_env *e, char *error, char *file, unsigned opt)
 {
-	free_lst_file(lst);
-	ft_printf("%s: "RED_ERR"error: {R}", ex_name);
-	if (option->error || option->name)
+	free_lst_file(e->file);
+	ft_dprintf(2, "%s: "RED_ERR"error: {R}", e->exname);
+	if (opt & (O_LONG_ERR | O_SHORT_ERR))
 	{
-		if (option->error)
-			ft_printf("unknow option - %c\n", option->error);
+		if (opt & O_SHORT_ERR)
+			ft_dprintf(2, "unknow option - %c\n", *error);
 		else
-			ft_printf("unknow option -- %s\n", option->name);
-		usage(ex_name, 0);
+			ft_dprintf(2, "unknow option -- %s\n", error);
+		usage(e->exname, 2);
 	}
 	else
 		ft_printf("%s: '%s'\n", strerror(errno), file);
-	return (1);
+	return (0);
 }
