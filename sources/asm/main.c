@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 23:28:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 00:41:29 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,12 @@ void	compile(t_env *e)
 	get_header(e, cp);
 	ft_printf(STR_C"file: %s\n", e->actual->name);
 	ft_printf(STR_C"error: %d\n", e->actual->error);
-	if (!e->actual->error)
-		print_bin(bin, BIN_MAX_SIZE);
+	if (e->actual->complete & 1)
+		ft_printf(COMMENT_C"FIND NAME\n");
+	if (e->actual->complete & 2)
+		ft_printf(NAME_C"FIND COMMENT\n");
+	/* if (!e->actual->error) */
+		/* print_bin(bin, BIN_MAX_SIZE); */
 	ft_printf("\n"); // a retirer
 }
 

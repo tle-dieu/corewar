@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 23:28:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 00:46:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		return (error_header(e, 1, s, cmd));
 	while (i--)
 		*(cp + i) = buff[i];
+	e->actual->complete |= cmd + 1;
 	return (1); //return plus necessaires toute la fonction
 }
 
@@ -76,7 +77,7 @@ int		get_header(t_env *e, unsigned char *cp)
 	int		i;
 
 	line = NULL;
-	while (add_line(e, &line) == 1)
+	while (!e->actual->fatal_error && add_line(e, &line) == 1)
 	{
 		i = 0;
 		while (line[i])
