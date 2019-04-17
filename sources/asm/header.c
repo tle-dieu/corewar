@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/16 23:55:17 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 23:28:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ int		multi_line(t_env *e, char *buff, int *i, int cmd)
 		while (*s && *s != '"')
 		{
 			if (*i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-				return (error_header(e->actual, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
+				return (error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
 			buff[(*i)++] = *s++;
 		}
 		if (*s == '"')
 			end = !check_end_str(&s);
 	}
-	return (error_header(e->actual, !end, s, cmd)); // retirer return error
+	return (error_header(e, !end, s, cmd)); // retirer return error
 }
 
 int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
@@ -49,12 +49,12 @@ int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	i = 0;
 	ft_printf("get %s\n", cmd ? COMMENT_CMD_STRING :  NAME_CMD_STRING);
 	if (!(t = ft_strchr(s, '"')))
-		return (error_header(e->actual, 3, s, cmd));
+		return (error_header(e, 3, s, cmd));
 	s = t;
 	while (*++s && *s != '"')
 	{
 		if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-			return (error_header(e->actual, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
+			return (error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
 		buff[i++] = *s;
 	}
 	if (!*s)
@@ -63,7 +63,7 @@ int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 			return (0); // gerer pas de quote a la fin (missing terminating '"' character)
 	}
 	else if (check_end_str(&s))
-		return (error_header(e->actual, 1, s, cmd));
+		return (error_header(e, 1, s, cmd));
 	while (i--)
 		*(cp + i) = buff[i];
 	return (1); //return plus necessaires toute la fonction

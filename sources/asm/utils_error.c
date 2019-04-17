@@ -6,23 +6,25 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/16 16:16:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 23:29:00 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <unistd.h>
 
-void	put_strtab(char *s, char replace)
+void	put_strtab(char *s, char replace, int n)
 {
 	char	buff[100];
+	char	*tmp;
 	int		i;
 	int		j;
 
-	while (*s)
+	tmp = s;
+	while (*s && (s - tmp < n || n == -1))
 	{
 		i = 0;
-		while (i + TAB_SIZE < 100 && *s)
+		while (i + TAB_SIZE < 100 && *s && (s - tmp < n || n == -1))
 		{
 			if (*s == '\t')
 			{
@@ -56,17 +58,24 @@ char	*check_end_str(char **end)
 	}
 }
 
-void	err_pointer(char *s, char *end)
+void	err_pointer(int tty, char *s, char *end)
 {
-	put_strtab(s, 0);
+	if (tty)
+		ft_dprintf(2, "{R}");
+	put_strtab(s, 0, -1);
 	write(2, "\n", 1);
-	ft_dprintf(2, "\x1b[%dC", end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1));
-	ft_dprintf(2, GREEN_CURS"%c{R}", '^');
+	put_strtab(s, ' ', end - s);
+	if (tty)
+		ft_dprintf(2, GREEN_CURS"^{R}");
+	else
+		ft_dprintf(2, "^");
 }
 
-void	err_wave(char *s)
+void	err_wave(int tty, char *s)
 {
-	ft_dprintf(2, GREEN_CURS);
-	put_strtab(s, '~');
-	ft_dprintf(2, "{R}");
+	if (tty)
+		ft_dprintf(2, GREEN_CURS);
+	put_strtab(s, '~', -1);
+	if (tty)
+		ft_dprintf(2, "{R}");
 }

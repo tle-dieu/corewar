@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 18:10:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 23:28:06 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,25 @@ void	compile(t_env *e)
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
 	get_header(e, cp);
-	/* ft_printf(STR_C"file: %s\n", e->actual->name); */
-	/* ft_printf(STR_C"error: %d\n", e->actual->error); */
-	/* if (!e->actual->error) */
-		/* print_bin(bin, BIN_MAX_SIZE); */
-	/* ft_printf("\n"); // a retirer */
+	ft_printf(STR_C"file: %s\n", e->actual->name);
+	ft_printf(STR_C"error: %d\n", e->actual->error);
+	if (!e->actual->error)
+		print_bin(bin, BIN_MAX_SIZE);
+	ft_printf("\n"); // a retirer
 }
 
 int		main(int ac, char **av)
 {
 	t_env	e;
 
-	e = (t_env){1, isatty(2), 1, NULL, NULL, av[0]};
+	e = (t_env){isatty(2), 1, NULL, NULL, av[0]};
 	if (ac < 2)
-		return (usage(av[0], 3));
+		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))
 		return (1);
 	if (!e.file)
-		return (usage(av[0], 3));
+		return (usage(&e, 3));
+	ft_printf("color ? %s\n", e.tty ? "yes" : "no");
 	print_files(e.file);
 	e.actual = e.file;
 	while (e.actual)

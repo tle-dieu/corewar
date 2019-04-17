@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 18:10:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 23:06:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,17 @@
 # define ASM_H
 
 # include "libft.h"
-# define RED_ERR "{bold}{red}"
 # define GREEN_CURS "{bold}{green}"
-# define ERR_LINE_C "{bold}%s:%d:%d: " RED_ERR "error: {R}{bold}"
-# define ERR_LINE_NC "%s:%d:%d: error: "
+
+# define ERR_LINE_C ("{bold}%s:%d:%d: {bold}{red}error: {R}{bold}")
+# define ERR_LINE_NC ("%s:%d:%d: error: ")
+
+# define ERR_FILE_C ("%s: {bold}{red}error: {R}")
+# define ERR_FILE_NC ("%s: error: ")
+
+# define COLOR_LINE(x) (x ? ERR_LINE_C : ERR_LINE_NC)
+# define COLOR_FILE(x) (x ? ERR_FILE_C : ERR_FILE_NC)
+
 # define TAB_SIZE 8
 //option output a rajouter pour preciser fichier ou mettre
 
@@ -50,7 +57,6 @@ typedef struct		s_file
 typedef struct		s_env
 {
 	int				tty;
-	int				color;
 	int				line_nb;
 	t_file			*actual;
 	t_file			*file;
@@ -77,15 +83,15 @@ void	            print_option(unsigned options, char *s);
 //----------------------------
 
 
-int					usage(char *ex_name, int err);
+int					usage(t_env *e, int err);
 void				free_lst_file(t_file *file);
 int					parse_command_line(t_env *e, int ac, char **av);
-void				err_pointer(char *s, char *end);
-void				err_wave(char *s);
+void				err_pointer(int tty, char *s, char *end);
+void				err_wave(int tty, char *s);
 char				*check_end_str(char **end);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
-void				put_strtab(char *s, char replace);
-int					error_header(t_file *file, int error, char *extra, int cmd);
+void				put_strtab(char *s, char replace, int n);
+int					error_header(t_env *e, int error, char *extra, int cmd);
 void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
 int					get_header(t_env *e, unsigned char *cp);

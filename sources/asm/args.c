@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 18:01:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/17 18:54:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	return (new);
 }
 
-static int		get_short_option(unsigned *options, char **s, char *ex_name)
+static int		get_short_option(t_env *e, unsigned *options, char **s)
 {
 	unsigned tmp_opt;
 
@@ -49,7 +49,7 @@ static int		get_short_option(unsigned *options, char **s, char *ex_name)
 		else if (**s == 'x')
 			tmp_opt |= O_DUMP;
 		else if (**s == 'h')
-			usage(ex_name, 1);
+			usage(e, 1);
 		else
 		{
 			*options |= O_SHORT_ERR;
@@ -61,7 +61,7 @@ static int		get_short_option(unsigned *options, char **s, char *ex_name)
 	return (1);
 }
 
-static int		get_long_option(unsigned *options, char **s, char *ex_name)
+static int		get_long_option(t_env *e, unsigned *options, char **s)
 {
 	(*s)++;
 	if (!ft_strcmp(*s, "annotated"))
@@ -70,8 +70,10 @@ static int		get_long_option(unsigned *options, char **s, char *ex_name)
 		*options |= O_DUMP;
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;
+	else if (!ft_strcmp(*s, "no-color"))
+		e->tty = 0;
 	else if (!ft_strcmp(*s, "help"))
-		usage(ex_name, 1);
+		usage(e, 1);
 	else
 	{
 		*options |= O_LONG_ERR;
@@ -93,8 +95,8 @@ int		parse_command_line(t_env *e, int ac, char **av)
 	{
 		s = av[i];
 		if (*s != '-' || !*++s || (*s == '-' && !*(s + 1))
-		|| !(*s == '-' ? get_long_option(&options, &s, e->exname)
-		: get_short_option(&options, &s, e->exname)))
+		|| !(*s == '-' ? get_long_option(e, &options, &s)
+		: get_short_option(e, &options, &s)))
 		{
 			if ((fd = open(av[i], O_RDONLY)) == -1 || read(fd, av[i], 0) < 0)
 				return (error_file(e, s, av[i], options));
