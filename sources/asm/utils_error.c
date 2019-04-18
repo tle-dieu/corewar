@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 02:42:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/19 00:00:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ char	*check_end_str(char **end)
 	}
 }
 
-void	err_pointer(int tty, char *s, char *end)
+void	err_pointer(int tty, char *s, char *end, int sp)
 {
 	if (tty)
 		ft_dprintf(2, "{R}");
 	put_strtab(s, 0);
-	ft_dprintf(2, "\n%*c", end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1), ' ');
-	(void)end;
+	if (s != end)
+		ft_dprintf(2, "\n%*c", end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1) + sp, ' ');
+	else
+		ft_dprintf(2, "\n");
 	if (tty)
 		ft_dprintf(2, GREEN_CURS"^{R}");
 	else

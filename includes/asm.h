@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 14:41:22 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/19 00:04:29 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,14 @@
 # define ERR_FILE_C ("%s: {bold}{red}error: {R}")
 # define ERR_FILE_NC ("%s: error: ")
 
+# define ERR_FATAL_C ("{bold}{red}fatal error: {R}")
+# define ERR_FATAL_NC ("fatal error: ")
+
 # define COLOR_LINE(x) (x ? ERR_LINE_C : ERR_LINE_NC)
 # define COLOR_FILE(x) (x ? ERR_FILE_C : ERR_FILE_NC)
+# define COLOR_FATAL(x) (x ? ERR_FATAL_C : ERR_FATAL_NC)
 
-# define TAB_SIZE 8
+# define TAB_SIZE 4
 //option output a rajouter pour preciser fichier ou mettre
 
 # define O_ANNOT 1
@@ -48,6 +52,8 @@ typedef struct		s_file
 	int				fd;
 	unsigned		options;
 	int				error;
+	int				line_nb;
+	int				nb_inst;
 	t_line			*begin;
 	t_line			*last;
 	struct s_file	*next;
@@ -57,7 +63,6 @@ typedef struct		s_file
 typedef struct		s_env
 {
 	int				tty;
-	int				line_nb;
 	t_file			*actual;
 	t_file			*file;
 	char			*exname;
@@ -72,7 +77,8 @@ typedef struct		s_inst
 	int				s[3];
 	int				t[3];
 	struct s_inst 	*next;
-}
+}					t_inst;
+
 /*
  ** ---------- DEBUG ----------
  */
@@ -96,7 +102,7 @@ void	            print_option(unsigned options, char *s);
 int					usage(t_env *e, int err);
 void				free_lst_file(t_file *file);
 int					parse_command_line(t_env *e, int ac, char **av);
-void				err_pointer(int tty, char *s, char *end);
+void				err_pointer(int tty, char *s, char *end, int sp);
 void				err_wave(int tty, char *s);
 char				*check_end_str(char **end);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
@@ -105,6 +111,7 @@ void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
 void				get_header(t_env *e, unsigned char *cp);
 int					alloc_error(t_env *e);
+t_inst				*parse_inst(char *str);
 
 //verifier include dans .c et verifier proto fonctions
 

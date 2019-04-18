@@ -1,4 +1,5 @@
-.name 
+.name "Kroz"
+.comment "Hello, i'm Kroz"
 .comment "Hello, i'm Kroz"
 		
 l2:	sti	r1, %:live,%1

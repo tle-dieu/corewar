@@ -3,7 +3,7 @@ VM = corewar
 ASM = asm
 
 CFLAGS = -Wall -Werror -Wextra
-CC = gcc $(CFLAGS)
+CC = gcc
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
 RM = rm -rf
@@ -20,7 +20,9 @@ ASM_SOURCES_FILES = main.c \
 					error.c \
 					utils_error.c \
 					error_args.c \
-					header.c
+					header.c \
+					parse_inst.c \
+					op.c
 
 VM_SOURCES_FILES = main.c \
 				   init.c \
@@ -107,26 +109,26 @@ all: $(PROGRAMMES) Makefile
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
 	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
-	$(CC) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
+	$(CC) $(CFLAGS) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(ASM) has been created$(RESET)\n" $(REDIRECT)
 
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
 	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
-	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
+	$(CC) $(CFLAGS) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)
 
 $(ASM_OBJECTS_DIR)%.o: $(ASM_SOURCES_DIR)%.c $(ASM_INCLUDES) Makefile
 	$(HIDE)
 	mkdir -p $(dir $@)
-	$(CC) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $< 
+	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $< 
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
 	$(SLEEP)
 
 $(VM_OBJECTS_DIR)%.o: $(VM_SOURCES_DIR)%.c $(VM_INCLUDES) Makefile
 	$(HIDE)
 	mkdir -p $(dir $@)
-	$(CC) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $<
+	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $< 
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
 	$(SLEEP)
 

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 03:21:49 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:12:34 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@
 
 //verifier que asm passe seulement ' ' et '\t'
 
+int		pass_line(char *s)
+{
+	while (*s)
+	{
+		if (*s != '\t' && *s != ' ')
+			return (0);
+		s++;
+	}
+	return (1);
+}
 int		add_line(t_env *e, char **line)
 {
 	t_line	*new;
@@ -24,26 +34,25 @@ int		add_line(t_env *e, char **line)
 
 	if ((ret = get_next_line(e->actual->fd, line)) <= 0)
 		return (ret == -1 ? alloc_error(e) : 0);
-	if (!**line)
+	if (pass_line(*line))
+	{
+		free(*line);
+		*line = NULL;
 		return (1);
+	}
 	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
 		free(*line);
 		alloc_error(e);
 	}
-	ft_printf(COMMENT_C"line: %s\n{R}", *line);
+	ft_printf(COMMENT_C"line: |%s|\n{R}", *line);
 	new->next = NULL;
 	new->s = *line;
+	new->y = e->actual->line_nb++;
 	if (!e->actual->begin)
-	{
-		new->y = ++e->line_nb;
 		e->actual->begin = new;
-	}
 	else
-	{
-		new->y = ++e->line_nb;
-		e->file->last->next = new;
-	}
+		e->actual->last->next = new;
 	e->actual->last = new;
 	return (1);
 }
@@ -61,14 +70,14 @@ void	compile(t_env *e)
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
 	get_header(e, cp);
-	ft_printf(STR_C"file: %s\n", e->actual->name);
-	ft_printf(STR_C"error: %d\n", e->actual->error);
+	ft_printf(STR_C"file: %s\n{R}", e->actual->name);
+	ft_printf(STR_C"error: %d\n{R}", e->actual->error);
 	if (e->actual->complete & 1)
-		ft_printf(COMMENT_C"FIND NAME\n");
+		ft_printf(COMMENT_C"FIND NAME\n{R}");
 	if (e->actual->complete & 2)
-		ft_printf(NAME_C"FIND COMMENT\n");
+		ft_printf(NAME_C"FIND COMMENT\n{R}");
 	/* if (!e->actual->error) */
-		/* print_bin(bin, BIN_MAX_SIZE); */
+	/* print_bin(bin, BIN_MAX_SIZE); */
 	ft_printf("\n"); // a retirer
 }
 
@@ -76,7 +85,7 @@ int		main(int ac, char **av)
 {
 	t_env	e;
 
-	e = (t_env){isatty(2), 1, NULL, NULL, av[0]};
+	e = (t_env){isatty(2), NULL, NULL, av[0]};
 	if (ac < 2)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))

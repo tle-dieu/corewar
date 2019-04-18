@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/14 00:25:29 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 16:49:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** Toutes les tailles sont en octets.
-** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
-*/
+ ** Toutes les tailles sont en octets.
+ ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
+ */
 
 #ifndef OP_H
 # define OP_H
@@ -74,4 +74,20 @@ typedef struct			s_header
 	unsigned int		prog_size;
 	char				comment[COMMENT_LENGTH + 1];
 }						t_header;
+
+typedef struct			s_op
+{
+	char				*label;
+	int					len;
+	int					nb_param;
+	int					param[3];
+	int					op_code;
+	int					nb_cycle;
+	void				(*ft_ptr)();
+	int					jsaispas;
+	int					dir_size;
+}						t_op;
+
+extern t_op				g_op_tab[17];
+
 #endif
