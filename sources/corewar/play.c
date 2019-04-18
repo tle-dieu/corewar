@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 22:41:49 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:48:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,21 @@ int					choose_cycle(int op)
 static int			exec_cycle(t_env *e)
 {
 	t_proc	*ptr;
-	t_ocp	check;
 
 	ptr = e->proc;
 	while (ptr)
 	{
 		ptr->cycle--;
 		if (e->visu && e->dump == -1)
-			e->v.color_map[ptr->pc % MEM_SIZE] = -e->v.color_map[ptr->pc % MEM_SIZE];
+			e->v.color_map[ptr->pc % MEM_SIZE] =
+				-e->v.color_map[ptr->pc % MEM_SIZE];
 		if (!ptr->cycle)
 		{
 			PRINT && ptr->op ? print_game(e, ptr) : 1;
 			if (ptr->pc >= MEM_SIZE)
 				ptr->pc = ptr->pc % MEM_SIZE;
-			check = check_ocp(e->mem[ptr->pc + 1],
-					g_op_tab[ptr->op - 1].dir_size);
 			if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1
 					|| e->mem[ptr->pc % MEM_SIZE] > 17)
-				ptr->pc++;
-			else if (check.error == -1)
 				ptr->pc++;
 			else
 				g_op_tab[ptr->op - 1].ft_ptr(e, &ptr->pc, ptr);
@@ -111,11 +107,7 @@ void				play(t_env *e)
 			e->cycle = 0;
 			e->nb_live = 0;
 		}
-		if (e->c_total == e->dump)
-		{
-			print_memory(e, 0);
-			break ;
-		}
+		(e->c_total == e->dump) ? print_memory(e, 0) : 1;
 		e->c_total++;
 		e->cycle++;
 	}

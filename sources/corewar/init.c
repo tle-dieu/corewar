@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 22:42:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:49:33 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void			init(t_env *e)
 	e->proc = NULL;
 	e->nb_proc = 0;
 	e->visu = 0;
-	ft_bzero(e->mem, MEM_SIZE);
 }
 
 int				init_proc(t_env *e, int j, int begin)
@@ -111,6 +110,7 @@ void			place_champ(t_env *e)
 
 	champ = -1;
 	e->nb_proc = e->nb_champ;
+	ft_bzero(e->mem, MEM_SIZE);
 	while (++champ < e->nb_champ)
 	{
 		j = 0;

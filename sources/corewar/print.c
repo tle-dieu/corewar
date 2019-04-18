@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 22:03:03 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:52:28 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void		print_memory(t_env *e, int cursor)
 			ft_printf("%02x ", e->mem[i]);
 	}
 	ft_printf("\n");
+	freedom(e);
+	exit(1);
 }
 
 void		print_winner(t_env *e)

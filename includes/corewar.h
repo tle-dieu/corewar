@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 22:42:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:43:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@
 # define PLAYER_4 5
 # define NO_ONE 6
 # define WRITING 7
-# define BORDER 8
+# define PROGRESS_1 8
+# define PROGRESS_2 9
+# define PROGRESS_3 10
+# define PROGRESS_4 11
+# define PROGRESS_NO 12
 
 typedef struct		s_ocp
 {
@@ -71,6 +75,7 @@ typedef	struct		s_champ
 
 typedef struct		s_visu
 {
+	int				posess[4];
 	int				color_map[MEM_SIZE];
 	int				color;
 	int				live_color;
@@ -101,7 +106,7 @@ typedef	struct		s_env
 }					t_env;
 
 /*
-** VISU.C (4)
+** VISU.C (5)
 */
 void				init_color_map(t_env *e);
 void				print_curent_stats(t_env *e);

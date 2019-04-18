@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 22:36:24 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:52:26 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ static int		digit(char *str)
 		i++;
 	}
 	return (1);
+}
+
+static void		save_dump(t_env *e, char *av, int *show, int *i)
+{
+	e->dump = ft_atoi(av);
+	*show = (e->dump < 0) ? 1 : *show;
+	*i += 2;
 }
 
 static void		check_params(t_env *e, int ac, char **av, int *show)
@@ -49,11 +56,7 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 			i++;
 		}
 		else if (ac > i + 1 && !ft_strcmp(av[i], "-dump") && digit(av[i + 1]))
-		{
-			e->dump = ft_atoi(av[i + 1]);
-			*show = (e->dump < 0) ? 1 : *show;
-			i += 2;
-		}
+			save_dump(e, av[i + 1], show, &i);
 		else if ((tmp = ft_strrchr(av[i], '.')) && !ft_strcmp(tmp, ".cor"))
 			e->champs[e->nb_champ++].file = i++;
 		else
