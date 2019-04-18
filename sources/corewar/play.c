@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 11:41:15 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:42:26 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static int			exec_cycle(t_env *e)
 	while (ptr)
 	{
 		ptr->cycle--;
+		if (VISU)
+			e->color_map[ptr->pc % MEM_SIZE] = -e->color_map[ptr->pc % MEM_SIZE];
 		if (!ptr->cycle)
 		{
 			PRINT && ptr->op ? print_game(e, ptr) : 1;
@@ -87,6 +89,7 @@ void				play(t_env *e)
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
+		VISU ? print_current_map(e) : 1;
 		if (e->new_proc)
 			add_new_proc(e);
 		if (e->cycle == e->c_to_die)
@@ -111,6 +114,4 @@ void				play(t_env *e)
 		e->c_total++;
 		e->cycle++;
 	}
-	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\n \
-		nb_proc = %d\n\n", e->dump, e->c_total, e->c_to_die, e->nb_proc);
 }

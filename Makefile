@@ -3,6 +3,7 @@ VM = corewar
 ASM = asm
 
 CFLAG = -Wall -Werror -Wextra
+VISU = -lncurses
 CC = gcc $(CFLAG)
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
@@ -110,7 +111,7 @@ $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
 	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
-	$(CC) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
+	$(CC) $(VISU) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)
 
 $(ASM_OBJECTS_DIR)%.o: $(ASM_SOURCES_DIR)%.c $(ASM_INCLUDES) Makefile

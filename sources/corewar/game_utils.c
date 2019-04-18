@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 11:06:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 16:20:52 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	if (!(new = (t_proc *)ft_memalloc(sizeof(t_proc))))
 		return (0);
 	new->owner = ptr->owner;
+	new->color = ptr->color;
 	new->live = ptr->live;
 	new->carry = ptr->carry;
 	new->op = e->mem[pc];

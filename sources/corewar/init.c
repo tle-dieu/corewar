@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 11:06:09 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:42:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void			init(t_env *e)
 	while (++i <= 4)
 	{
 		e->champs[i].id = 0;
+		e->champs[i].color = i + 2;
 		e->champs[i].chosen_id[0] = 0;
 		e->champs[i].chosen_id[1] = 0;
 	}
@@ -91,6 +92,7 @@ int				init_proc(t_env *e, int j, int begin)
 	new->r[1] = e->champs[j].id;
 	new->pc = begin;
 	new->owner = e->champs[j].id;
+	new->color = e->champs[j].color;
 	new->op = e->champs[j].content[0];
 	new->cycle = choose_cycle(new->op);
 	new->next = e->proc;

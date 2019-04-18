@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:59:33 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 11:39:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:18:29 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void			print_game(t_env *e, t_proc *ptr)
 				e->c_total, ptr->owner, ptr->op, ptr->id, ptr->pc);
 }
 
-void			print_chmp(t_env *e, int c, unsigned int cursor)
+void			print_chmp(t_env *e, int c, int cursor)
 {
-	unsigned int		i;
-	unsigned int		count;
+	int		i;
+	int		count;
 
 	count = 0;
 	ft_printf("\n\n=== %s %d ===\n", e->champs[c].name, e->champs[c].id);

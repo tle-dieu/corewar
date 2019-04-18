@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 11:39:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 17:34:11 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,20 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <ncurses.h>
 # include "op.h"
 # define NAME_COMM_SIZE PROG_NAME_LENGTH + COMMENT_LENGTH
 # define MAX_SIZE CHAMP_MAX_SIZE + NAME_COMM_SIZE + 16
 /* ************************************************************************** */
 # define PRINT 0
 /* ************************************************************************** */
+# define VISU 1
+# define PLAYER_1 2
+# define PLAYER_2 3
+# define PLAYER_3 4
+# define PLAYER_4 5
+# define NO_ONE 6
+# define WRITING 7
 
 typedef struct		s_ocp
 {
@@ -37,6 +45,7 @@ typedef struct		s_ocp
 typedef	struct		s_proc
 {
 	int				owner;
+	int				color;
 	int				id;
 	int				live;
 	int				r[17];
@@ -53,9 +62,10 @@ typedef	struct		s_champ
 	char			comment[COMMENT_LENGTH];
 	unsigned char	content[CHAMP_MAX_SIZE];
 	int				file;
+	int				color;
 	int				id;
 	int				chosen_id[2];
-	unsigned int	size;
+	int				size;
 }					t_champ;
 
 typedef	struct		s_env
@@ -74,9 +84,17 @@ typedef	struct		s_env
 	t_proc			*proc;
 	t_proc			*new_proc;
 	int				nb_proc;
+	int				color_map[MEM_SIZE];
+	int				color;
+	int				live_color;
+	unsigned char	mem_cpy[MEM_SIZE];
 	unsigned char	mem[MEM_SIZE];
 	unsigned char	line[MAX_SIZE];
 }					t_env;
+
+//
+void				print_current_map(t_env *e);
+//
 
 /*
 ** OP.C ()
@@ -161,7 +179,7 @@ void				place_champ(t_env *e);
 ** DEBUG (3)
 */
 void				print_game(t_env *e, t_proc *ptr);
-void				print_chmp(t_env *e, int c, unsigned int cursor);
+void				print_chmp(t_env *e, int c, int cursor);
 void				print_split_champ(t_env *e, int i);
 
 /*
