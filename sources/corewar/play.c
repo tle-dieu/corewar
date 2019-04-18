@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/16 19:04:46 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:41:15 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,10 @@ int					choose_cycle(int op)
 		return (1);
 }
 
-static void			print_game(t_env *e, t_proc *ptr)
-{
-	if (ptr->owner == -1)
-		ft_printf("%d :: {#0bd185}%-25d ===> OP %-10d %-10d PC %-10d{reset}\n",
-			e->c_total, ptr->owner, ptr->op, ptr->id, ptr->pc);
-	else
-		ft_printf("%d :: {#f4428c}%-25d ===> OP %-10d %-10d PC %-10d{reset}\n",
-			e->c_total, ptr->owner, ptr->op, ptr->id, ptr->pc);
-}
-
 static int			exec_cycle(t_env *e)
 {
 	t_proc	*ptr;
 	t_ocp	check;
-	int		tmp;
 
 	ptr = e->proc;
 	while (ptr)
@@ -43,13 +32,13 @@ static int			exec_cycle(t_env *e)
 		if (!ptr->cycle)
 		{
 			PRINT && ptr->op ? print_game(e, ptr) : 1;
-			tmp = ptr->pc;
 			if (ptr->pc >= MEM_SIZE)
 				ptr->pc = ptr->pc % MEM_SIZE;
-			check = check_ocp(e->mem[ptr->pc + 1], g_op_tab[ptr->op - 1].dir_size);
+			check = check_ocp(e->mem[ptr->pc + 1],
+					g_op_tab[ptr->op - 1].dir_size);
 			if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1
 					|| e->mem[ptr->pc % MEM_SIZE] > 17)
-					ptr->pc++;
+				ptr->pc++;
 			else if (check.error == -1)
 				ptr->pc++;
 			else
@@ -122,5 +111,6 @@ void				play(t_env *e)
 		e->c_total++;
 		e->cycle++;
 	}
-	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\nnb_proc = %d\n\n", e->dump, e->c_total, e->c_to_die, e->nb_proc);
+	ft_printf("\n\ne->dump = %d\ne->c_total = %d\nCTD %d\n \
+		nb_proc = %d\n\n", e->dump, e->c_total, e->c_to_die, e->nb_proc);
 }

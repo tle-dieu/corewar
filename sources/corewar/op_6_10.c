@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 19:04:37 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:16:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 & v2;
-		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]]);
+		ptr->carry = !ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
+			% MEM_SIZE]];
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -45,7 +46,8 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 | v2;
-		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]]);
+		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
+				% MEM_SIZE]]);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -63,8 +65,10 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
-		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 ^ v2;
-		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]]);
+		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
+			% MEM_SIZE]] = v1 ^ v2;
+		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
+				% MEM_SIZE]]);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -90,7 +94,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	int		sum;
 	int		p;
 	int		reg;
-	
+
 	ptr->carry = 0;
 	reg = 1;
 	sum = 0;

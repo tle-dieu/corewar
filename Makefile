@@ -2,7 +2,7 @@ PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
 
-CFLAG = -Wall -Werror -Wextra -g3 -Wuninitialized
+CFLAG = -Wall -Werror -Wextra
 CC = gcc $(CFLAG)
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
@@ -27,6 +27,7 @@ VM_SOURCES_FILES = main.c \
 				   debug.c \
 				   check.c \
 				   op.c \
+				   game_utils.c \
 				   op_utils.c \
 				   op_1_5.c \
 				   op_6_10.c \

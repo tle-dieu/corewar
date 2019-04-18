@@ -6,30 +6,38 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 16:06:18 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:06:09 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void		attribute_id(t_env *e)
+void			check_taken_id(t_env *e)
 {
 	int		i;
 	int		j;
-	int		new_id;
 
 	i = -1;
-	new_id = -1;
 	while (++i < e->nb_champ)
 	{
 		if (e->champs[i].chosen_id[0])
 		{
 			j = i;
 			while (++j < e->nb_champ)
-				if (e->champs[j].chosen_id[0] && e->champs[j].chosen_id[1] == e->champs[i].chosen_id[1])
+				if (e->champs[j].chosen_id[0]
+				&& e->champs[j].chosen_id[1] == e->champs[i].chosen_id[1])
 					e->champs[j].chosen_id[1]--;
 		}
 	}
+}
+
+void			attribute_id(t_env *e)
+{
+	int		i;
+	int		j;
+	int		new_id;
+
+	new_id = -1;
 	i = -1;
 	while (++i < e->nb_champ)
 	{
@@ -44,29 +52,6 @@ void		attribute_id(t_env *e)
 		else
 			e->champs[i].id = e->champs[i].chosen_id[1];
 	}
-}
-
-int			create_new_process(t_env *e, int pc, t_proc *ptr)
-{
-	int		i;
-	t_proc	*new;
-
-	i = -1;
-	e->nb_proc++;
-	if (!(new = (t_proc *)ft_memalloc(sizeof(t_proc))))
-		return (0);
-	new->owner = ptr->owner;
-	new->live = ptr->live;
-	new->carry = ptr->carry;
-	new->op = e->mem[pc];
-	new->cycle = choose_cycle(new->op);
-	while (++i <= 17)
-		new->r[i] = ptr->r[i];
-	new->pc = pc;
-	new->id = e->nb_proc;
-	new->next = e->new_proc;
-	e->new_proc = new;
-	return (1);
 }
 
 void			init(t_env *e)

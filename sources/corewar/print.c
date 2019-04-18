@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 19:04:48 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:27:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void		usage(char *path)
 {
 	if (path)
-		ft_printf("usage:\n	%s [-dump nbr_cycles] [[-n number] champion1.cor] ...\n	You must enter between 2 and 4 champions\n	Champions must have the .cor extension\n\n", path);	
+		ft_printf("usage:\n	%s [-dump nbr_cycles] [[-n number] \
+			champion1.cor] ...\nYou must enter between 2 and 4 champions\n \
+			Champions must have the .cor extension\n\n", path);
 }
 
 void		print_memory(t_env *e, int cursor)
@@ -33,7 +35,7 @@ void		print_memory(t_env *e, int cursor)
 			ft_printf("{#63676d}%02x {reset}", e->mem[i]);
 		else
 			ft_printf("%02x ", e->mem[i]);
-	}	
+	}
 }
 
 void		print_winner(t_env *e)
@@ -49,9 +51,11 @@ void		print_winner(t_env *e)
 		while (++i < e->nb_champ)
 		{
 			if (e->last_live == e->champs[i].id)
-				ft_printf("WINNER {#0bd185}%s(%d){reset}\n", e->champs[i].name, e->champs[i].id);
+				ft_printf("WINNER {#0bd185}%s(%d){reset}\n",
+						e->champs[i].name, e->champs[i].id);
 			else
-				ft_printf("LOOSER {#f48042}%s(%d){reset}\n", e->champs[i].name, e->champs[i].id);
+				ft_printf("LOOSER {#f48042}%s(%d){reset}\n",
+						e->champs[i].name, e->champs[i].id);
 		}
 		ft_printf("\n\n");
 	}

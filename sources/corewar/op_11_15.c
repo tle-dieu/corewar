@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 19:04:39 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:44:29 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (reg)
 		{
-			insert(e, (*pc + sum) % MEM_SIZE,
-					(void*)&ptr->r[p], 4);
+			insert(e, (*pc + sum) % MEM_SIZE, (void*)&ptr->r[p], 4);
 			ptr->carry = 1;
 		}
 	}

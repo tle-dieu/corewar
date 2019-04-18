@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/16 19:04:44 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:39:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ typedef	struct		s_env
 }					t_env;
 
 /*
+** OP.C ()
+*/
+
+/*
 ** ARGS.C (3)
 */
 int					parse_args(t_env *e, int ac, char **av);
@@ -90,15 +94,17 @@ int					check_champ(t_env *e, char *arg, int i, char **av);
 int					check_reg(int reg);
 
 /*
-** OP.C (5)
+** GAME_UTILS.C (1)
 */
+int					create_new_process(t_env *e, int pc, t_proc *ptr);
 
 /*
 ** OP_UTILS.C (5)
 */
 void				insert(t_env *e, int pc, void *ptr, int size);
 int					param_sum(t_env *e, int pc, int size);
-int					param_value(t_env *e, t_ocp check, int to_find, t_proc *ptr);
+int					param_value(t_env *e, t_ocp check, int to_find,
+		t_proc *ptr);
 t_ocp				check_ocp(int ocp, int on_two);
 
 /*
@@ -145,18 +151,17 @@ void				play(t_env *e);
 /*
 ** INIT (5)
 */
+void				check_taken_id(t_env *e);
 void				attribute_id(t_env *e);
-int					create_new_process(t_env *e, int pc, t_proc *ptr);
 void				init(t_env *e);
 int					init_proc(t_env *e, int j, int begin);
 void				place_champ(t_env *e);
 
 /*
-** DEBUG (4)
+** DEBUG (3)
 */
+void				print_game(t_env *e, t_proc *ptr);
 void				print_chmp(t_env *e, int c, unsigned int cursor);
-void				print_process(t_env *e);
-void				print_env(t_env env, int cursor);
 void				print_split_champ(t_env *e, int i);
 
 /*

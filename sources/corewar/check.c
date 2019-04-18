@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/13 19:11:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/16 19:09:38 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,15 @@ int				check_champ(t_env *e, char *arg, int i, char **av)
 	}
 	ft_bzero(e->line, MAX_SIZE);
 	ret = read(fd, e->line, MAX_SIZE + 1);
-	if (!(check_champ_size(e, ret, i)))
+	if (ret == -1 || !(check_magic_number(e)))
 	{
-		ft_printf("Champ too big -> %d > %d\n",
-				e->champs[i].size, CHAMP_MAX_SIZE);
+		ft_printf("Not a valid file\n");
 		return (0);
 	}
-	if (!(check_magic_number(e)))
+	if (!(check_champ_size(e, ret, i)))
 	{
-		ft_printf("Wrong magic number\n");
+		ft_printf("Champion too big (%d > %d)\n",
+				e->champs[i].size, CHAMP_MAX_SIZE);
 		return (0);
 	}
 	split_champ(e, i);
