@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 00:46:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 03:24:45 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,17 @@ int		multi_line(t_env *e, char *buff, int *i, int cmd)
 	while (end == -1)
 	{
 		if (add_line(e, &line) != 1)
-			return (0);
+			return (-1);
 		buff[(*i)++] = '\n';
 		s = line;
 		while (*s && *s != '"')
 		{
 			if (*i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
+			{
+				while (!ft_strchr(e->actual->last->s, '"') && add_line(e, &line) == 1) // peut etre mettre une limite max du nb de lignes dans add line pour eviter une erreur de malloc
+					;
 				return (error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
+			}
 			buff[(*i)++] = *s++;
 		}
 		if (*s == '"')
@@ -59,46 +63,50 @@ int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	}
 	if (!*s)
 	{
-		if (!(multi_line(e, buff, &i, cmd)))
-			return (0); // gerer pas de quote a la fin (missing terminating '"' character)
+		if (multi_line(e, buff, &i, cmd) == -1)
+			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
 	}
 	else if (check_end_str(&s))
 		return (error_header(e, 1, s, cmd));
-	while (i--)
-		*(cp + i) = buff[i];
 	e->actual->complete |= cmd + 1;
-	return (1); //return plus necessaires toute la fonction
+	if (!e->actual->error)
+		while (i--)
+			*(cp + i) = buff[i];
+	return (1);
 }
 
 //verifier si line = NULL est utile
-int		get_header(t_env *e, unsigned char *cp)
+void	get_header(t_env *e, unsigned char *cp)
 {
 	char	*line;
 	int		i;
 
-	line = NULL;
-	while (!e->actual->fatal_error && add_line(e, &line) == 1)
+	while (e->actual->error < 20 && add_line(e, &line) == 1)
 	{
 		i = 0;
-		while (line[i])
+		if (*line)
 		{
-			if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+			while (line[i])
 			{
-				if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
-					get_cmd(e, line + i + sizeof(NAME_CMD_STRING), cp, 0);
-				else if (!ft_strncmp(COMMENT_CMD_STRING, line + i, sizeof(COMMENT_CMD_STRING) - 1))
-					get_cmd(e, line + i + sizeof(COMMENT_CMD_STRING), cp + PROG_NAME_LENGTH + 8, 1);
-				else if (line[i])
+				if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
 				{
-					ft_printf("{#ff3333}line:{R} '%s' {#ff3333}is an instruction{R}\n", line);
-					return (1);
+					if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
+						get_cmd(e, line + i + sizeof(NAME_CMD_STRING), cp, 0);
+					else if (!ft_strncmp(COMMENT_CMD_STRING, line + i, sizeof(COMMENT_CMD_STRING) - 1))
+						get_cmd(e, line + i + sizeof(COMMENT_CMD_STRING), cp + PROG_NAME_LENGTH + 8, 1);
+					else if (line[i])
+					{
+						ft_printf("{#ff3333}line:{R} '%s' {#ff3333}is an instruction{R}\n", line);
+						return ; // a retirer
+					}
+					free_line(e->actual);
+					break ;
 				}
-				free_line(e->actual);
-				break ;
+				i++;
 			}
-			i++;
 		}
-		line = NULL;
+		else
+			free(line);
 	}
-	return (1);
+	//if error >= 20 print too many error
 }

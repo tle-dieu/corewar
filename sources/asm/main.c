@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 00:41:29 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 03:21:49 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ int		add_line(t_env *e, char **line)
 	t_line	*new;
 	int		ret;
 
-	*line = NULL;
 	if ((ret = get_next_line(e->actual->fd, line)) <= 0)
 		return (ret == -1 ? alloc_error(e) : 0);
+	if (!**line)
+		return (1);
 	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
 		free(*line);

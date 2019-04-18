@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 00:20:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 02:44:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct		s_file
 	char			*name;
 	int				fd;
 	unsigned		options;
-	int				fatal_error;
 	int				error;
 	t_line			*begin;
 	t_line			*last;
@@ -91,11 +90,10 @@ void				err_pointer(int tty, char *s, char *end);
 void				err_wave(int tty, char *s);
 char				*check_end_str(char **end);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
-void				put_strtab(char *s, char replace, int n);
 int					error_header(t_env *e, int error, char *extra, int cmd);
 void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
-int					get_header(t_env *e, unsigned char *cp);
+void				get_header(t_env *e, unsigned char *cp);
 int					alloc_error(t_env *e);
 
 //verifier include dans .c et verifier proto fonctions

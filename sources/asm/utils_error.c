@@ -6,25 +6,23 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 23:29:00 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 02:42:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <unistd.h>
 
-void	put_strtab(char *s, char replace, int n)
+void	put_strtab(char *s, char replace)
 {
 	char	buff[100];
-	char	*tmp;
 	int		i;
 	int		j;
 
-	tmp = s;
-	while (*s && (s - tmp < n || n == -1))
+	while (*s)
 	{
 		i = 0;
-		while (i + TAB_SIZE < 100 && *s && (s - tmp < n || n == -1))
+		while (i + TAB_SIZE < 100 && *s)
 		{
 			if (*s == '\t')
 			{
@@ -62,9 +60,9 @@ void	err_pointer(int tty, char *s, char *end)
 {
 	if (tty)
 		ft_dprintf(2, "{R}");
-	put_strtab(s, 0, -1);
-	write(2, "\n", 1);
-	put_strtab(s, ' ', end - s);
+	put_strtab(s, 0);
+	ft_dprintf(2, "\n%*c", end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1), ' ');
+	(void)end;
 	if (tty)
 		ft_dprintf(2, GREEN_CURS"^{R}");
 	else
@@ -75,7 +73,7 @@ void	err_wave(int tty, char *s)
 {
 	if (tty)
 		ft_dprintf(2, GREEN_CURS);
-	put_strtab(s, '~', -1);
+	put_strtab(s, '~');
 	if (tty)
 		ft_dprintf(2, "{R}");
 }
