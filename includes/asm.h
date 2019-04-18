@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 02:44:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/18 14:41:22 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,19 @@ typedef struct		s_env
 	char			*exname;
 }					t_env;
 
+typedef struct		s_inst
+{
+	int				op;
+	int				ocp;
+	int				nb_p;
+	int				p[3];
+	int				s[3];
+	int				t[3];
+	struct s_inst 	*next;
+}
 /*
-** ---------- DEBUG ----------
-*/
+ ** ---------- DEBUG ----------
+ */
 
 # define FT_C "{#2ecc71}"
 # define STR_C "{#0bd195}"
