@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 16:30:57 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:39:39 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void			insert(t_env *e, int pc, void *ptr, int size)
 	while (size--)
 	{
 		e->mem[(pc + size) % MEM_SIZE] = *tmp++;
-		if (VISU)
-			e->color_map[(pc + size) % MEM_SIZE] = e->color;
+		if (e->visu)
+			e->v.color_map[(pc + size) % MEM_SIZE] = e->v.color;
 	}
 }
 

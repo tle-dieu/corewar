@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 18:42:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:42:40 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void			check_taken_id(t_env *e)
 	{
 		if (e->champs[i].chosen_id[0])
 		{
-			j = i;
+			j = -1;
 			while (++j < e->nb_champ)
-				if (e->champs[j].chosen_id[0]
+				if (j != i && e->champs[j].chosen_id[0]
 				&& e->champs[j].chosen_id[1] == e->champs[i].chosen_id[1])
 					e->champs[j].chosen_id[1]--;
 		}
@@ -39,6 +39,7 @@ void			attribute_id(t_env *e)
 
 	new_id = -1;
 	i = -1;
+	check_taken_id(e);
 	while (++i < e->nb_champ)
 	{
 		if (!(e->champs[i].chosen_id[0]))
@@ -62,6 +63,7 @@ void			init(t_env *e)
 	while (++i <= 4)
 	{
 		e->champs[i].id = 0;
+		e->champs[i].nb_live = 0;
 		e->champs[i].color = i + 2;
 		e->champs[i].chosen_id[0] = 0;
 		e->champs[i].chosen_id[1] = 0;
@@ -79,6 +81,7 @@ void			init(t_env *e)
 	e->new_proc = NULL;
 	e->proc = NULL;
 	e->nb_proc = 0;
+	e->visu = 0;
 	ft_bzero(e->mem, MEM_SIZE);
 }
 

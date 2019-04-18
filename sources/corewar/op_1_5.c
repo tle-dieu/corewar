@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 17:35:36 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:40:25 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 		{
 		//	ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
 		//		e->champs[j].id, e->champs[j].name);
-			if (VISU)
-				e->live_color = j + 2;
+			if (e->visu)
+				e->v.live_color = j + 2;
 			e->last_live = e->champs[j].id;
+			e->champs[j].nb_live++;
 		}
 	*pc += 4;
 }
@@ -82,7 +83,7 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 		else if (check.s2 == 2 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 		{
 			addr = param_sum(e, *pc + 3, 2);
-			e->color = VISU ? ptr->color : 0;
+			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + (addr % IDX_MOD)) % MEM_SIZE,
 				(void*)&ptr->r[e->mem[(*pc + 2) % MEM_SIZE]], REG_SIZE);
 		}

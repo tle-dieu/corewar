@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 11:27:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:03:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		print_memory(t_env *e, int cursor)
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		if (i && !(i % 64))
+		if (i && !(i % 32))
 			ft_printf("\n", e->mem[i]);
 		if (i && i == cursor)
 			ft_printf("{#f4428c}%02x {reset}", e->mem[i]);
@@ -36,6 +36,7 @@ void		print_memory(t_env *e, int cursor)
 		else
 			ft_printf("%02x ", e->mem[i]);
 	}
+	ft_printf("\n");
 }
 
 void		print_winner(t_env *e)

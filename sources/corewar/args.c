@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 19:09:47 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:36:24 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 			e->champs[e->nb_champ].chosen_id[0] = 1;
 			e->champs[e->nb_champ].chosen_id[1] = ft_atoi(av[i + 1]);
 			i += 2;
+		}
+		else if (!ft_strcmp(av[i], "-v"))
+		{
+			e->visu = 1;
+			i++;
 		}
 		else if (ac > i + 1 && !ft_strcmp(av[i], "-dump") && digit(av[i + 1]))
 		{

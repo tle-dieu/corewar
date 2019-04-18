@@ -33,6 +33,7 @@ VM_SOURCES_FILES = main.c \
 				   op_1_5.c \
 				   op_6_10.c \
 				   op_11_15.c \
+				   visu.c \
 				   play.c
 
 SOURCES_DIR = sources/

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 18:42:26 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:41:49 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static int			exec_cycle(t_env *e)
 	while (ptr)
 	{
 		ptr->cycle--;
-		if (VISU)
-			e->color_map[ptr->pc % MEM_SIZE] = -e->color_map[ptr->pc % MEM_SIZE];
+		if (e->visu && e->dump == -1)
+			e->v.color_map[ptr->pc % MEM_SIZE] = -e->v.color_map[ptr->pc % MEM_SIZE];
 		if (!ptr->cycle)
 		{
 			PRINT && ptr->op ? print_game(e, ptr) : 1;
@@ -57,8 +57,13 @@ static void			is_alive(t_env *e)
 {
 	t_proc	*tmp;
 	t_proc	*ptr;
+	int		i;
 
 	ptr = e->proc;
+	i = -1;
+	if (e->visu && e->dump == -1)
+		while (++i < e->nb_champ)
+			e->champs[i].nb_live = 0;
 	while (ptr)
 	{
 		tmp = NULL;
@@ -89,7 +94,7 @@ void				play(t_env *e)
 	while (e->c_to_die > 0)
 	{
 		exec_cycle(e);
-		VISU ? print_current_map(e) : 1;
+		e->visu && e->dump == -1 ? print_current_map(e) : 1;
 		if (e->new_proc)
 			add_new_proc(e);
 		if (e->cycle == e->c_to_die)
@@ -106,7 +111,7 @@ void				play(t_env *e)
 			e->cycle = 0;
 			e->nb_live = 0;
 		}
-		if (e->dump != -1 && e->c_total == e->dump)
+		if (e->c_total == e->dump)
 		{
 			print_memory(e, 0);
 			break ;

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 14:34:10 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:05:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void			destroy_process(t_env *e, t_proc *to_del)
 	t_proc	*tmp;
 
 	ptr = e->proc;
+	if (e->visu)
+		ft_printf("\a");
 	e->nb_proc--;
 	if (ptr == to_del)
 	{

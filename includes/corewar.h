@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 17:34:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/18 22:42:43 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 /* ************************************************************************** */
 # define PRINT 0
 /* ************************************************************************** */
-# define VISU 1
 # define PLAYER_1 2
 # define PLAYER_2 3
 # define PLAYER_3 4
 # define PLAYER_4 5
 # define NO_ONE 6
 # define WRITING 7
+# define BORDER 8
 
 typedef struct		s_ocp
 {
@@ -61,6 +61,7 @@ typedef	struct		s_champ
 	char			name[PROG_NAME_LENGTH];
 	char			comment[COMMENT_LENGTH];
 	unsigned char	content[CHAMP_MAX_SIZE];
+	int				nb_live;
 	int				file;
 	int				color;
 	int				id;
@@ -68,9 +69,18 @@ typedef	struct		s_champ
 	int				size;
 }					t_champ;
 
+typedef struct		s_visu
+{
+	int				color_map[MEM_SIZE];
+	int				color;
+	int				live_color;
+
+}					t_visu;
+
 typedef	struct		s_env
 {
 	int				dump;
+	int				visu;
 	int				total_live;
 	int				total_proc;
 	int				nb_live;
@@ -80,21 +90,23 @@ typedef	struct		s_env
 	int				c_to_die;
 	int				c_total;
 	int				nb_champ;
+	t_visu			v;
 	t_champ			champs[4];
 	t_proc			*proc;
 	t_proc			*new_proc;
 	int				nb_proc;
-	int				color_map[MEM_SIZE];
-	int				color;
-	int				live_color;
 	unsigned char	mem_cpy[MEM_SIZE];
 	unsigned char	mem[MEM_SIZE];
 	unsigned char	line[MAX_SIZE];
 }					t_env;
 
-//
+/*
+** VISU.C (4)
+*/
+void				init_color_map(t_env *e);
+void				print_curent_stats(t_env *e);
 void				print_current_map(t_env *e);
-//
+void				visu(t_env *e);
 
 /*
 ** OP.C ()
