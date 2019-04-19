@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 23:52:28 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/19 15:59:32 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 void		usage(char *path)
 {
 	if (path)
-		ft_printf("usage:\n	%s [-dump nbr_cycles] [[-n number] \
-			champion1.cor] ...\nYou must enter between 2 and 4 champions\n \
+		ft_printf("usage:\n\
+			%s [-dump nbr_cycles] [[-n number]champion1.cor] ...\n\
+			You must enter between 2 and 4 champions\n\
 			Champions must have the .cor extension\n\n", path);
 }
 
@@ -41,23 +42,34 @@ void		print_memory(t_env *e, int cursor)
 	exit(1);
 }
 
+void		print_subject_winner(t_env *e)
+{
+	int		i;
+
+	i = -1;
+	while (++i < e->nb_champ)
+		if (e->last_live == e->champs[i].id)
+			ft_printf("le joueur %d(%s) a gagne\n",
+				e->champs[i].id, e->champs[i].name);
+}
+
 void		print_winner(t_env *e)
 {
 	int		i;
 
 	i = -1;
-	ft_printf("\n\n");
+	printw("\n\n");
 	if (!e->total_live)
-		ft_printf("NOBODY WINS\n");
+		printw("NOBODY WINS\n");
 	else
 	{
 		while (++i < e->nb_champ)
 		{
 			if (e->last_live == e->champs[i].id)
-				ft_printf("WINNER {#0bd185}%s(%d){reset}\n",
+				printw("WINNER {#0bd185}%s(%d){reset}\n",
 						e->champs[i].name, e->champs[i].id);
 			else
-				ft_printf("LOOSER {#f48042}%s(%d){reset}\n",
+				printw("LOOSER {#f48042}%s(%d){reset}\n",
 						e->champs[i].name, e->champs[i].id);
 		}
 		ft_printf("\n\n");

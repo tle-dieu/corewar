@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 23:48:47 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/19 15:50:21 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int			exec_cycle(t_env *e)
 				-e->v.color_map[ptr->pc % MEM_SIZE];
 		if (!ptr->cycle)
 		{
-			PRINT && ptr->op ? print_game(e, ptr) : 1;
 			if (ptr->pc >= MEM_SIZE)
 				ptr->pc = ptr->pc % MEM_SIZE;
 			if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1

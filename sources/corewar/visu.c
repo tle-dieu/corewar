@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:26:03 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/18 23:44:57 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/19 16:07:55 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void				print_current_stats(t_env *e)
 		printw(" Player %11d : ", e->champs[i].id);
 		attron(COLOR_PAIR(e->champs[i].color));
 		if (e->champs[i].nb_live <= 1)
-			printw(" %40s %4d live\n", e->champs[i].name,
+			printw(" %60s %4d live\n", e->champs[i].name,
 					e->champs[i].nb_live);
 		else
-			printw(" %40s %4d lives\n", e->champs[i].name,
+			printw(" %60s %4d lives\n", e->champs[i].name,
 					e->champs[i].nb_live);
 	}
 	printw("\n");
@@ -129,16 +129,16 @@ void				visu(t_env *e)
 		e->v.posess[i] = 0;
 	e->v.live_color = 0;
 	init_color_map(e);
-	init_pair(PLAYER_1, 21, COLOR_BLACK);
-	init_pair(PLAYER_2, 88, COLOR_BLACK);
-	init_pair(PLAYER_3, COLOR_GREEN, COLOR_BLACK);
-	init_pair(PLAYER_4, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(PLAYER_1, 32, COLOR_BLACK);
+	init_pair(PLAYER_2, 28, COLOR_BLACK);
+	init_pair(PLAYER_3, 11, COLOR_BLACK);
+	init_pair(PLAYER_4, 1, COLOR_BLACK);
 	init_pair(NO_ONE, 242, COLOR_BLACK);
 	init_pair(WRITING, 253, COLOR_BLACK);
-	init_pair(PROGRESS_1, 21, 21);
-	init_pair(PROGRESS_2, 88, 88);
-	init_pair(PROGRESS_3, COLOR_GREEN, COLOR_GREEN);
-	init_pair(PROGRESS_4, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(PROGRESS_1, 32, 32);
+	init_pair(PROGRESS_2, 28, 28);
+	init_pair(PROGRESS_3, 11, 11);
+	init_pair(PROGRESS_4, 1, 1);
 	init_pair(PROGRESS_NO, 242, 242);
 	print_current_map(e);
 	while (getch() != ' ')

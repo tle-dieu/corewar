@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 23:43:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/19 15:48:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 # include "op.h"
 # define NAME_COMM_SIZE PROG_NAME_LENGTH + COMMENT_LENGTH
 # define MAX_SIZE CHAMP_MAX_SIZE + NAME_COMM_SIZE + 16
-/* ************************************************************************** */
-# define PRINT 0
-/* ************************************************************************** */
 # define PLAYER_1 2
 # define PLAYER_2 3
 # define PLAYER_3 4
@@ -125,7 +122,7 @@ int					parse_args(t_env *e, int ac, char **av);
 /*
 ** CHECK.C (5)
 */
-int					check_champ(t_env *e, char *arg, int i, char **av);
+int					check_champ(t_env *e, char *arg, int i);
 int					check_reg(int reg);
 
 /*
@@ -170,10 +167,11 @@ void				lldi(t_env *e, int *pc, t_proc *ptr);
 void				lfork(t_env *e, int *pc, t_proc *ptr);
 
 /*
-** PRINT.C (4)
+** PRINT.C (5)
 */
 void				usage(char *path);
 void				print_memory(t_env *e, int cursor);
+void				print_subject_winner(t_env *e);
 void				print_winner(t_env *e);
 void				aff(t_env *e, int *pc, t_proc *ptr);
 

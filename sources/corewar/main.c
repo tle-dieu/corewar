@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 22:36:33 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/19 16:03:19 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int					main(int ac, char **av)
 		return (1);
 	while (++i < e.nb_champ)
 	{
-		if (!(check_champ(&e, av[e.champs[i].file], i, av)))
+		if (!(check_champ(&e, av[e.champs[i].file], i)))
 			return (1);
 	}
 	attribute_id(&e);
@@ -31,8 +31,10 @@ int					main(int ac, char **av)
 	if (e.visu && e.dump == -1)
 		visu(&e);
 	play(&e);
-	if (!e.visu || e.dump == -1)
+	if (e.visu && e.dump == -1)
 		print_winner(&e);
+	else if (e.dump == -1)
+		print_subject_winner(&e);
 	freedom(&e);
 	return (0);
 }

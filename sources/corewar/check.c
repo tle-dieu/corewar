@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/16 19:09:38 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/19 15:50:12 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,13 @@ static int		check_magic_number(t_env *e)
 
 static int		check_champ_size(t_env *e, int ret, int i)
 {
-	if (ret > MAX_SIZE || e->line[PROG_NAME_LENGTH + 10] * 256
-			+ e->line[PROG_NAME_LENGTH + 11] > CHAMP_MAX_SIZE)
-		return (0);
-	else
-	{
-		e->champs[i].size = e->line[PROG_NAME_LENGTH + 10] * 256
-			+ e->line[PROG_NAME_LENGTH + 11];
-		return (1);
-	}
+	e->champs[i].size = e->line[PROG_NAME_LENGTH + 10] * 256
+		+ e->line[PROG_NAME_LENGTH + 11];
+	return (ret < MAX_SIZE || e->champs[i].size < CHAMP_MAX_SIZE
+			|| e->champs[i].size < 0);
 }
 
-int				check_champ(t_env *e, char *arg, int i, char **av)
+int				check_champ(t_env *e, char *arg, int i)
 {
 	int		fd;
 	int		ret;
@@ -75,20 +70,20 @@ int				check_champ(t_env *e, char *arg, int i, char **av)
 	fd = open(arg, O_RDONLY);
 	if (fd == -1 || !fd)
 	{
-		usage(av[0]);
+		ft_printf("\nWrong .cor file: %s\n", arg);
 		return (0);
 	}
 	ft_bzero(e->line, MAX_SIZE);
 	ret = read(fd, e->line, MAX_SIZE + 1);
 	if (ret == -1 || !(check_magic_number(e)))
 	{
-		ft_printf("Not a valid file\n");
+		ft_printf("\nNot a valid file\n");
 		return (0);
 	}
 	if (!(check_champ_size(e, ret, i)))
 	{
-		ft_printf("Champion too big (%d > %d)\n",
-				e->champs[i].size, CHAMP_MAX_SIZE);
+		ft_printf("\nChampion %s too big (%d > %d)\n",
+			arg, e->champs[i].size, CHAMP_MAX_SIZE);
 		return (0);
 	}
 	split_champ(e, i);
