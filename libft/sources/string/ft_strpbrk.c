@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdup.c                                        :+:      :+:    :+:   */
+/*   ft_strpbrk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 17:48:03 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 01:55:53 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/20 20:24:59 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/20 20:40:43 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <string.h>
 
-void	*ft_memdup(const void *src, size_t n)
+char	*ft_strpbrk(const char *s, const char *chr)
 {
-	void 				*new;
-	unsigned char		*ds;
-	unsigned char const	*sr;
+	const char *tmp;
 
-	if (!src || !(new = malloc(n)))
-		return (NULL);
-	ds = (unsigned char *)new;
-	sr = (unsigned char const *)src;
-	while (n--)
-		*ds++ = *sr++;
-	return (new);
+	while (*s)
+	{
+		tmp = chr;
+		while (*tmp)
+			if (*tmp++ == *s)
+				return ((char *)s);
+		s++;
+	}
+	return (NULL);
 }

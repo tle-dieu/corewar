@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdup.c                                        :+:      :+:    :+:   */
+/*   ft_strlwr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 17:48:03 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 01:55:53 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/20 20:27:16 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/20 20:27:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-
-void	*ft_memdup(const void *src, size_t n)
+char	*ft_strlwr(char *str)
 {
-	void 				*new;
-	unsigned char		*ds;
-	unsigned char const	*sr;
+	char *s;
 
-	if (!src || !(new = malloc(n)))
-		return (NULL);
-	ds = (unsigned char *)new;
-	sr = (unsigned char const *)src;
-	while (n--)
-		*ds++ = *sr++;
-	return (new);
+	s = str;
+	while (*s)
+	{
+		*s = (*s >= 'A' && *s <= 'Z') ? *s + 32 : *s;
+		s++;
+	}
+	return (str);
 }

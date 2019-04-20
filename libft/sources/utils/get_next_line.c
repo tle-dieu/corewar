@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 18:00:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/16 20:45:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:00:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int				get_next_line(const int fd, char **line)
 		actual->len += ret;
 		free(tmp);
 		if (actual->len > MAX_SIZE_STATIC)
-			return (!free_fd(&list, actual));
+			return (free_fd(&list, actual));
 	}
 	if ((ret = check_line(actual, ret, line, tmp)) <= 0)
 		free_fd(&list, actual);

@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdup.c                                        :+:      :+:    :+:   */
+/*   ft_strcmpi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 17:48:03 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 01:55:53 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/04/20 20:24:19 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/04/20 20:40:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <string.h>
 
-void	*ft_memdup(const void *src, size_t n)
+int		ft_strcmpi(const char *s1, const char *s2)
 {
-	void 				*new;
-	unsigned char		*ds;
-	unsigned char const	*sr;
+	size_t i;
 
-	if (!src || !(new = malloc(n)))
-		return (NULL);
-	ds = (unsigned char *)new;
-	sr = (unsigned char const *)src;
-	while (n--)
-		*ds++ = *sr++;
-	return (new);
+	i = 0;
+	while (s1[i] && (s1[i] == s2[i]
+	|| (s1[i] >= 'a' && s1[i] <= 'z' && s1[i] - 32 == s2[i])
+	|| (s1[i] >= 'A' && s1[i] <= 'Z' && s1[i] + 32 == s2[i])))
+		i++;
+	return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
 }
