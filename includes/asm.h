@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/19 00:04:29 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 04:40:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define ERR_FATAL_C ("{bold}{red}fatal error: {R}")
 # define ERR_FATAL_NC ("fatal error: ")
 
-# define COLOR_LINE(x) (x ? ERR_LINE_C : ERR_LINE_NC)
+# define COLOR_LINE(x) (x ? ERR_LINE_C : ERR_LINE_NC) //remplacer ca par une fonction degeulasse
 # define COLOR_FILE(x) (x ? ERR_FILE_C : ERR_FILE_NC)
 # define COLOR_FATAL(x) (x ? ERR_FATAL_C : ERR_FATAL_NC)
 
@@ -100,6 +100,7 @@ void	            print_option(unsigned options, char *s);
 
 
 int					usage(t_env *e, int err);
+int					get_inst(t_env *e, char *s, unsigned char *cp);
 void				free_lst_file(t_file *file);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);

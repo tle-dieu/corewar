@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 16:49:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 04:40:27 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # define IDX_MOD				(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 
-# define COMMENT_CHAR			'#'
+# define COMMENT_CHAR			"#;"
+# define LEN_COMMENT_CHAR
 # define LABEL_CHAR				':'
 # define DIRECT_CHAR			'%'
 # define SEPARATOR_CHAR			','

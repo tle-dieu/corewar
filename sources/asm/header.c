@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/19 00:02:59 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 02:49:58 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	else if (check_end_str(&s))
 		return (error_header(e, 1, s, cmd));
 	e->actual->complete |= cmd + 1;
-	if (!e->actual->error)
-		while (i--)
-			*(cp + i) = buff[i];
+	while (i--)
+		*(cp + i) = buff[i];
 	return (1);
 }
 
@@ -106,7 +105,6 @@ void	get_header(t_env *e, unsigned char *cp)
 					{
 						++e->actual->nb_inst;
 						ft_printf("{#ff3333}line:{R} '%s' {#ff3333}is an instruction{R}\n", line + i);
-						/* parse_inst(line + i); */
 					}
 					ft_printf("FREE\n");
 					free_line(e->actual);

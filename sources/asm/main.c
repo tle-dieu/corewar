@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 23:12:34 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 04:47:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,17 @@
 
 int		pass_line(char *s)
 {
+	int len;
+	int i;
+
+	len = sizeof(COMMENT_CHAR);
+	(void)len;
 	while (*s)
 	{
+		i = 0;
+		while (i < len)
+			if (*s == COMMENT_CHAR[i++])
+				return (1);
 		if (*s != '\t' && *s != ' ')
 			return (0);
 		s++;
@@ -36,6 +45,7 @@ int		add_line(t_env *e, char **line)
 		return (ret == -1 ? alloc_error(e) : 0);
 	if (pass_line(*line))
 	{
+		ft_printf("line passee: |%s|\n", *line);
 		free(*line);
 		*line = NULL;
 		return (1);
