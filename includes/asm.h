@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 04:40:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 17:00:12 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define O_DISAS 4
 # define O_SHORT_ERR 128
 # define O_LONG_ERR 256
+# define O_COL_AMBIGUOUS_ERR 512
+# define O_COL_INVALID_ERR 1024
 
 typedef struct		s_line
 {

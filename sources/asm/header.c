@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 02:49:58 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 16:12:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,8 @@ void	get_header(t_env *e, unsigned char *cp)
 					else if (line[i])
 					{
 						++e->actual->nb_inst;
-						ft_printf("{#ff3333}line:{R} '%s' {#ff3333}is an instruction{R}\n", line + i);
+						get_inst(e, line + i, cp + PROG_NAME_LENGTH + COMMENT_LENGTH + 12);
 					}
-					ft_printf("FREE\n");
 					free_line(e->actual);
 					break ;
 				}

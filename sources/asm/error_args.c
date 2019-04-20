@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/18 12:01:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 17:14:56 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,15 @@ int		error_file(t_env *e, char *error, char *file, unsigned opt)
 {
 	free_lst_file(e->file);
 	ft_dprintf(2, COLOR_FILE(e->tty), e->exname);
-	if (opt & (O_LONG_ERR | O_SHORT_ERR))
+	if (opt & (O_LONG_ERR | O_SHORT_ERR | O_COL_AMBIGUOUS_ERR | O_COL_INVALID_ERR))
 	{
 		if (opt & O_SHORT_ERR)
 			ft_dprintf(2, "unknow option - %c\n", *error);
+		else if (opt & (O_COL_AMBIGUOUS_ERR | O_COL_INVALID_ERR))
+		{
+			ft_printf("%s argument '%s' for '--color'\n", opt & O_COL_AMBIGUOUS_ERR ? "ambiguous" : "invalid", error);
+			ft_printf("Valid arguments are:\n  - 'always', 'yes', 'force'\n  - 'never', 'no', 'none'\n  - 'auto', 'tty', 'if-tty'\n"); 
+		}
 		else
 			ft_dprintf(2, "unknow option -- %s\n", error);
 		usage(e, 2);

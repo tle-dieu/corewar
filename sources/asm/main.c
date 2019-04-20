@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 04:47:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/20 16:19:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		add_line(t_env *e, char **line)
 		free(*line);
 		alloc_error(e);
 	}
-	ft_printf(COMMENT_C"line: |%s|\n{R}", *line);
+	ft_printf(COMMENT_C"\nline: |%s|\n{R}", *line);
 	new->next = NULL;
 	new->s = *line;
 	new->y = e->actual->line_nb++;
@@ -83,11 +83,11 @@ void	compile(t_env *e)
 	ft_printf(STR_C"file: %s\n{R}", e->actual->name);
 	ft_printf(STR_C"error: %d\n{R}", e->actual->error);
 	if (e->actual->complete & 1)
-		ft_printf(COMMENT_C"FIND NAME\n{R}");
+		ft_printf(NAME_C"FIND NAME\n{R}");
 	if (e->actual->complete & 2)
-		ft_printf(NAME_C"FIND COMMENT\n{R}");
+		ft_printf(COMMENT_C"FIND COMMENT\n{R}");
 	/* if (!e->actual->error) */
-	/* print_bin(bin, BIN_MAX_SIZE); */
+		/* print_bin(bin, BIN_MAX_SIZE); */
 	ft_printf("\n"); // a retirer
 }
 
