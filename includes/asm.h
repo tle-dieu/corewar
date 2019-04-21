@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 17:00:12 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 04:27:28 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define COLOR_FILE(x) (x ? ERR_FILE_C : ERR_FILE_NC)
 # define COLOR_FATAL(x) (x ? ERR_FATAL_C : ERR_FATAL_NC)
 
+# define SPACES "\t \v\f\r"
 # define TAB_SIZE 4
 //option output a rajouter pour preciser fichier ou mettre
 
@@ -106,7 +107,7 @@ int					get_inst(t_env *e, char *s, unsigned char *cp);
 void				free_lst_file(t_file *file);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);
-void				err_wave(int tty, char *s);
+void				err_wave(int tty, char *s, int n);
 char				*check_end_str(char **end);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					error_header(t_env *e, int error, char *extra, int cmd);

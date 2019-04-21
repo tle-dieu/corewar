@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/19 00:05:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 05:26:33 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@ int		alloc_error(t_env *e)
 	free_lst_file(e->file);
 	exit(EXIT_FAILURE);
 	return (-1);
+}
+
+int		len_err(char *s)
+{
+	int len;
+
+	len = ft_strclen(s, '"');
+	if (s[len] == '"')
+		len += ft_strclen(s + len + 1, '"') + 1;
+	else
+		len = ft_strcspn(s, "\"\t ");
+	return (len + (s[len] == '"'));
 }
 
 int		error_header(t_env *e, int error, char *extra, int cmd)
@@ -45,8 +57,9 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	else if (error == 2)
 	{
 		ft_dprintf(2, "%s declaration too long (Max length: %d)\n", scmd, cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH);
+		ft_printf("extra: %s\n", extra);
 		err_pointer(e->tty, e->actual->begin->s, extra++, 0);
-		err_wave(e->tty, extra);
+		err_wave(e->tty, extra, ft_strclen(extra, '"') + 1);
 	}
 	else if (error == 3)
 	{
@@ -62,7 +75,13 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	{
 		ft_dprintf(2, "%s already defined\n", scmd);
 		err_pointer(e->tty, e->actual->begin->s, extra++, 0);
-		err_wave(e->tty, extra);
+		err_wave(e->tty, extra, len_err(extra));
+	}
+	else if (error == 6)
+	{
+		ft_dprintf(2, "invalid command '%.*s'{R}\n", ft_strcspn(extra, SPACES"\""), extra);
+		err_pointer(e->tty, e->actual->begin->s, extra, 0);
+		err_wave(e->tty, extra, ft_strcspn(extra + 1, SPACES"\""));
 	}
 	if (error)
 		ft_dprintf(2, "\n");

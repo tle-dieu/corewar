@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 16:12:17 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 05:17:12 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		multi_line(t_env *e, char *buff, int *i, int cmd)
 	return (error_header(e, !end, s, cmd)); // retirer return error
 }
 
-int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
+int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 {
 	char	buff[BS_HEADER + 1];
 	int		i;
@@ -83,6 +83,31 @@ int		get_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 }
 
 //verifier si line = NULL est utile
+
+void	get_cmd(t_env *e, unsigned char *cp, char *line)
+{
+	int cmd;
+	char *tmp;
+
+	cmd = -1;
+	tmp = line;
+	if (!ft_strncmp(line, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
+	{
+		line += sizeof(NAME_CMD_STRING) - 1; 
+		cmd = 0;
+	}
+	else if (!ft_strncmp(COMMENT_CMD_STRING, line, sizeof(COMMENT_CMD_STRING) - 1))
+	{
+		line += sizeof(COMMENT_CMD_STRING) - 1; 
+		cmd = 1;
+	}
+	if (cmd == -1 || !ft_strchr(SPACES, *line))
+		error_header(e, 6, cmd != -1 ? tmp : line, -1);
+	else
+		!cmd ? parse_cmd(e, line, cp, cmd)
+		: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
+}
+
 void	get_header(t_env *e, unsigned char *cp)
 {
 	char	*line;
@@ -95,12 +120,10 @@ void	get_header(t_env *e, unsigned char *cp)
 		{
 			while (line[i])
 			{
-				if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+				if (!ft_strchr(SPACES"\n", line[i]))
 				{
-					if (!ft_strncmp(line + i, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
-						get_cmd(e, line + i + sizeof(NAME_CMD_STRING) - 1, cp, 0);
-					else if (!ft_strncmp(COMMENT_CMD_STRING, line + i, sizeof(COMMENT_CMD_STRING) - 1))
-						get_cmd(e, line + i + sizeof(COMMENT_CMD_STRING) - 1, cp + PROG_NAME_LENGTH + 8, 1);
+					if (line[i] == '.')
+						get_cmd(e, cp, line + i);
 					else if (line[i])
 					{
 						++e->actual->nb_inst;
