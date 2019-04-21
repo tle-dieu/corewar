@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 05:17:12 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 07:55:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include "op.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+int		too_long(t_env *e, char *s, int cmd)
+{
+	char *line;
+	int	i;
+
+	i = 0;
+	line = NULL;
+	error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd);
+	while (!ft_strchr(!i++ ? e->actual->last->s : s, '"'))
+		if (add_line(e, &line) != 1) // mettre limite max nb lines dans add line pour erreur de malloc
+			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd) - 1);
+	s = ft_strchr(i == 1 ? s : e->actual->last->s, '"');
+	return (error_header(e, check_end_str(&s) != NULL, s, cmd));
+}
 
 int		multi_line(t_env *e, char *buff, int *i, int cmd)
 {
@@ -33,12 +48,7 @@ int		multi_line(t_env *e, char *buff, int *i, int cmd)
 			while (*s && *s != '"')
 			{
 				if (*i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-				{
-					while (!ft_strchr(e->actual->last->s, '"'))
-						if (add_line(e, &line) != 1) // peut etre mettre une limite max du nb de lignes dans add line pour eviter une erreur de malloc
-							return (error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd) - 1);
-					return (error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
-				}
+					return (too_long(e, line, cmd));
 				buff[(*i)++] = *s++;
 			}
 			if (*s == '"')
@@ -59,20 +69,23 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	i = 0;
 	ft_printf("get %s\n", cmd ? COMMENT_CMD_STRING :  NAME_CMD_STRING);
 	if (e->actual->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
-		return (error_header(e, 5, e->actual->begin->s, cmd));
+		error_header(e, 5, e->actual->begin->s, cmd);
 	if (!(t = ft_strchr(s, '"')))
-		return (error_header(e, 3, s, cmd));
+	{
+		error_header(e, 3, s, cmd);
+		return (error_header(e, check_end_str(&s) != NULL, s, cmd));
+	}
 	s = t;
 	while (*++s && *s != '"')
 	{
 		if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-			return (error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd));
+			return (too_long(e, s, cmd));
 		buff[i++] = *s;
 	}
 	if (!*s)
 	{
 		if (multi_line(e, buff, &i, cmd) == -1)
-			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
+			return (0);
 	}
 	else if (check_end_str(&s))
 		return (error_header(e, 1, s, cmd));
@@ -105,7 +118,7 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 		error_header(e, 6, cmd != -1 ? tmp : line, -1);
 	else
 		!cmd ? parse_cmd(e, line, cp, cmd)
-		: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
+			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
 void	get_header(t_env *e, unsigned char *cp)

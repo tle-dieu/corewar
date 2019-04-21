@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 03:36:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 07:23:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	*check_end_str(char **end)
 {
 	char *s;
 
-	ft_printf("check: %s\n", *end);
 	s = *end + 1;
 	while (*s == ' ' || *s == '\t')
 		s++;
@@ -52,7 +51,6 @@ char	*check_end_str(char **end)
 		return (NULL);
 	else
 	{
-		ft_printf("%hhd: %c\n", *s, *s);
 		*end = s;
 		return (s);
 	}
@@ -80,6 +78,6 @@ void	err_wave(int tty, char *s, int n)
 	put_strtab(s, '~', n);
 	if (tty)
 		ft_dprintf(2, "{R}");
-	ft_printf("\nextra: |%s| ", s);
-	ft_printf("len: %zu\n", n);
+	/* ft_printf("\nextra: |%s| ", s); */
+	/* ft_printf("len: %zu\n", n); */
 }

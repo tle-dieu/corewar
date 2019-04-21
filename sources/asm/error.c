@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 05:26:33 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 07:22:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 		ft_dprintf(2, COLOR_LINE(e->tty), e->actual->name, line->y, extra - line->s + 1);
 	if (error == 1)
 	{
-		ft_dprintf(2, "unexpected expression after %s declaration\n", scmd);
+		ft_dprintf(2, "unexpected expression in %s declaration\n", scmd);
 		err_pointer(e->tty, e->actual->last->s, extra, 0);
 	}
 	else if (error == 2)
 	{
 		ft_dprintf(2, "%s declaration too long (Max length: %d)\n", scmd, cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH);
-		ft_printf("extra: %s\n", extra);
 		err_pointer(e->tty, e->actual->begin->s, extra++, 0);
 		err_wave(e->tty, extra, ft_strclen(extra, '"') + 1);
 	}
