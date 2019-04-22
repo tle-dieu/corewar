@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 19:41:45 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 17:58:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct		s_line
 {
 	char			*s;
 	int				y;
+	int				free;
 	struct s_line	*next;
 }					t_line;
 
@@ -71,6 +72,22 @@ typedef struct		s_env
 	char			*exname;
 }					t_env;
 
+typedef struct		s_call
+{
+	t_line			*line;
+	char			*label;
+	int				find;
+	struct s_call	*next;
+}					t_call;
+
+typedef struct		s_label
+{
+	char			*name;
+	int				index;
+	t_call			*call;
+	struct s_label	*next;
+}					t_label;
+
 typedef struct		s_inst
 {
 	int				op;
@@ -83,8 +100,8 @@ typedef struct		s_inst
 }					t_inst;
 
 /*
- ** ---------- DEBUG ----------
- */
+** ---------- DEBUG ----------
+*/
 
 # define FT_C "{#2ecc71}"
 # define STR_C "{#0bd195}"
@@ -103,8 +120,8 @@ void	            print_option(unsigned options, char *s);
 
 
 int					usage(t_env *e, int err);
-int					get_inst(t_env *e, char *s, unsigned char *cp);
-void				free_lst_file(t_file *file);
+int					get_champ(t_env *e, char *s, unsigned char *cp);
+void				free_lst_file(t_env *e);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);
 void				err_wave(int tty, char *s, int n);

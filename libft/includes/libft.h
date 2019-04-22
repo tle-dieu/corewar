@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 20:37:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:48:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # define OSX 1
 # define LINUX 2
 # ifdef __linux__
-# define OS LINUX
+#  define OS LINUX
 # elif __APPLE__
 # else
-# define OS 0
+#  define OS 0
 # endif
 
 # include <string.h>
@@ -90,7 +90,8 @@ int				ft_memcmp(const void *s1, const void *s2, size_t n);
 void			*ft_memcpy(void *dest, const void *src, size_t n);
 void			ft_memdel(void **ap);
 void			*ft_memdup(const void *src, size_t n);
-void			*ft_memjoin(void const *s1, void const *s2, size_t n1, size_t n2);
+void			*ft_memjoin(void const *s1, void const *s2,
+				size_t n1, size_t n2);
 void			*ft_memmove(void *dest, const void *src, size_t n);
 void			*ft_memset(void *s, int c, size_t n);
 

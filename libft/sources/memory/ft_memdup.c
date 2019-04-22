@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/14 17:48:03 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/15 01:55:53 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:48:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memdup(const void *src, size_t n)
 {
-	void 				*new;
+	void				*new;
 	unsigned char		*ds;
 	unsigned char const	*sr;
 

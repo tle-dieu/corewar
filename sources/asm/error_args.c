@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 17:14:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:58:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		usage(t_env *e, int err)
 
 int		error_file(t_env *e, char *error, char *file, unsigned opt)
 {
-	free_lst_file(e->file);
+	free_lst_file(e);
 	ft_dprintf(2, COLOR_FILE(e->tty), e->exname);
 	if (opt & (O_LONG_ERR | O_SHORT_ERR | O_COL_AMBIGUOUS_ERR | O_COL_INVALID_ERR))
 	{
@@ -47,7 +47,6 @@ int		error_file(t_env *e, char *error, char *file, unsigned opt)
 		}
 		else
 			ft_dprintf(2, "unknow option -- %s\n", error);
-		usage(e, 2);
 	}
 	else
 		ft_dprintf(2, "%s: '%s'\n", strerror(errno), file);

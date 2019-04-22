@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 04:26:35 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:56:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 
 int		alloc_error(t_env *e)
 {
+	ft_printf("malloc error\n");
     ft_dprintf(2, COLOR_FATAL(e->tty));
     ft_dprintf(2, "%s\n", strerror(errno));
-	free_lst_file(e->file);
+	free_lst_file(e);
 	exit(EXIT_FAILURE);
 	return (-1);
 }

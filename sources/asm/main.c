@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 04:07:42 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 18:01:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int		add_line(t_env *e, char **line)
 			return (ret == -1 ? alloc_error(e) : 0);
 		if (pass_line(*line))
 		{
-			ft_printf("line passee: |%s|\n", *line);
 			free(*line);
 			*line = NULL;
 		}
@@ -59,7 +58,8 @@ int		add_line(t_env *e, char **line)
 		free(*line);
 		alloc_error(e);
 	}
-	ft_printf(COMMENT_C"\nline: |%s|\n{R}", *line);
+	new->free = 1;
+	ft_printf(COMMENT_C"\n|%s|\n{R}", *line);
 	new->next = NULL;
 	new->s = *line;
 	new->y = e->actual->line_nb++;
@@ -105,6 +105,8 @@ int		main(int ac, char **av)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))
 		return (!e.file ? usage(&e, 3) : 1);
+	if (!e.file)
+		return (usage(&e, 3));
 	ft_printf("color ? %s\n", e.tty ? "yes" : "no");
 	print_files(e.file);
 	e.actual = e.file;
@@ -113,5 +115,5 @@ int		main(int ac, char **av)
 		compile(&e);
 		e.actual = e.actual->next;
 	}
-	free_lst_file(e.file);
+	free_lst_file(&e);
 }
