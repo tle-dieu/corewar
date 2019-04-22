@@ -3,7 +3,7 @@ VM = corewar
 ASM = asm
 
 CFLAGS = -Wall -Werror -Wextra
-CC = gcc
+CC = clang
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
 RM = rm -rf

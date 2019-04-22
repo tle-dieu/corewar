@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 18:46:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 04:26:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	{
 		ft_dprintf(2, "unexpected expression in %s declaration\n", scmd);
 		err_pointer(e->tty, e->actual->last->s, extra, 0);
+		if (ft_strcspn(e->actual->last->s, "\"") + e->actual->last->s > extra)
+			err_wave(e->tty, extra, ft_strcspn(extra, SPACES"\"") - 1);
+		else
+			err_wave(e->tty, extra, ft_strcspn(extra, SPACES) - 1);
+		ft_printf("\nline: %s\n", extra);
 	}
 	else if (error == 2)
 	{
