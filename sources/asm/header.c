@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 03:08:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 04:04:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,11 @@
 
 int		too_long(t_env *e, char *s, int cmd)
 {
-	char *line;
-	int	i;
-
-	ft_printf("TOO LONG\n");
-	return(0);
-	i = 0;
-	line = NULL;
 	error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd);
-	while (!ft_strchr(!i++ ? s : e->actual->last->s, '"'))
-		if (add_line(e, &line) != 1) // mettre limite max nb lines dans add line pour erreur de malloc
+	while (!ft_strchr(s, '"'))
+		if (add_line(e, &s) != 1) // mettre limite max nb lines dans add line pour erreur de malloc
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd) - 1);
-	s = ft_strchr(i == 1 ? line : e->actual->last->s, '"');
+	s = ft_strchr(s, '"');
 	ft_printf("line: %s\n", s);
 	return (!check_end_str(e, s + 1, cmd, 0));
 }
@@ -63,15 +56,9 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 			buff[i++] = *s;
 		}
 		if (*s == '"' && (end = 1))
-		{
-			ft_printf("QUOTE FIND\n");
 			return (check_end_str(e, s + 1, cmd, 0) != 1);
-		}
 		else if (add_line(e, &s) != 1)
-		{
-			ft_printf("MISSING QUOTE\n");
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
-		}
 		else
 			buff[i++] = '\n';
 	}

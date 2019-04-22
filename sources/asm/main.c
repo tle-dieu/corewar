@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 03:01:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 04:07:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,7 @@ int		main(int ac, char **av)
 	if (ac < 2)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))
-		return (1);
-	if (!e.file)
-		return (usage(&e, 3));
+		return (!e.file ? usage(&e, 3) : 1);
 	ft_printf("color ? %s\n", e.tty ? "yes" : "no");
 	print_files(e.file);
 	e.actual = e.file;

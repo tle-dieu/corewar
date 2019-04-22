@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 16:19:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 03:16:39 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int		is_label(char *s)
 int		get_inst(t_env *e, char *s, unsigned char *cp)
 {
 	if (is_label(s))
-		ft_printf(NAME_C"it's a label\n");
+		ft_printf(NAME_C"it's a label{R}\n");
 	else
-		ft_printf(NAME_C"it's an instruction\n");
+		ft_printf(NAME_C"it's an instruction{R}\n");
 	(void)e;
 	(void)cp;
 	return (1);
