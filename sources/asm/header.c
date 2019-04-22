@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 07:55:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 03:08:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,44 +20,17 @@ int		too_long(t_env *e, char *s, int cmd)
 	char *line;
 	int	i;
 
+	ft_printf("TOO LONG\n");
+	return(0);
 	i = 0;
 	line = NULL;
 	error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd);
-	while (!ft_strchr(!i++ ? e->actual->last->s : s, '"'))
+	while (!ft_strchr(!i++ ? s : e->actual->last->s, '"'))
 		if (add_line(e, &line) != 1) // mettre limite max nb lines dans add line pour erreur de malloc
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd) - 1);
-	s = ft_strchr(i == 1 ? s : e->actual->last->s, '"');
-	return (error_header(e, check_end_str(&s) != NULL, s, cmd));
-}
-
-int		multi_line(t_env *e, char *buff, int *i, int cmd)
-{
-	char *line;
-	char *s;
-	int	end;
-
-	end = -1;
-	while (end == -1)
-	{
-		if (add_line(e, &line) != 1)
-			return (-1);
-		if (line)
-		{
-			buff[(*i)++] = '\n';
-			s = line;
-			while (*s && *s != '"')
-			{
-				if (*i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-					return (too_long(e, line, cmd));
-				buff[(*i)++] = *s++;
-			}
-			if (*s == '"')
-				end = !check_end_str(&s);
-		}
-		else
-			free(line);
-	}
-	return (error_header(e, !end, s, cmd)); // retirer return error
+	s = ft_strchr(i == 1 ? line : e->actual->last->s, '"');
+	ft_printf("line: %s\n", s);
+	return (!check_end_str(e, s + 1, cmd, 0));
 }
 
 int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
@@ -65,30 +38,43 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	char	buff[BS_HEADER + 1];
 	int		i;
 	char	*t;
+	int		end;
 
 	i = 0;
+	end = 0;
 	ft_printf("get %s\n", cmd ? COMMENT_CMD_STRING :  NAME_CMD_STRING);
 	if (e->actual->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
-		error_header(e, 5, e->actual->begin->s, cmd);
+		if (error_header(e, 5, e->actual->begin->s, cmd) == -1)
+			return (0);
 	if (!(t = ft_strchr(s, '"')))
 	{
 		error_header(e, 3, s, cmd);
-		return (error_header(e, check_end_str(&s) != NULL, s, cmd));
+		return (check_end_str(e, s, cmd, 0));
 	}
+	if (check_end_str(e, s, cmd, '"') == -1)
+		return (0);
 	s = t;
-	while (*++s && *s != '"')
+	while (!end)
 	{
-		if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-			return (too_long(e, s, cmd));
-		buff[i++] = *s;
+		while (*++s && *s != '"')
+		{
+			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
+				return (too_long(e, s, cmd));
+			buff[i++] = *s;
+		}
+		if (*s == '"' && (end = 1))
+		{
+			ft_printf("QUOTE FIND\n");
+			return (check_end_str(e, s + 1, cmd, 0) != 1);
+		}
+		else if (add_line(e, &s) != 1)
+		{
+			ft_printf("MISSING QUOTE\n");
+			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
+		}
+		else
+			buff[i++] = '\n';
 	}
-	if (!*s)
-	{
-		if (multi_line(e, buff, &i, cmd) == -1)
-			return (0);
-	}
-	else if (check_end_str(&s))
-		return (error_header(e, 1, s, cmd));
 	e->actual->complete |= cmd + 1;
 	while (i--)
 		*(cp + i) = buff[i];
@@ -114,7 +100,7 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 		line += sizeof(COMMENT_CMD_STRING) - 1; 
 		cmd = 1;
 	}
-	if (cmd == -1 || !ft_strchr(SPACES, *line))
+	if (cmd == -1 || !ft_strchr(SPACES"\"", *line))
 		error_header(e, 6, cmd != -1 ? tmp : line, -1);
 	else
 		!cmd ? parse_cmd(e, line, cp, cmd)
@@ -129,25 +115,26 @@ void	get_header(t_env *e, unsigned char *cp)
 	while (e->actual->error < 20 && add_line(e, &line) == 1)
 	{
 		i = 0;
-		if (line)
+		while (line[i])
 		{
-			while (line[i])
+			if (!ft_strchr(SPACES"\n", line[i]))
 			{
-				if (!ft_strchr(SPACES"\n", line[i]))
+				if (line[i] == '.')
+					get_cmd(e, cp, line + i);
+				else if (line[i])
 				{
-					if (line[i] == '.')
-						get_cmd(e, cp, line + i);
-					else if (line[i])
-					{
-						++e->actual->nb_inst;
-						get_inst(e, line + i, cp + PROG_NAME_LENGTH + COMMENT_LENGTH + 12);
-					}
-					free_line(e->actual);
-					break ;
+					++e->actual->nb_inst;
+					get_inst(e, line + i, cp + PROG_NAME_LENGTH + COMMENT_LENGTH + 12);
 				}
-				i++;
+				free_line(e->actual);
+				break ;
 			}
+			i++;
 		}
 	}
-	//if error >= 20 print too many error
+	if (e->actual->error >= 20)
+	{
+		ft_dprintf(2, COLOR_FATAL(e->tty));
+		ft_dprintf(2, "too many errors emitted, stopping now\n");
+	}
 }

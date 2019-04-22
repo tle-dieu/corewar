@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/20 16:19:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 03:01:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,18 @@ int		add_line(t_env *e, char **line)
 	t_line	*new;
 	int		ret;
 
-	if ((ret = get_next_line(e->actual->fd, line)) <= 0)
-		return (ret == -1 ? alloc_error(e) : 0);
-	if (pass_line(*line))
+	while ((ret = get_next_line(e->actual->fd, line)) >= -1)
 	{
-		ft_printf("line passee: |%s|\n", *line);
-		free(*line);
-		*line = NULL;
-		return (1);
+		if (ret <= 0)
+			return (ret == -1 ? alloc_error(e) : 0);
+		if (pass_line(*line))
+		{
+			ft_printf("line passee: |%s|\n", *line);
+			free(*line);
+			*line = NULL;
+		}
+		else
+			break ;
 	}
 	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
@@ -74,20 +78,21 @@ void	compile(t_env *e)
 	int				i;
 
 	ft_printf("{yellow}----------COMPILE----------\n{R}");
+	ft_printf(STR_C"file: %s\n{R}", e->actual->name);
 	ft_bzero(bin, BIN_MAX_SIZE);
 	i = 4;
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
 	get_header(e, cp);
-	ft_printf(STR_C"file: %s\n{R}", e->actual->name);
-	ft_printf(STR_C"error: %d\n{R}", e->actual->error);
 	if (e->actual->complete & 1)
-		ft_printf(NAME_C"FIND NAME\n{R}");
+		ft_printf(STR_C"name:{R} |%s|\n", &bin[4]);
 	if (e->actual->complete & 2)
-		ft_printf(COMMENT_C"FIND COMMENT\n{R}");
+		ft_printf(STR_C"comment:{R} |%s|\n\n", &bin[PROG_NAME_LENGTH + 12]);
 	/* if (!e->actual->error) */
 		/* print_bin(bin, BIN_MAX_SIZE); */
+	if (e->actual->error)
+		ft_dprintf(2, "%d %s generated\n", e->actual->error, e->actual->error > 1 ? "errors" : "error");
 	ft_printf("\n"); // a retirer
 }
 

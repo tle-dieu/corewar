@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 07:22:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 18:46:02 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	}
 	if (error)
 		ft_dprintf(2, "\n");
-	return (!error);
+	return (!error - (e->actual->error >= 20));
 }

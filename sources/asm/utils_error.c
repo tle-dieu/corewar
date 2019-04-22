@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/21 07:23:17 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/21 22:17:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,31 @@ void	put_strtab(char *s, char replace, int n)
 	}
 }
 
-char	*check_end_str(char **end)
+int		check_end_str(t_env *e, char *s, int cmd, char c)
 {
-	char *s;
+	char	chr[sizeof(SPACES) + 1];
+	int		i;
 
-	s = *end + 1;
-	while (*s == ' ' || *s == '\t')
-		s++;
-	if (!*s)
-		return (NULL);
-	else
+	i = sizeof(SPACES) - 1;
+	chr[i] = c;
+	chr[i + 1] = '\0';
+	while (i--)
+		chr[i] = SPACES[i];
+	/* ft_printf("chr: |%s|\n", chr); */
+	/* ft_printf("s: |%s|\n", s); */
+	s = s + ft_strspn(s, SPACES);
+	if (*s == c)
+		return (1);
+	if (error_header(e, 1, s, cmd) == -1)
+		return (-1);
+	s = s + ft_strcspn(s, chr);
+	while (*(s = s + ft_strspn(s, SPACES)) != c)
 	{
-		*end = s;
-		return (s);
+		if (error_header(e, 1, s, cmd) == -1)
+			return (-1);
+		s = s + ft_strcspn(s, chr);
 	}
+	return (0);
 }
 
 void	err_pointer(int tty, char *s, char *end, int sp)
