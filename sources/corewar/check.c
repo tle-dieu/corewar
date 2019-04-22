@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/19 15:50:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:23:35 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int				check_champ(t_env *e, char *arg, int i)
 	ret = read(fd, e->line, MAX_SIZE + 1);
 	if (ret == -1 || !(check_magic_number(e)))
 	{
-		ft_printf("\nNot a valid file\n");
+		(ret == -1) ? ft_printf("\nNot a valid file\n",
+			ret) : ft_printf("Does not contain magic number\n");
 		return (0);
 	}
 	if (!(check_champ_size(e, ret, i)))
@@ -87,5 +88,7 @@ int				check_champ(t_env *e, char *arg, int i)
 		return (0);
 	}
 	split_champ(e, i);
+	if (!i)
+		decompile_champ(e, arg, i);
 	return (1);
 }

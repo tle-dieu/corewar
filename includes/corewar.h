@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/19 15:48:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/22 17:11:06 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,16 @@ typedef struct		s_visu
 	int				live_color;
 
 }					t_visu;
+
+typedef struct		s_decomp
+{
+	char			tab[300][COMMENT_LENGTH];
+	int				y;
+	int				x;
+	int				i;
+	int				op;
+	int				champ;
+}					t_decomp;
 
 typedef	struct		s_env
 {
@@ -182,7 +192,7 @@ int					choose_cycle(int op);
 void				play(t_env *e);
 
 /*
-** INIT (5)
+** INIT.C (5)
 */
 void				check_taken_id(t_env *e);
 void				attribute_id(t_env *e);
@@ -191,17 +201,22 @@ int					init_proc(t_env *e, int j, int begin);
 void				place_champ(t_env *e);
 
 /*
-** DEBUG (3)
+** DEBUG.C (3)
 */
 void				print_game(t_env *e, t_proc *ptr);
 void				print_chmp(t_env *e, int c, int cursor);
 void				print_split_champ(t_env *e, int i);
 
 /*
-** CLEAN (2)
+** CLEAN.C (2)
 */
 void				freedom(t_env *e);
 void				destroy_process(t_env *e, t_proc *to_del);
+
+/*
+** DECOMP.C (1)
+*/
+int					decompile_champ(t_env *e, char *file_name, int champ);
 
 extern t_op			g_op_tab[17];
 
