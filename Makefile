@@ -27,6 +27,7 @@ VM_SOURCES_FILES = main.c \
 				   args.c \
 				   debug.c \
 				   decomp.c \
+				   decomp_utils.c \
 				   check.c \
 				   op.c \
 				   game_utils.c \

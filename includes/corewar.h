@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/22 17:11:06 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/23 16:16:56 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef	struct		s_env
 	int				c_total;
 	int				nb_champ;
 	t_visu			v;
+	t_decomp		d;
 	t_champ			champs[4];
 	t_proc			*proc;
 	t_proc			*new_proc;
@@ -214,9 +215,19 @@ void				freedom(t_env *e);
 void				destroy_process(t_env *e, t_proc *to_del);
 
 /*
-** DECOMP.C (1)
+** DECOMP.C (5)
 */
-int					decompile_champ(t_env *e, char *file_name, int champ);
+int					decompile_champ(t_env *e, int champ);
+
+/*
+** DECOMP_UTILS.C (6)
+*/
+void				init_decomp(t_decomp *d, int champ);
+void				print_tab(t_decomp *d);
+void				init_line(t_env *e);
+void				nb_in_buff(t_decomp *d, int nb);
+void				str_in_buff(t_decomp *d, char *s);
+int					compute_param(t_env *e, int champ, int i, int size);
 
 extern t_op			g_op_tab[17];
 
