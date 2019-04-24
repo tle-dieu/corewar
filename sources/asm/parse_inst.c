@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/24 14:44:31 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:55:38 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,9 @@ int		check_params(char **params, t_inst *inst)
 			error = 1;
 		i++;
 	}
-	return (error || i > g_op_tab[inst->op - 1].nb_param);
+	if (i != g_op_tab[inst->op - 1].nb_param)
+		ft_printf("{#ff3333}error: wrong param number expected %d, get %d{R}\n", g_op_tab[inst->op - 1].nb_param, i);
+	return (error || i != g_op_tab[inst->op - 1].nb_param);
 }
 
 void print_inst(t_inst *inst, char *str)
