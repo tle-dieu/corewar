@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 15:15:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 19:26:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	new->line_nb = 1;
 	new->nb_inst = 0;
 	new->name = name;
+	new->label = NULL;
 	new->fd = fd;
 	new->i = PROG_NAME_LENGTH + COMMENT_LENGTH + 16;
 	new->options = options;

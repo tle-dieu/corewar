@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 10:42:04 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/24 19:25:50 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int     is_label(char *s)
 	return (1);
 }
 
-int		get_label(t_env *e, char **s, t_label **label, int i)
+int		get_label(t_env *e, char **s, int i)
 {
 	t_label	*new;
 	int		len;
@@ -51,30 +51,28 @@ int		get_label(t_env *e, char **s, t_label **label, int i)
 	ft_printf("new label: %s\n", new->name);
 	new->index = i;
 	new->call = NULL;
-	new->next = *label;
-	*label = new;
+	new->next = e->actual->label;
+	e->actual->label = new;
 	return (1);
 }
 
 int		get_champ(t_env *e, char *s, unsigned char *cp)
 {
-	t_label *label;
 	int		i;
 
 	i = 0;
 	if (is_label(s))
 	{
 		ft_printf(NAME_C"it's a label{R}\n");
-		if (!get_label(e, &s, &label, i))
+		if (!get_label(e, &s, i))
 			return (0);
 		s = ft_strchr(s, LABEL_CHAR);
 	}
 	else
 	{
 		ft_printf(NAME_C"it's an instruction{R}\n");
-		parse_inst(s);
+		parse_inst(e, s);
 	}
-	(void)e;
 	(void)cp;
 	return (1);
 }

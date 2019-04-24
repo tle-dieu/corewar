@@ -6,14 +6,14 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/24 18:07:21 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/24 20:13:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
 #include "asm.h"
 
-int get_curr_inst(char *str)
+int		get_curr_inst(char *str)
 {
 	int i;
 	int len;
@@ -141,21 +141,43 @@ void get_ocp(t_inst *inst)
 	inst->ocp = ocp;
 }
 
-int		check_params(char **params, t_inst *inst)
+int		get_label_call(t_env *e, int size, char *s)
+{
+	int		len;
+	t_label *label;
+
+	label = e->actual->label;
+	len = ft_strcspn(s, SPACES);
+	while (label)
+	{
+		if (!ft_strncmp(s, label->name, len))
+			ft_printf("label found\n");
+		label = label->next;
+	}
+	if (!label)
+	{
+		
+	}
+}
+
+int		check_params(t_env *e, char **params, t_inst *inst)
 {
 	int i;
 	int reg;
 	int error;
+	int	j;
 
 	error = 0;
 	reg = -1;
 	i = 0;
+	j = 0;
 	while (params[i])
 	{
 		inst->t[i] = 0;
 		if (is_a_label(params[i]))
 		{
 			inst->s[i] = !g_op_tab[inst->op - 1].dir_size && params[i][0] != DIRECT_CHAR ? 4 : 2;
+			get_label_call(e, &j, inst->s[i], ft_strchr(params[i], LABEL_CHAR) + 1);
 			ft_dprintf(2,"{R}[%d] label\n", i + 1);
 		}
 		else if (is_direct(params[i]))
@@ -179,8 +201,10 @@ int		check_params(char **params, t_inst *inst)
 			inst->t[i] = 3;
 			ft_dprintf(2,"{R}[%d] indirect = %d\n", i + 1, inst->p[i]);
 		}
-		else 
+		else
 			error = 1;
+		if (!error) // changer error
+			j += inst->s[i];
 		i++;
 	}
 	if (i != g_op_tab[inst->op - 1].nb_param)
@@ -207,7 +231,7 @@ void print_inst(t_inst *inst, char *str)
 	}
 }
 
-t_inst	*parse_inst(char *str)
+t_inst	*parse_inst(t_env *e, char *str)
 {	
 	t_inst inst;
 	char *tmp;
@@ -222,7 +246,7 @@ t_inst	*parse_inst(char *str)
 		tmp = str + ft_strlen(g_op_tab[inst.op - 1].label);
 		tmp += ft_strspn(tmp, SPACES);
 		params = ft_strsplit(tmp, SEPARATOR_CHAR);
-		check_params(params, &inst);
+		check_params(e, params, &inst);
 		if (g_op_tab[inst.op - 1].ocp)
 			get_ocp(&inst);
 	}

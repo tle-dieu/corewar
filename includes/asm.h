@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 15:31:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 19:55:24 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,6 @@ typedef struct		s_line
 	struct s_line	*next;
 }					t_line;
 
-typedef struct		s_file
-{
-	char			complete;
-	char			*name;
-	int				fd;
-	int				i;
-	unsigned		options;
-	int				error;
-	int				line_nb;
-	int				nb_inst;
-	t_line			*begin;
-	t_line			*last;
-	struct s_file	*next;
-}					t_file;
-
-
-typedef struct		s_env
-{
-	int				tty;
-	t_file			*actual;
-	t_file			*file;
-	char			*exname;
-}					t_env;
-
 typedef struct		s_call
 {
 	t_line			*line;
@@ -99,6 +75,30 @@ typedef struct		s_inst
 	int				t[3];
 	struct s_inst 	*next;
 }					t_inst;
+
+typedef struct		s_file
+{
+	char			complete;
+	char			*name;
+	int				fd;
+	int				i;
+	unsigned		options;
+	int				error;
+	int				line_nb;
+	int				nb_inst;
+	t_line			*begin;
+	t_line			*last;
+	t_label			*label;
+	struct s_file	*next;
+}					t_file;
+
+typedef struct		s_env
+{
+	int				tty;
+	t_file			*actual;
+	t_file			*file;
+	char			*exname;
+}					t_env;
 
 /*
 ** ---------- DEBUG ----------
@@ -133,7 +133,7 @@ void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
 void				get_header(t_env *e, unsigned char *cp);
 int					alloc_error(t_env *e);
-t_inst				*parse_inst(char *str);
+t_inst				*parse_inst(t_env *e, char *str);
 //verifier include dans .c et verifier proto fonctions
 
 #endif
