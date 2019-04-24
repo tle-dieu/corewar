@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 18:01:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 10:42:04 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int		get_champ(t_env *e, char *s, unsigned char *cp)
 	else
 	{
 		ft_printf(NAME_C"it's an instruction{R}\n");
+		parse_inst(s);
 	}
 	(void)e;
 	(void)cp;

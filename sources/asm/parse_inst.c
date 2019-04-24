@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/18 18:10:43 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:44:31 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,8 @@ int		is_reg(char *str)
 	
 	ft_printf("is_reg\n");
 	j = 0;
-	i = 0;
 	reg = -1;
-	while (str[i] && str[i] != 'r')
-	{
-		if (str[i] != ' ')
-			reg = -1;
-		i++;
-	}
+	i = ft_strspn(str, SPACES);
 	if (str[i] == 'r')
 	{
 		i++;
@@ -55,7 +49,13 @@ int		is_reg(char *str)
 			j++;
 		reg = ft_atoi(str + i);
 		if (reg < 0 || reg > 16)
+		{
+			ft_printf("{#ff3333}bad number register %d{R}\n", reg);
 			reg = -1;
+		}
+		i = ft_strspn(SPACES, str + i);
+		if (!str[i])
+			ft_printf("{#ff3333}unexpected character\n");
 	}
 	ft_printf("found reg of %d\n", reg);
 	return (reg);
@@ -63,66 +63,53 @@ int		is_reg(char *str)
 
 int is_indirect(char *str)
 {
-	int neg;
 	int i;
 	int nb;
 
 	ft_printf("is_indirect\n");
 	nb = 0;
-	i = 0;
-	neg = 0;
-	while (str[i] && str[i] == ' ')
-		i++;
+	i = ft_strspn(str, SPACES);
 	if (str[i] == '-')
-		neg = 1;
-	i += neg;
+		i++;
 	while (str[i] && ft_isdigit(str[i++]))
 		nb++;
-	while (str[i])
-	{	
-		if (str[i] != ' ' || str[i] != '\t')
-			return (0);
-		i++;
-	}
+	i = ft_strspn(SPACES, str + i);
+	if (!str[i])
+		ft_printf("{#ff3333}unexpected character\n");
 	return (nb);
 }
 
 int is_direct(char *str)
 {
-	int neg;
 	int i;
 	int nb;
 
-	ft_printf("is_direct >>>>>> %s\n", str);
+	ft_printf("is_direct\n");
 	nb = 0;
-	i = 0;
-	neg = 0;
-	while (str[i] && str[i] == ' ')
-		i++;
+	i = ft_strspn(str, SPACES);
 	if (str[i] == DIRECT_CHAR)
 	{
-		while (str[i] && str[i] == ' ')
-			i++;
 		if (str[i] == '-')
-			neg = 1;
-		i += neg;
+			i++;
 		while (str[i] && ft_isdigit(str[i++]))
 			nb++;
-		ft_printf("dir of %d\n", nb);
-		ft_printf("=======%s\n", str + i);
+		i = ft_strspn(SPACES, str + i);
+		if (!str[i])
+			ft_printf("{#ff3333}unexpected character\n");
+		if (!nb)
+			ft_printf("{#ff3333}specified as direct but there is no digit\n");
 	}
-	ft_printf("found dir of %d\n", nb);
 	return (nb);
 }
 
-int	is_label(char *str)
+int	is_a_label(char *str)
 {
 	ft_printf(FT_C"is_label\n");
 	(void)str;
 	return (0);
 }
 
-int get_ocp(t_inst *inst, int nb_param)
+void get_ocp(t_inst *inst)
 {
 	int  i;
 	int ocp;
@@ -132,13 +119,13 @@ int get_ocp(t_inst *inst, int nb_param)
 	i = 0;
 	ocp = 0;
 	max = 192;
-	while (i < nb_param)
+	while (i < inst->nb_p)
 	{
 		max /= 3;
 		ocp += max * inst->t[i];
 		i++;
 	}
-	return (ocp);		
+	inst->ocp = ocp;
 }
 
 int		check_params(char **params, t_inst *inst)
@@ -154,7 +141,7 @@ int		check_params(char **params, t_inst *inst)
 	while (params[i] && i < 3)
 	{
 		inst->t[i] = 0;
-		if (is_label(params[i]))
+		if (is_a_label(params[i]))
 		{
 			ft_dprintf(2,"Ce param est un label");
 		}
@@ -210,16 +197,18 @@ t_inst	*parse_inst(char *str)
 	char *tmp;
 	char **params;
 
+	inst.ocp = 0;
 	inst.nb_p = 0;
-	ft_printf(FT_C"{reset}parse_inst\n");
+	ft_printf(FT_C"{reset}parse_inst..........................................................................................\n");
 	if ((inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;
 		tmp = str + ft_strlen(g_op_tab[inst.op].label);
-		while (*tmp && *tmp == ' ')
-			tmp++;
+		tmp += ft_strspn(tmp, SPACES);
 		params = ft_strsplit(tmp, SEPARATOR_CHAR);
 		check_params(params, &inst);
+		if (g_op_tab[inst.op - 1].ocp)
+			get_ocp(&inst);
 	}
 	print_inst(&inst, str);
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 17:18:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 11:01:57 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct			s_op
 	int					op_code;
 	int					nb_cycle;
 	void				(*ft_ptr)();
-	int					jsaispas;
+	int					ocp;
 	int					dir_size;
 }						t_op;
 
