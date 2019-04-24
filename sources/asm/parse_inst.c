@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/24 14:55:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 17:44:48 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int get_curr_inst(char *str)
 	int len;
 
 	
-	ft_printf(FT_C"get_curr_inst\n{R}");
 	len = 0;
 	i = 0;
 	while (g_op_tab[i].label  
@@ -36,28 +35,27 @@ int		is_reg(char *str)
 {
 	int reg;
 	int i;
-	int j;
-	
-	ft_printf("is_reg\n");
-	j = 0;
+	int nb;
+
+	nb = 0;
 	reg = -1;
 	i = ft_strspn(str, SPACES);
 	if (str[i] == 'r')
 	{
 		i++;
-		while (str[i + j] && ft_isdigit(str[i + j]))
-			j++;
+		while (str[i] && ft_isdigit(str[i++]))
+			nb++;
 		reg = ft_atoi(str + i);
-		if (reg < 0 || reg > 16)
+		if (reg < 0 || reg > 16 || nb == 0)
 		{
-			ft_printf("{#ff3333}bad number register %d{R}\n", reg);
+			ft_printf("{#ff3333}bad register number %d{R}\n", reg);
 			reg = -1;
 		}
-		i = ft_strspn(SPACES, str + i);
-		if (!str[i])
-			ft_printf("{#ff3333}unexpected character\n");
+		i += ft_strspn(SPACES, str + i);
+		if (str[i])
+			ft_printf("{#ff3333}unexpected character %s i = %d\n", str + i, i);
 	}
-	ft_printf("found reg of %d\n", reg);
+
 	return (reg);
 }
 
@@ -66,16 +64,15 @@ int is_indirect(char *str)
 	int i;
 	int nb;
 
-	ft_printf("is_indirect\n");
 	nb = 0;
 	i = ft_strspn(str, SPACES);
 	if (str[i] == '-')
 		i++;
 	while (str[i] && ft_isdigit(str[i++]))
 		nb++;
-	i = ft_strspn(SPACES, str + i);
-	if (!str[i])
-		ft_printf("{#ff3333}unexpected character\n");
+	i += ft_strspn(SPACES, str + i);
+	if (str[i])
+		ft_printf("{#ff3333}unexpected character %s i = %d\n", str + i, i);
 	return (nb);
 }
 
@@ -83,19 +80,18 @@ int is_direct(char *str)
 {
 	int i;
 	int nb;
-
-	ft_printf("is_direct\n");
 	nb = 0;
 	i = ft_strspn(str, SPACES);
 	if (str[i] == DIRECT_CHAR)
 	{
+		i++;
 		if (str[i] == '-')
 			i++;
 		while (str[i] && ft_isdigit(str[i++]))
 			nb++;
-		i = ft_strspn(SPACES, str + i);
-		if (!str[i])
-			ft_printf("{#ff3333}unexpected character\n");
+		i += ft_strspn(SPACES, str + i);
+		if (str[i])
+			ft_printf("{#ff3333}unexpected character %s i = %d \n", str + i, i);
 		if (!nb)
 			ft_printf("{#ff3333}specified as direct but there is no digit\n");
 	}
@@ -104,9 +100,28 @@ int is_direct(char *str)
 
 int	is_a_label(char *str)
 {
-	ft_printf(FT_C"is_label\n");
-	(void)str;
-	return (0);
+	int i;
+	int dir;
+
+	dir = 0;
+	i = 0;
+	i = ft_strspn(str, SPACES);
+	if (str[i] == DIRECT_CHAR)
+	{
+		dir = 1;
+		++i;
+	}
+	if (str[i] && str[i] != LABEL_CHAR)
+		return (0);
+	i++;
+	if (!ft_isalpha(str[i]))
+		return (0);
+	while (ft_isalpha(str[i]))
+		i++;
+	i += ft_strspn(SPACES, str + i);
+	if (str[i])
+		ft_printf("{#ff3333}bad character %s\n", str + i);
+	return (1);
 }
 
 void get_ocp(t_inst *inst)
@@ -115,7 +130,6 @@ void get_ocp(t_inst *inst)
 	int ocp;
 	int max;
 
-	ft_printf(FT_C"get_ocp\n");
 	i = 0;
 	ocp = 0;
 	max = 192;
@@ -134,35 +148,36 @@ int		check_params(char **params, t_inst *inst)
 	int reg;
 	int error;
 
-	ft_printf(FT_C"check_params\n");
 	error = 0;
 	reg = -1;
 	i = 0;
-	while (params[i] && i < 3)
+	while (params[i])
 	{
 		inst->t[i] = 0;
 		if (is_a_label(params[i]))
 		{
-			ft_dprintf(2,"Ce param est un label");
+			ft_dprintf(2,"{R}[%d] label\n", i + 1);
 		}
 		else if (is_direct(params[i]))
 		{
-			ft_dprintf(2,"Ce param est un direct");
-			inst->p[i] = ft_atoi(params[i]);
+			inst->p[i] = ft_atoi(params[i] + 1);
 			inst->s[i] = g_op_tab[inst->op - 1].dir_size ? 2 : 4;
 			inst->t[i] = 2;
+			ft_dprintf(2,"{R}[%d] direct = %d\n", i + 1, inst->p[i]);
 		}
 		else if (ft_strchr(params[i], 'r') && (reg = is_reg(params[i])) != -1)
 		{
 			inst->p[i] = reg;
-			inst->s[i] = REG_SIZE;
+			inst->s[i] = 1;
 			inst->t[i] = 1;
+			ft_dprintf(2,"{R}[%d] registre = %d\n", i + 1, inst->p[i]);
 		}
 		else if (is_indirect(params[i]))
 		{
 			inst->p[i] = ft_atoi(params[i]);
 			inst->s[i] = IND_SIZE;
 			inst->t[i] = 3;
+			ft_dprintf(2,"{R}[%d] indirect = %d\n", i + 1, inst->p[i]);
 		}
 		else 
 			error = 1;
@@ -178,17 +193,16 @@ void print_inst(t_inst *inst, char *str)
 	int i;
 
 	i = 0;
-	ft_printf(CHAMP_C"\n----------INSTRUCTION-----------\n{R}");
-	ft_printf("str = %s\n", str);
-	ft_printf("\top = %d\n", inst->op);
-	ft_printf("\tocp = %d\n", inst->ocp);
-	ft_printf("\tnb_p = %d\n", inst->nb_p);
-	ft_printf("\tparams\n");
+	ft_printf("\nstr\t= %s\n", str);
+	ft_printf("op\t= %d\n", inst->op);
+	ft_printf("ocp\t= %d\n", inst->ocp);
+	ft_printf("nb_p\t= %d\n", inst->nb_p);
+	ft_printf("params\n");
 	while (i < inst->nb_p)
 	{
-		ft_printf("\t\t p[%d] = %d\n", i, inst->p[i]);
-		ft_printf("\t\t s[%d] = %d\n", i, inst->s[i]);
-		ft_printf("\t\t t[%d] = %d\n", i, inst->t[i]);
+		ft_printf("\t p[%d] = %d\n", i, inst->p[i]);
+		ft_printf("\t s[%d] = %d\n", i, inst->s[i]);
+		ft_printf("\t t[%d] = %d\n", i, inst->t[i]);
 		i++;
 	}
 }
@@ -201,11 +215,11 @@ t_inst	*parse_inst(char *str)
 
 	inst.ocp = 0;
 	inst.nb_p = 0;
-	ft_printf(FT_C"{reset}parse_inst..........................................................................................\n");
+	ft_printf(FT_C"\n{reset}:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\nline = %s\n", str);
 	if ((inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;
-		tmp = str + ft_strlen(g_op_tab[inst.op].label);
+		tmp = str + ft_strlen(g_op_tab[inst.op - 1].label);
 		tmp += ft_strspn(tmp, SPACES);
 		params = ft_strsplit(tmp, SEPARATOR_CHAR);
 		check_params(params, &inst);
