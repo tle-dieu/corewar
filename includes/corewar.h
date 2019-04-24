@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/23 16:16:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:18:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ int					decompile_champ(t_env *e, int champ);
 void				init_decomp(t_decomp *d, int champ);
 void				print_tab(t_decomp *d);
 void				init_line(t_env *e);
-void				nb_in_buff(t_decomp *d, int nb);
+void				nb_in_buff(t_decomp *d, int nb, int padding);
 void				str_in_buff(t_decomp *d, char *s);
 int					compute_param(t_env *e, int champ, int i, int size);
 

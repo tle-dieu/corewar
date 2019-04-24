@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/23 16:16:46 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:25:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static void			move_forward(t_env *e)
 	e->d.tab[e->d.y][e->d.x++] = '%';
 	if (e->d.op == 1)
 	{
-		nb_in_buff(&e->d, compute_param(e, e->d.champ, e->d.i, 4));
+		nb_in_buff(&e->d, compute_param(e, e->d.champ, e->d.i, 4), 0);
 		e->d.i += 4;
 	}
 	else if (e->d.op == 9 || e->d.op == 15 || e->d.op == 12)
 	{
-		nb_in_buff(&e->d, (short)compute_param(e, e->d.champ, e->d.i, 2));
+		nb_in_buff(&e->d, (short)compute_param(e, e->d.champ, e->d.i, 2), 0);
 		e->d.i += 2;
 	}
 }
@@ -48,21 +48,19 @@ static void			param_to_str(t_env *e, int param, int size, int i)
 	if (size == 1)
 	{
 		e->d.tab[e->d.y][e->d.x++] = 'r';
-		nb_in_buff(&e->d, e->champs[e->d.champ].content[i]);
+		nb_in_buff(&e->d, e->champs[e->d.champ].content[i], 0);
 	}
 	else if (size == 2)
 	{
 		if (g_op_tab[e->d.op - 1].dir_size && (param == 128
 				|| param == 32 || param == 8))
 			e->d.tab[e->d.y][e->d.x++] = '%';
-		else
-			str_in_buff(&e->d, "<index>");
-		nb_in_buff(&e->d, (short)compute_param(e, e->d.champ, i, 2));
+		nb_in_buff(&e->d, (short)compute_param(e, e->d.champ, i, 2), 0);
 	}
 	else if (size == 4)
 	{
 		e->d.tab[e->d.y][e->d.x++] = '%';
-		nb_in_buff(&e->d, compute_param(e, e->d.champ, i, 4));
+		nb_in_buff(&e->d, compute_param(e, e->d.champ, i, 4), 0);
 	}
 }
 

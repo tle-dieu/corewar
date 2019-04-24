@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:47:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/23 16:16:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:25:52 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			init_line(t_env *e)
 {
 	e->d.x = 0;
 	e->d.op = e->champs[e->d.champ].content[e->d.i];
-	nb_in_buff(&e->d, e->d.i);
+	nb_in_buff(&e->d, e->d.i, 1);
 	str_in_buff(&e->d, ":\t\t");
 	str_in_buff(&e->d,
 		g_op_tab[e->champs[e->d.champ].content[e->d.i++] - 1].label);
@@ -43,7 +43,7 @@ void			print_tab(t_decomp *d)
 		ft_printf("%s\n", d->tab[i++]);
 }
 
-void			nb_in_buff(t_decomp *d, int nb)
+void			nb_in_buff(t_decomp *d, int nb, int padding)
 {
 	unsigned int	len;
 	unsigned int	abs;
@@ -58,7 +58,7 @@ void			nb_in_buff(t_decomp *d, int nb)
 		tmp /= 10;
 	}
 	tmp = d->x;
-	d->x += len - 1;
+	d->x += padding ? 6 - 1: len - 1;
 	while (abs > 9)
 	{
 		d->tab[d->y][d->x--] = (abs % 10) + 48;
@@ -67,7 +67,9 @@ void			nb_in_buff(t_decomp *d, int nb)
 	d->tab[d->y][d->x] = (abs % 10) + 48;
 	if (nb < 0)
 		d->tab[d->y][--d->x] = '-';
-	d->x = tmp + len;
+	while (d->x >= (int)tmp && padding)
+		d->tab[d->y][--d->x] = '0';
+	d->x = padding ? tmp + 6 : tmp + len;
 }
 
 void			str_in_buff(t_decomp *d, char *s)
