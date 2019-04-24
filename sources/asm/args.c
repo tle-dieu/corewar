@@ -6,11 +6,12 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 15:43:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:15:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "op.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -28,6 +29,7 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	new->nb_inst = 0;
 	new->name = name;
 	new->fd = fd;
+	new->i = PROG_NAME_LENGTH + COMMENT_LENGTH + 16;
 	new->options = options;
 	new->error = 0;
 	new->complete = 0;

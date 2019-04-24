@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 10:42:46 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:31:14 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct		s_file
 	char			complete;
 	char			*name;
 	int				fd;
+	int				i;
 	unsigned		options;
 	int				error;
 	int				line_nb;

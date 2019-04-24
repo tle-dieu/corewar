@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 17:58:46 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 17:52:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		too_long(t_env *e, char *s, int cmd)
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd) - 1);
 	s = ft_strchr(s, '"');
 	ft_printf("line: %s\n", s);
-	return (!check_end_str(e, s + 1, cmd, 0));
+	return (check_end_str(e, s + 1, cmd, 0) > 0);
 }
 
 int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
@@ -56,13 +56,16 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 			buff[i++] = *s;
 		}
 		if (*s == '"' && (end = 1))
-			return (check_end_str(e, s + 1, cmd, 0) != 1);
+		{
+			if (check_end_str(e, s + 1, cmd, 0) <= 0)
+				return (0);
+		}
 		else if (add_line(e, &s) != 1)
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
 		else
 			buff[i++] = '\n';
 	}
-	e->actual->complete |= cmd + 1;
+	e->actual->complete |= cmd + 1; // peut etre mettre au debut fonction
 	while (i--)
 		*(cp + i) = buff[i];
 	return (1);
@@ -111,7 +114,7 @@ void	get_header(t_env *e, unsigned char *cp)
 				else if (line[i])
 				{
 					++e->actual->nb_inst;
-					get_champ(e, line + i, cp + PROG_NAME_LENGTH + COMMENT_LENGTH + 12);
+					get_champ(e, line + i, cp);
 				}
 				free_line(e->actual);
 				break ;

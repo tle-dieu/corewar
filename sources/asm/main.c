@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 18:01:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/24 17:42:11 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,19 @@
 #include <stdlib.h> // tmp
 #include <unistd.h>
 
-//verifier que asm passe seulement ' ' et '\t'
+//verifier que SPACES est partout
 
 int		pass_line(char *s)
 {
-	int len;
-	int i;
+	int		i;
 
-	len = sizeof(COMMENT_CHAR);
-	(void)len;
-	while (*s)
-	{
-		i = 0;
-		while (i < len)
-			if (*s == COMMENT_CHAR[i++])
-				return (1);
-		if (*s != '\t' && *s != ' ')
-			return (0);
-		s++;
-	}
-	return (1);
+	s += ft_strspn(s, SPACES);
+	if (!*s || ft_strchr(COMMENT_CHAR, *s))
+		return (1);
+	if (*(s + (i = ft_strcspn(s, COMMENT_CHAR)))
+	&& (!(ft_ncount_occ(s, '"', i) & 1) || !ft_strchr(s + i, '"')))
+		*(s + i) = '\0';
+	return (0);
 }
 int		add_line(t_env *e, char **line)
 {
