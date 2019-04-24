@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/24 17:44:48 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/24 18:07:21 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int get_curr_inst(char *str)
 		i++;
 	if (!g_op_tab[i].label)
 		return (42);	
-	ft_dprintf(2, "{yellow}This is instruction \"%s\" with op %d!\n{reset}", g_op_tab[i].label, i + 1);
 	return (i + 1);
 }
 
@@ -156,6 +155,7 @@ int		check_params(char **params, t_inst *inst)
 		inst->t[i] = 0;
 		if (is_a_label(params[i]))
 		{
+			inst->s[i] = !g_op_tab[inst->op - 1].dir_size && params[i][0] != DIRECT_CHAR ? 4 : 2;
 			ft_dprintf(2,"{R}[%d] label\n", i + 1);
 		}
 		else if (is_direct(params[i]))
