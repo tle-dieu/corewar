@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 22:34:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/25 23:44:51 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		search_label(t_env *e, char *s, int len)
 	t_label *label;
 	t_call	*call;
 
+	ft_printf("search label\n");
 	label = e->actual->label;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
 		label = label->next;
@@ -30,6 +31,7 @@ int		search_label(t_env *e, char *s, int len)
 			ft_printf("{#ff3333}error double assign label{R}\n");
 		else
 		{
+			ft_printf("{yellow}label call find\n{R}");
 			label->index = e->actual->i;
 			call = label->call;
 			while (call)
@@ -42,7 +44,7 @@ int		search_label(t_env *e, char *s, int len)
 	}
 	return (0);
 }
-
+//checker pour labels commencant pareil
 void	get_label(t_env *e, char *s)
 {
 	t_label	*new;
@@ -85,8 +87,8 @@ int     only_label(t_env *e, char **line)
 		s++;
 	}
 	ft_printf(NAME_C"LABEL{R}\n");
-	if (search_label(e, *line, s - *line))
-	get_label(e, *line);
+	if (!search_label(e, *line, s - *line))
+		get_label(e, *line);
 	*line = s + ft_strspn(s + 1, SPACES) + 1;
 	ft_printf("line after label: %s\n", *line);
 	return (!**line);

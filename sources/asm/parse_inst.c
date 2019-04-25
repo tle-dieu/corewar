@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/25 20:59:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/25 23:51:02 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		is_reg(char *str)
 	{
 		i++;
 		while (str[i] && ft_isdigit(str[i++]))
-			nb++;
+			nb++; // pas utile si r0 n'existe pas
 		reg = ft_atoi(str + i);
 		if (reg < 0 || reg > 16 || nb == 0)
 		{
@@ -187,7 +187,7 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 	ft_printf(MAGIC_C"str label: %s\n{R}", s);
 	while (label)
 	{
-		if (!ft_strncmp(s, label->name, len))
+		if (!ft_strncmp(s, label->name, len) && !label->name[len])
 		{
 			if (label->index != -1)
 			{
@@ -248,7 +248,7 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 		if (!error) // changer error
 		{
 			ft_printf(STR_C"index: %02x :: %d -> %02x :: %d\n{R}", inst->index, inst->index, inst->index + inst->s[i], inst->index + inst->s[i]);
-			inst->index += inst->s[i];
+			inst->index += inst->s[i] + g_op_tab[inst->op - 1].ocp;
 		}
 		i++;
 	}
