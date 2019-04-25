@@ -6,12 +6,53 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/17 17:04:09 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/25 22:19:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
+
+void	print_call_error(t_env *e)
+{
+	t_label *label;
+	t_call	*call;
+
+	label = e->actual->label;
+	while (label)
+	{
+		if (label->index == -1)
+		{
+			call = label->call;
+			ft_printf("{red}{bold}----- %s -----{R}\n", label->name);
+			while (call)
+			{
+				ft_printf("{bold}%d:%d: {R}'%s'\n", call->line->y, call->s - call->line->s, call->line->s);
+				// erreur print x
+				call = call->next;
+			}
+		}
+		label = label->next;
+	}
+}
+
+void	print_label(t_env *e)
+{
+	t_label *label;
+
+	label = e->actual->label;
+	ft_printf("{yellow}---- Print Label ----{R}\n");
+	ft_printf("actual index: %02x :: %d\n", e->actual->i, e->actual->i);
+	while (label)
+	{
+		ft_printf(MAGIC_C"name: {R}%s"MAGIC_C" | index: {R}", label->name);
+		if (label->index != -1)
+			ft_printf("%02x "MAGIC_C"::{R} %d\n", label->index, label->index);
+		else
+			ft_printf("{#ff3333}missing{R}\n");
+		label = label->next;
+	}
+}
 
 void			print_option(unsigned options, char *s)
 {

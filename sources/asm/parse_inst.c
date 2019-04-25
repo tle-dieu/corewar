@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_inst->c                                       :+:      :+:    :+:   */
+/*   parse_inst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/24 20:13:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/25 20:59:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
 #include "asm.h"
+#include <stdlib.h>
 
 int		get_curr_inst(char *str)
 {
 	int i;
-	int len;
 
-	
-	len = 0;
 	i = 0;
 	while (g_op_tab[i].label  
 	&& (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len) 
@@ -54,7 +52,6 @@ int		is_reg(char *str)
 		if (str[i])
 			ft_printf("{#ff3333}unexpected character %s i = %d\n", str + i, i);
 	}
-
 	return (reg);
 }
 
@@ -103,7 +100,6 @@ int	is_a_label(char *str)
 	int dir;
 
 	dir = 0;
-	i = 0;
 	i = ft_strspn(str, SPACES);
 	if (str[i] == DIRECT_CHAR)
 	{
@@ -141,23 +137,70 @@ void get_ocp(t_inst *inst)
 	inst->ocp = ocp;
 }
 
-int		get_label_call(t_env *e, int size, char *s)
+int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
+{
+	t_label *new;
+	t_call	*call;
+	int		len;
+
+	new = NULL;
+	if (!label)
+	{
+		if (!(new = (t_label *)malloc(sizeof(t_label))))
+			exit (0); // alloc error
+		len = ft_strcspn(s, SPACES);
+		label = new;
+		new->index = -1;
+		label->call = NULL;
+		new->next = e->actual->label;
+		e->actual->label = new;
+		if (!(new->name = ft_strndup(s, len)))
+		{
+			free(new);
+			exit(0); // alloc error
+		}
+	}
+	if (!(call = (t_call *)malloc(sizeof(t_call))))
+	{
+		if (new)
+			free(new->name); // remplacer par fonction free call ?
+		free(new);
+		exit(0);
+	}
+	e->actual->last->free = 0;
+	call->line = e->actual->last;
+	call->index = inst->index;
+	call->s = s;
+	call->size = inst->s[i];
+	call->next = label->call;
+	label->call = call;
+	return (1);
+}
+
+void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 {
 	int		len;
 	t_label *label;
 
 	label = e->actual->label;
 	len = ft_strcspn(s, SPACES);
+	ft_printf(MAGIC_C"str label: %s\n{R}", s);
 	while (label)
 	{
 		if (!ft_strncmp(s, label->name, len))
-			ft_printf("label found\n");
+		{
+			if (label->index != -1)
+			{
+				ft_printf(MAGIC_C"label found\n{R}");
+				inst->p[i] = label->index;
+				return ;
+			}
+			break ;
+		}
 		label = label->next;
 	}
-	if (!label)
-	{
-		
-	}
+	if (!label || label->index == -1)
+		create_call(e, inst, s, label, i); // separer en deux pour trop args
 }
 
 int		check_params(t_env *e, char **params, t_inst *inst)
@@ -165,19 +208,18 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 	int i;
 	int reg;
 	int error;
-	int	j;
 
 	error = 0;
 	reg = -1;
 	i = 0;
-	j = 0;
+	inst->index = e->actual->i;
 	while (params[i])
 	{
 		inst->t[i] = 0;
 		if (is_a_label(params[i]))
 		{
 			inst->s[i] = !g_op_tab[inst->op - 1].dir_size && params[i][0] != DIRECT_CHAR ? 4 : 2;
-			get_label_call(e, &j, inst->s[i], ft_strchr(params[i], LABEL_CHAR) + 1);
+			get_label_call(e, inst, ft_strchr(params[i], LABEL_CHAR) + 1, i);
 			ft_dprintf(2,"{R}[%d] label\n", i + 1);
 		}
 		else if (is_direct(params[i]))
@@ -204,7 +246,10 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 		else
 			error = 1;
 		if (!error) // changer error
-			j += inst->s[i];
+		{
+			ft_printf(STR_C"index: %02x :: %d -> %02x :: %d\n{R}", inst->index, inst->index, inst->index + inst->s[i], inst->index + inst->s[i]);
+			inst->index += inst->s[i];
+		}
 		i++;
 	}
 	if (i != g_op_tab[inst->op - 1].nb_param)
@@ -237,9 +282,10 @@ t_inst	*parse_inst(t_env *e, char *str)
 	char *tmp;
 	char **params;
 
+	print_label(e);
 	inst.ocp = 0;
 	inst.nb_p = 0;
-	ft_printf(FT_C"\n{reset}:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\nline = %s\n", str);
+	ft_printf(NAME_C"\nparse_inst: {R}%s\n", str);
 	if ((inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;
@@ -250,6 +296,7 @@ t_inst	*parse_inst(t_env *e, char *str)
 		if (g_op_tab[inst.op - 1].ocp)
 			get_ocp(&inst);
 	}
+	e->actual->i = inst.index;
 	print_inst(&inst, str);
 	return (NULL);
 }

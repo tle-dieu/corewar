@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 17:42:11 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/25 18:39:28 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,14 @@ void	compile(t_env *e)
 	if (e->actual->error)
 		ft_dprintf(2, "%d %s generated\n", e->actual->error, e->actual->error > 1 ? "errors" : "error");
 	ft_printf("\n"); // a retirer
+}
+
+void	test()
+{
+	t_call *call;
+
+	if (!(call = (t_call *)malloc(sizeof(t_call))))
+		exit(0);
 }
 
 int		main(int ac, char **av)

@@ -6,18 +6,26 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 19:55:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/25 22:14:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASM_H
 # define ASM_H
 
+// refaire usage et --help
+
 # include "libft.h"
 # define GREEN_CURS "{bold}{green}"
 
 # define ERR_LINE_C ("{bold}%s:%d:%d: {bold}{red}error: {R}{bold}")
 # define ERR_LINE_NC ("%s:%d:%d: error: ")
+
+# define WARNING_LINE_C ("{bold}%s:%d:%d: {bold}{purple}warning: {R}{bold}")
+# define WARNING_LINE_NC ("%s:%d:%d: warning: ")
+
+# define WARNING_FILE_C ("{bold}%s: {bold}{purple}warning: {R}")
+# define WARNING_FILE_NC ("%s: warning: ")
 
 # define ERR_FILE_C ("%s: {bold}{red}error: {R}")
 # define ERR_FILE_NC ("%s: error: ")
@@ -52,8 +60,9 @@ typedef struct		s_line
 typedef struct		s_call
 {
 	t_line			*line;
-	char			*label;
-	int				find;
+	char			*s;
+	int				size;
+	int				index;
 	struct s_call	*next;
 }					t_call;
 
@@ -67,6 +76,7 @@ typedef struct		s_label
 
 typedef struct		s_inst
 {
+	int				index;
 	int				op;
 	int				ocp;
 	int				nb_p;
@@ -115,6 +125,8 @@ typedef struct		s_env
 void				print_files(t_file *file);
 void				print_bin(unsigned char *buff, int size);
 void	            print_option(unsigned options, char *s);
+void				print_label(t_env *e);
+void				print_call_error(t_env *e);
 
 
 //----------------------------
