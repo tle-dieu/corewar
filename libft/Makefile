@@ -40,6 +40,7 @@ SOURCES = $(FT_PRINTF)buff.c \
 		  $(STRING)ft_count_occ.c \
 		  $(STRING)ft_ncount_occ.c \
 		  $(STRING)ft_count_words.c \
+		  $(STRING)ft_count_words_reject.c \
 		  $(STRING)ft_strcat.c \
 		  $(STRING)ft_strcdup.c \
 		  $(STRING)ft_strchr.c \
@@ -72,6 +73,7 @@ SOURCES = $(FT_PRINTF)buff.c \
 		  $(STRING)ft_strrchr.c \
 		  $(STRING)ft_strrev.c \
 		  $(STRING)ft_strsplit.c \
+		  $(STRING)ft_strsplit_reject.c \
 		  $(STRING)ft_strspn.c \
 		  $(STRING)ft_strstr.c \
 		  $(STRING)ft_strsub.c \

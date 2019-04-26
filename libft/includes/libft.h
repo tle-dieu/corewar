@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 15:48:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:46:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct	s_list
 
 int				ft_count_occ(char const *s, char c);
 size_t			ft_count_words(char const *s, char c);
+size_t			ft_count_words_reject(char const *s, char c, char *reject);
 int				ft_ncount_occ(char const *s, char c, int n);
 char			*ft_strcat(char *dest, const char *src);
 char			*ft_strcdup(const char *s, char c);
@@ -70,6 +71,7 @@ char			*ft_strpbrk(const char *s, const char *chr);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strrev(char *str);
 char			**ft_strsplit(char const *s, char c);
+char			**ft_strsplit_reject(char const *s, char c, char *reject);
 size_t			ft_strspn(const char *s, const char *accept);
 char			*ft_strstr(const char *big, const char *little);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
