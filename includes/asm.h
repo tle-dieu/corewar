@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 18:13:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 18:18:20 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define SPACES "\t \v\f\r"
 # define TAB_SIZE 4
 //option output a rajouter pour preciser fichier ou mettre
+//supprimer options inutiles
 
 # define O_ANNOT 1
 # define O_DUMP 2 //gerer hexa(-x) et binaire(-b) ?

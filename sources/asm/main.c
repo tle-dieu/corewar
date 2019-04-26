@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 17:45:48 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 19:21:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ void	compile(t_env *e)
 		ft_printf(STR_C"name:{R} |%s|\n", &bin[4]);
 	if (e->actual->complete & 2)
 		ft_printf(STR_C"comment:{R} |%s|\n\n", &bin[PROG_NAME_LENGTH + 12]);
-	if (!e->actual->error)
-		print_bin(bin, BIN_MAX_SIZE);
+	/* if (!e->actual->error) */
+	/* 	print_bin(bin, BIN_MAX_SIZE); */
 	if (e->actual->error)
 		ft_dprintf(2, "%d %s generated\n", e->actual->error, e->actual->error > 1 ? "errors" : "error");
 	ft_printf("\n"); // a retirer
@@ -101,6 +101,7 @@ void	test()
 int		main(int ac, char **av)
 {
 	t_env	e;
+	t_file	*next;
 
 	e = (t_env){isatty(2), NULL, NULL, av[0]};
 	if (ac < 2)
@@ -115,7 +116,9 @@ int		main(int ac, char **av)
 	while (e.actual)
 	{
 		compile(&e);
-		e.actual = e.actual->next;
+		next = e.actual->next;
+		free_line(e.actual);
+		free(e.actual);
+		e.actual = next;
 	}
-	free_lst_file(&e);
 }
