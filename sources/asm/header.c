@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 22:14:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 17:29:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	get_header(t_env *e, unsigned char *cp)
 				else if (line[i])
 				{
 					++e->actual->nb_inst;
-					get_champ(e, line + i, cp);
+					get_champ(e, line + i, cp + COMMENT_LENGTH + PROG_NAME_LENGTH + 12);
 				}
 				free_line(e->actual);
 				break ;

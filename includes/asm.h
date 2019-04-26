@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 22:14:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 18:13:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef struct		s_call
 	t_line			*line;
 	char			*s;
 	int				size;
-	int				index;
+	int				index_call;
+	int				index_inst;
 	struct s_call	*next;
 }					t_call;
 
@@ -83,7 +84,6 @@ typedef struct		s_inst
 	int				p[3];
 	int				s[3];
 	int				t[3];
-	struct s_inst 	*next;
 }					t_inst;
 
 typedef struct		s_file
@@ -145,7 +145,7 @@ void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
 void				get_header(t_env *e, unsigned char *cp);
 int					alloc_error(t_env *e);
-t_inst				*parse_inst(t_env *e, char *str);
+t_inst				*parse_inst(t_env *e, char *str, unsigned char *cp);
 //verifier include dans .c et verifier proto fonctions
 
 #endif

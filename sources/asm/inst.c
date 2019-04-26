@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 15:06:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 18:13:54 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 
 //au moment du free de call, segfault si deux label sur mm ligne
 
-int		search_label(t_env *e, char *s, int len)
+int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 {
 	t_label *label;
 	t_call	*call;
 
-	ft_printf("search label\n");
 	label = e->actual->label;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
 		label = label->next;
@@ -31,12 +30,13 @@ int		search_label(t_env *e, char *s, int len)
 			ft_printf("{#ff3333}error double assign label{R}\n");
 		else
 		{
-			ft_printf("{yellow}label call find\n{R}");
 			label->index = e->actual->i;
 			call = label->call;
 			while (call)
 			{
-				ft_printf(MAGIC_C"line: '%s' call: '%s' index: %02x\n{R}", e->actual->last->s, call->line->s, e->actual->i - call->index);
+				(void)cp;
+				/* while (call->size-- > 0) */
+					/* *(cp++ + call->index_call) = (e->actual->i - call->index_inst) >> call->size; */
 				call = call->next;
 			}
 		}
@@ -50,7 +50,6 @@ void	get_label(t_env *e, char *s)
 	t_label	*new;
 	int		len;
 
-	ft_printf("get label\n");
 	if (*(s + (len = ft_strspn(s, LABEL_CHARS))) != LABEL_CHAR)
 		ft_printf("{#ff3333}label char interdit: {R}%c\n", *(s + len));
 	new = NULL;
@@ -68,7 +67,7 @@ void	get_label(t_env *e, char *s)
 	e->actual->label = new;
 }
 
-int     only_label(t_env *e, char **line)
+int     only_label(t_env *e, char **line, unsigned char *cp)
 {
 	int		i;
 	int		len;
@@ -87,21 +86,17 @@ int     only_label(t_env *e, char **line)
 		s++;
 	}
 	ft_printf(NAME_C"LABEL{R}\n");
-	if (!search_label(e, *line, s - *line))
+	if (!search_label(e, *line, s - *line, cp))
 		get_label(e, *line);
 	*line = s + ft_strspn(s + 1, SPACES) + 1;
-	ft_printf("line after label: %s\n", *line);
 	return (!**line);
 }
 
 int		get_champ(t_env *e, char *s, unsigned char *cp)
 {
 	print_label(e);
-	if (!only_label(e, &s))
-	{
-		ft_printf(NAME_C"INSTRUCTION{R}\n");
-		parse_inst(e, s);
-	}
+	if (!only_label(e, &s, cp))
+		parse_inst(e, s, cp);
 	(void)cp;
 	return (1);
 }

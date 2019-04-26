@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 15:18:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 18:12:20 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,10 @@ int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
 	}
 	e->actual->last->free = 0;
 	call->line = e->actual->last;
-	call->index = e->actual->i;
+	call->index_inst = e->actual->i;
+	call->index_call = inst->index;
 	call->s = s;
-	call->size = inst->s[i]; //evnoyer que inst et pas i
+	call->size = inst->s[i]; //envoyer que inst et pas i
 	call->next = label->call;
 	label->call = call;
 	return (1);
@@ -263,7 +264,7 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 	return (error || i != g_op_tab[inst->op - 1].nb_param);
 }
 
-void print_inst(t_inst *inst, char *str)
+void	print_inst(t_inst *inst, char *str)
 {
 	int i;
 
@@ -272,25 +273,42 @@ void print_inst(t_inst *inst, char *str)
 	ft_printf("op\t= %d\n", inst->op);
 	ft_printf("ocp\t= %d\n", inst->ocp);
 	ft_printf("nb_p\t= %d\n", inst->nb_p);
-	ft_printf("params\n");
+	ft_printf("params:\n");
 	while (i < inst->nb_p)
 	{
-		ft_printf("\t p[%d] = %d\n", i, inst->p[i]);
-		ft_printf("\t s[%d] = %d\n", i, inst->s[i]);
+		ft_printf("\t p[%d] = %d", i, inst->p[i]);
+		ft_printf("\t s[%d] = %d", i, inst->s[i]);
 		ft_printf("\t t[%d] = %d\n", i, inst->t[i]);
 		i++;
 	}
 }
 
-t_inst	*parse_inst(t_env *e, char *str)
+void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
+{
+	int i;
+	int	k;
+
+	i = 0;
+	cp[e->actual->i++] = inst->op; //check champ max size ou check avant ? stopper ou continuer en faisant repartir index a 0
+	if (g_op_tab[inst->op - 1].ocp)
+		cp[e->actual->i++] = inst->ocp;
+	while (i < inst->nb_p)
+	{
+		k = inst->s[i];
+		while (k--)
+			cp[e->actual->i++] = inst->p[i] >> k * 8;
+		i++;
+	}
+}
+
+t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 {	
 	t_inst inst;
 	char *tmp;
 	char **params;
 
 	print_label(e);
-	inst.ocp = 0;
-	inst.nb_p = 0;
+	inst = (t_inst){.ocp = 0};
 	ft_printf(NAME_C"\nparse_inst: {R}%s\n", str);
 	if ((inst.op = get_curr_inst(str)) <= 16)
 	{
@@ -302,7 +320,7 @@ t_inst	*parse_inst(t_env *e, char *str)
 		if (g_op_tab[inst.op - 1].ocp)
 			get_ocp(&inst);
 	}
-	e->actual->i = inst.index;
+	write_inst(e, &inst, cp);
 	print_inst(&inst, str);
 	return (NULL);
 }
