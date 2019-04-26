@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 11:57:27 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/26 14:13:44 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ int is_direct(char *str)
 			i++;
 		while (str[i] && ft_isdigit(str[i++]))
 			nb++;
-		ft_printf(">>>>>>>>>>> %s\n", str + i);
 		i += ft_strspn(str + i, SPACES);
-		ft_printf(">>>>>>>>>>> %s\n", str + i);
 		if (str[i])
 			ft_printf("{#ff3333}unexpected character '%s' i = %d \n", str + i, i);
 		if (!nb)
@@ -220,7 +218,7 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 	error = 0;
 	reg = -1;
 	i = 0;
-	inst->index = e->actual->i;
+	inst->index = e->actual->i + g_op_tab[inst->op - 1].ocp;
 	while (params[i])
 	{
 		inst->t[i] = 0;
@@ -256,7 +254,7 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 		if (!error) // changer error
 		{
 			ft_printf(STR_C"index: %02x :: %d -> %02x :: %d\n{R}", inst->index, inst->index, inst->index + inst->s[i], inst->index + inst->s[i]);
-			inst->index += inst->s[i] + g_op_tab[inst->op - 1].ocp;
+			inst->index += inst->s[i];
 		}
 		i++;
 	}
