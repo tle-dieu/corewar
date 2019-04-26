@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 23:44:51 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 15:06:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		search_label(t_env *e, char *s, int len)
 			call = label->call;
 			while (call)
 			{
-				call->index = label->index;
+				ft_printf(MAGIC_C"line: '%s' call: '%s' index: %02x\n{R}", e->actual->last->s, call->line->s, e->actual->i - call->index);
 				call = call->next;
 			}
 		}

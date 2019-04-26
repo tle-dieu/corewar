@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 18:39:28 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 15:08:54 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	compile(t_env *e)
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
 	get_header(e, cp);
+	print_label(e);
 	if (e->actual->complete & 1)
 		ft_printf(STR_C"name:{R} |%s|\n", &bin[4]);
 	if (e->actual->complete & 2)

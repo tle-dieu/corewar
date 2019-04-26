@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 14:13:44 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/26 15:18:15 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,9 @@ int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
 	}
 	e->actual->last->free = 0;
 	call->line = e->actual->last;
-	call->index = inst->index;
+	call->index = e->actual->i;
 	call->s = s;
-	call->size = inst->s[i];
+	call->size = inst->s[i]; //evnoyer que inst et pas i
 	call->next = label->call;
 	label->call = call;
 	return (1);
@@ -193,12 +193,12 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 	ft_printf(MAGIC_C"str label: %s\n{R}", s);
 	while (label)
 	{
-		if (!ft_strncmp(s, label->name, len) && !label->name[len])
+		if (!ft_strncmp(s, label->name, len) && ft_printf("YES\n\n") && !label->name[len])
 		{
 			if (label->index != -1)
 			{
-				ft_printf(MAGIC_C"label found\n{R}");
-				inst->p[i] = label->index;
+				inst->p[i] = label->index - e->actual->i;
+				ft_printf(MAGIC_C"call: '%s' index: %d\n{R}", s, inst->p[i]);
 				return ;
 			}
 			break ;
@@ -218,13 +218,13 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 	error = 0;
 	reg = -1;
 	i = 0;
-	inst->index = e->actual->i + g_op_tab[inst->op - 1].ocp;
+	inst->index = e->actual->i + g_op_tab[inst->op - 1].ocp + 1;
 	while (params[i])
 	{
 		inst->t[i] = 0;
 		if (is_a_label(params[i]))
 		{
-			inst->s[i] = g_op_tab[inst->op - 1].dir_size && params[i][0] == DIRECT_CHAR ? 2 : 4;
+			inst->s[i] = g_op_tab[inst->op - 1].dir_size && *params[i] == DIRECT_CHAR ? 2 : 4;
 			get_label_call(e, inst, ft_strchr(params[i], LABEL_CHAR) + 1, i);
 			ft_dprintf(2,"{R}[%d] label\n", i + 1);
 		}
