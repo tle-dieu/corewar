@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 11:11:14 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 11:50:46 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_visu
 	int				color_map[MEM_SIZE];
 	int				color;
 	int				live_color;
+	unsigned int	sleep_value;
 
 }					t_visu;
 
@@ -115,13 +116,14 @@ typedef	struct		s_env
 }					t_env;
 
 /*
-** VISU.C (2)
+** VISU.C (3)
 */
+void				get_keys(t_env *e);
 void				init_color_map(t_env *e);
 void				visu(t_env *e);
 
 /*
-** VISU.C (4)
+** VISU_PRINT.C (4)
 */
 void				print_current_map(t_env *e);
 

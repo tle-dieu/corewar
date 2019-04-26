@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 11:10:07 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 11:50:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void			print_progress_bar(t_env *e)
 	attron(COLOR_PAIR(PROGRESS_NO));
 	while ((int)total_size++ < PROGRESS_BAR_SIZE - 1)
 		printw("#");
+	attroff(COLOR_PAIR(PROGRESS_NO));
 }
 
 void				print_current_map(t_env *e)
@@ -100,11 +101,7 @@ void				print_current_map(t_env *e)
 		highlight ? attroff(A_STANDOUT) : 0;
 	}
 	print_progress_bar(e);
-	timeout(0);
-	if (getch() == ' ')
-		while (42)
-			if (getch() == ' ')
-				break ;
+	get_keys(e);
 	refresh();
-	usleep(10000);
+	usleep(e->v.sleep_value);
 }

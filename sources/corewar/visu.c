@@ -6,11 +6,31 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:26:03 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 11:11:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 11:50:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+void				get_keys(t_env *e)
+{
+	int		key;
+
+	timeout(0);
+	if ((key = getch()) == ' ' || key == 43 || key == 45)
+	{
+		if (key == 43 && e->v.sleep_value)
+			e->v.sleep_value -= 1000;
+		else if (key == 45 && e->v.sleep_value < 150000)
+			e->v.sleep_value += 1000;
+		else if (key == ' ')
+		{
+			while (42)
+				if (getch() == ' ')
+					break ;
+		}
+	}	
+}
 
 void				init_color_map(t_env *e)
 {
@@ -29,6 +49,7 @@ void				init_color_map(t_env *e)
 		while (++j < e->champs[champ].size)
 			e->v.color_map[i++] = champ + 2;
 	}
+	e->v.sleep_value = 50000;
 }
 
 void				visu(t_env *e)
