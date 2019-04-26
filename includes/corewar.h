@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/24 13:18:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 11:11:14 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define PROGRESS_3 10
 # define PROGRESS_4 11
 # define PROGRESS_NO 12
+# define PROGRESS_BAR_SIZE 192
 
 typedef struct		s_ocp
 {
@@ -114,12 +115,15 @@ typedef	struct		s_env
 }					t_env;
 
 /*
-** VISU.C (5)
+** VISU.C (2)
 */
 void				init_color_map(t_env *e);
-void				print_curent_stats(t_env *e);
-void				print_current_map(t_env *e);
 void				visu(t_env *e);
+
+/*
+** VISU.C (4)
+*/
+void				print_current_map(t_env *e);
 
 /*
 ** OP.C ()
@@ -131,15 +135,15 @@ void				visu(t_env *e);
 int					parse_args(t_env *e, int ac, char **av);
 
 /*
-** CHECK.C (5)
+** CHECK.C (4)
 */
 int					check_champ(t_env *e, char *arg, int i);
-int					check_reg(int reg);
 
 /*
-** GAME_UTILS.C (1)
+** GAME_UTILS.C (2)
 */
 int					create_new_process(t_env *e, int pc, t_proc *ptr);
+int					check_reg(int reg);
 
 /*
 ** OP_UTILS.C (5)

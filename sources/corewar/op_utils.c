@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/22 11:11:24 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/24 19:26:50 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ int				param_value(t_env *e, t_ocp ch, int to_find, t_proc *ptr)
 	{
 		if (ch.s1 == 1)
 			value = ptr->r[e->mem[(ptr->pc + 2) % MEM_SIZE]];
-		else if (ch.s1 == 2)
+		else if (ch.s1 == 2 && ch.p1 == 192)
 			value = e->mem[param_sum(e, ptr->pc + 2, ch.s1) % MEM_SIZE];
-		else if (ch.s1 == 4)
+		else if (ch.s1 == 4 || (ch.s1 == 2 && ch.p1 == 128))
 			value = param_sum(e, ptr->pc + 2, ch.s1);
 	}
 	else if (to_find == 2)
 	{
 		if (ch.s2 == 1)
 			value = ptr->r[e->mem[(ptr->pc + 2 + ch.s1) % MEM_SIZE]];
-		else if (ch.s2 == 2)
+		else if (ch.s2 == 2 && ch.p2 == 48)
 			value = e->mem[param_sum(e, ptr->pc + 2 + ch.s1, ch.s2) % MEM_SIZE];
-		else if (ch.s2 == 4)
+		else if (ch.s2 == 4 || (ch.s2 == 2 && ch.p2 == 32))
 			value = param_sum(e, ptr->pc + 2 + ch.s1, ch.s2);
 	}
 	return (value);

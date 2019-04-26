@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/19 15:13:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 10:40:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	int		p;
 	int		reg;
 
-	ptr->carry = 0;
 	reg = 1;
 	sum = 0;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
@@ -109,16 +108,11 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 		else if (reg)
 			sum += p;
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
-		if (check.p2 == 16 && reg && check_reg(p))
-			sum += ptr->r[p];
-		else if (reg)
-			sum += p;
+		if (reg)
+			sum += (check.p2 == 16 && check_reg(p)) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
 		if (reg && check_reg(p))
-		{
 			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, 4);
-			ptr->carry = 1;
-		}
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }

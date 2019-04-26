@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/19 17:44:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 10:24:23 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,23 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 	int		error;
 	int		addr;
 
-	ptr->carry = 0;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
 	addr = param_value(e, check, 1, ptr);
 	error = (check.error || !check.p1 || check.p2 != 16 || check.p3);
 	if (!error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
 	{
-		ptr->carry = 1;
 		if (check.s1 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
 				ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
 		else if (check.s1 == 2)
 		{
+			addr = param_sum(e, *pc + 3, 1);
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
 				param_sum(e, *pc + (addr % IDX_MOD), REG_SIZE);
 		}
 		else if (check.s1 == 4)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
-		else
-			ptr->carry = 0;
+		ptr->carry = !ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]];
 	}
 	*pc = *pc + 2 + check.s1 + check.s2;
 }

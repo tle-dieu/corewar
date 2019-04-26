@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:47:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/24 13:25:52 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 10:29:06 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void			nb_in_buff(t_decomp *d, int nb, int padding)
 		tmp /= 10;
 	}
 	tmp = d->x;
-	d->x += padding ? 6 - 1: len - 1;
+	d->x += padding ? 6 - 1 : len - 1;
 	while (abs > 9)
 	{
 		d->tab[d->y][d->x--] = (abs % 10) + 48;

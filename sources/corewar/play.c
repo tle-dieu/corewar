@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/19 15:50:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/24 19:26:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ static int			exec_cycle(t_env *e)
 		{
 			if (ptr->pc >= MEM_SIZE)
 				ptr->pc = ptr->pc % MEM_SIZE;
-			if (ptr->op < 1 || ptr->op > 16 || e->mem[ptr->pc % MEM_SIZE] < 1
-					|| e->mem[ptr->pc % MEM_SIZE] > 17)
+			if (ptr->op < 1 || ptr->op > 16)
 				ptr->pc++;
 			else
 				g_op_tab[ptr->op - 1].ft_ptr(e, &ptr->pc, ptr);

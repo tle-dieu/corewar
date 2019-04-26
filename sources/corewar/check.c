@@ -6,16 +6,11 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/24 12:06:35 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 09:05:29 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-
-int				check_reg(int reg)
-{
-	return (reg > 0 && reg < 17);
-}
 
 static void		split_champ(t_env *e, int i)
 {
@@ -70,25 +65,23 @@ int				check_champ(t_env *e, char *arg, int i)
 	fd = open(arg, O_RDONLY);
 	if (fd == -1 || !fd)
 	{
-		ft_printf("\nWrong .cor file: %s\n", arg);
+		ft_dprintf(2, "\nWrong .cor file: %s\n", arg);
 		return (0);
 	}
 	ft_bzero(e->line, MAX_SIZE);
 	ret = read(fd, e->line, MAX_SIZE + 1);
 	if (ret == -1 || !(check_magic_number(e)))
 	{
-		(ret == -1) ? ft_printf("\nNot a valid file\n",
-			ret) : ft_printf("Does not contain magic number\n");
+		(ret == -1) ? ft_dprintf(2, "\nNot a valid file\n",
+			ret) : ft_dprintf(2, "Does not contain magic number\n");
 		return (0);
 	}
 	if (!(check_champ_size(e, ret, i)))
 	{
-		ft_printf("\nChampion %s too big (%d > %d)\n",
+		ft_dprintf(2, "\nChampion %s too big (%d > %d)\n",
 			arg, e->champs[i].size, CHAMP_MAX_SIZE);
 		return (0);
 	}
 	split_champ(e, i);
-	if (!i)
-		decompile_champ(e, i);
 	return (1);
 }

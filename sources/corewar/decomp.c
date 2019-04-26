@@ -6,11 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/24 13:25:54 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 10:27:33 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+//Need: parsing avec check_champ_size, check_magic_number, peut-etre split_champ, puis check_ocp.
 
 static void			put_header(t_env *e)
 {

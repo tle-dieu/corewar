@@ -2,7 +2,7 @@ PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
 
-CFLAG = -Wall -Werror -Wextra
+CFLAG = -Wall -Werror -Wextra -g3
 VISU = -lncurses
 CC = gcc $(CFLAG)
 LDFLAG = -L./$(LIBFT_DIR) -lft
@@ -36,6 +36,7 @@ VM_SOURCES_FILES = main.c \
 				   op_6_10.c \
 				   op_11_15.c \
 				   visu.c \
+				   visu_print.c \
 				   play.c
 
 SOURCES_DIR = sources/

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/22 11:11:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/24 19:19:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->color = ptr->color;
 	new->live = ptr->live;
 	new->carry = ptr->carry;
-	new->op = e->mem[pc];
+	new->op = e->mem[pc % MEM_SIZE];
 	new->cycle = choose_cycle(new->op);
 	while (++i <= 17)
 		new->r[i] = ptr->r[i];
@@ -34,4 +34,9 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->next = e->new_proc;
 	e->new_proc = new;
 	return (1);
+}
+
+int				check_reg(int reg)
+{
+	return (reg > 0 && reg < 17);
 }
