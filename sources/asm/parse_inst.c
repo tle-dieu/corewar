@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/25 23:51:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 11:57:27 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,30 @@ int		is_reg(char *str)
 {
 	int reg;
 	int i;
-	int nb;
+	char *tmp;
 
-	nb = 0;
+	tmp = str;
 	reg = -1;
-	i = ft_strspn(str, SPACES);
-	if (str[i] == 'r')
+	i = 0;
+	tmp += ft_strspn(str, SPACES);
+	if (*tmp == 'r')
 	{
-		i++;
-		while (str[i] && ft_isdigit(str[i++]))
-			nb++; // pas utile si r0 n'existe pas
-		reg = ft_atoi(str + i);
-		if (reg < 0 || reg > 16 || nb == 0)
+		tmp++;
+		while (tmp[i] && ft_isdigit(tmp[i]))
+			++i;
+		i += ft_strspn(tmp + i, SPACES);
+		if (tmp[i])
+		{
+			ft_printf("{#ff3333}unexpected character %s i = %d\n", tmp + i, i);
+			reg = -1;
+		}
+		else
+			reg = ft_atoi(tmp);
+		if (reg < 0 || reg > 16)
 		{
 			ft_printf("{#ff3333}bad register number %d{R}\n", reg);
 			reg = -1;
 		}
-		i += ft_strspn(SPACES, str + i);
-		if (str[i])
-			ft_printf("{#ff3333}unexpected character %s i = %d\n", str + i, i);
 	}
 	return (reg);
 }
@@ -66,7 +71,7 @@ int is_indirect(char *str)
 		i++;
 	while (str[i] && ft_isdigit(str[i++]))
 		nb++;
-	i += ft_strspn(SPACES, str + i);
+	i += ft_strspn(str + i, SPACES);
 	if (str[i])
 		ft_printf("{#ff3333}unexpected character %s i = %d\n", str + i, i);
 	return (nb);
@@ -76,6 +81,7 @@ int is_direct(char *str)
 {
 	int i;
 	int nb;
+
 	nb = 0;
 	i = ft_strspn(str, SPACES);
 	if (str[i] == DIRECT_CHAR)
@@ -85,9 +91,11 @@ int is_direct(char *str)
 			i++;
 		while (str[i] && ft_isdigit(str[i++]))
 			nb++;
-		i += ft_strspn(SPACES, str + i);
+		ft_printf(">>>>>>>>>>> %s\n", str + i);
+		i += ft_strspn(str + i, SPACES);
+		ft_printf(">>>>>>>>>>> %s\n", str + i);
 		if (str[i])
-			ft_printf("{#ff3333}unexpected character %s i = %d \n", str + i, i);
+			ft_printf("{#ff3333}unexpected character '%s' i = %d \n", str + i, i);
 		if (!nb)
 			ft_printf("{#ff3333}specified as direct but there is no digit\n");
 	}
@@ -218,7 +226,7 @@ int		check_params(t_env *e, char **params, t_inst *inst)
 		inst->t[i] = 0;
 		if (is_a_label(params[i]))
 		{
-			inst->s[i] = !g_op_tab[inst->op - 1].dir_size && params[i][0] != DIRECT_CHAR ? 4 : 2;
+			inst->s[i] = g_op_tab[inst->op - 1].dir_size && params[i][0] == DIRECT_CHAR ? 2 : 4;
 			get_label_call(e, inst, ft_strchr(params[i], LABEL_CHAR) + 1, i);
 			ft_dprintf(2,"{R}[%d] label\n", i + 1);
 		}
