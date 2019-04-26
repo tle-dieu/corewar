@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:26:03 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 11:50:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:50:43 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void				get_keys(t_env *e)
 				if (getch() == ' ')
 					break ;
 		}
-	}	
+	}
 }
 
 void				init_color_map(t_env *e)

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 11:48:32 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 12:15:43 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void				play(t_env *e)
 			add_new_proc(e);
 		if (e->cycle == e->c_to_die)
 		{
+			ft_printf("\a");
 			if (!e->nb_live)
 				break ;
 			if (e->nb_live < NBR_LIVE)

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 09:05:29 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:49:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,26 @@ int				check_champ(t_env *e, char *arg, int i)
 {
 	int		fd;
 	int		ret;
+	int		err;
 
 	fd = open(arg, O_RDONLY);
-	if (fd == -1 || !fd)
-	{
+	err = 0;
+	if ((fd == -1 || !fd) && (err = 1))
 		ft_dprintf(2, "\nWrong .cor file: %s\n", arg);
-		return (0);
-	}
-	ft_bzero(e->line, MAX_SIZE);
-	ret = read(fd, e->line, MAX_SIZE + 1);
-	if (ret == -1 || !(check_magic_number(e)))
+	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
+	ret = !err ? read(fd, e->line, MAX_SIZE + 1) : -1;
+	if (!err && (ret == -1 || !(check_magic_number(e))) && (err = 1))
 	{
-		(ret == -1) ? ft_dprintf(2, "\nNot a valid file\n",
-			ret) : ft_dprintf(2, "Does not contain magic number\n");
-		return (0);
+		if (ret == -1)
+			ft_dprintf(2, "\nNot a valid file: %s\n", arg);
+		else
+			ft_dprintf(2, "\nDoes not contain magic number\n");
 	}
-	if (!(check_champ_size(e, ret, i)))
-	{
-		ft_dprintf(2, "\nChampion %s too big (%d > %d)\n",
-			arg, e->champs[i].size, CHAMP_MAX_SIZE);
+	if (!err && !(check_champ_size(e, ret, i)) && (err = 1))
+		ft_dprintf(2, "\nChampion %s too big (%d > %d)\n", arg,
+			e->champs[i].size, CHAMP_MAX_SIZE);
+	if (err)
 		return (0);
-	}
 	split_champ(e, i);
 	return (1);
 }

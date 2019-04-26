@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/19 15:59:32 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:41:18 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void		print_winner(t_env *e)
 	int		i;
 
 	i = -1;
+	print_current_map(e);
 	printw("\n\n");
 	if (!e->total_live)
 		printw("NOBODY WINS\n");
@@ -65,15 +66,17 @@ void		print_winner(t_env *e)
 	{
 		while (++i < e->nb_champ)
 		{
+			attron(COLOR_PAIR(e->champs[i].color));
 			if (e->last_live == e->champs[i].id)
-				printw("WINNER {#0bd185}%s(%d){reset}\n",
+				printw("WINNER %40s(%d)\n",
 						e->champs[i].name, e->champs[i].id);
 			else
-				printw("LOOSER {#f48042}%s(%d){reset}\n",
+				printw("LOOSER %40s(%d)\n",
 						e->champs[i].name, e->champs[i].id);
 		}
-		ft_printf("\n\n");
+		printw("\n\n");
 	}
+	refresh();
 }
 
 void		aff(t_env *e, int *pc, t_proc *ptr)
