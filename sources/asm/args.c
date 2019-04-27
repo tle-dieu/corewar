@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 16:48:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 23:48:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,7 @@ int		color_option(t_env *e, char **line)
 	return (0);
 }
 
-static int		output_file(t_env *e, char **av)
-{
-	if (e->i + 1 >= e->ac)
-		return (O_OUTPUT_ERR);
-	e->output = av[++e->i];
-	return (O_OUTPUT);
-}
-
-static int		get_short_option(t_env *e, unsigned *options, char **s, char **av)
+static int		get_short_option(t_env *e, unsigned *options, char **s)
 {
 	unsigned tmp;
 
@@ -93,10 +85,10 @@ static int		get_short_option(t_env *e, unsigned *options, char **s, char **av)
 		else if (**s == 'x')
 			tmp |= O_DUMP;
 		else if (**s == 'o')
-			tmp |= tmp & O_OUTPUT ? 0 : output_file(e, av);
+			tmp |= O_OUTPUT;
 		else if (**s == 'h')
 			usage(e, 1);
-		else if (!(tmp & O_OUTPUT))
+		else
 			tmp |= O_SHORT_ERR;
 		if ((*options |= tmp & ~0xff))
 			return (0);
@@ -105,7 +97,7 @@ static int		get_short_option(t_env *e, unsigned *options, char **s, char **av)
 	return (*options |= tmp);
 }
 
-static int		get_long_option(t_env *e, unsigned *options, char **s, char **av)
+static int		get_long_option(t_env *e, unsigned *options, char **s)
 {
 	if (!ft_strcmp(++(*s), "annotated"))
 		*options |= O_ANNOT;
@@ -114,10 +106,10 @@ static int		get_long_option(t_env *e, unsigned *options, char **s, char **av)
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;
 	else if (!ft_strncmp(*s, "color", 5)
-	&& (!*((*s) + 5) || *((*s) + 5) == '='))
+			&& (!*((*s) + 5) || *((*s) + 5) == '='))
 		return (!(*options |= color_option(e, s)));
 	else if (!ft_strcmp(*s, "output"))
-		*options |= output_file(e, av);
+		*options |= O_OUTPUT;
 	else if (!ft_strcmp(*s, "help"))
 		usage(e, 1);
 	else
@@ -135,15 +127,27 @@ int		parse_command_line(t_env *e, int ac, char **av)
 	while (++e->i < ac)
 	{
 		s = av[e->i];
-		if (*s != '-' || !*++s || (*s == '-' && !*(s + 1))
-		|| !(*s == '-' ? get_long_option(e, &options, &s, av)
-		: get_short_option(e, &options, &s, av)))
+		if ((*s != '-' || !*++s || (*s == '-' && !*(s + 1))
+		|| !(*s == '-' ? get_long_option(e, &options, &s)
+		: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT) || options & ~0xff))
 		{
-			if (e->i >= ac || (fd = open(av[e->i], O_RDONLY)) == -1
+			if (options & O_OUTPUT_ERR
+			|| (fd = open(av[e->i], O_RDONLY)) == -1
 			|| read(fd, av[e->i], 0) < 0)
 				return (error_file(e, s, av[e->i], options));
 			e->actual = add_file(e, av[e->i], options, fd);
 			options = 0;
+		}
+		if (O_OUTPUT & options)
+		{
+			options &= ~O_OUTPUT;
+			if (++e->i >= ac)
+			{
+				options |= O_OUTPUT_ERR;
+				return (error_file(e, s, av[e->i], options)); // pas d'utiliser error file
+			}
+			else if (*av[e->i])
+				e->output = av[e->i];
 		}
 	}
 	return (1);

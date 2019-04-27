@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 16:46:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 22:10:27 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void			ft_striter(char *s, void (*f)(char *));
 void			ft_striteri(char *s, void (*f)(unsigned int, char *));
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strjoin_sep(char const *s1, char const *s2, char c);
+char			*ft_strnjoin(char const *s1, char const *s2,
+				size_t n1, size_t n2);
 size_t			ft_strlcat(char *dest, const char *src, size_t size);
 size_t			ft_strlen(const char *s);
 char			*ft_strlwr(char *str);

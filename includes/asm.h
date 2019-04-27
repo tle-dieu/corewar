@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 18:54:52 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 23:36:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,11 @@ typedef struct		s_file
 typedef struct		s_env
 {
 	int				tty;
+	int				i;
 	t_file			*actual;
 	t_file			*file;
 	char			*exname;
 	char			*output;
-	int				i;
-	int				ac;
 }					t_env;
 
 /*

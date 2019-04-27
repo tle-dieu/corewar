@@ -57,6 +57,7 @@ SOURCES = $(FT_PRINTF)buff.c \
 		  $(STRING)ft_striteri.c \
 		  $(STRING)ft_strjoin.c \
 		  $(STRING)ft_strjoin_sep.c \
+		  $(STRING)ft_strnjoin.c \
 		  $(STRING)ft_strlcat.c \
 		  $(STRING)ft_strlen.c \
 		  $(STRING)ft_strlwr.c \
