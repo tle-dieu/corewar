@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 16:45:51 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 18:54:52 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # define O_COL_INVALID_ERR 2048
 # define O_OUTPUT_ERR 4096
 # define PRINT 1
+
 typedef struct		s_line
 {
 	char			*s;
@@ -81,6 +82,7 @@ typedef struct		s_label
 typedef struct		s_inst
 {
 	int				index;
+	int				i;
 	int				op;
 	int				ocp;
 	int				nb_p;

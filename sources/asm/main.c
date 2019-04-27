@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 16:48:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 17:47:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int		main(int ac, char **av)
 	ft_printf("color ? %s\n", e.tty ? "yes" : "no");
 	print_files(e.file);
 	e.actual = e.file;
-	exit (0);
 	while (e.actual)
 	{
 		compile(&e);

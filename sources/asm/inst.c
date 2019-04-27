@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 14:53:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 18:46:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 				cp = tmp;
 				ft_printf(MAGIC_C"size: {R}{bold}%d "MAGIC_C"index_call: {R}{bold}%d "MAGIC_C"label value: {R}{bold}%d "MAGIC_C"s: {R}'%s'\n", call->size, call->index_call, e->actual->i - call->index_inst, call->line->s);
 				while (call->size--)
-				{
-					ft_printf("%d\n", (int)cp);
 					*(cp++ + call->index_call) = (e->actual->i - call->index_inst) >> call->size * 8;
-				}
 				call = call->next;
 			}
 		}
