@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/27 11:07:45 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/27 17:42:19 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,16 +108,13 @@ int is_direct(t_env *e, char *str, t_inst *inst)
 	if (*tmp == DIRECT_CHAR)
 	{
 		++tmp;
+		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 		inst->s[inst->index] = g_op_tab[inst->op - 1].dir_size ? 2 : 4;
 		inst->t[inst->index] = 2;
 		if (*tmp == LABEL_CHAR)
 			get_label_call(e, inst, tmp + 1, i);
 		else
-		{
-			to_free = ft_strcdup(tmp, SEPARATOR_CHAR);
 			inst->p[inst->index] = ft_atoi(to_free);
-			free(to_free);
-		}
 		return (1);
 	}
 	return (0);
@@ -134,16 +131,15 @@ int is_indirect(t_env *e, char *str, t_inst *inst)
 	tmp = str;
 	inst->s[inst->index] = IND_SIZE;
 	inst->t[inst->index] = 3;
+	to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 	if (*tmp == LABEL_CHAR)
 		get_label_call(e, inst, tmp + 1, i);
 	else
-	{
-		to_free = ft_strcdup(tmp, SEPARATOR_CHAR);
 		inst->p[inst->index] = ft_atoi(to_free);
-		free(to_free);
-	}
+	free(to_free);
 	return (1);
 }
+
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
@@ -158,13 +154,12 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 		tmp++;
 		inst->s[inst->index] = 1;
 		inst->t[inst->index] = 1;
-		to_free = ft_strcdup(tmp, SEPARATOR_CHAR);
+		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 		inst->p[inst->index] = ft_atoi(to_free);
 		free(to_free);
+		return (1);
 	}
-	else
-		return (0);
-	return (1);
+	return (0);
 }
 
 void get_ocp(t_inst *inst)
@@ -184,30 +179,6 @@ void get_ocp(t_inst *inst)
 	inst->ocp = ocp;
 }
 
-int get_next_params(t_env *e, char *str, t_inst *inst)
-{
-	int reg;
-	char *tmp;
-
-	reg = -1;
-	tmp = str;
-	if (is_direct(e, tmp, inst))
-	{
-		ft_printf("{green}DIRECT{R}\n");	
-	}
-	else if (is_reg(e, tmp, inst))
-	{
-		ft_printf("{green}REGISTER{R}\n");	
-	}
-	else if (is_indirect(e, tmp, inst))
-	{
-		ft_printf("{green}DIRECT{R}\n");	
-	}
-	else
-		ft_printf("BAD INSTRUCTION!");
-	return (1);
-}
-
 int check_params(t_env *e, char *str, t_inst *inst)
 {
 	int i;
@@ -216,17 +187,32 @@ int check_params(t_env *e, char *str, t_inst *inst)
 	tmp = str;
 	i = 0;
 	ft_printf("-------------------------------------------------------------------------------\n");
-	while (i != g_op_tab[inst->op - 1].nb_param)
+	while (*tmp)
 	{
 		inst->t[i] = 0;
 		inst->index = i;
 		tmp += ft_strspn(tmp, SPACES);
-		get_next_params(e, tmp, inst);
-		tmp = ft_strchr(tmp, SEPARATOR_CHAR);
-		if (tmp)
-			++tmp;
-		i++;
+		ft_printf("0) %s\n", tmp);
+		is_direct(e, tmp, inst) || is_reg(e, tmp, inst) || is_indirect(e, tmp, inst);
+		ft_printf("1) %s\n", tmp);
+		tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
+		ft_printf("2) %s\n", tmp);
+		tmp += ft_strspn(tmp, SPACES);
+		ft_printf("3) %s\n", tmp);
+		++i;
+		if (*tmp && *tmp != *SEPARATOR_CHAR)
+		{
+			ft_printf("{#ff3333}ERROR: illegal character %c after argument in %s\n{R}", *tmp, str);
+			break ;
+		}
+		else if (!*tmp)
+			break ;
+		++tmp;
 	}
+	if (i > g_op_tab[inst->op - 1].nb_param)
+		ft_printf("{#ff3333}ERROR: too many argument for instruction '%s', must have %d have %d\n{R}", g_op_tab[inst->op - 1].label, g_op_tab[inst->op - 1].nb_param, i);
+	else if (i < g_op_tab[inst->op - 1].nb_param)
+		ft_printf("{#ff3333}ERROR: argument missing for instruction '%s', must have %d have %d\n{R}", g_op_tab[inst->op - 1].label, g_op_tab[inst->op - 1].nb_param, i);
 	return (1);
 }
 

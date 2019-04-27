@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/24 11:01:57 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/27 17:34:34 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define COMMENT_CHAR			"#;"
 # define LABEL_CHAR				':'
 # define DIRECT_CHAR			'%'
-# define SEPARATOR_CHAR			','
+# define SEPARATOR_CHAR			","
 
 # define LABEL_CHARS			"abcdefghijklmnopqrstuvwxyz_0123456789"
 
