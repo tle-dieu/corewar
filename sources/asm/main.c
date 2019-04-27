@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 14:08:47 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:48:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,12 @@ void	compile(t_env *e)
 	ft_printf("\n"); // a retirer
 }
 
-void	test()
-{
-	t_call *call;
-
-	if (!(call = (t_call *)malloc(sizeof(t_call))))
-		exit(0);
-}
-
 int		main(int ac, char **av)
 {
 	t_env	e;
 	t_file	*next;
 
-	e = (t_env){isatty(2), NULL, NULL, av[0]};
+	e = (t_env){isatty(2), NULL, NULL, av[0], NULL, 0, ac};
 	if (ac < 2)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))
@@ -113,6 +105,7 @@ int		main(int ac, char **av)
 	ft_printf("color ? %s\n", e.tty ? "yes" : "no");
 	print_files(e.file);
 	e.actual = e.file;
+	exit (0);
 	while (e.actual)
 	{
 		compile(&e);

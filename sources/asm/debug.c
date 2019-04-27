@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 22:19:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 17:29:27 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,16 @@ void	print_label(t_env *e)
 	}
 }
 
-void			print_option(unsigned options, char *s)
+void			print_option(char *output, unsigned options, char *s)
 {
 	ft_printf(STR_C"filename: {R}%s\n", s);
-	ft_printf(STR_C"  => annot: {R}%s\n", options & O_ANNOT ? "yes" : "no");
-	ft_printf(STR_C"  => disas: {R}%s\n", options & O_DISAS ? "yes" : "no");
-	ft_printf(STR_C"  => dump:  {R}%s\n", options & O_DUMP ? "yes" : "no");
+	ft_printf(STR_C"  => annot:   {R}%s\n", options & O_ANNOT ? "yes" : "no");
+	ft_printf(STR_C"  => disas:   {R}%s\n", options & O_DISAS ? "yes" : "no");
+	ft_printf(STR_C"  => dump:    {R}%s\n", options & O_DUMP ? "yes" : "no");
+	if (output)
+		ft_printf(STR_C"  => output:  {R}yes: %s\n", output);
+	else
+		ft_printf(STR_C"  => output:  {R}no\n", output);
 	ft_printf("\n");
 }
 
@@ -68,7 +72,7 @@ void			print_files(t_file *file)
 	ft_printf("{yellow}----- Print File -----{R}\n");
 	while (file)
 	{
-		print_option(file->options, file->name);
+		print_option(file->output, file->options, file->name);
 		file = file->next;
 	}
 }
