@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 17:47:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 23:36:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "op.h"
 #include <stdlib.h> // tmp
 #include <unistd.h>
+#include <fcntl.h>
 
 //verifier que SPACES est partout
 
@@ -29,6 +30,7 @@ int		pass_line(char *s)
 		*(s + i) = '\0';
 	return (0);
 }
+
 int		add_line(t_env *e, char **line)
 {
 	t_line	*new;
@@ -64,6 +66,42 @@ int		add_line(t_env *e, char **line)
 	return (1);
 }
 
+//penser a close tous les fd
+
+void	compile_write(t_env *e, unsigned char *bin)
+{
+	char	*s;
+	int		fd;
+
+	ft_printf("WRITE FILE\n");
+	if (!e->actual->output)
+	{
+		if (!(s = ft_strrchr(e->actual->name, '.')))
+		{
+			if (!(e->actual->output = ft_strjoin(e->actual->name, ".cor")))
+			{
+				ft_printf("EXIT\n");
+				exit (0); // alloc error
+			}
+		}
+		else if (!(e->actual->output = ft_strnew(s - e->actual->name))
+		|| !ft_memcpy(e->actual->output, e->actual->name, s - e->actual->name)
+		|| !ft_memcpy(e->actual->output + (s - e->actual->name), ".cor", 5))
+		{
+			ft_printf("EXIT\n");
+			exit(0); //alloc error
+		}
+	}
+	ft_printf("output: %s\n", e->actual->output);
+	if ((fd = open(e->actual->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) == -1)
+	{
+		ft_printf("EXIT\n");
+		exit(0); // errno et return
+	}
+	write(fd, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
+	close(fd);
+}
+
 void	compile(t_env *e)
 {
 	unsigned char	*cp;
@@ -83,10 +121,15 @@ void	compile(t_env *e)
 		ft_printf(STR_C"name:{R} |%s|\n", &bin[4]);
 	if (e->actual->complete & 2)
 		ft_printf(STR_C"comment:{R} |%s|\n\n", &bin[PROG_NAME_LENGTH + 12]);
-	if (PRINT && !e->actual->error)
-		print_bin(bin, BIN_MAX_SIZE);
 	if (e->actual->error)
 		ft_dprintf(2, "%d %s generated\n", e->actual->error, e->actual->error > 1 ? "errors" : "error");
+	i = 4;
+	while (i--)
+		bin[PROG_NAME_LENGTH + 11 - i] = e->actual->i >> i * 8;
+	/* if (PRINT && !e->actual->error) */
+	/* 	print_bin(bin, BIN_MAX_SIZE); */
+	if (!e->actual->error)
+		compile_write(e, bin);
 	ft_printf("\n"); // a retirer
 }
 
@@ -95,7 +138,7 @@ int		main(int ac, char **av)
 	t_env	e;
 	t_file	*next;
 
-	e = (t_env){isatty(2), NULL, NULL, av[0], NULL, 0, ac};
+	e = (t_env){isatty(2), 0, NULL, NULL, av[0], NULL};
 	if (ac < 2)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))
