@@ -6,7 +6,7 @@ ASM_42 = "resources/asm_42"
 ASM= "asm"
 
 def get_file(asm, f):
-    cmd = "./" + asm + " " + f + ">> /dev/null"
+    cmd = "./" + asm + " " + f
     os.system(cmd)
     f = f.split('.')
     my_file = f[0] + ".cor"
