@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 16:37:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:43:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	free_lst_file(t_env *e)
 	{
 		next = file->next;
 		free_line(file);
+		free(file->output);
 		free(file);
 		file = next;
 	}

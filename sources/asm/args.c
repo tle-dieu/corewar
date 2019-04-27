@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/25 16:32:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:48:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	t_file *new;
 
 	if (!(new = (t_file *)malloc(sizeof(t_file))))
-	{
-		ft_printf("add file\n");
 		alloc_error(e);
-	}
 	new->line_nb = 1;
 	new->nb_inst = 0;
+	new->output = NULL;
 	new->name = name;
 	new->label = NULL;
 	new->fd = fd;
 	new->i = 0;
+	new->output = e->output ? ft_strdup(e->output) : NULL;
+	e->output = NULL;
 	new->options = options;
 	new->error = 0;
 	new->complete = 0;
@@ -71,36 +71,43 @@ int		color_option(t_env *e, char **line)
 	return (0);
 }
 
-static int		get_short_option(t_env *e, unsigned *options, char **s)
+static int		output_file(t_env *e, char **av)
 {
-	unsigned tmp_opt;
+	if (e->i + 1 >= e->ac)
+		return (O_OUTPUT_ERR);
+	e->output = av[++e->i];
+	return (O_OUTPUT);
+}
 
-	tmp_opt = 0;
+static int		get_short_option(t_env *e, unsigned *options, char **s, char **av)
+{
+	unsigned tmp;
+
+	tmp = 0;
 	while (**s)
 	{
 		if (**s == 'a')
-			tmp_opt |= O_ANNOT;
+			tmp |= O_ANNOT;
 		else if (**s == 'd')
-			tmp_opt |= O_DISAS;
+			tmp |= O_DISAS;
 		else if (**s == 'x')
-			tmp_opt |= O_DUMP;
+			tmp |= O_DUMP;
+		else if (**s == 'o')
+			tmp |= tmp & O_OUTPUT ? 0 : output_file(e, av);
 		else if (**s == 'h')
 			usage(e, 1);
-		else
-		{
-			*options |= O_SHORT_ERR;
+		else if (!(tmp & O_OUTPUT))
+			tmp |= O_SHORT_ERR;
+		if ((*options |= tmp & ~0xff))
 			return (0);
-		}
 		(*s)++;
 	}
-	*options |= tmp_opt;
-	return (1);
+	return (*options |= tmp);
 }
 
-static int		get_long_option(t_env *e, unsigned *options, char **s)
+static int		get_long_option(t_env *e, unsigned *options, char **s, char **av)
 {
-	(*s)++;
-	if (!ft_strcmp(*s, "annotated"))
+	if (!ft_strcmp(++(*s), "annotated"))
 		*options |= O_ANNOT;
 	else if (!ft_strcmp(*s, "dump"))
 		*options |= O_DUMP;
@@ -109,35 +116,33 @@ static int		get_long_option(t_env *e, unsigned *options, char **s)
 	else if (!ft_strncmp(*s, "color", 5)
 	&& (!*((*s) + 5) || *((*s) + 5) == '='))
 		return (!(*options |= color_option(e, s)));
+	else if (!ft_strcmp(*s, "output"))
+		*options |= output_file(e, av);
 	else if (!ft_strcmp(*s, "help"))
 		usage(e, 1);
 	else
-	{
 		*options |= O_LONG_ERR;
-		return (0);
-	}
-	return (1);
+	return (!(~0xff & *options));
 }
 
 int		parse_command_line(t_env *e, int ac, char **av)
 {
 	unsigned options;
-	int		i;
 	int		fd;
 	char	*s;
 
-	i = 0;
 	options = 0;
-	while (++i < ac)
+	while (++e->i < ac)
 	{
-		s = av[i];
+		s = av[e->i];
 		if (*s != '-' || !*++s || (*s == '-' && !*(s + 1))
-		|| !(*s == '-' ? get_long_option(e, &options, &s)
-		: get_short_option(e, &options, &s)))
+		|| !(*s == '-' ? get_long_option(e, &options, &s, av)
+		: get_short_option(e, &options, &s, av)))
 		{
-			if ((fd = open(av[i], O_RDONLY)) == -1 || read(fd, av[i], 0) < 0)
-				return (error_file(e, s, av[i], options));
-			e->actual = add_file(e, av[i], options, fd);
+			if (e->i >= ac || (fd = open(av[e->i], O_RDONLY)) == -1
+			|| read(fd, av[e->i], 0) < 0)
+				return (error_file(e, s, av[e->i], options));
+			e->actual = add_file(e, av[e->i], options, fd);
 			options = 0;
 		}
 	}
