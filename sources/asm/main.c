@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 21:27:30 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/27 14:08:47 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	test()
 int		main(int ac, char **av)
 {
 	t_env	e;
+	t_file	*next;
 
 	e = (t_env){isatty(2), NULL, NULL, av[0]};
 	if (ac < 2)
@@ -115,7 +116,9 @@ int		main(int ac, char **av)
 	while (e.actual)
 	{
 		compile(&e);
-		e.actual = e.actual->next;
+		next = e.actual->next;
+		free_line(e.actual);
+		free(e.actual);
+		e.actual = next;
 	}
-	free_lst_file(&e);
 }

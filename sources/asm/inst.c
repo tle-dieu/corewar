@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 18:13:54 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/26 19:14:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@
 
 //au moment du free de call, segfault si deux label sur mm ligne
 
+#include <unistd.h>
+
 int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 {
-	t_label *label;
-	t_call	*call;
+	t_label			*label;
+	t_call			*call;
+	unsigned char	*tmp;
 
 	label = e->actual->label;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
@@ -32,11 +35,13 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 		{
 			label->index = e->actual->i;
 			call = label->call;
+			tmp = cp;
 			while (call)
 			{
-				(void)cp;
-				/* while (call->size-- > 0) */
-					/* *(cp++ + call->index_call) = (e->actual->i - call->index_inst) >> call->size; */
+				cp = tmp;
+				ft_printf(MAGIC_C"size: {R}{bold}%d "MAGIC_C"index_call: {R}{bold}%d "MAGIC_C"label value: {R}{bold}%d "MAGIC_C"s: {R}'%s'\n", call->size, call->index_call, e->actual->i - call->index_inst, call->line->s);
+				while (call->size--)
+					*(cp++ + call->index_call) = (e->actual->i - call->index_inst) >> call->size * 8;
 				call = call->next;
 			}
 		}
@@ -44,6 +49,7 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 	}
 	return (0);
 }
+
 //checker pour labels commencant pareil
 void	get_label(t_env *e, char *s)
 {
