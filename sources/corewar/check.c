@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 15:58:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/28 17:13:56 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,5 @@ int				check_champ(t_env *e, char *arg, int i)
 	if (err)
 		return (0);
 	split_champ(e, i);
-	decompile_champ(e, arg, i);
 	return (1);
 }

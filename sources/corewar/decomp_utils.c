@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:47:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 16:01:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/28 17:12:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int				generate_decomp_file(t_decomp *d, char *arg)
 	i = 0;
 	if (!(name = ft_strjoin(arg, "_decomp")))
 		return (0);
-	fd = open(name, O_WRONLY | O_APPEND | O_CREAT, 600);
+	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (!fd || fd == -1)
 	{
 		free(name);
