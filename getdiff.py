@@ -11,7 +11,7 @@ RED = "\x1b[1;38;2;241;76;76m"
 WHITE = "\x1b[1;38;2;255;255;255m"
 
 def get_file(asm, f):
-    open = sp.getoutput("./" + asm + " " + f + " | grep 'Writing output program to'")
+    open = sp.getoutput("./" + asm + " " + f)
     output = ""
     error = ""
     my_file = ""
@@ -24,8 +24,8 @@ def get_file(asm, f):
         error = RED + "ERROR: " + f + " doesn't match any file"
     
     if not error and output[0] == 'x' :
-        print(open)
-        error = "\n" + RED + "ERROR: " + asm + " doesn't create " + my_file
+        error = open
+        error += "\n" + RED + "ERROR: " + asm + " doesn't create " + my_file
     return (output, error)
 
 def compare(str1, str2):
