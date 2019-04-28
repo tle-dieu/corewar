@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 05:08:58 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 12:58:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	compile_write(t_env *e, unsigned char *bin)
 	char	*s;
 	int		fd;
 
-	ft_printf("WRITE FILE\n");
 	if (!e->actual->output)
 	{
 		if (!(s = ft_strrchr(e->actual->name, '.')))
@@ -92,7 +91,7 @@ void	compile_write(t_env *e, unsigned char *bin)
 			exit(0); //alloc error
 		}
 	}
-	ft_printf("output: %s\n", e->actual->output);
+	ft_printf("Writing output program to %s\n", e->actual->output);
 	if ((fd = open(e->actual->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) == -1)
 	{
 		ft_printf("EXIT\n");
@@ -130,7 +129,6 @@ void	compile(t_env *e)
 		print_bin(e, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
 	if (!e->actual->error && !(e->actual->options & (O_HEXA | O_BIN)))
 		compile_write(e, bin);
-	ft_printf("\n"); // a retirer
 }
 
 int		main(int ac, char **av)
