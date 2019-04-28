@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 10:39:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/28 19:26:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 
 	reg = 1;
 	sum = 0;
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+		g_op_tab[ptr->op - 1].dir_size);
 	if (!check.error && check.p1 == 64 && check.p2 && check.p3 < 12)
 	{
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
@@ -58,7 +59,8 @@ void		lld(t_env *e, int *pc, t_proc *ptr)
 	short	addr;
 	int		value;
 
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+		g_op_tab[ptr->op - 1].dir_size);
 	addr = param_value(e, check, 1, ptr);
 	error = (check.error || !check.p1 || check.p2 != 16 || check.p3);
 	if (!error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
@@ -89,7 +91,8 @@ void		lldi(t_env *e, int *pc, t_proc *ptr)
 
 	reg = 1;
 	sum = 0;
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+		g_op_tab[ptr->op - 1].dir_size);
 	if (!check.error && check.p3 == 4 && check.p2 <= 32 && check.p1)
 	{
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
