@@ -6,13 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 10:27:33 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/28 15:38:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-//Need: parsing avec check_champ_size, check_magic_number, peut-etre split_champ, puis check_ocp.
+//Need: parsing avec check_champ, check_champ_size, check_magic_number, split_champ, puis check_ocp.
 
 static void			put_header(t_env *e)
 {
@@ -83,7 +83,7 @@ static int			check_params(t_env *e, t_ocp check)
 	return (1);
 }
 
-int					decompile_champ(t_env *e, int champ)
+int					decompile_champ(t_env *e, char *arg, int champ)
 {
 	t_ocp	check;
 
@@ -107,6 +107,5 @@ int					decompile_champ(t_env *e, int champ)
 			move_forward(e);
 		e->d.y++;
 	}
-	print_tab(&e->d);
-	return (1);
+	return (generate_decomp_file(&e->d, arg));
 }

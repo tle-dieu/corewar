@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 16:53:19 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/28 15:34:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,13 +223,13 @@ void				destroy_process(t_env *e, t_proc *to_del);
 /*
 ** DECOMP.C (5)
 */
-int					decompile_champ(t_env *e, int champ);
+int					decompile_champ(t_env *e, char *arg, int champ);
 
 /*
 ** DECOMP_UTILS.C (6)
 */
 void				init_decomp(t_decomp *d, int champ);
-void				print_tab(t_decomp *d);
+int					generate_decomp_file(t_decomp *d, char *arg);
 void				init_line(t_env *e);
 void				nb_in_buff(t_decomp *d, int nb, int padding);
 void				str_in_buff(t_decomp *d, char *s);

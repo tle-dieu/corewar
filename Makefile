@@ -14,11 +14,7 @@ VM_DIR = corewar/
 
 # --------------- Sources --------------- #
 
-ASM_SOURCES_FILES = main.c \
-					free.c \
-					debug.c \
-					args.c \
-					error.c
+ASM_SOURCES_FILES =
 
 VM_SOURCES_FILES = main.c \
 				   init.c \

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:47:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/26 16:51:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/28 16:01:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,25 @@ void			init_line(t_env *e)
 	e->d.tab[e->d.y][e->d.x++] = ' ';
 }
 
-void			print_tab(t_decomp *d)
+int				generate_decomp_file(t_decomp *d, char *arg)
 {
 	int		i;
+	int		fd;
+	char	*name;
 
 	i = 0;
+	if (!(name = ft_strjoin(arg, "_decomp")))
+		return (0);
+	fd = open(name, O_WRONLY | O_APPEND | O_CREAT, 600);
+	if (!fd || fd == -1)
+	{
+		free(name);
+		return (0);
+	}
 	while (*d->tab[i])
-		ft_printf("%s\n", d->tab[i++]);
+		ft_dprintf(fd, "%s\n", d->tab[i++]);
+	free(name);
+	return (1);
 }
 
 void			nb_in_buff(t_decomp *d, int nb, int padding)
