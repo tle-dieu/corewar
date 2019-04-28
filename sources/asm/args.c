@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 05:24:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:53:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int		get_short_option(t_env *e, unsigned *options, char **s)
 			usage(e, 1);
 		else
 			tmp |= O_SHORT_ERR;
-		if ((*options |= tmp & ~0xff))
+		if ((*options |= tmp & ~0xff) & ~0xff)
 			return (0);
 		(*s)++;
 	}
@@ -134,7 +134,7 @@ int		parse_command_line(t_env *e, int ac, char **av)
 		s = av[e->i];
 		if ((*s != '-' || !*++s || (*s == '-' && !*(s + 1))
 		|| !(*s == '-' ? get_long_option(e, &options, &s)
-		: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT) || options & ~0xff))
+		: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT)))
 		{
 			if (options & O_OUTPUT_ERR
 			|| (fd = open(av[e->i], O_RDONLY)) == -1
