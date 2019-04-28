@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 16:19:43 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 18:22:46 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,35 @@
 // refaire usage et --help
 
 # include "libft.h"
+
+# define DEFAULT_NAME "no name"
+# define DEFAULT_COMMENT "description"
+
 # define GREEN_CURS "{bold}{green}"
 
+# define ERR_LINE 1
 # define ERR_LINE_C ("{bold}%s:%d:%d: {bold}{red}error: {R}{bold}")
 # define ERR_LINE_NC ("%s:%d:%d: error: ")
 
-# define WARNING_LINE_C ("{bold}%s:%d:%d: {bold}{purple}warning: {R}{bold}")
-# define WARNING_LINE_NC ("%s:%d:%d: warning: ")
-
-# define WARNING_FILE_C ("{bold}%s: {bold}{purple}warning: {R}")
-# define WARNING_FILE_NC ("%s: warning: ")
-
+# define ERR_FILE 2
 # define ERR_FILE_C ("%s: {bold}{red}error: {R}")
 # define ERR_FILE_NC ("%s: error: ")
 
+# define ERR_FATAL 3
 # define ERR_FATAL_C ("{bold}{red}fatal error: {R}")
 # define ERR_FATAL_NC ("fatal error: ")
 
-# define COLOR_LINE(x) (x ? ERR_LINE_C : ERR_LINE_NC) //remplacer ca par une fonction degeulasse
-# define COLOR_FILE(x) (x ? ERR_FILE_C : ERR_FILE_NC)
-# define COLOR_FATAL(x) (x ? ERR_FATAL_C : ERR_FATAL_NC)
+# define WARNING_LINE 4
+# define WARNING_LINE_C ("{bold}%s:%d:%d: {bold}{purple}warning: {R}{bold}")
+# define WARNING_LINE_NC ("%s:%d:%d: warning: ")
 
-# define SPACES "\t \v\f\r"
+# define WARNING_FILE 5
+# define WARNING_FILE_C ("{bold}%s: {bold}{purple}warning: {R}")
+# define WARNING_FILE_NC ("%s: warning: ")
+
+# define SPACES " \t\r\v\f"
 # define TAB_SIZE 4
 # define MAX_ERROR 20
-//option output a rajouter pour preciser fichier ou mettre
-//supprimer options inutiles
 
 # define O_HEXA 1
 # define O_BIN 2 
@@ -124,8 +127,8 @@ typedef struct		s_env
 ** ---------- DEBUG ----------
 */
 
-# define FT_C "{#2ecc71}"
-# define STR_C "{#0bd195}"
+# define FT_C "{#2ecc71}" // a suppr
+# define STR_C "{#0bd195}" // a suppr
 # define NAME_C "{#f1c40f}"
 # define COMMENT_C "{#3498f0}"
 # define CHAMP_C "{#e74c3c}"
@@ -139,6 +142,7 @@ void				print_call_error(t_env *e);
 
 //----------------------------
 
+char				*line_error(int line, int tty);
 int					usage(t_env *e, int err);
 int					only_label(t_env *e, char **line, unsigned char *cp, int i);
 void				free_lst_file(t_env *e);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 16:20:29 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 18:29:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 int		alloc_error(t_env *e)
 {
-    ft_dprintf(2, COLOR_FATAL(e->tty2));
+    ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
     ft_dprintf(2, "%s\n", strerror(errno));
 	free_lst_file(e);
 	exit(EXIT_FAILURE);
@@ -45,10 +45,12 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 
 	scmd = cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING;
 	line = error == 1 ? e->actual->last : e->actual->begin;
-	if (error)
+	if (error == 6)
+		++e->actual->warning;
+	else if (error)
 		++e->actual->error;
 	if (error)
-		ft_dprintf(2, COLOR_LINE(e->tty2), e->actual->name, line->y, extra - line->s + 1);
+		ft_dprintf(2, line_error(error != 6 ? ERR_LINE : WARNING_LINE, e->tty2), e->actual->name, line->y, extra - line->s + 1);
 	if (error == 1)
 	{
 		ft_dprintf(2, "unexpected expression in %s declaration\n", scmd);
@@ -77,7 +79,7 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	}
 	else if (error == 5)
 	{
-		ft_dprintf(2, "%s already defined\n", scmd);
+		ft_dprintf(2, "%s already defined (ignored)\n", scmd);
 		err_pointer(e->tty2, e->actual->begin->s, extra++, 0);
 		err_wave(e->tty2, extra, len_err(extra));
 	}

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 17:15:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 18:00:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 	}
 	if (e->actual->error >= MAX_ERROR)
 	{
-		ft_dprintf(2, COLOR_FATAL(e->tty2));
+		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
 		ft_dprintf(2, "too many errors emitted, stopping now\n");
 	}
 	print_call_error(e);

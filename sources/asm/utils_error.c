@@ -6,12 +6,27 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 15:43:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 18:04:12 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <unistd.h>
+
+char	*line_error(int line, int tty)
+{
+	if (line == ERR_LINE)
+		return (tty ? ERR_LINE_C : ERR_LINE_NC);
+	else if (line == ERR_FILE)
+		return (tty ? ERR_FILE_C : ERR_FILE_NC);
+	else if (line == ERR_FATAL)
+		return (tty ? ERR_FATAL_C : ERR_FATAL_NC);
+	else if (line == WARNING_LINE)
+		return (tty ? WARNING_LINE_C : WARNING_LINE_NC);
+	else if (line == WARNING_FILE)
+		return (tty ? WARNING_FILE_C : WARNING_FILE_NC);
+	return (NULL);
+}
 
 void	put_strtab(char *s, char replace, int n)
 {
@@ -50,8 +65,6 @@ int		check_end_str(t_env *e, char *s, int cmd, char c)
 	chr[i + 1] = '\0';
 	while (i--)
 		chr[i] = SPACES[i];
-	/* ft_printf("chr: |%s|\n", chr); */
-	/* ft_printf("s: |%s|\n", s); */
 	s = s + ft_strspn(s, SPACES);
 	if (*s == c)
 		return (1);
@@ -89,6 +102,4 @@ void	err_wave(int tty, char *s, int n)
 	put_strtab(s, '~', n);
 	if (tty)
 		ft_dprintf(2, "{R}");
-	/* ft_printf("\nextra: |%s| ", s); */
-	/* ft_printf("len: %zu\n", n); */
 }
