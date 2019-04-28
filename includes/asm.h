@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 23:36:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:07:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@
 //option output a rajouter pour preciser fichier ou mettre
 //supprimer options inutiles
 
-# define O_ANNOT 1 // a changer
-# define O_DUMP 2 //gerer hexa(-x) et binaire(-b) ?
+# define O_HEXA 1
+# define O_BIN 2 
 # define O_DISAS 4
 # define O_OUTPUT 8
+# define O_LONG 16
 # define O_SHORT_ERR 256
 # define O_LONG_ERR 512
 # define O_COL_AMBIGUOUS_ERR 1024
 # define O_COL_INVALID_ERR 2048
 # define O_OUTPUT_ERR 4096
-# define PRINT 1
 
 typedef struct		s_line
 {
@@ -110,7 +110,8 @@ typedef struct		s_file
 
 typedef struct		s_env
 {
-	int				tty;
+	int				tty1;
+	int				tty2;
 	int				i;
 	t_file			*actual;
 	t_file			*file;
@@ -131,7 +132,7 @@ typedef struct		s_env
 # define MAGIC_C "{#9b59b6}"
 
 void				print_files(t_file *file);
-void				print_bin(unsigned char *buff, int size);
+void				print_bin(t_env *e, unsigned char *bin, int size);
 void				print_label(t_env *e);
 void				print_call_error(t_env *e);
 

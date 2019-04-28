@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 23:36:17 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:08:58 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,9 @@ void	compile(t_env *e)
 	i = 4;
 	while (i--)
 		bin[PROG_NAME_LENGTH + 11 - i] = e->actual->i >> i * 8;
-	/* if (PRINT && !e->actual->error) */
-	/* 	print_bin(bin, BIN_MAX_SIZE); */
-	if (!e->actual->error)
+	if (!e->actual->error && e->actual->options & (O_HEXA | O_BIN))
+		print_bin(e, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
+	if (!e->actual->error && !(e->actual->options & (O_HEXA | O_BIN)))
 		compile_write(e, bin);
 	ft_printf("\n"); // a retirer
 }
@@ -138,14 +138,13 @@ int		main(int ac, char **av)
 	t_env	e;
 	t_file	*next;
 
-	e = (t_env){isatty(2), 0, NULL, NULL, av[0], NULL};
+	e = (t_env){isatty(1), isatty(2), 0, NULL, NULL, av[0], NULL};
 	if (ac < 2)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))
 		return (!e.file ? usage(&e, 3) : 1);
 	if (!e.file)
 		return (usage(&e, 3));
-	ft_printf("color ? %s\n", e.tty ? "yes" : "no");
 	print_files(e.file);
 	e.actual = e.file;
 	while (e.actual)

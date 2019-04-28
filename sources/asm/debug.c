@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 17:29:27 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:41:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ void	print_label(t_env *e)
 void			print_option(char *output, unsigned options, char *s)
 {
 	ft_printf(STR_C"filename: {R}%s\n", s);
-	ft_printf(STR_C"  => annot:   {R}%s\n", options & O_ANNOT ? "yes" : "no");
-	ft_printf(STR_C"  => disas:   {R}%s\n", options & O_DISAS ? "yes" : "no");
-	ft_printf(STR_C"  => dump:    {R}%s\n", options & O_DUMP ? "yes" : "no");
+	ft_printf(STR_C"  => hexa:   {R}%s\n", options & O_HEXA ? "yes" : "no");
+	ft_printf(STR_C"  => binary: {R}%s\n", options & O_BIN ? "yes" : "no");
+	ft_printf(STR_C"  => long:   {R}%s\n", options & O_LONG ? "yes" : "no");
+	ft_printf(STR_C"  => disas:  {R}%s\n", options & O_DISAS ? "yes" : "no");
 	if (output)
-		ft_printf(STR_C"  => output:  {R}yes: %s\n", output);
+		ft_printf(STR_C"  => output: {R}yes: %s\n", output);
 	else
-		ft_printf(STR_C"  => output:  {R}no\n", output);
+		ft_printf(STR_C"  => output: {R}no\n", output);
 	ft_printf("\n");
 }
 
@@ -77,54 +78,112 @@ void			print_files(t_file *file)
 	}
 }
 
-void	get_color(int i)
+int		get_color(int i, int last, int tty)
 {
-	if (i < 4)
-		ft_printf(MAGIC_C);
-	else if (i < PROG_NAME_LENGTH + 4)
-		ft_printf(NAME_C);
-	else if (i < PROG_NAME_LENGTH + 12 && i >= PROG_NAME_LENGTH + 8)
-		ft_printf(SIZE_C);
-	else if (i < COMMENT_LENGTH + PROG_NAME_LENGTH + 12 && i >= PROG_NAME_LENGTH + 12) 
-		ft_printf(COMMENT_C);
-	else if (i >= COMMENT_LENGTH + PROG_NAME_LENGTH + 16)
-		ft_printf(CHAMP_C);
+	char	*color;
+	int		code;
+
+	if (!tty)
+		return (0);
+	code = 0;
+	color = NULL;
+	if (++code && i < 4)
+		color = MAGIC_C;
+	else if (++code && i < PROG_NAME_LENGTH + 4)
+		color = NAME_C;
+	else if (++code && i < PROG_NAME_LENGTH + 12 && i >= PROG_NAME_LENGTH + 8)
+		color = SIZE_C;
+	else if (++code && i < COMMENT_LENGTH + PROG_NAME_LENGTH + 12
+	&& i >= PROG_NAME_LENGTH + 12 && ++code)
+		color = COMMENT_C;
+	else if (++code && i >= COMMENT_LENGTH + PROG_NAME_LENGTH + 16)
+		color = CHAMP_C;
+	else if (++code)
+		color = "{R}";
+	if (code != last)
+		ft_printf(color);
+	return (code);
 }
 
-static void		print_ascii(unsigned char *buff, int j, int len)
+int		print_line(t_env *e, unsigned char *bin, int size, int i)
 {
-	int i;
+	int len;
+	int j;
+	int color;
 
-	i = 0;
-	while (i < len)
+	color = 0;
+	len = e->file->options & O_HEXA ? 16 : 6;
+	j = 0;
+	if (i + j < size)
+		ft_printf("%08x:  ", i);
+	while (i + j < size && j < len)
 	{
-		get_color(j);
-		ft_printf("%c{R}", (buff[j] >= 32 && buff[j] < 127) ? buff[j] : '.');
-		j++;
-		i++;
+		color = get_color(i + j, color, e->tty1);
+		ft_printf(e->file->options & O_HEXA ? "%02x " : "%08b ", bin[i + j]);
+		if (++j == len / 2)
+			ft_printf(" ");
 	}
+	if (e->tty1)
+		ft_printf("{R}");
+	if (j)
+		ft_printf("%*c", (len == 6 ? 9 : 3) * (len - j) + (j < len / 2) + 1, ' ');
+	j = 0;
+	color = 0;
+	while (i + j < size && j < len)
+	{
+		color = get_color(j + i, color, e->tty1);
+		ft_printf("%c", (bin[j + i] >= 32 && bin[j + i] < 127) ? bin[j + i] : '.');
+		j++;
+	}
+	if (e->tty1)
+		ft_printf("{R}");
 	ft_printf("\n");
+	return (j);
 }
 
-void	print_bin(unsigned char *buff, int size)
+int		pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 {
-	int		j;
+	int j;
+	int len;
 
 	j = 0;
-	ft_printf(STR_C"name:{R} %s\n", buff + 4);
-	ft_printf(STR_C"comment:{R} %s\n\n", buff + PROG_NAME_LENGTH + 12);
-	while (j < size)
+	len = file->options & O_HEXA ? 16 : 6;
+	while (!bin[j + i])
 	{
-		if (!(j % 16))
-			ft_printf("%08x:{R} ", j);
-		get_color(j);
-		ft_printf("%02x{R}", buff[j]);
-		if (j % 2)
-			ft_printf(" ");
-		if (!((j + 1) % 16))
-			print_ascii(buff, j - 15, 16);
+		if (j + i >= size)
+			return (-1);
+		if (j == len)
+			return (j);
 		j++;
 	}
-	ft_printf("%*c", (int)((16 - (j - 1) % 16 - 1) * 2.5), ' ');
-	print_ascii(buff, j - (j - 1) % 16 - 1, (j - 1) % 16 + 1);
+	return (0);
+}
+
+void	print_bin(t_env *e, unsigned char *bin, int size)
+{
+	int i;
+	int	len;
+	int	ret;
+	int old;
+
+	i = 0;
+	old = 0;
+	ret = 0;
+	len = e->file->options & O_HEXA ? 16 : 6;
+	while (i < size)
+	{
+		if (!(e->file->options & O_LONG)
+		&& (ret = pass_bytes(e->file, bin, size, i)) == -1)
+				break ;
+		if (ret)
+			i += ret;
+		else
+		{
+			if (old)
+				ft_printf("*\n");
+			i += print_line(e, bin, size, i);
+			i += print_line(e, bin, size, i);
+		}
+		old = ret;
+	}
 }

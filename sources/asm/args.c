@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 23:48:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:24:38 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ int		color_option(t_env *e, char **line)
 		else if (!ft_strncmp(s, "never", len) || !ft_strncmp(s, "no", len) || !ft_strncmp(s, "none", len))
 			tmp = 0;
 		if (!ft_strncmp(s, "auto", len) || !ft_strncmp(s, "tty", len) || !ft_strncmp(s, "if-tty", len))
-			tmp = tmp != -1 ? 2 : e->tty;
+			tmp = tmp != -1 ? 2 : e->tty2;
 		if (tmp == 2)
 			return (O_COL_AMBIGUOUS_ERR);
 		if (tmp == -1)
 			return (O_COL_INVALID_ERR);
-		e->tty = tmp;
+		e->tty1 = tmp;
+		e->tty2 = tmp;
 	}
 	return (0);
 }
@@ -78,12 +79,14 @@ static int		get_short_option(t_env *e, unsigned *options, char **s)
 	tmp = 0;
 	while (**s)
 	{
-		if (**s == 'a')
-			tmp |= O_ANNOT;
+		if (**s == 'x')
+			tmp |= O_HEXA;
+		else if (**s == 'b')
+			tmp |= O_BIN;
+		else if (**s == 'l')
+			tmp |= O_LONG; // changer en short ou pas
 		else if (**s == 'd')
 			tmp |= O_DISAS;
-		else if (**s == 'x')
-			tmp |= O_DUMP;
 		else if (**s == 'o')
 			tmp |= O_OUTPUT;
 		else if (**s == 'h')
@@ -99,14 +102,16 @@ static int		get_short_option(t_env *e, unsigned *options, char **s)
 
 static int		get_long_option(t_env *e, unsigned *options, char **s)
 {
-	if (!ft_strcmp(++(*s), "annotated"))
-		*options |= O_ANNOT;
-	else if (!ft_strcmp(*s, "dump"))
-		*options |= O_DUMP;
+	if (!ft_strcmp(++(*s), "hexa"))
+		*options |= O_HEXA;
+	else if (!ft_strcmp(*s, "binary"))
+		*options |= O_BIN;
+	else if (!ft_strcmp(*s, "long-print"))
+		*options |= O_LONG;
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;
 	else if (!ft_strncmp(*s, "color", 5)
-			&& (!*((*s) + 5) || *((*s) + 5) == '='))
+	&& (!*((*s) + 5) || *((*s) + 5) == '='))
 		return (!(*options |= color_option(e, s)));
 	else if (!ft_strcmp(*s, "output"))
 		*options |= O_OUTPUT;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/26 17:29:25 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:11:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	get_header(t_env *e, unsigned char *cp)
 	}
 	if (e->actual->error >= 20)
 	{
-		ft_dprintf(2, COLOR_FATAL(e->tty));
+		ft_dprintf(2, COLOR_FATAL(e->tty2));
 		ft_dprintf(2, "too many errors emitted, stopping now\n");
 	}
 	print_call_error(e);

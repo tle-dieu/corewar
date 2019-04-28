@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 23:50:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 05:11:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		usage(t_env *e, int err)
 {
 	if (err == 3)
 	{
-		ft_dprintf(--err, COLOR_FILE(e->tty), e->exname);
+		ft_dprintf(--err, COLOR_FILE(e->tty2), e->exname);
 		ft_dprintf(err, "no input files\n");
 	}
 	ft_dprintf(err, "usage: %s [-a] [-x] sourcefile.s\n", e->exname);
@@ -35,7 +35,7 @@ int		usage(t_env *e, int err)
 int		error_file(t_env *e, char *error, char *file, unsigned opt)
 {
 	free_lst_file(e);
-	ft_dprintf(2, COLOR_FILE(e->tty), e->exname);
+	ft_dprintf(2, COLOR_FILE(e->tty2), e->exname);
 	if (opt & ~0xff)
 	{
 		if (opt & O_SHORT_ERR)
