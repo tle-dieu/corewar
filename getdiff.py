@@ -24,6 +24,7 @@ def get_file(asm, f):
         error = RED + "ERROR: " + f + " doesn't match any file"
     
     if not error and output[0] == 'x' :
+        print(open)
         error = "\n" + RED + "ERROR: " + asm + " doesn't create " + my_file
     return (output, error)
 

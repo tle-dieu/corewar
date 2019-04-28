@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/28 16:14:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 18:32:43 by matleroy         ###   ########.fr       */
 /*   Updated: 2019/04/27 19:26:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -94,6 +94,19 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 		create_call(e, inst, s, label, i); // separer en deux pour trop args
 }
 
+int		is_a_number(char *str)
+{
+	char *tmp;
+
+	tmp = str + (*str == '-');
+	while (ft_isdigit(*tmp))
+		tmp++;
+	tmp += ft_strspn(tmp, SPACES);
+	if (*tmp)
+		return (0);
+	return (1);
+}
+
 int is_direct(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
@@ -110,7 +123,10 @@ int is_direct(t_env *e, char *str, t_inst *inst)
 		else
 		{
 			to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
-			inst->p[inst->i] = ft_atoi(to_free);
+			if (is_a_number(to_free))
+				inst->p[inst->i] = ft_atoi(to_free);
+			else
+				ft_printf("{#ff3333}ERROR: bad direct '%s'\n", tmp);
 			free(to_free);
 		}
 		return (1);
@@ -131,11 +147,18 @@ int is_indirect(t_env *e, char *str, t_inst *inst)
 	else
 	{
 		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
-		inst->p[inst->i] = ft_atoi(to_free);
+		if (is_a_number(to_free))
+			inst->p[inst->i] = ft_atoi(to_free);
+		else
+		{
+			ft_printf("{#ff3333}ERROR: bad direct '%s'\n", tmp);
+			return (0);
+		}
 		free(to_free);
 	}
 	return (1);
 }
+
 
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
@@ -151,6 +174,10 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 		inst->t[inst->i] = 1;
 		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 		inst->p[inst->i] = ft_atoi(to_free);
+		if (!ft_isdigit(*tmp))
+			ft_printf("{#ff3333}Error: illegal character for register %c\n", *tmp);
+		if (inst->p[inst->i] < 0 || inst->p[inst->i] > 16)
+			ft_printf("{#ff3333}Error: try to acces to register[%d], register index must be between 1 and 16\n", inst->p[inst->i]);
 		free(to_free);
 		return (1);
 	}
@@ -184,11 +211,16 @@ int check_params(t_env *e, char *str, t_inst *inst)
 		tmp += ft_strspn(tmp, SPACES);
 		is_direct(e, tmp, inst) || is_reg(e, tmp, inst) || is_indirect(e, tmp, inst);
 		tmp += ft_strspn(tmp, SPACES);
-		tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
+		tmp += ft_strcspn(tmp, SEPARATOR_CHAR);
+		if (!(inst->t[inst->i] & g_op_tab[inst->op - 1].param[inst->i]))
+		{
+			ft_printf("inst->[inst->i] = %d :: %d", inst->t[inst->i], g_op_tab[inst->op - 1].param[inst->i]);
+			ft_printf("{#ff3333}Error: bad type\n");
+		}
 		inst->index += inst->s[inst->i++];
 		if (*tmp && *tmp != *SEPARATOR_CHAR)
 		{
-			ft_dprintf(2, "{#ff3333}ERROR: illegal character %c after argument in %s\n{R}", *tmp, str);
+			ft_dprintf(2, "{#ff3333}ERROR: illegal character %d after argument in %s\n{R}", *tmp, str);
 			break ;
 		}
 		else if (!*tmp)
@@ -254,6 +286,8 @@ t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 		if (g_op_tab[inst.op - 1].ocp)
 			get_ocp(&inst);
 	}
+	else
+		ft_printf("{#ff3333}Error: unknown instruction '%s'\n", str);
 	write_inst(e, &inst, cp);
 	return (NULL);
 }
