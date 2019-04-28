@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 05:07:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 16:19:43 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 
 # define SPACES "\t \v\f\r"
 # define TAB_SIZE 4
+# define MAX_ERROR 20
 //option output a rajouter pour preciser fichier ou mettre
 //supprimer options inutiles
 
@@ -100,8 +101,8 @@ typedef struct		s_file
 	int				i;
 	unsigned		options;
 	int				error;
+	int				warning;
 	int				line_nb;
-	int				nb_inst;
 	t_line			*begin;
 	t_line			*last;
 	t_label			*label;
@@ -136,12 +137,10 @@ void				print_bin(t_env *e, unsigned char *bin, int size);
 void				print_label(t_env *e);
 void				print_call_error(t_env *e);
 
-
 //----------------------------
 
-
 int					usage(t_env *e, int err);
-int					get_champ(t_env *e, char *s, unsigned char *cp);
+int					only_label(t_env *e, char **line, unsigned char *cp, int i);
 void				free_lst_file(t_env *e);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);
@@ -151,7 +150,7 @@ int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					error_header(t_env *e, int error, char *extra, int cmd);
 void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
-void				get_header(t_env *e, unsigned char *cp);
+void				get_bytecode(t_env *e, unsigned char *cp);
 int					alloc_error(t_env *e);
 t_inst				*parse_inst(t_env *e, char *str, unsigned char *cp);
 //verifier include dans .c et verifier proto fonctions

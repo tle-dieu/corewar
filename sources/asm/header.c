@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 05:11:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 17:15:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int		too_long(t_env *e, char *s, int cmd)
 		if (add_line(e, &s) != 1) // mettre limite max nb lines dans add line pour erreur de malloc
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd) - 1);
 	s = ft_strchr(s, '"');
-	ft_printf("line: %s\n", s);
 	return (check_end_str(e, s + 1, cmd, 0) > 0);
 }
 
@@ -35,10 +34,10 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 
 	i = 0;
 	end = 0;
-	ft_printf("get %s\n", cmd ? COMMENT_CMD_STRING :  NAME_CMD_STRING);
 	if (e->actual->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
 		if (error_header(e, 5, e->actual->begin->s, cmd) == -1)
 			return (0);
+	e->actual->complete |= cmd + 1;
 	if (!(t = ft_strchr(s, '"')))
 	{
 		error_header(e, 3, s, cmd);
@@ -65,7 +64,6 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		else
 			buff[i++] = '\n';
 	}
-	e->actual->complete |= cmd + 1; // peut etre mettre au debut fonction
 	while (i--)
 		*(cp + i) = buff[i];
 	return (1);
@@ -97,7 +95,7 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
-void	get_header(t_env *e, unsigned char *cp)
+void	get_bytecode(t_env *e, unsigned char *cp)
 {
 	char	*line;
 	int		i;
@@ -113,8 +111,8 @@ void	get_header(t_env *e, unsigned char *cp)
 					get_cmd(e, cp, line + i);
 				else if (line[i])
 				{
-					++e->actual->nb_inst;
-					get_champ(e, line + i, cp + COMMENT_LENGTH + PROG_NAME_LENGTH + 12);
+					if (!only_label(e, &line, cp + COMMENT_LENGTH + PROG_NAME_LENGTH + 12, i))
+						parse_inst(e, line, cp + COMMENT_LENGTH + PROG_NAME_LENGTH + 12);
 				}
 				free_line(e->actual);
 				break ;
@@ -122,7 +120,7 @@ void	get_header(t_env *e, unsigned char *cp)
 			i++;
 		}
 	}
-	if (e->actual->error >= 20)
+	if (e->actual->error >= MAX_ERROR)
 	{
 		ft_dprintf(2, COLOR_FATAL(e->tty2));
 		ft_dprintf(2, "too many errors emitted, stopping now\n");

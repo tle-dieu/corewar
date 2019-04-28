@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 18:46:42 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 17:03:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 		label = label->next;
 	if (label)
 	{
-		if (label->index != -1)
-			ft_printf("{#ff3333}error double assign label{R}\n");
+		if (label->index != -1 && ++e->actual->error) // enlever increment error
+			ft_dprintf(2, "{#ff3333}error double assign label{R}\n");
 		else
 		{
 			label->index = e->actual->i;
@@ -39,7 +39,6 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 			while (call)
 			{
 				cp = tmp;
-				ft_printf(MAGIC_C"size: {R}{bold}%d "MAGIC_C"index_call: {R}{bold}%d "MAGIC_C"label value: {R}{bold}%d "MAGIC_C"s: {R}'%s'\n", call->size, call->index_call, e->actual->i - call->index_inst, call->line->s);
 				while (call->size--)
 					*(cp++ + call->index_call) = (e->actual->i - call->index_inst) >> call->size * 8;
 				call = call->next;
@@ -57,7 +56,7 @@ void	get_label(t_env *e, char *s)
 	int		len;
 
 	if (*(s + (len = ft_strspn(s, LABEL_CHARS))) != LABEL_CHAR)
-		ft_printf("{#ff3333}label char interdit: {R}%c\n", *(s + len));
+		ft_dprintf(2, "{#ff3333}label char interdit: {R}%c\n", *(s + len));
 	new = NULL;
 	if (!(new = (t_label *)malloc(sizeof(t_label))))
 		alloc_error(e);
@@ -66,19 +65,18 @@ void	get_label(t_env *e, char *s)
 		free(new);
 		alloc_error(e);
 	}
-	ft_printf(NAME_C"new label: {R}%s\n", new->name);
 	new->index = e->actual->i;
 	new->call = NULL;
 	new->next = e->actual->label;
 	e->actual->label = new;
 }
 
-int     only_label(t_env *e, char **line, unsigned char *cp)
+int     only_label(t_env *e, char **line, unsigned char *cp, int i)
 {
-	int		i;
 	int		len;
 	char	*s;
 
+	*line += i;
 	s = *line;
 	len = sizeof(SPACES) - 1;
 	while (*s != LABEL_CHAR)
@@ -91,18 +89,8 @@ int     only_label(t_env *e, char **line, unsigned char *cp)
 				return (0);
 		s++;
 	}
-	ft_printf(NAME_C"LABEL{R}\n");
 	if (!search_label(e, *line, s - *line, cp))
 		get_label(e, *line);
 	*line = s + ft_strspn(s + 1, SPACES) + 1;
 	return (!**line);
-}
-
-int		get_champ(t_env *e, char *s, unsigned char *cp)
-{
-	print_label(e);
-	if (!only_label(e, &s, cp))
-		parse_inst(e, s, cp);
-	(void)cp;
-	return (1);
 }

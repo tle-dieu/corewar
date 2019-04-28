@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 12:58:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 17:13:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int		add_line(t_env *e, char **line)
 		alloc_error(e);
 	}
 	new->free = 1;
-	ft_printf(COMMENT_C"\n|%s|\n{R}", *line);
 	new->next = NULL;
 	new->s = *line;
 	new->y = e->actual->line_nb++;
@@ -68,6 +67,8 @@ int		add_line(t_env *e, char **line)
 
 //penser a close tous les fd
 
+#include <errno.h> //  a retirer
+
 void	compile_write(t_env *e, unsigned char *bin)
 {
 	char	*s;
@@ -79,7 +80,7 @@ void	compile_write(t_env *e, unsigned char *bin)
 		{
 			if (!(e->actual->output = ft_strjoin(e->actual->name, ".cor")))
 			{
-				ft_printf("EXIT\n");
+				ft_printf("malloc error\n");
 				exit (0); // alloc error
 			}
 		}
@@ -87,48 +88,62 @@ void	compile_write(t_env *e, unsigned char *bin)
 		|| !ft_memcpy(e->actual->output, e->actual->name, s - e->actual->name)
 		|| !ft_memcpy(e->actual->output + (s - e->actual->name), ".cor", 5))
 		{
-			ft_printf("EXIT\n");
+			ft_printf("malloc error\n");
 			exit(0); //alloc error
 		}
+
 	}
-	ft_printf("Writing output program to %s\n", e->actual->output);
-	if ((fd = open(e->actual->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) == -1)
+	if ((fd = open(e->actual->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
 	{
-		ft_printf("EXIT\n");
-		exit(0); // errno et return
+		write(fd, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
+		ft_printf("Writing output program to %s\n", e->actual->output);
+		close(fd);
 	}
-	write(fd, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
-	close(fd);
+	else
+	{
+		ft_printf("error: %s: '%s'\n", strerror(errno), e->actual->output);
+		exit(0); // errno
+	}
 }
 
+void	end_error(t_env *e, unsigned char *bin)
+{
+	if (!(e->actual->complete & 1) && ++e->actual->warning)
+		ft_dprintf(2, "{#ff3333}missing name{R}\n");
+	if (!(e->actual->complete & 2) && ++e->actual->warning)
+		ft_dprintf(2, "{#ff3333}missing comment{R}\n");
+	if (e->actual->warning)
+		ft_dprintf(2, "%d %s ", e->actual->warning, e->actual->warning > 1 ? "warnings" : "warning");
+	if (e->actual->warning && e->actual->error)
+		ft_dprintf(2, "and ");
+	if (e->actual->error)
+		ft_dprintf(2, "%d %s ", e->actual->error, e->actual->error > 1 ? "errors" : "error");
+	if (e->actual->error || e->actual->warning)
+		ft_dprintf(2, "generated.\n");
+	if (!e->actual->error)
+	{
+		if (!e->actual->error && e->actual->options & (O_HEXA | O_BIN))
+			print_bin(e, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
+		if (!e->actual->error && !(e->actual->options & (O_HEXA | O_BIN)))
+			compile_write(e, bin);
+	}
+}
 void	compile(t_env *e)
 {
 	unsigned char	*cp;
 	unsigned char	bin[BIN_MAX_SIZE];
 	int				i;
 
-	ft_printf("{yellow}----------COMPILE----------\n{R}");
-	ft_printf(STR_C"file: %s\n{R}", e->actual->name);
 	ft_bzero(bin, BIN_MAX_SIZE);
 	i = 4;
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_header(e, cp);
-	print_label(e);
-	if (e->actual->complete & 1)
-		ft_printf(STR_C"name:{R} |%s|\n", &bin[4]);
-	if (e->actual->complete & 2)
-		ft_printf(STR_C"comment:{R} |%s|\n\n", &bin[PROG_NAME_LENGTH + 12]);
-	if (e->actual->error)
-		ft_dprintf(2, "%d %s generated\n", e->actual->error, e->actual->error > 1 ? "errors" : "error");
+	get_bytecode(e, cp);
 	i = 4;
 	while (i--)
 		bin[PROG_NAME_LENGTH + 11 - i] = e->actual->i >> i * 8;
-	if (!e->actual->error && e->actual->options & (O_HEXA | O_BIN))
-		print_bin(e, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
-	if (!e->actual->error && !(e->actual->options & (O_HEXA | O_BIN)))
-		compile_write(e, bin);
+	end_error(e, bin);
 }
 
 int		main(int ac, char **av)

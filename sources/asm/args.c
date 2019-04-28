@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 05:53:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/28 16:23:00 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 
 	if (!(new = (t_file *)malloc(sizeof(t_file))))
 		alloc_error(e);
+	new->warning = 0;
 	new->line_nb = 1;
-	new->nb_inst = 0;
 	new->output = NULL;
 	new->name = name;
 	new->label = NULL;
