@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 19:26:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 13:41:14 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 void		ld(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	int		addr;
+	int		i;
 
+	i = -1;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	addr = param_value(e, check, 1, ptr);
-	error = (check.error || !check.p1 || check.p2 != 16 || check.p3);
-	if (!error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
+	if (!check.error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
 	{
 		if (check.s1 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
@@ -61,19 +61,17 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
 		ptr->carry = !ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]];
 	}
-	*pc = *pc + 2 + check.s1 + check.s2;
+	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
 
 void		st(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	short	addr;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
-	error = (check.error || check.p1 != 64 || check.p2 == 32 || check.p3);
-	if (!error)
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error)
 	{
 		if (check.s2 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]
 			&& check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE])))
@@ -89,7 +87,7 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 				(void*)&ptr->r[e->mem[(*pc + 2) % MEM_SIZE]], REG_SIZE);
 		}
 	}
-	*pc = *pc + 2 + check.s1 + check.s2;
+	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
 
 void		add(t_env *e, int *pc, t_proc *ptr)
@@ -100,7 +98,7 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	error = (check.error || check.p1 != 64 || check.p2 != 16 || check.p3 != 4);
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
@@ -113,24 +111,22 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 		ptr->r[e->mem[(*pc + 4) % MEM_SIZE]] = v1 + v2;
 		ptr->carry = (!ptr->r[e->mem[(*pc + 4) % MEM_SIZE]]);
 	}
-	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = *pc + 2 + check.s1 + check.s2 + check.s3 + check.s3;
 }
 
 void		sub(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	int		v1;
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
-	error = (check.error || check.p1 != 64 || check.p2 != 16 || check.p3 != 4);
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 4) % MEM_SIZE]))
-		error = 1;
-	if (!error)
+		check.error = 1;
+	if (!check.error)
 	{
 		v1 = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
 		v2 = ptr->r[e->mem[(*pc + 3) % MEM_SIZE]];

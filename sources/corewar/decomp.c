@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 19:26:28 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 10:50:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ int					decompile_champ(t_env *e, char *arg, int champ)
 		if (g_op_tab[e->champs[champ].content[e->d.i - 1] - 1].ocp)
 		{
 			check = check_ocp(e->champs[champ].content[e->d.i],
-				g_op_tab[e->champs[champ].content[e->d.i - 1] - 1].dir_size);
+				g_op_tab[e->champs[champ].content[e->d.i - 1] - 1].dir_size,
+				e->champs[champ].content[e->d.i - 1]);
 			if (check.error == -1 || !(check_params(e, check)))
 				return (0);
 			e->d.i += 1 + check.s1 + check.s2 + check.s3;

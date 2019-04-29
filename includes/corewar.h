@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/28 19:27:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 11:50:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,13 +148,17 @@ int					create_new_process(t_env *e, int pc, t_proc *ptr);
 int					check_reg(int reg);
 
 /*
+** OCP_UTILS.C (3)
+*/
+t_ocp				check_ocp(int ocp, int on_two, int inst);
+
+/*
 ** OP_UTILS.C (5)
 */
 void				insert(t_env *e, int pc, void *ptr, int size);
 int					param_sum(t_env *e, int pc, int size);
 int					param_value(t_env *e, t_ocp check, int to_find,
 		t_proc *ptr);
-t_ocp				check_ocp(int ocp, int on_two);
 
 /*
 ** OP_1_5.C (5)

@@ -28,6 +28,7 @@ VM_SOURCES_FILES = main.c \
 				   op.c \
 				   game_utils.c \
 				   op_utils.c \
+				   ocp_utils.c \
 				   op_1_5.c \
 				   op_6_10.c \
 				   op_11_15.c \

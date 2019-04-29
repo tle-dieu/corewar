@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/26 12:15:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 13:41:07 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ static int			exec_cycle(t_env *e)
 		if (e->visu && e->dump == -1)
 			e->v.color_map[ptr->pc % MEM_SIZE] =
 				-e->v.color_map[ptr->pc % MEM_SIZE];
+		if (ptr->op != e->mem[ptr->pc % MEM_SIZE])
+		{
+			ptr->pc++;
+			ptr->op = e->mem[ptr->pc % MEM_SIZE];
+			ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
+		}
 		if (!ptr->cycle)
 		{
 			if (ptr->pc >= MEM_SIZE)
@@ -87,15 +93,17 @@ void				play(t_env *e)
 {
 	while (e->c_to_die > 0)
 	{
+		(e->c_total == e->dump) ? print_memory(e, 0) : 1;
+		++e->c_total;
+		++e->cycle;
 		exec_cycle(e);
 		e->visu && e->dump == -1 ? print_current_map(e) : 1;
 		if (e->new_proc)
 			add_new_proc(e);
 		if (e->cycle == e->c_to_die)
 		{
-			ft_printf("\a");
 			if (!e->nb_live)
-				break ;
+				return ;
 			if (e->nb_live < NBR_LIVE)
 				++e->nb_check;
 			if (e->nb_live >= NBR_LIVE
@@ -106,8 +114,5 @@ void				play(t_env *e)
 			e->cycle = 0;
 			e->nb_live = 0;
 		}
-		(e->c_total == e->dump) ? print_memory(e, 0) : 1;
-		e->c_total++;
-		e->cycle++;
 	}
 }

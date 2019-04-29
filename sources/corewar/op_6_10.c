@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 19:26:38 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 13:41:10 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 void		and(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	int		v1;
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
-	error = (check.error || !check.p1 || !check.p2 || check.p3 != 4);
-	if (!error)
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error)
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
@@ -36,13 +34,12 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 void		or(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	int		v1;
 	int		v2;
 
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	error = (check.error || !check.p1 || !check.p2 || check.p3 != 4);
-	if (!error)
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error)
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
@@ -56,14 +53,13 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 void		xor(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	int		v1;
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
-	error = (check.error || !check.p1 || !check.p2 || check.p3 != 4);
-	if (!error && check_reg(e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]))
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error
+			&& check_reg(e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]))
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
@@ -100,8 +96,8 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	reg = 1;
 	sum = 0;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size);
-	if (!check.error && check.p3 == 4 && check.p2 <= 32 && check.p1)
+		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error)
 	{
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (check.p1 == 64 && (reg = check_reg(p)))
