@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/29 23:32:26 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/29 23:44:52 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,10 +317,11 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 	int j;
 
 	i = 0;
-	if (e->actual->i < CHAMP_MAX_SIZE && e->actual->i + inst->index >= CHAMP_MAX_SIZE) //fonction error
+	ft_printf("index: %d => ",  e->actual->i);
+	if (e->actual->i <= CHAMP_MAX_SIZE && inst->index > CHAMP_MAX_SIZE) //fonction error
 	{
 		++e->actual->error;
-		e->actual->i += inst->index;
+		e->actual->i = inst->index;
 	}
 	if (!inst->error && !e->actual->error)
 	{
@@ -337,6 +338,7 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 		}
 		e->actual->i += j;
 	}
+	ft_printf("%d\n", e->actual->i);
 }
 
 t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
