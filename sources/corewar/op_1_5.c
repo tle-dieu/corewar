@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 13:41:14 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 16:12:57 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,25 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 	int		addr;
-	int		i;
+	int		reg1;
+	int		reg2;
 
-	i = -1;
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
-	addr = param_value(e, check, 1, ptr);
-	if (!check.error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
+	reg1 = e->mem[(*pc + 2 + check.s1) % MEM_SIZE];
+	reg2 = e->mem[(*pc + 2) % MEM_SIZE];
+	if (!check.error && reg1 > 0 && reg1 < 17)
 	{
-		if (check.s1 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
-				ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
+		if (check.s1 == 1 && reg2 > 0 && reg2 < 17)
+			ptr->r[reg1] = ptr->r[reg2];
 		else if (check.s1 == 2)
 		{
 			addr = param_sum(e, *pc + 3, 1);
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
-				param_sum(e, *pc + (addr % IDX_MOD), REG_SIZE);
+			ptr->r[reg1] = param_sum(e, *pc + (addr % IDX_MOD), REG_SIZE);
 		}
 		else if (check.s1 == 4)
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
-		ptr->carry = !ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]];
+			ptr->r[reg1] = param_value(e, check, 1, ptr);
+		ptr->carry = !ptr->r[reg1];
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -68,23 +67,23 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
 	short	addr;
+	int		reg1;
+	int		reg2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	reg1 = e->mem[(*pc + 2) % MEM_SIZE];
+	reg2 = e->mem[(*pc + 2 + check.s1) % MEM_SIZE];
 	if (!check.error)
 	{
-		if (check.s2 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]
-			&& check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE])))
-		{
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] =
-				ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
-		}
+		if (check.s2 == 1 && reg1 > 0 && reg2 > 0 && reg1 < 17 && reg2 < 17)
+			ptr->r[reg2] = ptr->r[reg1];
 		else if (check.s2 == 2 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
 		{
 			addr = param_sum(e, *pc + 3, 2);
 			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + (addr % IDX_MOD)) % MEM_SIZE,
-				(void*)&ptr->r[e->mem[(*pc + 2) % MEM_SIZE]], REG_SIZE);
+				(void*)&ptr->r[reg1], REG_SIZE);
 		}
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
@@ -93,18 +92,16 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 void		add(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
 	int		v1;
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
-	error = (check.error || check.p1 != 64 || check.p2 != 16 || check.p3 != 4);
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 4) % MEM_SIZE]))
-		error = 1;
-	if (!error)
+		check.error = 1;
+	if (!check.error)
 	{
 		v1 = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
 		v2 = ptr->r[e->mem[(*pc + 3) % MEM_SIZE]];

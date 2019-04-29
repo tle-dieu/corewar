@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/24 19:19:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 16:02:39 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	if (!(new = (t_proc *)ft_memalloc(sizeof(t_proc))))
 		return (0);
 	new->owner = ptr->owner;
+	new->dead = 0;
 	new->color = ptr->color;
 	new->live = ptr->live;
 	new->carry = ptr->carry;
@@ -32,6 +33,8 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->pc = pc;
 	new->id = e->nb_proc;
 	new->next = e->new_proc;
+	if (!e->new_proc)
+		e->proc_to_load = new;
 	e->new_proc = new;
 	return (1);
 }

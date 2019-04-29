@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/24 17:35:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 15:15:15 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int				init_proc(t_env *e, int j, int begin)
 	new->id = j + 1;
 	new->r[1] = e->champs[j].id;
 	new->pc = begin;
+	new->dead = 0;
 	new->owner = e->champs[j].id;
 	new->color = e->champs[j].color;
 	new->op = e->champs[j].content[0];

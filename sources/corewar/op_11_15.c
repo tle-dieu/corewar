@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 13:41:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 16:13:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
 		sum += (reg && check.p3 != 8 && check_reg(p)) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
-		if (reg)
+		if (reg && p > 0 && p < 17)
 		{
 			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + sum) % MEM_SIZE, (void*)&ptr->r[p], 4);
@@ -55,27 +55,26 @@ void		op_fork(t_env *e, int *pc, t_proc *ptr)
 void		lld(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	short	addr;
-	int		value;
+	int		reg1;
+	int		reg2;
+	int		addr;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
-	addr = param_value(e, check, 1, ptr);
-	if (!check.error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
+	reg1 = e->mem[(*pc + 2 + check.s1) % MEM_SIZE];
+	reg2 = e->mem[(*pc + 2) % MEM_SIZE];
+	if (!check.error && reg1 > 0 && reg1 < 17)
 	{
-		if (check.s1 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
-		{
-			value = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
-		}
+		if (check.s1 == 1 && reg2 > 0 && reg2 < 17)
+			ptr->r[reg1] = ptr->r[reg2];
 		else if (check.s1 == 2)
 		{
-			value = param_sum(e, *pc + 3, 1);
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
+			addr = param_sum(e, *pc + 3, 1);
+			ptr->r[reg1] = param_sum(e, *pc + addr, REG_SIZE);
 		}
 		else if (check.s1 == 4)
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
-		ptr->carry = !ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]];
+			ptr->r[reg1] = param_value(e, check, 1, ptr);
+		ptr->carry = !ptr->r[reg1];
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 13:41:10 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 16:12:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,19 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 	t_ocp	check;
 	int		v1;
 	int		v2;
+	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	reg = e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE];
+	if (reg < 0 || reg > 17)
+		check.error = 1;
 	if (!check.error)
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
-		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 & v2;
-		ptr->carry = !ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
-			% MEM_SIZE]];
+		ptr->r[reg] = v1 & v2;
+		ptr->carry = !ptr->r[reg];
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -36,16 +39,19 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 	t_ocp	check;
 	int		v1;
 	int		v2;
+	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	reg = e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE];
+	if (reg < 0 || reg > 17)
+		check.error = 1;
 	if (!check.error)
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
-		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]] = v1 | v2;
-		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
-				% MEM_SIZE]]);
+		ptr->r[reg] = v1 | v2;
+		ptr->carry = (!ptr->r[reg]);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -55,18 +61,19 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 	t_ocp	check;
 	int		v1;
 	int		v2;
+	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 		g_op_tab[ptr->op - 1].dir_size, ptr->op);
-	if (!check.error
-			&& check_reg(e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE]))
+	reg = e->mem[(*pc + 2 + check.s1 + check.s2) % MEM_SIZE];
+	if (reg < 0 || reg > 17)
+		check.error = 1;
+	if (!check.error)
 	{
 		v1 = param_value(e, check, 1, ptr);
 		v2 = param_value(e, check, 2, ptr);
-		ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
-			% MEM_SIZE]] = v1 ^ v2;
-		ptr->carry = (!ptr->r[e->mem[(*pc + 2 + check.s1 + check.s2)
-				% MEM_SIZE]]);
+		ptr->r[reg] = v1 ^ v2;
+		ptr->carry = (!ptr->r[reg]);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -110,7 +117,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 		if (reg)
 			sum += (check.p2 == 16 && check_reg(p)) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
-		if (reg && check_reg(p))
+		if (reg && p > 0 && p < 17)
 			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, 4);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;

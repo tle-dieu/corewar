@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/29 11:50:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 15:56:38 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct		s_ocp
 typedef	struct		s_proc
 {
 	int				owner;
+	int				dead;
 	int				color;
 	int				id;
 	int				live;
@@ -109,6 +110,7 @@ typedef	struct		s_env
 	t_champ			champs[4];
 	t_proc			*proc;
 	t_proc			*new_proc;
+	t_proc			*proc_to_load;
 	int				nb_proc;
 	unsigned char	mem_cpy[MEM_SIZE];
 	unsigned char	mem[MEM_SIZE];
