@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 18:00:35 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/29 19:49:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 		error_header(e, 6, cmd != -1 ? tmp : line, -1);
 	else
 		!cmd ? parse_cmd(e, line, cp, cmd)
-			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
+		: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
 void	get_bytecode(t_env *e, unsigned char *cp)
@@ -108,11 +108,11 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 			if (!ft_strchr(SPACES"\n", line[i]))
 			{
 				if (line[i] == '.')
-					get_cmd(e, cp, line + i);
+					get_cmd(e, cp + 4, line + i);
 				else if (line[i])
 				{
-					if (!only_label(e, &line, cp + COMMENT_LENGTH + PROG_NAME_LENGTH + 12, i))
-						parse_inst(e, line, cp + COMMENT_LENGTH + PROG_NAME_LENGTH + 12);
+					if (!only_label(e, &line, cp + HEADER_SIZE, i))
+						parse_inst(e, line, cp + HEADER_SIZE);
 				}
 				free_line(e->actual);
 				break ;

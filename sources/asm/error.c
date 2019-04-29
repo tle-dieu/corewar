@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 18:29:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/29 19:35:04 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 int		alloc_error(t_env *e)
 {
-    ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
-    ft_dprintf(2, "%s\n", strerror(errno));
+	ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
+	ft_dprintf(2, "%s\n", strerror(errno));
 	free_lst_file(e);
 	exit(EXIT_FAILURE);
 	return (-1);
@@ -36,6 +36,17 @@ int		len_err(char *s)
 	else
 		len = ft_strcspn(s, "\"\t ");
 	return (len + (s[len] == '"'));
+}
+
+void basic_error(t_env *e, char *str, char *err_string, int wave)
+{
+	e->actual->error++;
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->actual->name, e->actual->last->y , str - e->actual->last->s);
+	ft_dprintf(2, err_string);
+	err_pointer(e->tty2, e->actual->last->s, str, 0);
+	if (wave)
+		err_wave(e->tty2, str, wave);
+	ft_dprintf(2, "\n");
 }
 
 int		error_header(t_env *e, int error, char *extra, int cmd)
