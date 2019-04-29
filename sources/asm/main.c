@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 17:13:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/29 20:01:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void	compile_write(t_env *e, unsigned char *bin)
 
 void	end_error(t_env *e, unsigned char *bin)
 {
+	if (e->actual->i >= CHAMP_MAX_SIZE)
+		ft_printf("{#ff3333}error champ too long\n{R}");
 	if (!(e->actual->complete & 1) && ++e->actual->warning)
 		ft_dprintf(2, "{#ff3333}missing name{R}\n");
 	if (!(e->actual->complete & 2) && ++e->actual->warning)
@@ -123,7 +125,7 @@ void	end_error(t_env *e, unsigned char *bin)
 	if (!e->actual->error)
 	{
 		if (!e->actual->error && e->actual->options & (O_HEXA | O_BIN))
-			print_bin(e, bin, e->actual->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
+			print_bin(e, bin, e->actual->i + HEADER_SIZE);
 		if (!e->actual->error && !(e->actual->options & (O_HEXA | O_BIN)))
 			compile_write(e, bin);
 	}
@@ -139,7 +141,7 @@ void	compile(t_env *e)
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_bytecode(e, cp);
+	get_bytecode(e, cp - 4);
 	i = 4;
 	while (i--)
 		bin[PROG_NAME_LENGTH + 11 - i] = e->actual->i >> i * 8;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/29 19:35:48 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/29 19:54:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct		s_inst
 {
 	int				index;
 	int				i;
+	int				error;
 	int				op;
 	int				ocp;
 	int				nb_p;

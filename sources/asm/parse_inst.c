@@ -6,8 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/29 20:07:53 by matleroy         ###   ########.fr       */
-/*   Updated: 2019/04/27 19:26:10 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/29 20:10:10 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,24 +289,35 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 {
 	int i;
 	int	k;
+	int j;
 
 	i = 0;
-	cp[e->actual->i++] = inst->op; //check champ max size ou check avant ? stopper ou continuer en faisant repartir index a 0
-	if (g_op_tab[inst->op - 1].ocp)
-		cp[e->actual->i++] = inst->ocp;
-	while (i < inst->nb_p)
+	if (e->actual->i < CHAMP_MAX_SIZE && e->actual->i + inst->index >= CHAMP_MAX_SIZE) //fonction error
 	{
-		k = inst->s[i];
-		while (k--)
-			cp[e->actual->i++] = inst->p[i] >> k * 8;
-		i++;
+		++e->actual->error;
+		e->actual->i += inst->index;
+	}
+	if (!inst->error && !e->actual->error)
+	{
+		j = 0;
+		cp[e->actual->i + j++] = inst->op;
+		if (g_op_tab[inst->op - 1].ocp)
+			cp[e->actual->i + j++] = inst->ocp;
+		while (i < inst->nb_p)
+		{
+			k = inst->s[i];
+			while (k--)
+				cp[e->actual->i + j++] = inst->p[i] >> k * 8;
+			i++;
+		}
+		e->actual->i += j;
 	}
 }
 
 t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 {	
-	t_inst inst;
-	char *tmp;
+	t_inst	inst;
+	char	*tmp;
 
 	inst = (t_inst){.ocp = 0}; // verifier norme
 	if ((inst.op = get_curr_inst(str)) <= 16)
