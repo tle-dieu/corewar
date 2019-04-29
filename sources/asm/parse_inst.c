@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/29 20:10:10 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/29 23:32:26 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,14 @@ int		is_a_number(t_env *e, char *str)
 		basic_error(e, tmp,"illegal character for number\n", 0);
 		err = 1;
 	}
+	tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
 	tmp += ft_strspn(tmp, SPACES);
-	if (!err && (*tmp && *tmp != *SEPARATOR_CHAR))
+	if (*tmp && *tmp != *SEPARATOR_CHAR)
 	{
 		err = 1;
-		basic_error(e, tmp,"missing ',' before parameter\n", ft_strclen(tmp, *SEPARATOR_CHAR) - 1);
+		basic_error(e, tmp,"missing ',' before parameter\n", ft_strcspn(tmp, SPACES SEPARATOR_CHAR) - 1);
 	}
-	return (err);
+	return (!err);
 }
 
 int	label_is_good(t_env *e, char *str)
@@ -129,10 +130,11 @@ int	label_is_good(t_env *e, char *str)
 		basic_error(e, tmp,"illegal character for label\n", 0);
 		err = 1;
 	}
+	tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
 	tmp += ft_strspn(tmp, SPACES);
-	if (!err && (*tmp && *tmp != *SEPARATOR_CHAR))
+	if (*tmp && *tmp != *SEPARATOR_CHAR)
 	{
-		basic_error(e, tmp,"missing ',' before parameter\n", ft_strclen(tmp, *SEPARATOR_CHAR) - 1);
+		basic_error(e, tmp,"missing ',' before parameter\n", ft_strcspn(tmp, SPACES SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
 	return (!err);
@@ -191,26 +193,48 @@ int is_indirect(t_env *e, char *str, t_inst *inst)
 	return (1);
 }
 
+int		is_valid_register(t_env *e, char *str)
+{
+	char	*tmp;
+	int		err;
+
+	err = 0;
+	tmp = str;
+	while (ft_isdigit(*tmp))
+		tmp++;
+	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
+	{
+		basic_error(e, tmp,"illegal character for label\n", 0);
+		err = 1;
+	}
+	tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
+	tmp += ft_strspn(tmp, SPACES);
+	if (*tmp && *tmp != *SEPARATOR_CHAR)
+	{
+		basic_error(e, tmp,"missing ',' before parameter\n", ft_strcspn(tmp, SPACES SEPARATOR_CHAR) - 1);
+		err = 1;
+	}
+	return (!err);
+}
 
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
 	char *to_free;
 
+
 	tmp = str;
-	(void)e;
 	if (*tmp == 'r')
 	{
 		tmp++;
 		inst->s[inst->i] = 1;
 		inst->t[inst->i] = 1;
 		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
-		inst->p[inst->i] = ft_atoi(to_free);
-		if (!ft_isdigit(*tmp))
-			basic_error(e, tmp,"illegal character for label\n", 0);
+		if (is_valid_register(e, tmp))
+			inst->p[inst->i] = ft_atoi(to_free);
+		free(to_free);
 		if (inst->p[inst->i] < 0 || inst->p[inst->i] > 16)
 			ft_printf("{#ff3333}Error: try to acces to register[%d], register index must be between 1 and 16\n", inst->p[inst->i]);
-		free(to_free);
 		return (1);
 	}
 	return (0);
@@ -230,6 +254,25 @@ void get_ocp(t_inst *inst)
 		i++;
 	}
 	inst->ocp = ocp;
+}
+
+void	print_inst(t_inst *inst, char *str)
+{
+	int i;
+
+	i = 0;
+	ft_printf("\nstr\t= %s\n", str);
+	ft_printf("op\t= %d\n", inst->op);
+	ft_printf("ocp\t= %d\n", inst->ocp);
+	ft_printf("nb_p\t= %d\n", inst->nb_p);
+	ft_printf("params:\n");
+	while (i < inst->nb_p)
+	{
+		ft_printf("\t p[%d] = %d", i, inst->p[i]);
+		ft_printf("\t s[%d] = %d", i, inst->s[i]);
+		ft_printf("\t t[%d] = %d\n", i, inst->t[i]);
+		i++;
+	}
 }
 
 int check_params(t_env *e, char *str, t_inst *inst)
@@ -266,24 +309,6 @@ int check_params(t_env *e, char *str, t_inst *inst)
 	return (1);
 }
 
-void	print_inst(t_inst *inst, char *str)
-{
-	int i;
-
-	i = 0;
-	ft_printf("\nstr\t= %s\n", str);
-	ft_printf("op\t= %d\n", inst->op);
-	ft_printf("ocp\t= %d\n", inst->ocp);
-	ft_printf("nb_p\t= %d\n", inst->nb_p);
-	ft_printf("params:\n");
-	while (i < inst->nb_p)
-	{
-		ft_printf("\t p[%d] = %d", i, inst->p[i]);
-		ft_printf("\t s[%d] = %d", i, inst->s[i]);
-		ft_printf("\t t[%d] = %d\n", i, inst->t[i]);
-		i++;
-	}
-}
 
 void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 {
