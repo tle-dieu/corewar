@@ -108,6 +108,8 @@ void	compile_write(t_env *e, unsigned char *bin)
 
 void	end_error(t_env *e, unsigned char *bin)
 {
+	if (e->actual->i >= BIN_MAX_SIZE - 4)
+		ft_printf("{#ff3333}error champ too long\n{R}");
 	if (!(e->actual->complete & 1) && ++e->actual->warning)
 		ft_dprintf(2, "{#ff3333}missing name{R}\n");
 	if (!(e->actual->complete & 2) && ++e->actual->warning)
@@ -139,7 +141,7 @@ void	compile(t_env *e)
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_bytecode(e, cp);
+	get_bytecode(e, cp - 4);
 	i = 4;
 	while (i--)
 		bin[PROG_NAME_LENGTH + 11 - i] = e->actual->i >> i * 8;

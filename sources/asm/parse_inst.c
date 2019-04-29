@@ -259,15 +259,23 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 	int	k;
 
 	i = 0;
-	cp[e->actual->i++] = inst->op; //check champ max size ou check avant ? stopper ou continuer en faisant repartir index a 0
-	if (g_op_tab[inst->op - 1].ocp)
-		cp[e->actual->i++] = inst->ocp;
-	while (i < inst->nb_p)
+	if (e->actual->i < BIN_MAX_SIZE - 4 && e->actual->i + inst->index >= BIN_MAX_SIZE - 4) //fonction error
 	{
-		k = inst->s[i];
-		while (k--)
-			cp[e->actual->i++] = inst->p[i] >> k * 8;
-		i++;
+		++e->actual->error;
+		e->actual->i += inst->index;
+	}
+	if (!e->actual->error)
+	{
+		cp[e->actual->i++] = inst->op;
+		if (g_op_tab[inst->op - 1].ocp)
+			cp[e->actual->i++] = inst->ocp;
+		while (i < inst->nb_p)
+		{
+			k = inst->s[i];
+			while (k--)
+				cp[e->actual->i++] = inst->p[i] >> k * 8;
+			i++;
+		}
 	}
 }
 
