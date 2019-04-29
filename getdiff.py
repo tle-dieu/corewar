@@ -11,10 +11,11 @@ RED = "\x1b[1;38;2;241;76;76m"
 WHITE = "\x1b[1;38;2;255;255;255m"
 
 def get_file(asm, f):
-    open = sp.getoutput("./" + asm + " " + f)
+    open = sp.getoutput("./" + asm + " --color=force " + f)
     output = ""
     error = ""
     my_file = ""
+    success = ""
     if open:
         f = f.split('.')
         my_file = f[0] + ".cor"
@@ -22,11 +23,12 @@ def get_file(asm, f):
         test = sp.getoutput('rm ' + my_file)
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
-    
     if not error and output[0] == 'x' :
-        error = open
-        error += "\n" + RED + "ERROR: " + asm + " doesn't create " + my_file
-    return (output, error)
+        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + "hasn't been created"
+        error += "\n" + WHITE + open
+    else:
+        success += "\n" + GREEN + "SUCCES: for " + asm + " " + my_file + " has been created"
+    return (output, error, success)
 
 def compare(str1, str2):
     i = 0
@@ -81,15 +83,21 @@ def main():
     i = 0
     print(ASM_42 + ": -")
     print(ASM + ": +")
+    tmp = ""
+    succes = ""
     for arg in sys.argv:
         error = 0
         err = ""
         if i > 0:
-            asm_42, err = get_file(ASM_42, arg)
+            asm_42, err , success = get_file(ASM_42, arg)
             asm_42 = asm_42.split('\n')
-            asm, err = get_file(ASM, arg)
+            asm, tmp, success_tmp = get_file(ASM, arg)
+            err += tmp
+            success += success_tmp
             asm = asm.split('\n')
             print(WHITE + "\n- - - - - - - - - - - - " + arg.upper() + " - - - - - - - - - - - -\n")
+            if success:
+                print(success + WHITE)
             if not err:
                 j = 0
                 while j < len(asm) and j < len(asm_42):

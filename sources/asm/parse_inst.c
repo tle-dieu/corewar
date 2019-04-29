@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/28 18:32:43 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/29 19:35:56 by matleroy         ###   ########.fr       */
 /*   Updated: 2019/04/27 19:26:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -94,7 +94,7 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 		create_call(e, inst, s, label, i); // separer en deux pour trop args
 }
 
-int		is_a_number(char *str)
+int		is_a_number(t_env *e, char *str)
 {
 	char *tmp;
 
@@ -104,7 +104,30 @@ int		is_a_number(char *str)
 	tmp += ft_strspn(tmp, SPACES);
 	if (*tmp)
 		return (0);
+	basic_error(e, tmp,"illegal character\n", 0);
 	return (1);
+}
+
+int	label_is_good(t_env *e, char *str)
+{
+	char *tmp;
+	int err;
+
+	err = 0;
+	tmp = str;
+	tmp += ft_strspn(tmp, LABEL_CHARS);
+	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
+	{
+		basic_error(e, tmp,"illegal character for label\n", 0);
+		err = 1;
+	}
+	tmp += ft_strspn(tmp, SPACES);
+	if (!err && (*tmp && *tmp != *SEPARATOR_CHAR))
+	{
+		basic_error(e, tmp,"missing ',' before parameter\n", ft_strclen(tmp, *SEPARATOR_CHAR) - 1);
+		err = 1;
+	}
+	return (!err);
 }
 
 int is_direct(t_env *e, char *str, t_inst *inst)
@@ -119,16 +142,20 @@ int is_direct(t_env *e, char *str, t_inst *inst)
 		inst->s[inst->i] = g_op_tab[inst->op - 1].dir_size ? 2 : 4;
 		inst->t[inst->i] = 2;
 		if (*tmp == LABEL_CHAR)
-			get_label_call(e, inst, tmp + 1, inst->i);
+		{
+			if (label_is_good(e, tmp + 1))
+				get_label_call(e, inst, tmp + 1, inst->i);
+		}
 		else
 		{
 			to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
-			if (is_a_number(to_free))
+			if (is_a_number(e, to_free))
 				inst->p[inst->i] = ft_atoi(to_free);
 			else
 				ft_printf("{#ff3333}ERROR: bad direct '%s'\n", tmp);
 			free(to_free);
 		}
+		ft_printf("===> %s\n", str);
 		return (1);
 	}
 	return (0);
@@ -143,11 +170,14 @@ int is_indirect(t_env *e, char *str, t_inst *inst)
 	inst->s[inst->i] = IND_SIZE;
 	inst->t[inst->i] = 3;
 	if (*tmp == LABEL_CHAR)
-		get_label_call(e, inst, tmp + 1, inst->i);
+	{
+		if (label_is_good(e, tmp + 1))
+			get_label_call(e, inst, tmp + 1, inst->i);
+	}
 	else
 	{
 		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
-		if (is_a_number(to_free))
+		if (is_a_number(e, to_free))
 			inst->p[inst->i] = ft_atoi(to_free);
 		else
 		{
