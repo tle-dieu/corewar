@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/29 20:01:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/29 20:50:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		pass_line(char *s)
 	return (0);
 }
 
+//protection file too long
 int		add_line(t_env *e, char **line)
 {
 	t_line	*new;
@@ -108,7 +109,7 @@ void	compile_write(t_env *e, unsigned char *bin)
 
 void	end_error(t_env *e, unsigned char *bin)
 {
-	if (e->actual->i >= CHAMP_MAX_SIZE)
+	if (e->actual->i > CHAMP_MAX_SIZE)
 		ft_printf("{#ff3333}error champ too long\n{R}");
 	if (!(e->actual->complete & 1) && ++e->actual->warning)
 		ft_dprintf(2, "{#ff3333}missing name{R}\n");
