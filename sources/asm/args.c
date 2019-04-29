@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 00:28:31 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 01:07:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,9 @@ int		valid_file(int fd, unsigned *options)
 {
 	char	buff[1];
 	off_t	size;
+	off_t	current_pos;
 	
+	current_pos = lseek(fd, 0, SEEK_CUR);
 	size = lseek(fd, 0, SEEK_END);
 	if (size > MAX_FILE_SIZE || (!size && read(fd, buff, 1)))
 	{
@@ -134,6 +136,7 @@ int		valid_file(int fd, unsigned *options)
 		close(fd);
 		return (0);
 	}
+	lseek(fd, current_pos, SEEK_SET);   
 	return (1);
 }
 

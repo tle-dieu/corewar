@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 00:38:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 01:07:34 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 
 	i = 0;
 	end = 0;
-	ft_printf("HEADER\n");
 	if (e->actual->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
 		if (error_header(e, 5, e->actual->begin->s, cmd) == -1)
 			return (0);
