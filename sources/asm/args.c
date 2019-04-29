@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 16:23:00 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 00:28:31 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,21 @@ static int		get_long_option(t_env *e, unsigned *options, char **s)
 	return (!(~0xff & *options));
 }
 
+int		valid_file(int fd, unsigned *options)
+{
+	char	buff[1];
+	off_t	size;
+	
+	size = lseek(fd, 0, SEEK_END);
+	if (size > MAX_FILE_SIZE || (!size && read(fd, buff, 1)))
+	{
+		*options |= O_INVALID_FILE_ERR;
+		close(fd);
+		return (0);
+	}
+	return (1);
+}
+
 int		parse_command_line(t_env *e, int ac, char **av)
 {
 	unsigned options;
@@ -138,7 +153,7 @@ int		parse_command_line(t_env *e, int ac, char **av)
 		{
 			if (options & O_OUTPUT_ERR
 			|| (fd = open(av[e->i], O_RDONLY)) == -1
-			|| read(fd, av[e->i], 0) < 0)
+			|| read(fd, av[e->i], 0) < 0 || !valid_file(fd, &options))
 				return (error_file(e, s, av[e->i], options));
 			e->actual = add_file(e, av[e->i], options, fd);
 			options = 0;

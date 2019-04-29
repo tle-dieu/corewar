@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/29 19:49:10 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 00:38:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 
 	i = 0;
 	end = 0;
+	ft_printf("HEADER\n");
 	if (e->actual->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
 		if (error_header(e, 5, e->actual->begin->s, cmd) == -1)
 			return (0);
@@ -45,14 +46,14 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	}
 	if (check_end_str(e, s, cmd, '"') == -1)
 		return (0);
-	s = t;
+	s = t + 1;
 	while (!end)
 	{
-		while (*++s && *s != '"')
+		while (*s && *s != '"')
 		{
 			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
 				return (too_long(e, s, cmd));
-			buff[i++] = *s;
+			buff[i++] = *s++;
 		}
 		if (*s == '"' && (end = 1))
 		{

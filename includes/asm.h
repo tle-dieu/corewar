@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/29 19:54:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 00:20:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define SPACES " \t\r\v\f"
 # define TAB_SIZE 4
 # define MAX_ERROR 20
+# define MAX_FILE_SIZE 100000000
 
 # define O_HEXA 1
 # define O_BIN 2 
@@ -56,6 +57,7 @@
 # define O_COL_AMBIGUOUS_ERR 1024
 # define O_COL_INVALID_ERR 2048
 # define O_OUTPUT_ERR 4096
+# define O_INVALID_FILE_ERR 8192
 
 typedef struct		s_line
 {

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 17:46:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 00:20:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int		error_file(t_env *e, char *error, char *file, unsigned opt)
 			ft_printf("%s argument '%s' for '--color'\n", opt & O_COL_AMBIGUOUS_ERR ? "ambiguous" : "invalid", error);
 			ft_printf("Valid arguments are:\n  - 'always', 'yes', 'force'\n  - 'never', 'no', 'none'\n  - 'auto', 'tty', 'if-tty'\n"); 
 		}
+		else if (opt & O_INVALID_FILE_ERR)
+			ft_printf("invalid file '%s'\n", file);
 		else
 			ft_printf("argument to '-o' is missing\n");
 	}

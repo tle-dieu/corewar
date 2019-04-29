@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/29 19:35:04 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/30 00:33:28 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int		len_err(char *s)
 	if (s[len] == '"')
 		len += ft_strclen(s + len + 1, '"') + 1;
 	else
-		len = ft_strcspn(s, "\"\t ");
+		len = ft_strcspn(s, SPACES"\"");
 	return (len + (s[len] == '"'));
 }
 
-void basic_error(t_env *e, char *str, char *err_string, int wave)
+void	basic_error(t_env *e, char *str, char *err_string, int wave)
 {
 	e->actual->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->actual->name, e->actual->last->y , str - e->actual->last->s);
@@ -81,7 +81,7 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	else if (error == 3)
 	{
 		ft_dprintf(2, "expected string after %s\n", scmd);
-		err_pointer(e->tty2, e->actual->begin->s, extra + (*extra == ' ' || *extra == '\t'), !*extra);
+		err_pointer(e->tty2, e->actual->begin->s, extra + (ft_strchr(SPACES, *extra) != NULL), !*extra);
 	}
 	else if (error == 4)
 	{
@@ -90,7 +90,7 @@ int		error_header(t_env *e, int error, char *extra, int cmd)
 	}
 	else if (error == 5)
 	{
-		ft_dprintf(2, "%s already defined (ignored)\n", scmd);
+		ft_dprintf(2, "%s already defined (ignored)\n", scmd); // passer en warning
 		err_pointer(e->tty2, e->actual->begin->s, extra++, 0);
 		err_wave(e->tty2, extra, len_err(extra));
 	}
