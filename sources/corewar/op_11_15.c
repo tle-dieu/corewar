@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 16:13:03 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 17:44:30 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		sum += (reg && check.p3 != 8 && check_reg(p)) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (reg && p > 0 && p < 17)
-		{
-			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + sum) % MEM_SIZE, (void*)&ptr->r[p], 4);
-		}
+		e->v.color = reg && p > 0 && p < 17 && e->visu ? ptr->color : 0;
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -95,10 +93,8 @@ void		lldi(t_env *e, int *pc, t_proc *ptr)
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (check.p1 == 64 && (reg = check_reg(p)))
 			sum += ptr->r[p];
-		else if (reg && check.p1 > 128)
-			sum += e->mem[(*pc + p) % MEM_SIZE];
 		else if (reg)
-			sum += p;
+			sum += check.p1 > 128 ? e->mem[(*pc + p) % MEM_SIZE] : p;
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
 		if (reg)
 			sum += (check.p2 == 16 && check_reg(p)) ? ptr->r[p] : p;

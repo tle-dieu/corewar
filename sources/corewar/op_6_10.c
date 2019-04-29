@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 16:12:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 17:45:40 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,9 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
 		if (check.p1 == 64 && (reg = check_reg(p)))
 			sum += ptr->r[p];
-		else if (reg && check.p1 > 128)
-			sum += param_sum(e, (*pc + (p % IDX_MOD)) % MEM_SIZE, 2);
 		else if (reg)
-			sum += p;
+			sum += check.p1 > 128 ? param_sum(e,
+				(*pc + (p % IDX_MOD)) % MEM_SIZE, 2) : p;
 		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
 		if (reg)
 			sum += (check.p2 == 16 && check_reg(p)) ? ptr->r[p] : p;

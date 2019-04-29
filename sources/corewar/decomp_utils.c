@@ -6,22 +6,11 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:47:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 17:12:44 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 17:59:11 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-
-void			init_decomp(t_decomp *d, int champ)
-{
-	int		i;
-
-	i = -1;
-	d->i = 0;
-	d->champ = champ;
-	while (++i < 300)
-		ft_bzero(d->tab[i], COMMENT_LENGTH);
-}
 
 void			init_line(t_env *e)
 {

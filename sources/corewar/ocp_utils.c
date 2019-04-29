@@ -6,13 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:01:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 15:34:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 17:37:29 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-static void     check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
+static void		check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 {
 	int i;
 
@@ -21,7 +21,8 @@ static void     check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 	{
 		if (i < g_op_tab[inst - 1].nb_param)
 		{
-			if (!((g_op_tab[inst - 1].param[i] >> (((ocp >> ((3 - i) * 2)) & 3) - 1)) & 1))
+			if (!((g_op_tab[inst - 1].param[i]
+				>> (((ocp >> ((3 - i) * 2)) & 3) - 1)) & 1))
 				check->error = 1;
 		}
 		else if ((ocp >> ((3 - i) * 2)) & 3)
@@ -54,7 +55,6 @@ static void		find_param_size(t_ocp *check, int ocp, int on_two)
 	else if (check->p3 == 8)
 		check->s3 = on_two ? 2 : 4;
 }
-
 
 t_ocp			check_ocp(int ocp, int on_two, int inst)
 {

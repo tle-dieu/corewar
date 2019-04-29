@@ -6,16 +6,24 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 10:50:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/29 17:59:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-//Need: parsing avec check_champ, check_champ_size, check_magic_number, split_champ, puis check_ocp.
+//Need: parsing avec check_champ, check_champ_size, check_magic_number,
+//	split_champ, puis check_ocp et check_ocp_rights.
 
-static void			put_header(t_env *e)
+static void			put_header(t_env *e, int champ)
 {
+	int		i;
+
+	i = -1;
+	e->d.i = 0;
+	e->d.champ = champ;
+	while (++i < 300)
+		ft_bzero(e->d.tab[i], COMMENT_LENGTH);
 	e->d.y = 0;
 	e->d.x = 0;
 	str_in_buff(&e->d, ".name \"");
@@ -87,8 +95,7 @@ int					decompile_champ(t_env *e, char *arg, int champ)
 {
 	t_ocp	check;
 
-	init_decomp(&e->d, champ);
-	put_header(e);
+	put_header(e, champ);
 	while (e->d.i < e->champs[champ].size)
 	{
 		if (e->champs[champ].content[e->d.i] < 1
@@ -106,6 +113,8 @@ int					decompile_champ(t_env *e, char *arg, int champ)
 		}
 		else
 			move_forward(e);
+		if (e->d.y + 1 > 300)
+			return (0);
 		e->d.y++;
 	}
 	return (generate_decomp_file(&e->d, arg));
