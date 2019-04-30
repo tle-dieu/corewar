@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 11:06:33 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 14:54:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 {
 	t_label			*label;
 	t_call			*call;
-	unsigned char	*tmp;
 	int				i;
 
 	label = e->file->label;
-	i = 0;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
 		label = label->next;
 	if (label)
@@ -38,10 +36,9 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 		{
 			label->index = e->file->i;
 			call = label->call;
-			tmp = cp;
 			while (call)
 			{
-				cp = tmp;
+				i = 0;
 				if (!e->file->error)
 					while (call->size--)
 						cp[i++ + call->index_call] = (e->file->i - call->index_inst) >> call->size * 8;
@@ -63,7 +60,8 @@ void	get_label(t_env *e, char *s)
 	if (*(s + (len = ft_strspn(s, LABEL_CHARS))) != LABEL_CHAR)
 		ft_dprintf(2, "{#ff3333}label char interdit: {R}%c\n", *(s + len));
 	new = NULL;
-	ft_printf("{yellow}label OK: '%.*s'\n{R}", len + 1, s);
+	if (PRINT)
+		ft_printf("{yellow}label OK: '%.*s'\n{R}", len + 1, s);
 	if (!(new = (t_label *)malloc(sizeof(t_label))))
 		alloc_error(e);
 	if (!(new->name = ft_strndup(s, len)))
@@ -88,7 +86,7 @@ int     only_label(t_env *e, char **line, unsigned char *cp)
 
 	s = *line;
 	len = sizeof(SPACES) - 1;
-	while (*s != LABEL_CHAR || !ft_printf("label char check\n"))
+	while (*s != LABEL_CHAR)
 	{
 		i = len;
 		if (!*s)

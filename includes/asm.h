@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 09:16:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 14:53:48 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 # define TAB_SIZE 4
 # define MAX_ERROR 20
 # define MAX_FILE_SIZE 100000000
+
+# define PRINT 0 // a enlever
 
 # define O_HEXA 1
 # define O_BIN 2 
@@ -104,12 +106,12 @@ typedef struct		s_file
 	char			*name;
 	int				fd;
 	int				i;
+	int				unique_line;
 	unsigned		options;
 	int				error;
 	int				warning;
 	int				line_nb;
 	int				too_long;
-	int				uniq_line;
 	t_line			*begin;
 	t_line			*last;
 	t_label			*label;

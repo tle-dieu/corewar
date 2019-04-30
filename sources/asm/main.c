@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 11:08:34 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 14:56:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,19 @@ int		add_line(t_env *e, char **line)
 	new->s = *line;
 	new->y = e->file->line_nb++;
 	if (!e->file->begin)
-	{
-		e->file->uniq_line = 1;
 		e->file->begin = new;
-	}
 	else
 	{
-		if (!e->file->uniq_line)
+		if (PRINT)
+			ft_printf("{yellow}in add line :: %p\n{R}", e->file->begin);
+		if (e->file->last != e->file->begin)
+		{
+			if (PRINT)
+				ft_printf("{cyan}before e->file->last {R}%p\n", e->file->last);
 			free_line(&e->file->last);
-		e->file->uniq_line = 0;
+			if (PRINT)
+				ft_printf("{bold}{red}after e->file->last {R}%p\n", e->file->last);
+		}
 		e->file->last = new;
 	}
 	e->file->last = new;
@@ -116,6 +120,8 @@ void	compile_write(t_env *e, unsigned char *bin)
 		ft_printf("error: %s: '%s'\n", strerror(errno), e->file->output);
 		exit(0); // errno
 	}
+	ft_printf("file->output write: %p\n", e->file->output);
+	ft_printf("file->output write: %s\n", e->file->output);
 }
 
 void	end_error(t_env *e, unsigned char *bin)
@@ -204,19 +210,20 @@ int		main(int ac, char **av)
 	e.actual = NULL;
 	if (!e.file)
 		return (usage(&e, 3));
-	print_files(e.file);
+	if (PRINT)
+		print_files(e.file);
 	while (e.file)
 	{
-		ft_printf("compile file: %s\n", e.file->name);
-		print_entire_file(&e);
-		ft_printf("A\n");
+		if (PRINT)
+		{
+			ft_printf("compile file: %s\n", e.file->name);
+			print_entire_file(&e);
+		}
 		compile(&e);
-		ft_printf("B\n");
 		next = e.file->next;
-		ft_printf("next: %p\n", e.file->next);
-		ft_printf("free file %p\n", e.file);
+		/* ft_printf("free file %p\n", e.file); */
 		free_file(&e.file);
-		ft_printf("C\n");
+		/* ft_printf("fin free file %p\n", e.file); */
 		e.file = next;
 	}
 }

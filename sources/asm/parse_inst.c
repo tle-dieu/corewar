@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 11:06:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 14:04:06 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,7 +339,6 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 	}
 	if (!e->file->too_long && !inst->error)
 		e->file->i = inst->index;
-	ft_printf("%d\n", e->file->i);
 }
 
 t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)

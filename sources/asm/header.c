@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 11:11:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 14:52:43 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,26 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 			if (!only_label(e, &line, cp + HEADER_SIZE))
 				parse_inst(e, line, cp + HEADER_SIZE);
 		}
-		ft_printf("in header.c :: %p\n", e->file->begin);
-		free_line(&e->file->begin);
-		if (!e->file->uniq_line)
+		if (PRINT)
 		{
-			ft_printf("e->file->last %p\n", e->file->last);
-			free_line(&e->file->last);
+			ft_printf("{yellow}in get_bytecode :: {R}%p\n", e->file->begin);
+			ft_printf("last: %p != begin: %p\n", e->file->last, e->file->begin);
 		}
+		if (e->file->last != e->file->begin)
+		{
+			if (PRINT)
+				ft_printf("{cyan}before e->file->last {R}%p\n", e->file->last);
+			free_line(&e->file->last);
+			if (PRINT)
+				ft_printf("{bold}{red}after e->file->last {R}%p\n", e->file->last);
+		}
+		else
+			e->file->last = NULL;
+		if (PRINT)
+			ft_printf("{cyan}before e->file->begin {R}%p\n", e->file->begin);
+		free_line(&e->file->begin);
+		if (PRINT)
+			ft_printf("{red}{bold}after e->file->begin {R}%p\n", e->file->begin);
 	}
 	if (e->file->error >= MAX_ERROR)
 	{
