@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 15:41:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 20:15:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,12 @@ void				print_call_error(t_env *e);
 
 //----------------------------
 
+int					cmd_too_long(t_env *e, char *error, int cmd);
+int					cmd_multiple_define(t_env *e, int cmd);
+int					invalid_cmd(t_env *e, char *error, int cmd);
+int					expect_str(t_env *e, char *error, int cmd);
+int					unexpected_expression(t_env *e, char *error, int cmd);
+int					missing_quote(t_env *e, char *error);
 void				free_lst_file(t_env *e);
 void				free_file(t_file **file);
 char				*line_error(int line, int tty);
@@ -158,7 +164,6 @@ void				err_pointer(int tty, char *s, char *end, int sp);
 void				err_wave(int tty, char *s, int n);
 int					check_end_str(t_env *e, char *s, int cmd, char c);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
-int					error_header(t_env *e, int error, char *extra, int cmd);
 int					add_line(t_env *e, char **line);
 void				free_line(t_line **line);
 void				get_bytecode(t_env *e, unsigned char *cp);

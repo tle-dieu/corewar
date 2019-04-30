@@ -34,6 +34,7 @@ def printDiff(asm, asm_42):
     asm = asm.split('\n')
     asm_42 = asm_42.split('\n')
     error = 0
+    i = 0
     while i < len(asm_42) and i < len(asm):
         if asm_42[i] != asm[i]:
             print(WHITE + "- " + asm_42[i])

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 17:39:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 20:13:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,11 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	i = 0;
 	end = 0;
 	if (e->file->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
-		if (error_header(e, 5, e->file->begin->s, cmd) == -1)
+		if (cmd_multiple_define(e, cmd) == -1)
 			return (0);
 	e->file->complete |= cmd + 1;
 	if (!(t = ft_strchr(s, '"')))
-	{
-		error_header(e, 3, s, cmd);
-		return (check_end_str(e, s, cmd, 0));
-	}
+		return (expect_str(e, s, cmd) == -1 || check_end_str(e, s, cmd, 0));
 	if (check_end_str(e, s, cmd, '"') == -1)
 		return (0);
 	s = t + 1;
@@ -43,7 +40,8 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
 			{
 				i = -1;
-				error_header(e, 2, ft_strchr(e->file->begin->s, '"'), cmd);
+				if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1)
+					return (0);
 			}
 			else if (i != -1)
 				buff[i++] = *s;
@@ -55,7 +53,7 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 				return (0);
 		}
 		else if (add_line(e, &s) != 1)
-			return (error_header(e, 4, e->file->begin->s + ft_strlen(e->file->begin->s), cmd));
+			return (missing_quote(e, e->file->begin->s));
 		else if (i != -1)
 			buff[i++] = '\n';
 	}
@@ -85,7 +83,7 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 		cmd = 1;
 	}
 	if (cmd == -1 || !ft_strchr(SPACES"\"", *line))
-		error_header(e, 6, cmd != -1 ? tmp : line, -1);
+		invalid_cmd(e, cmd != -1 ? tmp : line, -1);
 	else
 		!cmd ? parse_cmd(e, line, cp, cmd)
 			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 17:39:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 19:06:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ int		check_end_str(t_env *e, char *s, int cmd, char c)
 	s = s + ft_strspn(s, SPACES);
 	if (*s == c)
 		return (1);
-	if (error_header(e, 1, s, cmd) == -1)
+	if (unexpected_expression(e, s, cmd) == -1)
 		return (-1);
 	s = s + ft_strcspn(s, chr);
 	while (*(s = s + ft_strspn(s, SPACES)) != c)
 	{
-		if (error_header(e, 1, s, cmd) == -1)
+		if (unexpected_expression(e, s, cmd) == -1)
 			return (-1);
 		s = s + ft_strcspn(s, chr);
 	}

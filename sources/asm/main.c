@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 17:39:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 17:48:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	compile_write(t_env *e, unsigned char *bin)
 			ft_printf("output: %s\n", e->file->output);
 		}
 	}
-	if ((fd = open("coucou", O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
+	if ((fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
 	{
 		write(fd, bin, e->file->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
 		ft_printf("Writing output program to %s\n", e->file->output);
