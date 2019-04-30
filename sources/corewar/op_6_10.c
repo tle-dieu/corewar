@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 17:45:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:55:21 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 		v2 = param_value(e, check, 2, ptr);
 		ptr->r[reg] = v1 & v2;
 		ptr->carry = !ptr->r[reg];
+		ft_printf("ptr->r[%d] = %d\n", reg, ptr->r[reg]);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
@@ -117,7 +118,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 			sum += (check.p2 == 16 && check_reg(p)) ? ptr->r[p] : p;
 		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
 		if (reg && p > 0 && p < 17)
-			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, 4);
+			ptr->r[p] = param_sum(e, (*pc + sum) % MEM_SIZE, REG_SIZE);
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
 }
