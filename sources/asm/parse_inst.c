@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 15:02:39 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:06:44 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,10 +244,8 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 		tmp++;
 		inst->s[inst->i] = 1;
 		inst->t[inst->i] = 1;
-		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 		if (is_valid_register(e, tmp))
-			inst->p[inst->i] = ft_atoi(to_free);
-		free(to_free);
+			inst->p[inst->i] = inst_atoi(tmp);
 		if (inst->p[inst->i] < 0 || inst->p[inst->i] > 16)
 			ft_printf("{#ff3333}Error: try to acces to register[%d], register index must be between 1 and 16\n", inst->p[inst->i]);
 		return (1);

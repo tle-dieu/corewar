@@ -85,6 +85,8 @@ def main():
     print(ASM + ": +")
     tmp = ""
     succes = ""
+    bad_file = ""
+    nb_err = 0
     for arg in sys.argv:
         error = 0
         err = ""
@@ -114,8 +116,17 @@ def main():
                 else:
                     print(GREEN + "Diff = OK")
             else:
+                bad_file += arg + "\n"
+                nb_err += 1
                 print(err)
         i += 1
+    if nb_err == 0:
+        print("%s[%d/%d]: SUCCES" %(GREEN, i - 1 - nb_err, i - 1))
+    else:
+        print("%s[%d/%d]: found %d error(s)" %(RED, i - 1 - nb_err, i - 1, nb_err))
+        print(WHITE + bad_file)
+
+    
 
 if __name__== "__main__":
   main()
