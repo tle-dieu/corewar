@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 09:23:55 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 11:11:56 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,25 +97,20 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 
 	while (e->file->error < 20 && add_line(e, &line) == 1)
 	{
-		ft_printf("get line: '%s'\n", line);
 		if (*line == '.')
-		{
-			ft_printf("command\n");
 			get_cmd(e, cp + 4, line);
-		}
 		else if (*line)
 		{
-			ft_printf("only label ?\n");
 			if (!only_label(e, &line, cp + HEADER_SIZE))
-			{
-				ft_printf("inst\n");
 				parse_inst(e, line, cp + HEADER_SIZE);
-			}
 		}
-		ft_printf("free line get bytecode\n");
+		ft_printf("in header.c :: %p\n", e->file->begin);
 		free_line(&e->file->begin);
 		if (!e->file->uniq_line)
+		{
+			ft_printf("e->file->last %p\n", e->file->last);
 			free_line(&e->file->last);
+		}
 	}
 	if (e->file->error >= MAX_ERROR)
 	{

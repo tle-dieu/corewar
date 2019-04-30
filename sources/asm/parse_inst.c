@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 08:00:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 11:06:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,7 +317,6 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 	int j;
 
 	i = 0;
-	ft_printf("index: %d => ",  e->file->i);
 	if (inst->index > CHAMP_MAX_SIZE && !e->file->too_long) //fonction error
 	{
 		e->file->too_long = 1;

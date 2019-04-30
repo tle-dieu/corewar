@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 09:25:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 11:11:58 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@ void	free_line(t_line **line)
 {
 	if (*line && (*line)->free)
 	{
-		ft_printf("free line: %p\n", (*line)->s);
+		ft_printf("free line: %p | %p\n", (*line)->s, *line);
 		free((*line)->s);
-		ft_printf("free line 2\n");
 		free(*line);
-		ft_printf("free line 3\n");
 	}
 	*line = NULL;
 }

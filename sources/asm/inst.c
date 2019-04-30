@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 08:11:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 11:06:33 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int     only_label(t_env *e, char **line, unsigned char *cp)
 
 	s = *line;
 	len = sizeof(SPACES) - 1;
-	ft_printf("only label\n");
 	while (*s != LABEL_CHAR || !ft_printf("label char check\n"))
 	{
 		i = len;

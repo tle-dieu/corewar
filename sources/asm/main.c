@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 09:26:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 11:08:34 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,18 @@ int		add_line(t_env *e, char **line)
 
 	without_space = NULL;
 	*line = NULL;
-	ft_printf("add line\n");
-	while (ft_printf("GNL\n") && (ret = get_next_line(e->file->fd, line)) > 0)
+	while ((ret = get_next_line(e->file->fd, line)) > 0)
 	{
-		ft_printf("fin gnl\n");
 		if (!e->file->begin && !(without_space = pass_line(*line)))
 		{
-			ft_printf("free dans add line\n");
 			free(*line);
-			ft_printf("free dans add line fait\n");
 			*line = NULL;
 		}
 		else
 			break ;
 	}
 	if (ret <= 0)
-	{
-		ft_printf("fin gnl\n");
 		return (ret == -1 ? alloc_error(e) : 0);
-	}
 	if (!(new = (t_line *)malloc(sizeof(t_line))))
 	{
 		free(*line);
@@ -164,14 +157,11 @@ void	compile(t_env *e)
 	cp = bin;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	ft_printf("debut get bytecode\n");
 	get_bytecode(e, cp - 4);
-	ft_printf("fin get bytecode\n");
 	i = 4;
 	while (i--)
 		bin[PROG_NAME_LENGTH + 11 - i] = e->file->i >> i * 8;
 	end_error(e, bin);
-	ft_printf("fin file\n");
 }
 
 void	print_entire_file(t_env *e)
@@ -218,14 +208,15 @@ int		main(int ac, char **av)
 	while (e.file)
 	{
 		ft_printf("compile file: %s\n", e.file->name);
-		ft_printf("blabla\n");
 		print_entire_file(&e);
+		ft_printf("A\n");
 		compile(&e);
+		ft_printf("B\n");
 		next = e.file->next;
-		ft_printf("free line\n");
-		ft_printf("free file\n");
+		ft_printf("next: %p\n", e.file->next);
+		ft_printf("free file %p\n", e.file);
 		free_file(&e.file);
-		ft_printf("fin free file\n");
+		ft_printf("C\n");
 		e.file = next;
 	}
 }
