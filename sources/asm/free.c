@@ -6,29 +6,34 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 15:19:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 09:25:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
 
-void	free_line(t_file *file)
+void	free_line(t_line **line)
 {
-	while (file->begin)
+	if (*line && (*line)->free)
 	{
-		file->last = file->begin->next;
-		if (file->begin->free)
-		{
-			free(file->begin->s);
-			free(file->begin);
-		}
-		else
-			file->begin->next = NULL;
-		file->begin = file->last;
+		ft_printf("free line: %p\n", (*line)->s);
+		free((*line)->s);
+		ft_printf("free line 2\n");
+		free(*line);
+		ft_printf("free line 3\n");
 	}
-	file->last = NULL;
-	file->begin = NULL;
+	*line = NULL;
+}
+
+void	free_file(t_file **file)
+{
+	free((*file)->output);
+	free_line(&(*file)->begin);
+	if (!(*file)->uniq_line)
+		free_line(&(*file)->last);
+	free(*file);
+	*file = NULL;
 }
 
 void	free_lst_file(t_env *e)
@@ -40,9 +45,6 @@ void	free_lst_file(t_env *e)
 	while (file)
 	{
 		next = file->next;
-		free_line(file);
-		free(file->output);
-		free(file);
 		file = next;
 	}
 	e->file = NULL;

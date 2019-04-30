@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 03:27:42 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 08:00:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
 		label = new;
 		new->index = -1;
 		label->call = NULL;
-		new->next = e->actual->label;
-		e->actual->label = new;
+		new->next = e->file->label;
+		e->file->label = new;
 		if (!(new->name = ft_strndup(s, e->i)))
 		{
 			free(new);
@@ -57,9 +57,9 @@ int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
 		free(new);
 		exit(0);
 	}
-	e->actual->last->free = 0;
-	call->line = e->actual->last;
-	call->index_inst = e->actual->i;
+	e->file->last->free = 0;
+	call->line = e->file->last;
+	call->index_inst = e->file->i;
 	call->index_call = inst->index;
 	call->s = s;
 	call->size = inst->s[i]; //envoyer que inst et pas i
@@ -73,7 +73,7 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 	int		len;
 	t_label *label;
 
-	label = e->actual->label;
+	label = e->file->label;
 	len = ft_strcspn(s, SPACES",");
 	e->i = len;
 	while (label)
@@ -82,7 +82,7 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 		{
 			if (label->index != -1)
 			{
-				inst->p[i] = label->index - e->actual->i;
+				inst->p[i] = label->index - e->file->i;
 				return ;
 			}
 			break ;
@@ -280,7 +280,7 @@ int check_params(t_env *e, char *str, t_inst *inst)
 	char *tmp;
 
 	tmp = str;
-	inst->index = e->actual->i + g_op_tab[inst->op - 1].ocp + 1;
+	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
 	while (*tmp)
 	{
 		tmp += ft_strspn(tmp, SPACES);
@@ -317,30 +317,30 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 	int j;
 
 	i = 0;
-	ft_printf("index: %d => ",  e->actual->i);
-	if (inst->index > CHAMP_MAX_SIZE && !e->actual->too_long) //fonction error
+	ft_printf("index: %d => ",  e->file->i);
+	if (inst->index > CHAMP_MAX_SIZE && !e->file->too_long) //fonction error
 	{
-		e->actual->too_long = 1;
-		++e->actual->error;
-		e->actual->i = inst->index;
+		e->file->too_long = 1;
+		++e->file->error;
+		e->file->i = inst->index;
 	}
-	if (!e->actual->too_long && !inst->error && !e->actual->error)
+	if (!e->file->too_long && !inst->error && !e->file->error)
 	{
 		j = 0;
-		cp[e->actual->i + j++] = inst->op;
+		cp[e->file->i + j++] = inst->op;
 		if (g_op_tab[inst->op - 1].ocp)
-			cp[e->actual->i + j++] = inst->ocp;
+			cp[e->file->i + j++] = inst->ocp;
 		while (i < inst->nb_p)
 		{
 			k = inst->s[i];
 			while (k--)
-				cp[e->actual->i + j++] = inst->p[i] >> k * 8;
+				cp[e->file->i + j++] = inst->p[i] >> k * 8;
 			i++;
 		}
 	}
-	if (!e->actual->too_long && !inst->error)
-		e->actual->i = inst->index;
-	ft_printf("%d\n", e->actual->i);
+	if (!e->file->too_long && !inst->error)
+		e->file->i = inst->index;
+	ft_printf("%d\n", e->file->i);
 }
 
 t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
@@ -361,7 +361,7 @@ t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 	else
 	{
 		ft_printf("{#ff3333}Error: unknown instruction '%s'\n", str);
-		e->actual->error++; //sinon ca segfault et ca c'est pas tres rigolo
+		e->file->error++; //sinon ca segfault et ca c'est pas tres rigolo
 		// pense a increment inst->error aussi
 	}
 	write_inst(e, &inst, cp);

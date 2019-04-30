@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 03:23:17 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 09:16:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct		s_line
 	char			*s;
 	int				y;
 	int				free;
-	struct s_line	*next;
 }					t_line;
 
 typedef struct		s_call
@@ -110,6 +109,7 @@ typedef struct		s_file
 	int				warning;
 	int				line_nb;
 	int				too_long;
+	int				uniq_line;
 	t_line			*begin;
 	t_line			*last;
 	t_label			*label;
@@ -146,18 +146,19 @@ void				print_call_error(t_env *e);
 
 //----------------------------
 
+void				free_lst_file(t_env *e);
+void				free_file(t_file **file);
 char				*line_error(int line, int tty);
 int					usage(t_env *e, int err);
 int					only_label(t_env *e, char **line, unsigned char *cp);
-void				free_lst_file(t_env *e);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);
 void				err_wave(int tty, char *s, int n);
 int					check_end_str(t_env *e, char *s, int cmd, char c);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					error_header(t_env *e, int error, char *extra, int cmd);
-void				free_line(t_file *file);
 int					add_line(t_env *e, char **line);
+void				free_line(t_line **line);
 void				get_bytecode(t_env *e, unsigned char *cp);
 int					alloc_error(t_env *e);
 t_inst				*parse_inst(t_env *e, char *str, unsigned char *cp);

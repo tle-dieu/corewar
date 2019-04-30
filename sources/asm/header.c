@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 03:03:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 09:23:55 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 
 	i = 0;
 	end = 0;
-	if (e->actual->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
-		if (error_header(e, 5, e->actual->begin->s, cmd) == -1)
+	if (e->file->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
+		if (error_header(e, 5, e->file->begin->s, cmd) == -1)
 			return (0);
-	e->actual->complete |= cmd + 1;
+	e->file->complete |= cmd + 1;
 	if (!(t = ft_strchr(s, '"')))
 	{
 		error_header(e, 3, s, cmd);
@@ -43,7 +43,7 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
 			{
 				i = -1;
-				error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd);
+				error_header(e, 2, ft_strchr(e->file->begin->s, '"'), cmd);
 			}
 			else if (i != -1)
 				buff[i++] = *s;
@@ -55,11 +55,11 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 				return (0);
 		}
 		else if (add_line(e, &s) != 1)
-			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
+			return (error_header(e, 4, e->file->begin->s + ft_strlen(e->file->begin->s), cmd));
 		else if (i != -1)
 			buff[i++] = '\n';
 	}
-	if (!e->actual->error)
+	if (!e->file->error)
 		while (i--)
 			*(cp + i) = buff[i];
 	return (1);
@@ -95,18 +95,29 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 {
 	char	*line;
 
-	while (e->actual->error < 20 && add_line(e, &line) == 1)
+	while (e->file->error < 20 && add_line(e, &line) == 1)
 	{
+		ft_printf("get line: '%s'\n", line);
 		if (*line == '.')
+		{
+			ft_printf("command\n");
 			get_cmd(e, cp + 4, line);
+		}
 		else if (*line)
 		{
+			ft_printf("only label ?\n");
 			if (!only_label(e, &line, cp + HEADER_SIZE))
+			{
+				ft_printf("inst\n");
 				parse_inst(e, line, cp + HEADER_SIZE);
+			}
 		}
-		free_line(e->actual);
+		ft_printf("free line get bytecode\n");
+		free_line(&e->file->begin);
+		if (!e->file->uniq_line)
+			free_line(&e->file->last);
 	}
-	if (e->actual->error >= MAX_ERROR)
+	if (e->file->error >= MAX_ERROR)
 	{
 		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
 		ft_dprintf(2, "too many errors emitted, stopping now\n");

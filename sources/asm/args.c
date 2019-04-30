@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 01:07:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 07:57:20 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	if (!(new = (t_file *)malloc(sizeof(t_file))))
 		alloc_error(e);
 	new->warning = 0;
+	new->too_long = 0;
 	new->line_nb = 1;
 	new->output = NULL;
 	new->name = name;
@@ -41,6 +42,7 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 		e->actual->next = new;
 	else
 		e->file = new;
+	ft_printf("{red}new: %p actual: %p\n", new, e->actual);
 	return (new);
 }
 

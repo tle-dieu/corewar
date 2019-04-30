@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 16:08:11 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 07:57:52 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_call_error(t_env *e)
 	t_label *label;
 	t_call	*call;
 
-	label = e->actual->label;
+	label = e->file->label;
 	while (label)
 	{
 		if (label->index == -1)
@@ -40,9 +40,9 @@ void	print_label(t_env *e)
 {
 	t_label *label;
 
-	label = e->actual->label;
+	label = e->file->label;
 	ft_printf("{yellow}---- Print Label ----{R}\n");
-	ft_printf("actual index: %02x :: %d\n", e->actual->i, e->actual->i);
+	ft_printf("actual index: %02x :: %d\n", e->file->i, e->file->i);
 	while (label)
 	{
 		ft_printf(MAGIC_C"name: {R}%s"MAGIC_C" | index: {R}", label->name);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 03:14:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 08:11:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,25 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 	unsigned char	*tmp;
 	int				i;
 
-	label = e->actual->label;
+	label = e->file->label;
 	i = 0;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
 		label = label->next;
 	if (label)
 	{
-		if (label->index != -1 && ++e->actual->error) // enlever increment error
+		if (label->index != -1 && ++e->file->error) // enlever increment error
 			ft_dprintf(2, "{#ff3333}error double assign label{R}\n");
 		else
 		{
-			label->index = e->actual->i;
+			label->index = e->file->i;
 			call = label->call;
 			tmp = cp;
 			while (call)
 			{
 				cp = tmp;
-				if (!e->actual->error)
+				if (!e->file->error)
 					while (call->size--)
-						cp[i++ + call->index_call] = (e->actual->i - call->index_inst) >> call->size * 8;
+						cp[i++ + call->index_call] = (e->file->i - call->index_inst) >> call->size * 8;
 				call = call->next;
 				
 			}
@@ -71,10 +71,10 @@ void	get_label(t_env *e, char *s)
 		free(new);
 		alloc_error(e);
 	}
-	new->index = e->actual->i;
+	new->index = e->file->i;
 	new->call = NULL;
-	new->next = e->actual->label;
-	e->actual->label = new;
+	new->next = e->file->label;
+	e->file->label = new;
 }
 
 //libft/objects//ft_printf/buff.cor
@@ -88,7 +88,8 @@ int     only_label(t_env *e, char **line, unsigned char *cp)
 
 	s = *line;
 	len = sizeof(SPACES) - 1;
-	while (*s != LABEL_CHAR)
+	ft_printf("only label\n");
+	while (*s != LABEL_CHAR || !ft_printf("label char check\n"))
 	{
 		i = len;
 		if (!*s)
