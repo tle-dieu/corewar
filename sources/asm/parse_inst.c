@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 14:04:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:02:39 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		get_curr_inst(char *str)
 
 	i = 0;
 	while (g_op_tab[i].label  
-	&& (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len) 
-	|| (str[g_op_tab[i].len] != '\t' && str[g_op_tab[i].len] != ' ')))
+			&& (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len) 
+				|| (str[g_op_tab[i].len] != '\t' && str[g_op_tab[i].len] != ' ')))
 		i++;
 	if (!g_op_tab[i].label)
 		return (42);	
@@ -140,10 +140,30 @@ int	label_is_good(t_env *e, char *str)
 	return (!err);
 }
 
+int inst_atoi(char *str)
+{
+	int					sign;
+	unsigned long long	result;
+	char *tmp;
+	int					i;
+
+	i = 0;
+	tmp = str;
+	result = 0;
+	if (*tmp && *tmp != *SEPARATOR_CHAR)
+		sign = (*tmp == '-' ? -1 : 1);
+	if (*tmp == '+' || *tmp == '-')
+		tmp++;
+	while (tmp[i] >= '0' && tmp[i] <= '9')
+		result = result * 10 + tmp[i++] - 48;
+	if (i > 19 || result > 9223372036854775807)
+		return (sign < 0 ? 0 : -1);
+	return ((int)result * sign);
+}
+
 int is_direct(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
-	char *to_free;
 
 	tmp = str;
 	if (*tmp == DIRECT_CHAR)
@@ -158,10 +178,8 @@ int is_direct(t_env *e, char *str, t_inst *inst)
 		}
 		else
 		{
-			to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 			if (is_a_number(e, tmp))
-				inst->p[inst->i] = ft_atoi(to_free);
-			free(to_free);
+				inst->p[inst->i] = inst_atoi(tmp);
 		}
 		return (1);
 	}
@@ -171,7 +189,6 @@ int is_direct(t_env *e, char *str, t_inst *inst)
 int is_indirect(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
-	char *to_free;
 
 	tmp = str;
 	inst->s[inst->i] = IND_SIZE;
@@ -183,12 +200,10 @@ int is_indirect(t_env *e, char *str, t_inst *inst)
 	}
 	else
 	{
-		to_free = ft_strcdup(tmp, *SEPARATOR_CHAR);
 		if (is_a_number(e, tmp))
-			inst->p[inst->i] = ft_atoi(to_free);
+			inst->p[inst->i] = inst_atoi(tmp);
 		else
 			return (0);
-		free(to_free);
 	}
 	return (1);
 }
