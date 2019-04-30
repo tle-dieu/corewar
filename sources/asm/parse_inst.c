@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/29 23:44:52 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/30 03:27:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,12 +318,13 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 
 	i = 0;
 	ft_printf("index: %d => ",  e->actual->i);
-	if (e->actual->i <= CHAMP_MAX_SIZE && inst->index > CHAMP_MAX_SIZE) //fonction error
+	if (inst->index > CHAMP_MAX_SIZE && !e->actual->too_long) //fonction error
 	{
+		e->actual->too_long = 1;
 		++e->actual->error;
 		e->actual->i = inst->index;
 	}
-	if (!inst->error && !e->actual->error)
+	if (!e->actual->too_long && !inst->error && !e->actual->error)
 	{
 		j = 0;
 		cp[e->actual->i + j++] = inst->op;
@@ -336,8 +337,9 @@ void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 				cp[e->actual->i + j++] = inst->p[i] >> k * 8;
 			i++;
 		}
-		e->actual->i += j;
 	}
+	if (!e->actual->too_long && !inst->error)
+		e->actual->i = inst->index;
 	ft_printf("%d\n", e->actual->i);
 }
 
@@ -357,7 +359,11 @@ t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 			get_ocp(&inst);
 	}
 	else
+	{
 		ft_printf("{#ff3333}Error: unknown instruction '%s'\n", str);
+		e->actual->error++; //sinon ca segfault et ca c'est pas tres rigolo
+		// pense a increment inst->error aussi
+	}
 	write_inst(e, &inst, cp);
 	return (NULL);
 }

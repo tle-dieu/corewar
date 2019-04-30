@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 03:01:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 03:30:49 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*pass_line(char *s)
 	if (!*s || ft_strchr(COMMENT_CHAR, *s))
 		return (NULL);
 	if (*(s + (i = ft_strcspn(s, COMMENT_CHAR)))
-	&& (!(ft_ncount_occ(s, '"', i) & 1) || !ft_strchr(s + i, '"')))
+			&& (!(ft_ncount_occ(s, '"', i) & 1) || !ft_strchr(s + i, '"')))
 		*(s + i) = '\0';
 	return (s);
 }
@@ -89,8 +89,8 @@ void	compile_write(t_env *e, unsigned char *bin)
 			}
 		}
 		else if (!(e->actual->output = ft_strnew(s - e->actual->name))
-		|| !ft_memcpy(e->actual->output, e->actual->name, s - e->actual->name)
-		|| !ft_memcpy(e->actual->output + (s - e->actual->name), ".cor", 5))
+				|| !ft_memcpy(e->actual->output, e->actual->name, s - e->actual->name)
+				|| !ft_memcpy(e->actual->output + (s - e->actual->name), ".cor", 5))
 		{
 			ft_printf("malloc error\n");
 			exit(0); //alloc error
@@ -112,12 +112,15 @@ void	compile_write(t_env *e, unsigned char *bin)
 
 void	end_error(t_env *e, unsigned char *bin)
 {
-	if (e->actual->i > CHAMP_MAX_SIZE)
-		ft_printf("{#ff3333}error champ too long\n{R}");
-	if (!(e->actual->complete & 1) && ++e->actual->warning)
-		ft_dprintf(2, "{#ff3333}missing name{R}\n");
-	if (!(e->actual->complete & 2) && ++e->actual->warning)
-		ft_dprintf(2, "{#ff3333}missing comment{R}\n");
+	if (e->actual->error < MAX_ERROR)
+	{
+		if (e->actual->too_long)
+			ft_printf("{#ff3333}error champ too long\n{R}");
+		if (!(e->actual->complete & 1) && ++e->actual->warning)
+			ft_dprintf(2, "{#ff3333}missing name{R}\n");
+		if (!(e->actual->complete & 2) && ++e->actual->warning)
+			ft_dprintf(2, "{#ff3333}missing comment{R}\n");
+	}
 	if (e->actual->warning)
 		ft_dprintf(2, "%d %s ", e->actual->warning, e->actual->warning > 1 ? "warnings" : "warning");
 	if (e->actual->warning && e->actual->error)

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 02:07:40 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 03:14:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 			while (call)
 			{
 				cp = tmp;
-				if (i + call->index_call > CHAMP_MAX_SIZE)
-
-				while (call->size--)
-					cp[i++ + call->index_call] = (e->actual->i - call->index_inst) >> call->size * 8;
+				if (!e->actual->error)
+					while (call->size--)
+						cp[i++ + call->index_call] = (e->actual->i - call->index_inst) >> call->size * 8;
 				call = call->next;
+				
 			}
 		}
 		return (1);

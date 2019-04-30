@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 02:07:09 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 03:23:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct		s_file
 	int				error;
 	int				warning;
 	int				line_nb;
+	int				too_long;
 	t_line			*begin;
 	t_line			*last;
 	t_label			*label;
