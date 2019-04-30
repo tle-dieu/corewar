@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 14:53:09 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 17:38:24 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_file(t_file **file)
 	if (PRINT)
 	{
 		ft_printf("file->output write: %s\n", (*file)->output);
-		ft_printf("{yellow}in free_file :: {R}%p\n", (*file)->begin);
+		ft_printf("{yellow}in free_file{R}\n");
 		ft_printf("output: %p\n", (*file)->output);
 		ft_printf("{purple}{bold}file addr: %p\n{R}", *file);
 		ft_printf("last: %p != begin: %p\n", (*file)->last, (*file)->begin);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 14:52:43 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 17:39:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 		}
 		if (PRINT)
 		{
-			ft_printf("{yellow}in get_bytecode :: {R}%p\n", e->file->begin);
+			ft_printf("{yellow}in get_bytecode :: {R}\n");
 			ft_printf("last: %p != begin: %p\n", e->file->last, e->file->begin);
 		}
 		if (e->file->last != e->file->begin)
@@ -121,6 +121,8 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 			e->file->last = NULL;
 		if (PRINT)
 			ft_printf("{cyan}before e->file->begin {R}%p\n", e->file->begin);
+		e->file->last = NULL;
+		e->file->begin = NULL;
 		free_line(&e->file->begin);
 		if (PRINT)
 			ft_printf("{red}{bold}after e->file->begin {R}%p\n", e->file->begin);

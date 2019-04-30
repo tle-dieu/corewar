@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 14:56:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 17:39:24 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,15 @@ int		add_line(t_env *e, char **line)
 	new->s = *line;
 	new->y = e->file->line_nb++;
 	if (!e->file->begin)
+	{
 		e->file->begin = new;
+		if (PRINT)
+			ft_printf("{cyan}add e->file->begin {R}%p\n", e->file->begin);
+	}
 	else
 	{
 		if (PRINT)
-			ft_printf("{yellow}in add line :: %p\n{R}", e->file->begin);
+			ft_printf("{yellow}in add line ::\n{R}");
 		if (e->file->last != e->file->begin)
 		{
 			if (PRINT)
@@ -100,16 +104,20 @@ void	compile_write(t_env *e, unsigned char *bin)
 				exit (0); // alloc error
 			}
 		}
-		else if (!(e->file->output = ft_strnew(s - e->file->name))
-				|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
-				|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
+		else
 		{
-			ft_printf("malloc error\n");
-			exit(0); //alloc error
+			ft_printf("len: %d\n", s - e->file->name);
+			if (!(e->file->output = ft_strnew(s - e->file->name + 4))
+			|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
+			|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
+			{
+				ft_printf("malloc error\n");
+				exit(0); //alloc error
+			}
+			ft_printf("output: %s\n", e->file->output);
 		}
-
 	}
-	if ((fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
+	if ((fd = open("coucou", O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
 	{
 		write(fd, bin, e->file->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
 		ft_printf("Writing output program to %s\n", e->file->output);
@@ -120,8 +128,6 @@ void	compile_write(t_env *e, unsigned char *bin)
 		ft_printf("error: %s: '%s'\n", strerror(errno), e->file->output);
 		exit(0); // errno
 	}
-	ft_printf("file->output write: %p\n", e->file->output);
-	ft_printf("file->output write: %s\n", e->file->output);
 }
 
 void	end_error(t_env *e, unsigned char *bin)
@@ -202,6 +208,7 @@ int		main(int ac, char **av)
 	t_env	e;
 	t_file	*next;
 
+
 	e = (t_env){isatty(1), isatty(2), 0, NULL, NULL, av[0], NULL};
 	if (ac < 2)
 		return (usage(&e, 3));
@@ -221,9 +228,12 @@ int		main(int ac, char **av)
 		}
 		compile(&e);
 		next = e.file->next;
-		/* ft_printf("free file %p\n", e.file); */
+		if (PRINT)
+		{
+			ft_printf("free file %p\n", e.file);
+			ft_printf("fin free file %p\n", e.file);
+		}
 		free_file(&e.file);
-		/* ft_printf("fin free file %p\n", e.file); */
 		e.file = next;
 	}
 }
