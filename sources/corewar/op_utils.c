@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/30 19:48:29 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 20:27:33 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int				param_value_2(t_env *e, t_ocp ch, t_proc *ptr, int mod)
 	else if (ch.s2 == 2 && ch.p2 == 48)
 	{
 		index = (ptr->pc + mod ? (p % IDX_MOD) : p) % MEM_SIZE;
-		index = index < 0 ? index % MEM_SIZE + MEM_SIZE : index;
+//		index = index < 0 ? index % MEM_SIZE + MEM_SIZE : index;
 		return (e->mem[index]);
 	}
 	else if (ch.s2 == 4 || (ch.s2 == 2 && ch.p2 == 32))

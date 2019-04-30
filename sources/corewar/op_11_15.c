@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/30 19:50:01 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/04/30 20:27:31 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,43 @@
 void		sti(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
+	int		sum;
+	int		p;
+	int		reg;
+
+	reg = 1;
+	sum = 0;
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (e->c_total < 3500)
+		ft_printf("%d %d %d\n", check.s1, check.s2, check.s3);
+	if (!check.error)
+	{
+		p = param_sum(e, (*pc + 2 + check.s1) % MEM_SIZE, check.s2);
+		if (check.p2 == 16 && (reg = check_reg(p)))
+			sum += ptr->r[p];
+		else if (reg)
+			sum += check.p2 > 32 ? e->mem[(*pc + (p % IDX_MOD)) % MEM_SIZE] : p;
+		p = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
+		sum += (reg && check.p3 != 8 && check_reg(p)) ? ptr->r[p] : p;
+		p = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
+		if (reg)
+		{
+			e->v.color = e->visu ? ptr->color : 0;
+			if (e->c_total < 3500)
+				ft_printf("%10d insert ptr->r[%d] => %d\n", e->c_total, p, ptr->r[p]);
+			insert(e, (*pc + sum) % MEM_SIZE, (void*)&ptr->r[p], 4);
+		}
+	}
+	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
+/*
+	t_ocp	check;
 	int		reg;
 	int		v2;
 	int		v3;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check.error)
 	{
 		reg = param_sum(e, (*pc + 2) % MEM_SIZE, check.s1);
@@ -34,12 +65,14 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 			check.error = 1;
 		if (!check.error)
 		{
+			if (e->c_total < 3500)
+				ft_printf("%10d insert ptr->r[%d] => %d\n", e->c_total, reg, ptr->r[reg]);
 			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + v2 + v3) % MEM_SIZE,
-				(void*)&ptr->r[reg], REG_SIZE);
+					(void*)&ptr->r[reg], REG_SIZE);
 		}
 	}
-	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
+	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;*/
 }
 
 void		op_fork(t_env *e, int *pc, t_proc *ptr)
@@ -59,7 +92,7 @@ void		lld(t_env *e, int *pc, t_proc *ptr)
 	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	reg = e->mem[(*pc + 2 + check.s1) % MEM_SIZE];
 	if (!check.error && reg > 0 && reg < 17)
 	{
@@ -83,7 +116,7 @@ void		lldi(t_env *e, int *pc, t_proc *ptr)
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check.error)
 	{
 		reg = param_sum(e, (*pc + 2 + check.s1 + check.s2) % MEM_SIZE, check.s3);
