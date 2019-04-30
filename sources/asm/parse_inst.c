@@ -6,13 +6,47 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 17:52:04 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/30 23:49:28 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
 #include "asm.h"
 #include <stdlib.h>
+
+size_t	param_strrspn(const char *s, const char *accept, char stop)
+{
+	const char	*tmp;
+	size_t		i;
+
+	i = ft_strclen(s, stop) - 1;
+	while (i > 0)
+	{
+		tmp = accept;
+		while (*tmp != s[i])
+			if (!*tmp++)
+				return (i);
+		--i;
+	}
+	return (i);
+}
+
+size_t	ft_strrspn(const char *s, const char *accept)
+{
+	const char	*tmp;
+	size_t		i;
+
+	i = ft_strlen(s) - 1;
+	while (i > 0)
+	{
+		tmp = accept;
+		while (*tmp != s[i])
+			if (!*tmp++)
+				return (i);
+		i++;
+	}
+	return (i);
+}
 
 int		get_curr_inst(char *str)
 {
@@ -104,7 +138,7 @@ int		is_a_number(t_env *e, char *str)
 		tmp++;
 	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
 	{
-		basic_error(e, tmp,"illegal character for number\n", 0);
+		basic_error(e, tmp,"Invalid parameter\n", param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
 		err = 1;
 	}
 	tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
@@ -112,7 +146,7 @@ int		is_a_number(t_env *e, char *str)
 	if (*tmp && *tmp != *SEPARATOR_CHAR)
 	{
 		err = 1;
-		basic_error(e, tmp,"missing ',' before parameter\n", ft_strcspn(tmp, SPACES SEPARATOR_CHAR) - 1);
+		basic_error(e, tmp,"unexpected expression after parameter\n", param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
 	}
 	return (!err);
 }
@@ -134,7 +168,7 @@ int	label_is_good(t_env *e, char *str)
 	tmp += ft_strspn(tmp, SPACES);
 	if (*tmp && *tmp != *SEPARATOR_CHAR)
 	{
-		basic_error(e, tmp,"missing ',' before parameter\n", ft_strcspn(tmp, SPACES SEPARATOR_CHAR) - 1);
+		basic_error(e, tmp,"unexpected expression after parameter\n", ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
 	return (!err);
@@ -226,12 +260,31 @@ int		is_valid_register(t_env *e, char *str)
 	tmp += ft_strspn(tmp, SPACES);
 	if (*tmp && *tmp != *SEPARATOR_CHAR)
 	{
-		basic_error(e, tmp,"missing ',' before parameter\n", ft_strcspn(tmp, SPACES SEPARATOR_CHAR) - 1);
+		basic_error(e, tmp,"unexpected expression after parameter\n", ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
 	return (!err);
 }
 
+void	error_register_nb(t_env *e, char *str, int nb)
+{
+	e->file->error++;
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+	ft_dprintf(2, "register index must be between 1 and 16 have %d\n", nb);
+	err_pointer(e->tty2, e->file->last->s, str, 0);
+	err_wave(e->tty2, str, ft_strspn(str, "0123456789") - 1);	
+	ft_dprintf(2, "\n");
+}
+
+void	error_unknow_inst(t_env *e, char *str)
+{
+		e->file->error++;
+		ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+		ft_dprintf(2, "unknow instruction %s\n", str);
+		err_pointer(e->tty2, e->file->last->s, str, 0);
+		err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));	
+		ft_dprintf(2, "\n");
+}
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
@@ -244,8 +297,8 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 		inst->t[inst->i] = 1;
 		if (is_valid_register(e, tmp))
 			inst->p[inst->i] = inst_atoi(tmp);
-		if (inst->p[inst->i] < 0 || inst->p[inst->i] > 16)
-			ft_printf("{#ff3333}Error: try to acces to register[%d], register index must be between 1 and 16\n", inst->p[inst->i]);
+		if (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER)
+			error_register_nb(e, tmp, inst->p[inst->i]);
 		return (1);
 	}
 	return (0);
@@ -286,62 +339,79 @@ void	print_inst(t_inst *inst, char *str)
 	}
 }
 
-void	nb_param_error(t_env *e, char *str, int have, int should_have)
+void	error_nb_param(t_env *e, char *str, int have, int should_have)
 {
-
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
 	if (have > should_have)
-		ft_dprintf(2, "too many parameter, have %d parameter must have %d", have, should_have);
+		ft_dprintf(2, "too many parameter, have %d parameter must have %d\n", have, should_have);
 	else
-		ft_dprintf(2, "missing parameter, have %d parameter must have %d", have, should_have);
+		ft_dprintf(2, "missing parameter, have %d parameter must have %d\n", have, should_have);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
+	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));	
 	ft_dprintf(2, "\n");
 }
 
-int param_is_valid(int type,int op_type)
+void error_param_type(t_env *e, t_inst *inst, char *str)
 {
+	int type;
+	int op_type;
+	const char *types[4] = {REGISTER, DIRECT, "", INDIRECT};
+	
+	type = inst->t[inst->i];
+	op_type = g_op_tab[inst->op - 1].param[inst->i];
 	if (type == 3)
 		type = 4;
-	return (type & op_type);
+	if (g_op_tab[inst->op - 1].nb_param > inst->i && !(type & op_type))
+	{
+		e->file->error++;
+		ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+		ft_dprintf(2, "parameter[%d] type is %s, expected type (", inst->i, types[inst->t[inst->i]]);// tableau de macro
+		if (op_type & T_IND)
+			ft_dprintf(2, INDIRECT) && ((op_type & T_DIR) || (op_type & T_REG)) && ft_dprintf(2, " | ");
+		if (op_type & T_DIR)
+			ft_dprintf(2, DIRECT) && (op_type & T_DIR) && ft_dprintf(2, " | ");
+		if (op_type & T_DIR)
+			ft_dprintf(2, REGISTER);
+		ft_dprintf(2, ") for instruction '%s'", g_op_tab[inst->op - 1].label);
+		ft_dprintf(2, "\n");
+		err_pointer(e->tty2, e->file->last->s, str, 0);
+		err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));	
+		ft_dprintf(2, "\n");
+	}
 }
 
 int check_params(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
-	char *ptr;
+	char *begin;
 
 	tmp = str;
 	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
 	while (*tmp)
 	{
 		tmp += ft_strspn(tmp, SPACES);
-		ptr = tmp;
-		is_direct(e, tmp, inst) || is_reg(e, tmp, inst) || is_indirect(e, tmp, inst);
+		if (g_op_tab[inst->op - 1].nb_param >= inst->i)
+			begin = tmp;
+		if (g_op_tab[inst->op - 1].nb_param > inst->i)
+			is_direct(e, tmp, inst) || is_reg(e, tmp, inst) || is_indirect(e, tmp, inst);
 		tmp += ft_strspn(tmp, SPACES);
 		tmp += ft_strcspn(tmp, SEPARATOR_CHAR);
-		if (!param_is_valid(inst->t[inst->i], g_op_tab[inst->op - 1].param[inst->i]))
-			basic_error(e, ptr,"bad type for parameter\n", ft_strcspn(ptr, SPACES SEPARATOR_CHAR) - 1);
-		inst->index += inst->s[inst->i++];
-		if (*tmp && *tmp != *SEPARATOR_CHAR)
+		if (g_op_tab[inst->op - 1].nb_param > inst->i)
 		{
-			ft_dprintf(2, "{#ff3333}ERROR: illegal character %d after argument in %s\n{R}", *tmp, str);
-			break ;
+			error_param_type(e, inst, begin);
+			inst->index += inst->s[inst->i];
 		}
-		else if (!*tmp)
+		inst->i++;
+		if (!*tmp)
 			break ;
-		++tmp;
+		if (*tmp++ == ',' && !tmp[ft_strspn(tmp, SPACES)])
+			basic_error(e, tmp - 1,"expected parameter after ','\n", 0);
 	}
 	if (inst->i != g_op_tab[inst->op - 1].nb_param)
-		nb_param_error(e, tmp, inst->i, g_op_tab[inst->op - 1].nb_param);
-	/*if (inst->i > g_op_tab[inst->op - 1].nb_param)
-		ft_dprintf(2, "{#ff3333}ERROR: too many argument for instruction '%s', must have %d have %d\n{R}", g_op_tab[inst->op - 1].label, g_op_tab[inst->op - 1].nb_param, inst->i);
-	else if (inst->i < g_op_tab[inst->op - 1].nb_param)
-		ft_dprintf(2, "{#ff3333}ERROR: argument missing for instruction '%s', must have %d have %d\n{R}", g_op_tab[inst->op - 1].label, g_op_tab[inst->op - 1].nb_param, inst->i);
-	*/
+		error_nb_param(e, begin, inst->i, g_op_tab[inst->op - 1].nb_param);
 	return (1);
 }
-
 
 void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
 {
@@ -390,11 +460,7 @@ t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 			get_ocp(&inst);
 	}
 	else
-	{
-		ft_printf("{#ff3333}Error: unknown instruction '%s'\n", str);
-		e->file->error++; //sinon ca segfault et ca c'est pas tres rigolo
-		// pense a increment inst->error aussi
-	}
+		error_unknow_inst(e, str);
 	write_inst(e, &inst, cp);
 	return (NULL);
 }

@@ -30,6 +30,31 @@ def get_file(asm, f):
         success += "\n" + GREEN + "SUCCES: for " + asm + " " + my_file + " has been created"
     return (output, error, success)
 
+def printDiff(asm, asm_42):
+    asm = asm.split('\n')
+    asm_42 = asm_42.split('\n')
+    error = 0
+    while i < len(asm_42) and i < len(asm):
+        if asm_42[i] != asm[i]:
+            print(WHITE + "- " + asm_42[i])
+            print(WHITE + "+ " + asm[i])
+            error += 1
+            print("")
+        i += 1
+    while i < len(asm_42):
+        print(WHITE + "- " + asm_42[i])
+        print(RED + "null")
+        print("\nc", end='')
+        error += 1
+        i += 1
+    while i < len(asm):
+        print(WHITE + "+ " + asm[i])
+        print(RED + "null")
+        print("\nc", end='')
+        error += 1
+        i += 1
+    return (error)
+
 def compare(str1, str2):
     i = 0
     asm = ""
@@ -55,29 +80,7 @@ def compare(str1, str2):
         asm += RED
         i += 1
     i = 0
-    asm = asm.split('\n')
-    asm_42 = asm_42.split('\n')
-    error = 0
-    while i < len(asm_42) and i < len(asm):
-        if asm_42[i] != asm[i]:
-            print(WHITE + "- " + asm_42[i])
-            print(WHITE + "+ " + asm[i])
-            error += 1
-            print("")
-        i += 1
-    while i < len(asm_42):
-        print(WHITE + "- " + asm_42[i])
-        print(RED + "null")
-        print("\nc", end='')
-        error += 1
-        i += 1
-    while i < len(asm):
-        print(WHITE + "+ " + asm[i])
-        print(RED + "null")
-        print("\nc", end='')
-        error += 1
-        i += 1
-    return (error)
+    return (printDiff(asm, asm_42))
 
 def main():
     i = 0

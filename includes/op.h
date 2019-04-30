@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/29 16:35:35 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 23:03:06 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ typedef char			t_arg_type;
 # else
 # define BS_HEADER COMMENT_LENGTH
 # endif
+
+
+# define REGISTER "REGISTER"
+# define DIRECT "DIRECT"
+# define INDIRECT "INDIRECT"
 
 typedef struct			s_header
 {
