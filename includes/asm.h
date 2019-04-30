@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 00:20:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 02:07:09 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void				print_call_error(t_env *e);
 
 char				*line_error(int line, int tty);
 int					usage(t_env *e, int err);
-int					only_label(t_env *e, char **line, unsigned char *cp, int i);
+int					only_label(t_env *e, char **line, unsigned char *cp);
 void				free_lst_file(t_env *e);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 01:07:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 03:01:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 
 //verifier que SPACES est partout
 
-int		pass_line(char *s)
+char	*pass_line(char *s)
 {
 	int		i;
 
 	s += ft_strspn(s, SPACES);
 	if (!*s || ft_strchr(COMMENT_CHAR, *s))
-		return (1);
+		return (NULL);
 	if (*(s + (i = ft_strcspn(s, COMMENT_CHAR)))
 	&& (!(ft_ncount_occ(s, '"', i) & 1) || !ft_strchr(s + i, '"')))
 		*(s + i) = '\0';
-	return (0);
+	return (s);
 }
 
 //protection file too long
@@ -36,12 +36,14 @@ int		add_line(t_env *e, char **line)
 {
 	t_line	*new;
 	int		ret;
+	char	*without_space;
 
+	without_space = NULL;
 	while ((ret = get_next_line(e->actual->fd, line)) >= -1)
 	{
 		if (ret <= 0)
 			return (ret == -1 ? alloc_error(e) : 0);
-		if (pass_line(*line))
+		if (!e->actual->begin && !(without_space = pass_line(*line)))
 		{
 			free(*line);
 			*line = NULL;
@@ -63,6 +65,7 @@ int		add_line(t_env *e, char **line)
 	else
 		e->actual->last->next = new;
 	e->actual->last = new;
+	*line = without_space ? without_space : *line;
 	return (1);
 }
 
@@ -131,10 +134,11 @@ void	end_error(t_env *e, unsigned char *bin)
 			compile_write(e, bin);
 	}
 }
+
 void	compile(t_env *e)
 {
 	unsigned char	*cp;
-	unsigned char	bin[BIN_MAX_SIZE];
+	unsigned char	bin[BIN_MAX_SIZE + 1];
 	int				i;
 
 	ft_bzero(bin, BIN_MAX_SIZE);
@@ -165,6 +169,7 @@ int		main(int ac, char **av)
 	e.actual = e.file;
 	while (e.actual)
 	{
+		ft_printf("compile file: %s\n", e.actual->name);
 		compile(&e);
 		next = e.actual->next;
 		free_line(e.actual);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/28 17:03:17 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 02:07:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "op.h"
 
 //au moment du free de call, segfault si deux label sur mm ligne
+//verifier tous les remplissages de buffs
 
 #include <unistd.h>
 
@@ -23,8 +24,10 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 	t_label			*label;
 	t_call			*call;
 	unsigned char	*tmp;
+	int				i;
 
 	label = e->actual->label;
+	i = 0;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
 		label = label->next;
 	if (label)
@@ -39,8 +42,10 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 			while (call)
 			{
 				cp = tmp;
+				if (i + call->index_call > CHAMP_MAX_SIZE)
+
 				while (call->size--)
-					*(cp++ + call->index_call) = (e->actual->i - call->index_inst) >> call->size * 8;
+					cp[i++ + call->index_call] = (e->actual->i - call->index_inst) >> call->size * 8;
 				call = call->next;
 			}
 		}
@@ -58,6 +63,7 @@ void	get_label(t_env *e, char *s)
 	if (*(s + (len = ft_strspn(s, LABEL_CHARS))) != LABEL_CHAR)
 		ft_dprintf(2, "{#ff3333}label char interdit: {R}%c\n", *(s + len));
 	new = NULL;
+	ft_printf("{yellow}label OK: '%.*s'\n{R}", len + 1, s);
 	if (!(new = (t_label *)malloc(sizeof(t_label))))
 		alloc_error(e);
 	if (!(new->name = ft_strndup(s, len)))
@@ -71,12 +77,15 @@ void	get_label(t_env *e, char *s)
 	e->actual->label = new;
 }
 
-int     only_label(t_env *e, char **line, unsigned char *cp, int i)
+//libft/objects//ft_printf/buff.cor
+//libft/objects//ft_printf/buff.o
+//libft/objects//ft_printf/colors.cor
+int     only_label(t_env *e, char **line, unsigned char *cp)
 {
 	int		len;
 	char	*s;
+	int		i;
 
-	*line += i;
 	s = *line;
 	len = sizeof(SPACES) - 1;
 	while (*s != LABEL_CHAR)

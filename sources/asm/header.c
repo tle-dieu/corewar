@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 01:07:34 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/30 03:03:02 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 #include "op.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-int		too_long(t_env *e, char *s, int cmd)
-{
-	error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd);
-	while (!ft_strchr(s, '"'))
-		if (add_line(e, &s) != 1) // mettre limite max nb lines dans add line pour erreur de malloc
-			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd) - 1);
-	s = ft_strchr(s, '"');
-	return (check_end_str(e, s + 1, cmd, 0) > 0);
-}
 
 int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 {
@@ -51,8 +41,13 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		while (*s && *s != '"')
 		{
 			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
-				return (too_long(e, s, cmd));
-			buff[i++] = *s++;
+			{
+				i = -1;
+				error_header(e, 2, ft_strchr(e->actual->begin->s, '"'), cmd);
+			}
+			else if (i != -1)
+				buff[i++] = *s;
+			s++;
 		}
 		if (*s == '"' && (end = 1))
 		{
@@ -61,11 +56,12 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		}
 		else if (add_line(e, &s) != 1)
 			return (error_header(e, 4, e->actual->begin->s + ft_strlen(e->actual->begin->s), cmd));
-		else
+		else if (i != -1)
 			buff[i++] = '\n';
 	}
-	while (i--)
-		*(cp + i) = buff[i];
+	if (!e->actual->error)
+		while (i--)
+			*(cp + i) = buff[i];
 	return (1);
 }
 
@@ -92,33 +88,23 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 		error_header(e, 6, cmd != -1 ? tmp : line, -1);
 	else
 		!cmd ? parse_cmd(e, line, cp, cmd)
-		: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
+			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
 void	get_bytecode(t_env *e, unsigned char *cp)
 {
 	char	*line;
-	int		i;
 
 	while (e->actual->error < 20 && add_line(e, &line) == 1)
 	{
-		i = 0;
-		while (line[i])
+		if (*line == '.')
+			get_cmd(e, cp + 4, line);
+		else if (*line)
 		{
-			if (!ft_strchr(SPACES"\n", line[i]))
-			{
-				if (line[i] == '.')
-					get_cmd(e, cp + 4, line + i);
-				else if (line[i])
-				{
-					if (!only_label(e, &line, cp + HEADER_SIZE, i))
-						parse_inst(e, line, cp + HEADER_SIZE);
-				}
-				free_line(e->actual);
-				break ;
-			}
-			i++;
+			if (!only_label(e, &line, cp + HEADER_SIZE))
+				parse_inst(e, line, cp + HEADER_SIZE);
 		}
+		free_line(e->actual);
 	}
 	if (e->actual->error >= MAX_ERROR)
 	{
