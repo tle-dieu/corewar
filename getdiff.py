@@ -24,7 +24,7 @@ def get_file(asm, f):
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
     if not error and output[0] == 'x' :
-        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + "hasn't been created"
+        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn't been created"
         error += "\n" + WHITE + open
     else:
         success += "\n" + GREEN + "SUCCES: for " + asm + " " + my_file + " has been created"
@@ -116,14 +116,14 @@ def main():
                 else:
                     print(GREEN + "Diff = OK")
             else:
-                bad_file += arg + "\n"
+                bad_file += "\t- " + arg + "\n"
                 nb_err += 1
                 print(err)
         i += 1
     if nb_err == 0:
-        print("%s[%d/%d]: SUCCES" %(GREEN, i - 1 - nb_err, i - 1))
+        print("%s[%d/%d]\tSUCCES" %(GREEN, i - 1 - nb_err, i - 1))
     else:
-        print("%s[%d/%d]: found %d error(s)" %(RED, i - 1 - nb_err, i - 1, nb_err))
+        print("%s[%d/%d]\tfound %d error(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
         print(WHITE + bad_file)
 
     

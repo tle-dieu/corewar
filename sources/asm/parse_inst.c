@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 15:06:44 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/04/30 17:52:04 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,8 +235,6 @@ int		is_valid_register(t_env *e, char *str)
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
-	char *to_free;
-
 
 	tmp = str;
 	if (*tmp == 'r')
@@ -288,23 +286,42 @@ void	print_inst(t_inst *inst, char *str)
 	}
 }
 
+void	nb_param_error(t_env *e, char *str, int have, int should_have)
+{
+
+	e->file->error++;
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+	if (have > should_have)
+		ft_dprintf(2, "too many parameter, have %d parameter must have %d", have, should_have);
+	else
+		ft_dprintf(2, "missing parameter, have %d parameter must have %d", have, should_have);
+	err_pointer(e->tty2, e->file->last->s, str, 0);
+	ft_dprintf(2, "\n");
+}
+
+int param_is_valid(int type,int op_type)
+{
+	if (type == 3)
+		type = 4;
+	return (type & op_type);
+}
+
 int check_params(t_env *e, char *str, t_inst *inst)
 {
 	char *tmp;
+	char *ptr;
 
 	tmp = str;
 	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
 	while (*tmp)
 	{
 		tmp += ft_strspn(tmp, SPACES);
+		ptr = tmp;
 		is_direct(e, tmp, inst) || is_reg(e, tmp, inst) || is_indirect(e, tmp, inst);
 		tmp += ft_strspn(tmp, SPACES);
 		tmp += ft_strcspn(tmp, SEPARATOR_CHAR);
-		if (!(inst->t[inst->i] & g_op_tab[inst->op - 1].param[inst->i]))
-		{
-			ft_printf("inst->[inst->i] = %d :: %d", inst->t[inst->i], g_op_tab[inst->op - 1].param[inst->i]);
-			ft_printf("{#ff3333}Error: bad type\n");
-		}
+		if (!param_is_valid(inst->t[inst->i], g_op_tab[inst->op - 1].param[inst->i]))
+			basic_error(e, ptr,"bad type for parameter\n", ft_strcspn(ptr, SPACES SEPARATOR_CHAR) - 1);
 		inst->index += inst->s[inst->i++];
 		if (*tmp && *tmp != *SEPARATOR_CHAR)
 		{
@@ -315,10 +332,13 @@ int check_params(t_env *e, char *str, t_inst *inst)
 			break ;
 		++tmp;
 	}
-	if (inst->i > g_op_tab[inst->op - 1].nb_param)
+	if (inst->i != g_op_tab[inst->op - 1].nb_param)
+		nb_param_error(e, tmp, inst->i, g_op_tab[inst->op - 1].nb_param);
+	/*if (inst->i > g_op_tab[inst->op - 1].nb_param)
 		ft_dprintf(2, "{#ff3333}ERROR: too many argument for instruction '%s', must have %d have %d\n{R}", g_op_tab[inst->op - 1].label, g_op_tab[inst->op - 1].nb_param, inst->i);
 	else if (inst->i < g_op_tab[inst->op - 1].nb_param)
 		ft_dprintf(2, "{#ff3333}ERROR: argument missing for instruction '%s', must have %d have %d\n{R}", g_op_tab[inst->op - 1].label, g_op_tab[inst->op - 1].nb_param, inst->i);
+	*/
 	return (1);
 }
 
