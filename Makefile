@@ -25,7 +25,9 @@ ASM_SOURCES_FILES = main.c \
 					op.c \
 					parse_inst.c \
 					error_inst.c \
-					utils.c
+					utils.c \
+					label.c \
+					check_inst.c
 
 VM_SOURCES_FILES = main.c \
 				   init.c \

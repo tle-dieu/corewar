@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 16:01:49 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:18:20 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 		return ;
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
-		e->file->last->y , str - e->file->last->s);
+		e->file->last->y, str - e->file->last->s);
 	ft_dprintf(2, "parameter[%d] type is %s, expected type(s) (",
 		inst->i + 1, types[type - 1]);// tableau de macro
 	if (op_type & T_IND)
@@ -63,7 +63,8 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 void	error_register_nb(t_env *e, char *str, int nb)
 {
 	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
+		e->file->last->y, str - e->file->last->s);
 	ft_dprintf(2, "register index must be between 1 and 16 have %d\n", nb);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
 	err_wave(e->tty2, str, ft_strspn(str, "0123456789") - 1);
@@ -73,7 +74,8 @@ void	error_register_nb(t_env *e, char *str, int nb)
 void	error_unknow_inst(t_env *e, char *str)
 {
 	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
+		e->file->last->y, str - e->file->last->s);
 	ft_dprintf(2, "unknow instruction %s\n", str);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
 	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));

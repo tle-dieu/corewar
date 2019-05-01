@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/01 12:48:30 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:58:30 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,23 @@ void				error_unknow_inst(t_env *e, char *str);
 int					inst_atoi(char *str);
 int					is_a_number(t_env *e, char *str);
 size_t				param_strrspn(const char *s, const char *accept, char stop);
+
+/*
+**	---------- LABEL ----------
+*/
+
+int					create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i);
+void				get_label_call(t_env *e, t_inst *inst, char *s, int i);
+int					label_is_good(t_env *e, char *str);
+
+/*
+** ---------- CHECK_INST ----------
+*/
+
+int					is_reg(t_env *e, char *str, t_inst *inst);
+int					is_valid_register(t_env *e, char *str);
+int					is_indirect(t_env *e, char *str, t_inst *inst);
+int					is_direct(t_env *e, char *str, t_inst *inst);
+int					check_params(t_env *e, char *str, t_inst *inst);
 
 #endif
