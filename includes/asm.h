@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 20:15:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/01 12:48:30 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,22 @@ int					alloc_error(t_env *e);
 t_inst				*parse_inst(t_env *e, char *str, unsigned char *cp);
 void				basic_error(t_env *e, char *str, char *err_string, int wave);
 //verifier include dans .c et verifier proto fonctions
+
+/*
+** ---------- ERROR_INST ----------
+*/
+
+void				error_nb_param(t_env *e, char *str, int have, int should_have);
+void				error_param_type(t_env *e, t_inst *inst, char *str);
+void				error_register_nb(t_env *e, char *str, int nb);
+void				error_unknow_inst(t_env *e, char *str);
+
+/*
+** ---------- UTILS ----------
+*/
+
+int					inst_atoi(char *str);
+int					is_a_number(t_env *e, char *str);
+size_t				param_strrspn(const char *s, const char *accept, char stop);
 
 #endif
