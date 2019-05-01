@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/30 19:50:05 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 12:53:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 		if (check.s1 == 2)
 		{
 			addr = param_sum(e, *pc + 2, 2);
-			ptr->r[reg] = param_sum(e, *pc + (addr % IDX_MOD) % MEM_SIZE, REG_SIZE);
+			ptr->r[reg] = param_sum(e, *pc + (addr % IDX_MOD)
+				% MEM_SIZE, REG_SIZE);
 		}
 		else if (check.s1 == 4)
 			ptr->r[reg] = param_sum(e, ptr->pc + 2, check.s1);

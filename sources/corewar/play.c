@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 15:13:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 13:00:07 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 int					choose_cycle(int op)
 {
-	if (op > 0 && op < 17)
-		return (g_op_tab[op - 1].nb_cycle);
-	else
-		return (1);
+	return (op > 0 && op < 17 ? g_op_tab[op - 1].nb_cycle : 1);
 }
 
 static int			exec_cycle(t_env *e, t_proc *ptr)
@@ -30,7 +27,7 @@ static int			exec_cycle(t_env *e, t_proc *ptr)
 			e->v.color_map[ptr->pc % MEM_SIZE] =
 				-e->v.color_map[ptr->pc % MEM_SIZE];
 		if (!ptr->dead && (ptr->op != e->mem[ptr->pc % MEM_SIZE]
-			|| ptr->op < 1 || ptr->op > 16))
+				|| ptr->op < 1 || ptr->op > 16))
 		{
 			ptr->pc++;
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
@@ -95,7 +92,7 @@ void				play(t_env *e)
 			if (e->nb_live < NBR_LIVE)
 				++e->nb_check;
 			if (e->nb_live >= NBR_LIVE
-					|| (e->nb_check && !(e->nb_check % MAX_CHECKS)))
+				|| (e->nb_check && !(e->nb_check % MAX_CHECKS)))
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e, e->proc);
 			e->total_live += e->nb_live;
