@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 16:29:49 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/01 20:05:20 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,25 @@ void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
 		create_call(e, inst, s, label, i); // separer en deux pour trop args
 }
 
-int	label_is_good(t_env *e, char *str)
+int		label_is_good(t_env *e, char *str)
 {
-	char *tmp;
-	int err;
+	char	*tmp;
+	int		err;
 
 	err = 0;
 	tmp = str;
 	tmp += ft_strspn(tmp, LABEL_CHARS);
 	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
 	{
-		basic_error(e, tmp,"illegal character for label\n", 0);
+		basic_error(e, tmp, "illegal character for label\n", 0);
 		err = 1;
 	}
-	tmp += ft_strcspn(tmp, SPACES SEPARATOR_CHAR);
+	tmp += ft_strcspn(tmp, SPACES",");
 	tmp += ft_strspn(tmp, SPACES);
 	if (*tmp && *tmp != *SEPARATOR_CHAR)
 	{
-		basic_error(e, tmp,"unexpected expression after parameter\n", ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
+		basic_error(e, tmp, "unexpected expression after parameter\n",
+			ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
 	return (!err);

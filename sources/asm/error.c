@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 20:27:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/01 20:11:21 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int		len_err(char *s)
 void	basic_error(t_env *e, char *str, char *err_string, int wave)
 {
 	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y , str - e->file->last->s);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
+		e->file->last->y , str - e->file->last->s);
 	ft_dprintf(2, err_string);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
 	if (wave)
@@ -55,8 +56,10 @@ int		expect_str(t_env *e, char *error, int cmd) // 3
 
 	++e->file->error;
 	line = e->file->begin;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
-	ft_dprintf(2, "expected string after %s\n", cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, 
+		line->y, error - line->s + 1);
+	ft_dprintf(2, "expected string after %s\n",
+		cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING);
 	err_pointer(e->tty2, line->s, error + (ft_strchr(SPACES, *error) != NULL), 0);
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));

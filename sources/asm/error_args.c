@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 17:38:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/01 20:08:21 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int		usage(t_env *e, int err)
 		ft_printf("HELP\n"); // help a faire
 		exit(0);
 	}
-	ft_dprintf(err, "Try `%s (-h | --help)' for more information.\n", e->exname);
+	ft_dprintf(err, "Try `%s (-h | --help)' for more information.\n",
+		e->exname);
 	return (1);
 }
 
@@ -44,8 +45,10 @@ int		error_file(t_env *e, char *error, char *file, unsigned opt)
 			ft_dprintf(2, "unknow option -- %s\n", error);
 		else if (opt & (O_COL_AMBIGUOUS_ERR | O_COL_INVALID_ERR))
 		{
-			ft_printf("%s argument '%s' for '--color'\n", opt & O_COL_AMBIGUOUS_ERR ? "ambiguous" : "invalid", error);
-			ft_printf("Valid arguments are:\n  - 'always', 'yes', 'force'\n  - 'never', 'no', 'none'\n  - 'auto', 'tty', 'if-tty'\n"); 
+			ft_printf("%s argument '%s' for '--color'\n",
+				opt & O_COL_AMBIGUOUS_ERR ? "ambiguous" : "invalid", error);
+			ft_printf("Valid arguments are:\n  - 'always', 'yes', 'force'\n\
+				- 'never', 'no', 'none'\n  - 'auto', 'tty', 'if-tty'\n");
 		}
 		else if (opt & O_INVALID_FILE_ERR)
 			ft_printf("invalid file '%s'\n", file);
