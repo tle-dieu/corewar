@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:26:03 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 14:12:36 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 20:05:58 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void				get_keys(t_env *e)
 	}
 }
 
-void				init_color_map(t_env *e)
+static void			init_color_map(t_env *e)
 {
 	int		i;
 	int		j;

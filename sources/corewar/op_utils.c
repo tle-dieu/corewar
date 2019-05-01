@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 17:09:06 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 21:28:32 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int				param_value_3(t_env *e, t_ocp ch, t_proc *ptr, int mod)
 		index = index < 0 ? index % MEM_SIZE + MEM_SIZE : index;
 		return (e->mem[index]);
 	}
-	else if (ch.s3 == 4 || (ch.s2 == 2 && ch.p2 == 8))
+	else if (ch.s3 == 4 || (ch.s3 == 2 && ch.p3 == 8))
 		return (p);
 	return (1);
 }

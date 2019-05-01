@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 18:48:32 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 21:28:34 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		{
 			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + v2 + v3) % MEM_SIZE,
-				(void*)&ptr->r[reg], REG_SIZE);
+					(void*)&ptr->r[reg], REG_SIZE);
 		}
 	}
 	*pc = *pc + 2 + check.s1 + check.s2 + check.s3;
@@ -83,7 +83,7 @@ void		lldi(t_env *e, int *pc, t_proc *ptr)
 		v1 = param_value_1(e, check, ptr, 0);
 		v2 = param_value_2(e, check, ptr, 0);
 		reg = param_sum(e, (*pc + 2 + check.s1 + check.s2)
-			% MEM_SIZE, check.s3);
+				% MEM_SIZE, check.s3);
 		if (!check.error && reg > 0 && reg < 17)
 			ptr->r[reg] = param_sum(e, (*pc + v1 + v2) % MEM_SIZE, REG_SIZE);
 	}

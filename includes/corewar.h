@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 18:49:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 20:07:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ typedef	struct		s_env
 ** VISU.C (3)
 */
 void				get_keys(t_env *e);
-void				init_color_map(t_env *e);
 void				visu(t_env *e);
 
 /*
@@ -134,7 +133,7 @@ void				print_current_map(t_env *e);
 */
 
 /*
-** ARGS.C (3)
+** ARGS.C (4)
 */
 int					parse_args(t_env *e, int ac, char **av);
 
@@ -155,7 +154,7 @@ int					check_reg(int reg);
 t_ocp				check_ocp(int ocp, int on_two, int inst);
 
 /*
-** OP_UTILS.C (4)
+** OP_UTILS.C (5)
 */
 void				insert(t_env *e, int pc, void *ptr, int size);
 int					param_sum(t_env *e, int pc, int size);
@@ -200,7 +199,7 @@ void				print_winner(t_env *e);
 void				aff(t_env *e, int *pc, t_proc *ptr);
 
 /*
-** PLAY.C (4)
+** PLAY.C (5)
 */
 int					choose_cycle(int op);
 void				play(t_env *e);
