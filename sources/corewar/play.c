@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 13:00:07 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 17:09:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int					choose_cycle(int op)
 {
-	return (op > 0 && op < 17 ? g_op_tab[op - 1].nb_cycle : 1);
+	if (op > 0 && op < 17)
+		return (g_op_tab[op - 1].nb_cycle);
+	else
+		return (1);
 }
 
 static int			exec_cycle(t_env *e, t_proc *ptr)
@@ -37,7 +40,7 @@ static int			exec_cycle(t_env *e, t_proc *ptr)
 		{
 			g_op_tab[ptr->op - 1].ft_ptr(e, &ptr->pc, ptr);
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
-			ptr->cycle = choose_cycle(e->mem[ptr->pc % MEM_SIZE]);
+			ptr->cycle = choose_cycle(ptr->op);
 		}
 		ptr = ptr->next;
 	}

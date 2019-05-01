@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 12:25:34 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 17:09:06 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int				param_sum(t_env *e, int pc, int size)
 	int		j;
 	int		tmp;
 
+	if (pc < 0)
+		pc = pc % MEM_SIZE + MEM_SIZE;
 	res = e->mem[pc % MEM_SIZE];
 	j = 1;
 	tmp = size;
@@ -48,7 +50,7 @@ int				param_value_1(t_env *e, t_ocp ch, t_proc *ptr, int mod)
 {
 	int		p;
 	int		index;
-
+	
 	p = param_sum(e, (ptr->pc + 2) % MEM_SIZE, ch.s1);
 	if (ch.s1 == 1)
 	{
