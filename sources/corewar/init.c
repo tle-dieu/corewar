@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 17:09:23 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:49:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void			place_champ(t_env *e)
 		j = 0;
 		i = champ * (MEM_SIZE / e->nb_champ);
 		if (!(init_proc(e, champ, i)))
-			freedom(e);
+			freedom(e, 1);
 		while (j < CHAMP_MAX_SIZE)
 			e->mem[i++] = e->champs[champ].content[j++];
 	}

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 17:09:25 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:48:32 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		op_fork(t_env *e, int *pc, t_proc *ptr)
 
 	addr = param_sum(e, *pc + 1, 2);
 	if (!(create_new_process(e, (*pc + (addr % IDX_MOD)) % MEM_SIZE, ptr)))
-		freedom(e);
+		freedom(e, 1);
 	*pc += 3;
 }
 
@@ -96,6 +96,6 @@ void		lfork(t_env *e, int *pc, t_proc *ptr)
 
 	addr = param_sum(e, *pc + 1, 2);
 	if (!(create_new_process(e, (*pc + addr) % MEM_SIZE, ptr)))
-		freedom(e);
+		freedom(e, 1);
 	*pc += 3;
 }

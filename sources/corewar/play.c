@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 17:09:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 19:08:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void				play(t_env *e)
 {
 	while (e->c_to_die > 0)
 	{
-		(e->c_total == e->dump) ? print_memory(e, 0) : 1;
+		if (e->c_total == e->dump)
+			break ;
 		++e->c_total;
 		++e->cycle;
 		exec_cycle(e, e->proc);

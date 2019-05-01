@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 17:09:10 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:49:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ void				place_champ(t_env *e);
 /*
 ** CLEAN.C (1)
 */
-void				freedom(t_env *e);
+void				freedom(t_env *e, int to_exit);
 
 /*
 ** DECOMP.C (5)
