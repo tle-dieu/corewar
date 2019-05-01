@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 16:34:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:03:58 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void			check_taken_id(t_env *e)
 			j = -1;
 			while (++j < e->nb_champ)
 				if (j != i && e->champs[j].chosen_id[0]
-				&& e->champs[j].chosen_id[1] == e->champs[i].chosen_id[1])
+					&& e->champs[j].chosen_id[1] == e->champs[i].chosen_id[1])
 					e->champs[j].chosen_id[1]--;
 		}
 	}

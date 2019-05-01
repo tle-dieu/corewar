@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:01:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 17:37:29 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:08:04 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 		if (i < g_op_tab[inst - 1].nb_param)
 		{
 			if (!((g_op_tab[inst - 1].param[i]
-				>> (((ocp >> ((3 - i) * 2)) & 3) - 1)) & 1))
+						>> (((ocp >> ((3 - i) * 2)) & 3) - 1)) & 1))
 				check->error = 1;
 		}
 		else if ((ocp >> ((3 - i) * 2)) & 3)

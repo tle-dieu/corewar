@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 17:53:52 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:13:20 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ static void			print_current_stats(t_env *e)
 		attron(COLOR_PAIR(e->champs[i].color));
 		if (e->champs[i].nb_live <= 1)
 			printw(" %60s %5d live\n", e->champs[i].name,
-					e->champs[i].nb_live);
+				e->champs[i].nb_live);
 		else
 			printw(" %60s %5d lives\n", e->champs[i].name,
-					e->champs[i].nb_live);
+				e->champs[i].nb_live);
 	}
 	printw("\n");
 }

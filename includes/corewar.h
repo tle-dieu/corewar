@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/04/30 19:51:35 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:01:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,17 +215,9 @@ int					init_proc(t_env *e, int j, int begin);
 void				place_champ(t_env *e);
 
 /*
-** DEBUG.C (3)
-*/
-void				print_game(t_env *e, t_proc *ptr);
-void				print_chmp(t_env *e, int c, int cursor);
-void				print_split_champ(t_env *e, int i);
-
-/*
-** CLEAN.C (2)
+** CLEAN.C (1)
 */
 void				freedom(t_env *e);
-void				destroy_process(t_env *e, t_proc *to_del);
 
 /*
 ** DECOMP.C (5)

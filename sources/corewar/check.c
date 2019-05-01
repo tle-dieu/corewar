@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/28 17:13:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:00:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int		check_champ_size(t_env *e, int ret, int i)
 	e->champs[i].size = e->line[PROG_NAME_LENGTH + 10] * 256
 		+ e->line[PROG_NAME_LENGTH + 11];
 	return (ret < MAX_SIZE || e->champs[i].size < CHAMP_MAX_SIZE
-			|| e->champs[i].size < 0);
+		|| e->champs[i].size < 0);
 }
 
 int				check_champ(t_env *e, char *arg, int i)
