@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 16:18:20 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/02 10:49:28 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,14 @@ void	error_register_nb(t_env *e, char *str, int nb)
 
 void	error_unknow_inst(t_env *e, char *str)
 {
+	int len;
+
+	len = ft_strcspn(str, SPACES);
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
 		e->file->last->y, str - e->file->last->s);
-	ft_dprintf(2, "unknow instruction %s\n", str);
+	ft_dprintf(2, "unknow instruction '%.*s'\n", len, str);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
-	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));
+	err_wave(e->tty2, str, len - 1);
 	ft_dprintf(2, "\n");
 }
