@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/02 17:42:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 18:18:13 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define PROGRESS_3 10
 # define PROGRESS_4 11
 # define PROGRESS_NO 12
-# define PROGRESS_BAR_SIZE 192
+# define PROGRESS_BAR_SIZE 191
 
 typedef struct		s_ocp
 {

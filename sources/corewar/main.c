@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:55:00 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 19:09:01 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:45:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int					main(int ac, char **av)
 			return (1);
 	attribute_id(&e);
 	place_champ(&e);
-	if (e.visu && e.dump == -1)
-		visu(&e);
+	e.visu && e.dump == -1 ? visu(&e) : 1;
 	play(&e);
 	if (e.c_total == e.dump)
 		print_memory(&e, 0);
