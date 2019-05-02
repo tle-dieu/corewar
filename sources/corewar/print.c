@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 19:00:30 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 19:30:23 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,15 @@ void		print_subject_winner(t_env *e)
 	int		i;
 
 	i = -1;
-	while (++i < e->nb_champ)
-		if (e->last_live == e->champs[i].id)
-			ft_printf("le joueur %d(%s) a gagne\n",
-				e->champs[i].id, e->champs[i].name);
+	if (!e->total_live)
+		ft_printf("Nobody wins\n");
+	else
+	{
+		while (++i < e->nb_champ)
+			if (e->last_live == e->champs[i].id)
+				ft_printf("le joueur %d(%s) a gagne\n",
+					e->champs[i].id, e->champs[i].name);
+	}
 }
 
 void		print_winner(t_env *e)
