@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 17:43:21 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:31:14 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int		is_direct(t_env *e, char *str, t_inst *inst)
 		{
 			if (is_a_number(e, tmp))
 				inst->p[inst->i] = inst_atoi(tmp);
+			else
+				return (inst->t[inst->i] = 0);
 		}
 		return (1);
 	}
@@ -55,7 +57,7 @@ int		is_indirect(t_env *e, char *str, t_inst *inst)
 		if (is_a_number(e, tmp))
 			inst->p[inst->i] = inst_atoi(tmp);
 		else
-			return (0);
+			return (inst->t[inst->i] = 0);
 	}
 	return (1);
 }
@@ -121,7 +123,7 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 			|| is_indirect(e, tmp, inst);
 		tmp += ft_strspn(tmp, SPACES);
 		tmp += ft_strcspn(tmp, SEPARATOR_CHAR);
-		if (g_op_tab[inst->op - 1].nb_param > inst->i)
+		if (inst->t[inst->i] && g_op_tab[inst->op - 1].nb_param > inst->i)
 		{
 			error_param_type(e, inst, begin);
 			inst->index += inst->s[inst->i];
