@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/01 18:58:30 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/02 13:35:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define DEFAULT_NAME "no name"
 # define DEFAULT_COMMENT "description"
 
+# define BS_ASM		4096
 # define GREEN_CURS "{bold}{green}"
 
 # define ERR_LINE 1
@@ -61,6 +62,12 @@
 # define O_OUTPUT_ERR 4096
 # define O_INVALID_FILE_ERR 8192
 
+typedef	struct		s_buff
+{
+	unsigned char	s[BS_ASM];	
+	struct s_buff	*next;
+}					t_buff;
+
 typedef struct		s_line
 {
 	char			*s;
@@ -101,12 +108,12 @@ typedef struct		s_inst
 
 typedef struct		s_file
 {
+	t_buff			*buff;
 	char			complete;
 	char			*output;
 	char			*name;
 	int				fd;
 	int				i;
-	int				unique_line;
 	unsigned		options;
 	int				error;
 	int				warning;
