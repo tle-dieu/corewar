@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 18:59:25 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:03:41 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void get_ocp(t_inst *inst)
 {
 	int			i;
 	int			ocp;
-	const int	tab[3] = {64, 16, 4};
+	const int	tab[3] = {64, 16, 4};///decalage binaire
 
 	i = 0;
 	ocp = 0;
