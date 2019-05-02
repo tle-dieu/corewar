@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/02 14:35:57 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:42:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int					check_reg(int reg);
 t_ocp				check_ocp(int ocp, int on_two, int inst);
 
 /*
-** OP_UTILS.C (5)
+** OP_UTILS.C (3)
 */
 void				insert(t_env *e, int pc, void *ptr, int size);
 int					param_sum(t_env *e, int pc, int size);
