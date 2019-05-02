@@ -119,8 +119,6 @@ void	get_bytecode(t_env *e, unsigned char *cp)
 			e->file->last = NULL;
 		if (PRINT)
 			ft_printf("{cyan}before e->file->begin {R}%p\n", e->file->begin);
-		e->file->last = NULL;
-		e->file->begin = NULL;
 		free_line(&e->file->begin);
 		if (PRINT)
 			ft_printf("{red}{bold}after e->file->begin {R}%p\n", e->file->begin);

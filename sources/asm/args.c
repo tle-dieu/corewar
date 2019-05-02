@@ -23,6 +23,7 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	if (!(new = (t_file *)malloc(sizeof(t_file))))
 		alloc_error(e);
 	new->warning = 0;
+	new->buff = NULL;
 	new->too_long = 0;
 	new->line_nb = 1;
 	new->output = NULL;
@@ -146,32 +147,34 @@ int		parse_command_line(t_env *e, int ac, char **av)
 	unsigned options;
 	int		fd;
 	char	*s;
+	int		i;
 
 	options = 0;
-	while (++e->i < ac)
+	i = 0;
+	while (++i < ac)
 	{
-		s = av[e->i];
+		s = av[i];
 		if ((*s != '-' || !*++s || (*s == '-' && !*(s + 1))
 		|| !(*s == '-' ? get_long_option(e, &options, &s)
 		: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT)))
 		{
 			if (options & O_OUTPUT_ERR
-			|| (fd = open(av[e->i], O_RDONLY)) == -1
-			|| read(fd, av[e->i], 0) < 0 || !valid_file(fd, &options))
-				return (error_file(e, s, av[e->i], options));
-			e->actual = add_file(e, av[e->i], options, fd);
+			|| (fd = open(av[i], O_RDONLY)) == -1
+			|| read(fd, av[i], 0) < 0 || !valid_file(fd, &options))
+				return (error_file(e, s, av[i], options));
+			e->actual = add_file(e, av[i], options, fd);
 			options = 0;
 		}
 		if (O_OUTPUT & options)
 		{
 			options &= ~O_OUTPUT;
-			if (++e->i >= ac)
+			if (++i >= ac)
 			{
 				options |= O_OUTPUT_ERR;
-				return (error_file(e, s, av[e->i], options)); // pas d'utiliser error file
+				return (error_file(e, s, av[i], options)); // pas d'utiliser error file
 			}
-			else if (*av[e->i])
-				e->output = av[e->i];
+			else if (*av[i])
+				e->output = av[i];
 		}
 	}
 	return (1);
