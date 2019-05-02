@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:01:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 17:08:29 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:28:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,44 +33,52 @@ static void		check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 static void		find_param_size(t_ocp *check, int ocp, int on_two)
 {
 	if (ocp >= 192 || ocp < 64)
-		check->s1 = (ocp >= 192) ? 2 : 0;
+		check->s[0] = (ocp >= 192) ? 2 : 0;
 	else
 	{
 		if (ocp >= 128)
-			check->s1 = on_two ? 2 : 4;
+			check->s[0] = on_two ? 2 : 4;
 		else
-			check->s1 = 1;
+			check->s[0] = 1;
 	}
-	if (ocp - check->p1 >= 48 || ocp - check->p1 < 16)
-		check->s2 = (ocp - check->p1 >= 48) ? 2 : 0;
+	if (ocp - check->p[0] >= 48 || ocp - check->p[0] < 16)
+		check->s[1] = (ocp - check->p[0] >= 48) ? 2 : 0;
 	else
 	{
-		if (ocp - check->p1 >= 32)
-			check->s2 = on_two ? 2 : 4;
+		if (ocp - check->p[0] >= 32)
+			check->s[1] = on_two ? 2 : 4;
 		else
-			check->s2 = 1;
+			check->s[1] = 1;
 	}
-	if (check->p3 == 12 || check->p3 == 4)
-		check->s3 = (check->p3 == 12) ? 2 : 1;
-	else if (check->p3 == 8)
-		check->s3 = on_two ? 2 : 4;
+	if (check->p[2] == 12 || check->p[2] == 4)
+		check->s[2] = (check->p[2] == 12) ? 2 : 1;
+	else if (check->p[2] == 8)
+		check->s[2] = on_two ? 2 : 4;
 }
 
 t_ocp			check_ocp(int ocp, int on_two, int inst)
 {
 	t_ocp	check;
+	int		i;
 
-	check = (t_ocp){0, 0, 0, 0, 0, 0, 0};
+	i = -1;
+	while (++i < 3)
+	{
+		check.v[i] = 0;
+		check.p[i] = 0;
+		check.s[i] = 0;
+	}
+	check.shift = 64;
 	check.error = ocp < 64;
 	if (ocp >= 192 || ocp < 64)
-		check.p1 = (ocp >= 192) ? 192 : 0;
+		check.p[0] = (ocp >= 192) ? 192 : 0;
 	else
-		check.p1 = (ocp >= 128) ? 128 : 64;
-	if (ocp - check.p1 >= 48 || ocp - check.p1 < 16)
-		check.p2 = (ocp - check.p1 >= 48) ? 48 : 0;
+		check.p[0] = (ocp >= 128) ? 128 : 64;
+	if (ocp - check.p[0] >= 48 || ocp - check.p[0] < 16)
+		check.p[1] = (ocp - check.p[0] >= 48) ? 48 : 0;
 	else
-		check.p2 = (ocp - check.p1 >= 32) ? 32 : 16;
-	check.p3 = ocp - check.p1 - check.p2;
+		check.p[1] = (ocp - check.p[0] >= 32) ? 32 : 16;
+	check.p[2] = ocp - check.p[0] - check.p[1];
 	find_param_size(&check, ocp, on_two);
 	check_ocp_rights(&check, inst, ocp);
 	return (check);

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/01 20:07:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:35:57 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,10 @@
 typedef struct		s_ocp
 {
 	int				error;
-	int				p1;
-	int				s1;
-	int				p2;
-	int				s2;
-	int				p3;
-	int				s3;
+	int				shift;
+	int				v[3];
+	int				p[3];
+	int				s[3];
 }					t_ocp;
 
 typedef	struct		s_proc
@@ -158,9 +156,7 @@ t_ocp				check_ocp(int ocp, int on_two, int inst);
 */
 void				insert(t_env *e, int pc, void *ptr, int size);
 int					param_sum(t_env *e, int pc, int size);
-int					param_value_1(t_env *e, t_ocp check, t_proc *ptr, int mod);
-int					param_value_2(t_env *e, t_ocp check, t_proc *ptr, int mod);
-int					param_value_3(t_env *e, t_ocp check, t_proc *ptr, int mod);
+void				param_value(t_env *e, t_ocp *ch, t_proc *ptr, int mod);
 
 /*
 ** OP_1_5.C (5)

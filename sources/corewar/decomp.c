@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 17:59:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/02 15:04:31 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,17 @@ static void			param_to_str(t_env *e, int param, int size, int i)
 
 static int			check_params(t_env *e, t_ocp check)
 {
-	param_to_str(e, check.p1, check.s1, e->d.i + 1);
-	if (check.p2)
+	param_to_str(e, check.p[0], check.s[0], e->d.i + 1);
+	if (check.p[1])
 	{
 		e->d.tab[e->d.y][e->d.x++] = ',';
-		param_to_str(e, check.p2, check.s2, e->d.i + 1 + check.s1);
+		param_to_str(e, check.p[1], check.s[1], e->d.i + 1 + check.s[0]);
 	}
-	if (check.p3)
+	if (check.p[2])
 	{
 		e->d.tab[e->d.y][e->d.x++] = ',';
-		param_to_str(e, check.p3, check.s3,
-			e->d.i + 1 + check.s1 + check.s2);
+		param_to_str(e, check.p[2], check.s[2],
+			e->d.i + 1 + check.s[0] + check.s[1]);
 	}
 	return (1);
 }
@@ -109,7 +109,7 @@ int					decompile_champ(t_env *e, char *arg, int champ)
 				e->champs[champ].content[e->d.i - 1]);
 			if (check.error == -1 || !(check_params(e, check)))
 				return (0);
-			e->d.i += 1 + check.s1 + check.s2 + check.s3;
+			e->d.i += 1 + check.s[0] + check.s[1] + check.s[2];
 		}
 		else
 			move_forward(e);
