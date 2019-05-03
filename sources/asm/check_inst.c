@@ -33,7 +33,7 @@ int		is_direct(t_env *e, char *str, t_inst *inst)
 			if (is_a_number(e, tmp))
 				inst->p[inst->i] = inst_atoi(tmp);
 			else
-				return (inst->t[inst->i] = 0);
+				return (!(inst->t[inst->i] = 0));
 		}
 		return (1);
 	}
