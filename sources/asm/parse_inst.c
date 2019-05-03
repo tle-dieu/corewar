@@ -19,14 +19,12 @@ int		get_curr_inst(char *str)
 	int	i;
 
 	i = 0;
-	ft_printf("str = %s", str);
 	while (g_op_tab[i].label
 		&& (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len)
-		|| (str[g_op_tab[i].len] != '\t' && str[g_op_tab[i].len] != ' ')))
+		|| ft_isalnum(str[g_op_tab[i].len])))
 		i++;
-	ft_printf("i = %d, s = %s\n", g_op_tab[i].len, &str[g_op_tab[i].len]);
 	if (!g_op_tab[i].label)
-		return (42); //retire moi ca mon salo
+		return (42);
 	return (i + 1);
 }
 
@@ -146,7 +144,6 @@ t_inst	*parse_inst(t_env *e, char *str)
 	char	*tmp;
 
 	inst = (t_inst){.ocp = 0}; // verifier norme
-	ft_printf("{red}str = %s \n{R}", str);
 	if ((inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;

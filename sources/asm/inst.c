@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 05:26:27 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 17:07:24 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,12 @@ int		search_label(t_env *e, char *s, int len)
 }
 
 //checker pour labels commencant pareil
-void	get_label(t_env *e, char *s)
+void	get_label(t_env *e, char *s, int len)
 {
 	t_label	*new;
-	int		len;
 
-	if (*(s + (len = ft_strspn(s, LABEL_CHARS))) != LABEL_CHAR)
-		ft_dprintf(2, "{#ff3333}label char interdit: {R}%c\n", *(s + len));
 	new = NULL;
-	if (PRINT)
+	if (PRINT || 1)
 		ft_printf("{yellow}label OK: '%.*s'\n{R}", len + 1, s);
 	if (!(new = (t_label *)malloc(sizeof(t_label))))
 		alloc_error(e);
@@ -143,24 +140,13 @@ void	get_label(t_env *e, char *s)
 
 int     only_label(t_env *e, char **line)
 {
-	int		len;
 	char	*s;
-	int		i;
 
-	s = *line;
-	len = sizeof(SPACES) - 1;
-	while (*s != LABEL_CHAR)
-	{
-		i = len;
-		if (!*s)
-			return (0);
-		while (i--)
-			if (SPACES[i] == *s)
-				return (0);
-		s++;
-	}
+	s = *line + ft_strspn(*line, LABEL_CHARS);
+	if (*s != LABEL_CHAR)
+		return (0);
 	if (!search_label(e, *line, s - *line))
-		get_label(e, *line);
+		get_label(e, *line, s - *line);
 	*line = s + ft_strspn(s + 1, SPACES) + 1;
 	return (!**line);
 }

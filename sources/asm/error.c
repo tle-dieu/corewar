@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/01 20:11:21 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/03 15:36:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,6 @@ int		alloc_error(t_env *e)
 	return (-1);
 }
 
-int		len_err(char *s)
-{
-	int len;
-
-	len = ft_strclen(s, '"');
-	if (s[len] == '"')
-		len += ft_strclen(s + len + 1, '"') + 1;
-	else
-		len = ft_strcspn(s, SPACES"\"");
-	return (len + (s[len] == '"'));
-}
-
 void	basic_error(t_env *e, char *str, char *err_string, int wave)
 {
 	e->file->error++;
@@ -50,7 +38,7 @@ void	basic_error(t_env *e, char *str, char *err_string, int wave)
 	ft_dprintf(2, "\n");
 }
 
-int		expect_str(t_env *e, char *error, int cmd) // 3
+int		expect_str(t_env *e, char *error, int cmd)
 {
 	t_line	*line;
 
@@ -65,7 +53,7 @@ int		expect_str(t_env *e, char *error, int cmd) // 3
 	return (-(e->file->error >= 20));
 }
 
-int		cmd_too_long(t_env *e, char *error, int cmd) // 2
+int		cmd_too_long(t_env *e, char *error, int cmd)
 {
 	t_line	*line;
 	char	*scmd;
@@ -83,7 +71,7 @@ int		cmd_too_long(t_env *e, char *error, int cmd) // 2
 	return (-(e->file->error >= 20));
 }
 
-int		unexpected_expression(t_env *e, char *error, int cmd) // 1
+int		unexpected_expression(t_env *e, char *error, int cmd)
 {
 	char	*scmd;
 	t_line	*line;
@@ -120,15 +108,20 @@ int		cmd_multiple_define(t_env *e,int cmd) // 5
 	t_line	*line;
 	char	*scmd;
 	char	*error;
+	int len;
 
 	++e->file->warning;
+	e->file->complete |= ALREADY_DEFINE;
 	line = e->file->begin;
 	error = line->s + ft_strspn(line->s, SPACES);
 	scmd = cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING;
 	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "%s already defined (ignored)\n", scmd); // passer en warning
 	err_pointer(e->tty2, line->s, error++, 0);
-	err_wave(e->tty2, error, len_err(error));
+	len = ft_strclen(error, '"');
+	len = error[len] == '"' ? len + ft_strclen(error + len + 1, '"') + 1
+	: ft_strcspn(error, SPACES"\"");
+	err_wave(e->tty2, error, len + (error[len] == '"'));
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
 }
