@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/02 19:30:23 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/03 14:02:58 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void		print_winner(t_env *e)
 	print_current_map(e);
 	printw("\n\n");
 	if (!e->total_live)
-		printw("NOBODY WINS\n");
+		printw("%*s\n%*s\n", PROGRESS_BAR_SIZE, "NOBODY WINS",
+			PROGRESS_BAR_SIZE, "PRESS SPACE TO EXIT");
 	else
 	{
 		while (++i < e->nb_champ)
@@ -76,8 +77,9 @@ void		print_winner(t_env *e)
 			else
 				printw("LOOSER %40s(%d)\n",
 						e->champs[i].name, e->champs[i].id);
+			attroff(COLOR_PAIR(e->champs[i].color));
 		}
-		printw("\n\n");
+		printw("%*s\n\n", PROGRESS_BAR_SIZE, "PRESS SPACE TO EXIT");
 	}
 	refresh();
 }

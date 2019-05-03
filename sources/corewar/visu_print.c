@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/02 18:04:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/03 14:20:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ static void			print_current_stats(t_env *e)
 	printw("CYCLE_TO_DIE %4d/%-30d", e->cycle, e->c_to_die);
 	printw("PROCESSES %-30d", e->nb_proc);
 	printw("LAST LIVE FROM PLAYER ");
-	if (e->v.live_color)
-		attron(COLOR_PAIR(e->v.live_color));
-	printw("%-30d\n\n", e->last_live);
+	e->v.live_color ? attron(COLOR_PAIR(e->v.live_color)) : 1;
+	printw("%-30d", e->last_live);
+	e->v.live_color ? attroff(COLOR_PAIR(e->v.live_color)) : 1;
+	printw("     +/- SPEED\n\n");
 	while (++i < e->nb_champ)
 	{
 		attron(COLOR_PAIR(WRITING));

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 19:04:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/03 14:20:16 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,10 @@ void			freedom(t_env *e, int to_exit)
 	e->proc = NULL;
 	if (to_exit)
 		exit(1);
+	if (e->visu && e->dump == -1)
+	{
+		while (getch() != ' ')
+			;
+		endwin();
+	}
 }
