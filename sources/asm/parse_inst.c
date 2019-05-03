@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 03:53:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 05:27:56 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	write_inst(t_env *e, t_inst *inst)
 	i = 0;
 	while (i < j)
 	{
-		if (e->file->buff->len + i >= BS_ASM)
+		if (e->file->buff->len >= BS_ASM)
 		{
 			add_buff(e);
 			if (PRINT)

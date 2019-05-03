@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 04:01:29 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 05:26:41 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void				get_bytecode(t_env *e, unsigned char *header);
 int					alloc_error(t_env *e);
 t_inst				*parse_inst(t_env *e, char *str);
 void				basic_error(t_env *e, char *str, char *err_string, int wave);
+void				print_buff(t_buff *buff);
 //verifier include dans .c et verifier proto fonctions
 
 /*

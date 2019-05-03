@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 04:00:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 05:28:51 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		add_line(t_env *e, char **line)
 	}
 	e->file->last = new;
 	*line = without_space ? without_space : *line;
-	/* if (PRINT) */
+	if (PRINT)
 		ft_printf("{purple}line: {R}'%s'\n", *line);
 	return (1);
 }
@@ -119,6 +119,8 @@ void	compile_write(t_env *e, unsigned char *header)
 				ft_printf("output: %s\n", e->file->output);
 		}
 	}
+	if (PRINT)
+		print_buff(e->file->begin_buff); // a retirer
 	if ((fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
 	{
 		write(fd, header, HEADER_SIZE);
