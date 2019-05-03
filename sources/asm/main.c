@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 15:37:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 17:32:11 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void	compile_write(t_env *e, unsigned char *header)
 		else
 		{
 			if (!(e->file->output = ft_strnew(s - e->file->name + 4))
-			|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
-			|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
+					|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
+					|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
 			{
 				ft_printf("malloc error\n");
 				exit(0); //alloc error
@@ -143,15 +143,12 @@ void	compile_write(t_env *e, unsigned char *header)
 
 void	end_error(t_env *e, unsigned char *header)
 {
-	if (e->file->error < MAX_ERROR)
-	{
-		if (e->file->i > CHAMP_MAX_SIZE)
-			ft_printf("{#ff3333}warning champ too long\n{R}");
-		if (!(e->file->complete & COMMENT_CMD) && ++e->file->warning)
-			ft_dprintf(2, "{#ff3333}warning missing name{R}\n");
-		if (!(e->file->complete & NAME_CMD) && ++e->file->warning)
-			ft_dprintf(2, "{#ff3333}warning missing comment{R}\n");
-	}
+	if (e->file->i > CHAMP_MAX_SIZE)
+		ft_printf("{#ff3333}warning champ too long\n{R}");
+	if (!(e->file->complete & COMMENT_CMD) && ++e->file->warning)
+		ft_dprintf(2, "{#ff3333}warning missing name{R}\n");
+	if (!(e->file->complete & NAME_CMD) && ++e->file->warning)
+		ft_dprintf(2, "{#ff3333}warning missing comment{R}\n");
 	if (e->file->warning)
 		ft_dprintf(2, "%d %s ", e->file->warning, e->file->warning > 1 ? "warnings" : "warning");
 	if (e->file->warning && e->file->error)
@@ -232,7 +229,7 @@ int		main(int ac, char **av)
 		print_files(e.file);
 	while (e.file)
 	{
-			ft_printf("compile file: %s\n", e.file->name);
+		ft_printf("compile file: %s\n", e.file->name);
 		if (PRINT )
 		{
 			print_entire_file(&e);
