@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 17:07:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 17:43:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	get_label(t_env *e, char *s, int len)
 	t_label	*new;
 
 	new = NULL;
-	if (PRINT || 1)
+	if (PRINT)
 		ft_printf("{yellow}label OK: '%.*s'\n{R}", len + 1, s);
 	if (!(new = (t_label *)malloc(sizeof(t_label))))
 		alloc_error(e);
