@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 14:00:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/03 15:38:11 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,16 @@ int				check_champ(t_env *e, char *arg, int i)
 	fd = open(arg, O_RDONLY);
 	err = 0;
 	if ((fd == -1 || !fd) && (err = 1))
+	{
 		ft_dprintf(2, "\nWrong .cor file: %s\n", arg);
+		return (0);
+	}
 	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
 	ret = !err ? read(fd, e->line, MAX_SIZE + 1) : -1;
+	close(fd);
 	if (!err && (ret == -1 || !(check_magic_number(e))) && (err = 1))
-	{
-		if (ret == -1)
-			ft_dprintf(2, "\nNot a valid file: %s\n", arg);
-		else
-			ft_dprintf(2, "\nDoes not contain magic number\n");
-	}
+		ft_dprintf(2, "\n%s: %s\n", ret == -1 ? "Not a valid file"
+			: "Does not contain magic number", arg);
 	if (!err && !(check_champ_size(e, ret, i)) && (err = 1))
 		ft_dprintf(2, "\nChampion %s too big (%d > %d)\n", arg,
 			e->champs[i].size, CHAMP_MAX_SIZE);
