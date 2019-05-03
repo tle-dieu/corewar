@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 20:13:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:26:34 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,18 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
-void	get_bytecode(t_env *e, unsigned char *cp)
+void	get_bytecode(t_env *e, unsigned char *header)
 {
 	char	*line;
 
 	while (e->file->error < 20 && add_line(e, &line) == 1)
 	{
 		if (*line == '.')
-			get_cmd(e, cp + 4, line);
+			get_cmd(e, header + 4, line);
 		else if (*line)
 		{
-			if (!only_label(e, &line, cp + HEADER_SIZE))
-				parse_inst(e, line, cp + HEADER_SIZE);
+			if (!only_label(e, &line))
+				parse_inst(e, line);
 		}
 		if (PRINT)
 		{

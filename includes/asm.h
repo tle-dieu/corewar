@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/02 13:35:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 04:01:29 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # define DEFAULT_NAME "no name"
 # define DEFAULT_COMMENT "description"
 
-# define BS_ASM		4096
+/* # define BS_ASM		4096 */
+# define BS_ASM		64
 # define GREEN_CURS "{bold}{green}"
 
 # define ERR_LINE 1
@@ -65,6 +66,7 @@
 typedef	struct		s_buff
 {
 	unsigned char	s[BS_ASM];	
+	long			len;
 	struct s_buff	*next;
 }					t_buff;
 
@@ -80,23 +82,23 @@ typedef struct		s_call
 	t_line			*line;
 	char			*s;
 	int				size;
-	int				index_call;
-	int				index_inst;
+	long			index_call;
+	long			index_inst;
 	struct s_call	*next;
 }					t_call;
 
 typedef struct		s_label
 {
 	char			*name;
-	int				index;
+	long			index;
 	t_call			*call;
 	struct s_label	*next;
 }					t_label;
 
 typedef struct		s_inst
 {
-	int				index;
-	int				i;
+	long			index;
+	long			i;
 	int				error;
 	int				op;
 	int				ocp;
@@ -108,12 +110,13 @@ typedef struct		s_inst
 
 typedef struct		s_file
 {
+	t_buff			*begin_buff;
 	t_buff			*buff;
 	char			complete;
 	char			*output;
 	char			*name;
 	int				fd;
-	int				i;
+	long			i;
 	unsigned		options;
 	int				error;
 	int				warning;
@@ -149,7 +152,7 @@ typedef struct		s_env
 # define MAGIC_C "{#9b59b6}"
 
 void				print_files(t_file *file);
-void				print_bin(t_env *e, unsigned char *bin, int size);
+void				print_bin(t_env *e, unsigned char *header);
 void				print_label(t_env *e);
 void				print_call_error(t_env *e);
 
@@ -165,7 +168,7 @@ void				free_lst_file(t_env *e);
 void				free_file(t_file **file);
 char				*line_error(int line, int tty);
 int					usage(t_env *e, int err);
-int					only_label(t_env *e, char **line, unsigned char *cp);
+int					only_label(t_env *e, char **line);
 int					parse_command_line(t_env *e, int ac, char **av);
 void				err_pointer(int tty, char *s, char *end, int sp);
 void				err_wave(int tty, char *s, int n);
@@ -173,9 +176,9 @@ int					check_end_str(t_env *e, char *s, int cmd, char c);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					add_line(t_env *e, char **line);
 void				free_line(t_line **line);
-void				get_bytecode(t_env *e, unsigned char *cp);
+void				get_bytecode(t_env *e, unsigned char *header);
 int					alloc_error(t_env *e);
-t_inst				*parse_inst(t_env *e, char *str, unsigned char *cp);
+t_inst				*parse_inst(t_env *e, char *str);
 void				basic_error(t_env *e, char *str, char *err_string, int wave);
 //verifier include dans .c et verifier proto fonctions
 

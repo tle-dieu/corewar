@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/02 14:03:41 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/03 03:53:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,16 @@
 #include "asm.h"
 #include <stdlib.h>
 
-size_t	ft_strrspn(const char *s, const char *accept)
-{
-	const char	*tmp;
-	size_t		i;
-
-	i = ft_strlen(s) - 1;
-	while (i > 0)
-	{
-		tmp = accept;
-		while (*tmp != s[i])
-			if (!*tmp++)
-				return (i);
-		i++;
-	}
-	return (i);
-}
-
 int		get_curr_inst(char *str)
 {
 	int	i;
 
 	i = 0;
 	while (g_op_tab[i].label && (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len) 
-			|| (str[g_op_tab[i].len] != '\t' && str[g_op_tab[i].len] != ' ')))
+		|| (str[g_op_tab[i].len] != '\t' && str[g_op_tab[i].len] != ' ')))
 		i++;
 	if (!g_op_tab[i].label)
-		return (42);	
+		return (42); //retire moi ca mon salo
 	return (i + 1);
 }
 
@@ -48,7 +31,7 @@ void get_ocp(t_inst *inst)
 {
 	int			i;
 	int			ocp;
-	const int	tab[3] = {64, 16, 4};///decalage binaire
+	const int	tab[3] = {64, 16, 4};///decalage binaire 
 
 	i = 0;
 	ocp = 0;
@@ -79,38 +62,79 @@ void	print_inst(t_inst *inst, char *str)
 	}
 }
 
-void	write_inst(t_env *e, t_inst *inst, unsigned char *cp)
+void	add_buff(t_env *e)
+{
+	t_buff	*new;
+
+	if (!(new = (t_buff *)malloc(sizeof(t_buff))))
+		exit(0); // alloc error
+	new->next = NULL;
+	if (!e->file->begin_buff)
+		e->file->begin_buff = new;
+	else
+		e->file->buff->next = new;
+	new->len = 0;
+	e->file->buff = new;
+}
+
+void	write_inst(t_env *e, t_inst *inst)
 {
 	int i;
 	int	k;
 	int j;
+	int	buff[MAX_LEN_INST];
 
 	i = 0;
-	if (inst->index > CHAMP_MAX_SIZE && !e->file->too_long) //fonction error
+	if (!inst->error && inst->index > CHAMP_MAX_SIZE && !e->file->too_long) //fonction error
 	{
 		e->file->too_long = 1;
-		++e->file->error;
-		e->file->i = inst->index;
+		++e->file->warning;
 	}
-	if (!e->file->too_long && !inst->error && !e->file->error)
+	j = 0;
+	if (!inst->error && !e->file->error)
 	{
-		j = 0;
-		cp[e->file->i + j++] = inst->op;
+		buff[j++] = inst->op;
 		if (g_op_tab[inst->op - 1].ocp)
-			cp[e->file->i + j++] = inst->ocp;
+			buff[j++] = inst->ocp;
 		while (i < inst->nb_p)
 		{
 			k = inst->s[i];
 			while (k--)
-				cp[e->file->i + j++] = inst->p[i] >> k * 8;
+				buff[j++] = inst->p[i] >> k * 8;
 			i++;
 		}
 	}
-	if (!e->file->too_long && !inst->error)
+	if (!e->file->begin_buff && j)
+		add_buff(e);
+	if (e->file->buff)
+		k = e->file->buff->len;
+	if (PRINT)
+	{
+		ft_printf("{bold}{red}write inst: {R}\n");
+		ft_printf("real index: %zu\n", e->file->i);
+	}
+	i = 0;
+	while (i < j)
+	{
+		if (e->file->buff->len + i >= BS_ASM)
+		{
+			add_buff(e);
+			if (PRINT)
+				ft_printf("{yellow} -new index file: %d index buff: %d\n", e->file->buff->len + i, i);
+		}
+		if (PRINT)
+			ft_printf(" -index file: %d index buff: %d\n", e->file->buff->len + i, i);
+		e->file->buff->s[e->file->buff->len++] = buff[i++];
+	}
+	if (!inst->error)
+	{
+		if (PRINT)
+			ft_printf("{bold}{green}%ld -> %ld\n{R}", e->file->i, inst->index);
 		e->file->i = inst->index;
+	}
 }
 
-t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
+t_inst	*parse_inst(t_env *e, char *str)
 {	
 	t_inst	inst;
 	char	*tmp;
@@ -127,6 +151,6 @@ t_inst	*parse_inst(t_env *e, char *str, unsigned char *cp)
 	}
 	else
 		error_unknow_inst(e, str);
-	write_inst(e, &inst, cp);
+	write_inst(e, &inst);
 	return (NULL);
 }

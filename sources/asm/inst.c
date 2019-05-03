@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 17:39:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 03:50:27 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,54 @@
 
 #include <unistd.h>
 
-int		search_label(t_env *e, char *s, int len, unsigned char *cp)
+//verifier si il est possible d'avoir un buff non cree mais normalement nn
+void	write_label_call(t_env *e, t_call *call)
+{
+	int				i;
+	int				byte;
+	t_buff			*buff;
+
+	while (call)
+	{
+		buff = e->file->begin_buff;
+		if (PRINT || 1)
+		{
+			ft_printf("{cyan}label call:{R}\n");
+			ft_printf(" -index: %zu\n", call->index_call);
+		}
+		while (call->index_call >= BS_ASM)
+		{
+			call->index_call -= buff->len;
+			if (PRINT || 1)
+				ft_printf(" -index: %zu\n", call->index_call);
+			buff = buff->next;
+		}
+		i = 0;
+		while (call->size--)
+		{
+			byte = (e->file->i - call->index_inst) >> call->size * 8;
+			if (i + call->index_call >= BS_ASM)
+			{
+				if (PRINT || 1)
+				{
+					ft_printf("{yellow} -new index file: %d index buff: %d\n", i + call->index_call, i);
+					ft_printf(" -new avance{R}\n");
+				}
+				call->index_call = -i;
+				buff = buff->next;
+			}
+			if (PRINT || 1)
+				ft_printf("index file: %d index buff: %d\n", i + call->index_call, i);
+			buff->s[i++ + call->index_call] = byte;
+		}
+		call = call->next;
+	}
+}
+
+int		search_label(t_env *e, char *s, int len)
 {
 	t_label			*label;
 	t_call			*call;
-	int				i;
 
 	label = e->file->label;
 	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
@@ -36,15 +79,10 @@ int		search_label(t_env *e, char *s, int len, unsigned char *cp)
 		{
 			label->index = e->file->i;
 			call = label->call;
-			while (call)
-			{
-				i = 0;
-				if (!e->file->error)
-					while (call->size--)
-						cp[i++ + call->index_call] = (e->file->i - call->index_inst) >> call->size * 8;
-				call = call->next;
-				
-			}
+			if (PRINT)
+				ft_printf("error: %d\n", e->file->error);
+			if (!e->file->error)
+				write_label_call(e, call);
 		}
 		return (1);
 	}
@@ -75,10 +113,7 @@ void	get_label(t_env *e, char *s)
 	e->file->label = new;
 }
 
-//libft/objects//ft_printf/buff.cor
-//libft/objects//ft_printf/buff.o
-//libft/objects//ft_printf/colors.cor
-int     only_label(t_env *e, char **line, unsigned char *cp)
+int     only_label(t_env *e, char **line)
 {
 	int		len;
 	char	*s;
@@ -96,7 +131,7 @@ int     only_label(t_env *e, char **line, unsigned char *cp)
 				return (0);
 		s++;
 	}
-	if (!search_label(e, *line, s - *line, cp))
+	if (!search_label(e, *line, s - *line))
 		get_label(e, *line);
 	*line = s + ft_strspn(s + 1, SPACES) + 1;
 	return (!**line);

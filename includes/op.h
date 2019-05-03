@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 23:03:06 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:30:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef char			t_arg_type;
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define HEADER_SIZE			PROG_NAME_LENGTH + COMMENT_LENGTH + 16
 # define BIN_MAX_SIZE			HEADER_SIZE + CHAMP_MAX_SIZE
+# define MAX_LEN_INST			14
 
 # if PROG_NAME_LENGTH > COMMENT_LENGTH
 # define BS_HEADER PROG_NAME_LENGTH

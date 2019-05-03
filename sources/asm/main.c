@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 17:48:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 04:00:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int		add_line(t_env *e, char **line)
 	}
 	e->file->last = new;
 	*line = without_space ? without_space : *line;
+	/* if (PRINT) */
+		ft_printf("{purple}line: {R}'%s'\n", *line);
 	return (1);
 }
 
@@ -89,7 +91,7 @@ int		add_line(t_env *e, char **line)
 
 #include <errno.h> //  a retirer
 
-void	compile_write(t_env *e, unsigned char *bin)
+void	compile_write(t_env *e, unsigned char *header)
 {
 	char	*s;
 	int		fd;
@@ -106,7 +108,6 @@ void	compile_write(t_env *e, unsigned char *bin)
 		}
 		else
 		{
-			ft_printf("len: %d\n", s - e->file->name);
 			if (!(e->file->output = ft_strnew(s - e->file->name + 4))
 			|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
 			|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
@@ -114,12 +115,21 @@ void	compile_write(t_env *e, unsigned char *bin)
 				ft_printf("malloc error\n");
 				exit(0); //alloc error
 			}
-			ft_printf("output: %s\n", e->file->output);
+			if (PRINT)
+				ft_printf("output: %s\n", e->file->output);
 		}
 	}
 	if ((fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
 	{
-		write(fd, bin, e->file->i + PROG_NAME_LENGTH + COMMENT_LENGTH + 16);
+		write(fd, header, HEADER_SIZE);
+		e->file->buff = e->file->begin_buff;
+		while (e->file->buff)
+		{
+			if (PRINT)
+				ft_printf("buff: %p buff->next: %p\n", e->file->buff, e->file->buff->next);
+			write(fd, e->file->buff->s, e->file->buff->len);
+			e->file->buff = e->file->buff->next;
+		}
 		ft_printf("Writing output program to %s\n", e->file->output);
 		close(fd);
 	}
@@ -130,16 +140,16 @@ void	compile_write(t_env *e, unsigned char *bin)
 	}
 }
 
-void	end_error(t_env *e, unsigned char *bin)
+void	end_error(t_env *e, unsigned char *header)
 {
 	if (e->file->error < MAX_ERROR)
 	{
-		if (e->file->too_long)
-			ft_printf("{#ff3333}error champ too long\n{R}");
+		if (e->file->i > CHAMP_MAX_SIZE)
+			ft_printf("{#ff3333}warning champ too long\n{R}");
 		if (!(e->file->complete & 1) && ++e->file->warning)
-			ft_dprintf(2, "{#ff3333}missing name{R}\n");
+			ft_dprintf(2, "{#ff3333}warning missing name{R}\n");
 		if (!(e->file->complete & 2) && ++e->file->warning)
-			ft_dprintf(2, "{#ff3333}missing comment{R}\n");
+			ft_dprintf(2, "{#ff3333}warning missing comment{R}\n");
 	}
 	if (e->file->warning)
 		ft_dprintf(2, "%d %s ", e->file->warning, e->file->warning > 1 ? "warnings" : "warning");
@@ -152,28 +162,28 @@ void	end_error(t_env *e, unsigned char *bin)
 	if (!e->file->error)
 	{
 		if (!e->file->error && e->file->options & (O_HEXA | O_BIN))
-			print_bin(e, bin, e->file->i + HEADER_SIZE);
+			print_bin(e, header);
 		if (!e->file->error && !(e->file->options & (O_HEXA | O_BIN)))
-			compile_write(e, bin);
+			compile_write(e, header);
 	}
 }
 
 void	compile(t_env *e)
 {
 	unsigned char	*cp;
-	unsigned char	bin[BIN_MAX_SIZE + 1];
+	unsigned char	header[HEADER_SIZE];
 	int				i;
 
-	ft_bzero(bin, BIN_MAX_SIZE);
+	ft_bzero(header, HEADER_SIZE);
 	i = 4;
-	cp = bin;
+	cp = header;
 	while (i--)
 		*cp++ = COREWAR_EXEC_MAGIC >> i * 8;
-	get_bytecode(e, cp - 4);
+	get_bytecode(e, header);
 	i = 4;
 	while (i--)
-		bin[PROG_NAME_LENGTH + 11 - i] = e->file->i >> i * 8;
-	end_error(e, bin);
+		header[PROG_NAME_LENGTH + 11 - i] = e->file->i >> i * 8;
+	end_error(e, header);
 }
 
 void	print_entire_file(t_env *e)
@@ -221,9 +231,9 @@ int		main(int ac, char **av)
 		print_files(e.file);
 	while (e.file)
 	{
-		if (PRINT)
-		{
 			ft_printf("compile file: %s\n", e.file->name);
+		if (PRINT )
+		{
 			print_entire_file(&e);
 		}
 		compile(&e);

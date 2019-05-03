@@ -6,12 +6,13 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 07:57:52 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 04:10:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
+#include <stdlib.h>
 
 void	print_call_error(t_env *e)
 {
@@ -159,16 +160,50 @@ int		pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 	return (0);
 }
 
-void	print_bin(t_env *e, unsigned char *bin, int size)
+unsigned char *lst_to_char(t_env *e, unsigned char *header, int *size)
+{
+	unsigned char	*str;	
+	int				len;
+	t_buff			*buff;
+	int				i;
+	int				j;
+
+	buff = e->file->begin_buff;
+	len = HEADER_SIZE;
+	while (buff)
+	{
+		len += buff->len;
+		buff = buff->next;
+	}
+	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * len)))
+		return (NULL);
+	*size = len;
+	i = 0;
+	while (i < HEADER_SIZE)
+		str[i++] = *header++;
+	buff = e->file->begin_buff;
+	while (buff)
+	{
+		j = 0;
+		while (j < buff->len)
+			str[i++] = buff->s[j++];
+		buff = buff->next;
+	}
+	return (str);
+}
+void	print_bin(t_env *e, unsigned char *header)
 {
 	int i;
 	int	len;
+	int	size;
 	int	ret;
 	int old;
+	unsigned char *bin;
 
 	i = 0;
 	old = 0;
 	ret = 0;
+	bin = lst_to_char(e, header, &size);
 	len = e->file->options & O_HEXA ? 16 : 6;
 	while (i < size)
 	{
