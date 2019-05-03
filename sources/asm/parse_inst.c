@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 05:27:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 18:15:08 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int		get_curr_inst(char *str)
 	int	i;
 
 	i = 0;
-	while (g_op_tab[i].label && (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len) 
-		|| (str[g_op_tab[i].len] != '\t' && str[g_op_tab[i].len] != ' ')))
+	while (g_op_tab[i].label
+		&& (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len)
+		|| ft_isalnum(str[g_op_tab[i].len])))
 		i++;
 	if (!g_op_tab[i].label)
-		return (42); //retire moi ca mon salo
+		return (42);
 	return (i + 1);
 }
 
@@ -31,8 +32,11 @@ void get_ocp(t_inst *inst)
 {
 	int			i;
 	int			ocp;
-	const int	tab[3] = {64, 16, 4};///decalage binaire 
+	int			tab[3];
 
+	tab[0] = 64;
+	tab[1] = 16;
+	tab[2] = 4;
 	i = 0;
 	ocp = 0;
 	while (i < inst->nb_p)
@@ -148,6 +152,8 @@ t_inst	*parse_inst(t_env *e, char *str)
 		check_params(e, tmp, &inst);
 		if (g_op_tab[inst.op - 1].ocp)
 			get_ocp(&inst);
+		if (!e->file->champ_part)
+			e->file->champ_part = 1;
 	}
 	else
 		error_unknow_inst(e, str);

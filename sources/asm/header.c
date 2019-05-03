@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 17:19:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 20:45:02 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 
 	i = 0;
 	end = 0;
+	if (e->file->champ_part)
+		cmd_part_champ(e, cmd);
 	if (e->file->complete & cmd) // gerer error comment trouve et instructions trouvees
-		if (cmd_multiple_define(e, cmd) == -1)
-			return (0);
+		cmd_multiple_define(e, cmd);
 	e->file->complete |= cmd;
 	if (!(t = ft_strchr(s, '"')))
 		return (expect_str(e, s, cmd) == -1 || check_end_str(e, s, cmd, 0));
@@ -134,5 +135,4 @@ void	get_bytecode(t_env *e, unsigned char *header)
 		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
 		ft_dprintf(2, "too many errors emitted, stopping now\n");
 	}
-	print_call_error(e);
 }

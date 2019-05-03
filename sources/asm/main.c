@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 18:07:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 20:50:06 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*pass_line(char *s)
 }
 
 //protection file too long
+
 int		add_line(t_env *e, char **line)
 {
 	t_line	*new;
@@ -141,14 +142,68 @@ void	compile_write(t_env *e, unsigned char *header)
 	}
 }
 
+void	missing_cmd(t_env *e, unsigned char *header, int cmd)
+{
+	char	*scmd;
+	char	*default_str;
+	int		len;
+
+	++e->file->warning;
+	if (cmd == NAME_CMD)
+		len = sizeof(DEFAULT_NAME);
+	else
+		len = sizeof(DEFAULT_COMMENT);
+	default_str = (cmd == NAME_CMD ? DEFAULT_NAME : DEFAULT_COMMENT);
+	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
+	ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
+	ft_dprintf(2, "'%s' is undefined (set to '%s')\n", scmd, default_str); // changer erreur ?
+	if (e->tty2)
+		ft_printf("{R}");
+	ft_memcpy(header, default_str, len);
+}
+
+void    label_call_error(t_env *e)
+{
+    t_label *label;
+    t_call  *call;
+	int		len;
+
+    label = e->file->label;
+    while (label && e->file->error < MAX_ERROR)
+    {
+        if (label->index == -1)
+        {
+            call = label->call;
+            while (call && e->file->error < MAX_ERROR)
+            {
+				len = ft_strcspn(call->s, SPACES SEPARATOR_CHAR); // changer strcspn pour norme et laisser passer label char ?
+				++e->file->error;
+				ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, call->line->y, call->s - call->line->s);
+				ft_dprintf(2, "label '%.*s' is undefined\n", len, call->s); // revoir erreur
+				err_pointer(e->tty2, call->line->s, call->s, 0);
+				ft_dprintf(2, "\n");
+				call = call->next;
+            }
+        }
+        label = label->next;
+    }
+}
+
+//checker pour tous les err_file que la couleur est reset
 void	end_error(t_env *e, unsigned char *header)
 {
-	if (e->file->i > CHAMP_MAX_SIZE)
-		ft_printf("{#ff3333}warning champ too long\n{R}");
-	if (!(e->file->complete & COMMENT_CMD) && ++e->file->warning)
-		ft_dprintf(2, "{#ff3333}warning missing name{R}\n");
-	if (!(e->file->complete & NAME_CMD) && ++e->file->warning)
-		ft_dprintf(2, "{#ff3333}warning missing comment{R}\n");
+	label_call_error(e);
+	if (e->file->error < MAX_ERROR && e->file->i > CHAMP_MAX_SIZE)
+	{
+		ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
+		ft_printf("bytecode of the champion too big for the vm (%d for %d bytes)\n", e->file->i, CHAMP_MAX_SIZE);
+		if (e->tty2)
+			ft_printf("{R}");
+	}
+	if (e->file->error < MAX_ERROR && !(e->file->complete & NAME_CMD))
+		missing_cmd(e, header + 4, NAME_CMD);
+	if (e->file->error < MAX_ERROR && !(e->file->complete & COMMENT_CMD))
+		missing_cmd(e, header + PROG_NAME_LENGTH + 12, COMMENT_CMD);
 	if (e->file->warning)
 		ft_dprintf(2, "%d %s ", e->file->warning, e->file->warning > 1 ? "warnings" : "warning");
 	if (e->file->warning && e->file->error)
@@ -231,9 +286,7 @@ int		main(int ac, char **av)
 	{
 		ft_printf("compile file: %s\n", e.file->name);
 		if (PRINT )
-		{
 			print_entire_file(&e);
-		}
 		compile(&e);
 		next = e.file->next;
 		if (PRINT)

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 17:43:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 18:35:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int     only_label(t_env *e, char **line)
 	s = *line + ft_strspn(*line, LABEL_CHARS);
 	if (*s != LABEL_CHAR)
 		return (0);
+	e->file->champ_part = 1;
 	if (!search_label(e, *line, s - *line))
 		get_label(e, *line, s - *line);
 	*line = s + ft_strspn(s + 1, SPACES) + 1;

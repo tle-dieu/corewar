@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 19:06:35 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 20:02:55 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*line_error(int line, int tty)
 		return (tty ? WARNING_LINE_C : WARNING_LINE_NC);
 	else if (line == WARNING_FILE)
 		return (tty ? WARNING_FILE_C : WARNING_FILE_NC);
+	else if (line == ERR_ARGS)
+		return (tty ? ERR_ARGS_C : ERR_ARGS_NC);
 	return (NULL);
 }
 
