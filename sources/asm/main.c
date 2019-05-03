@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 05:45:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 14:48:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		add_line(t_env *e, char **line)
 	{
 		if (!e->file->begin && !(without_space = pass_line(*line)))
 		{
+			e->file->line_nb++;
 			free(*line);
 			*line = NULL;
 		}

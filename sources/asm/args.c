@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/02 23:04:00 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 14:43:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static int		get_long_option(t_env *e, unsigned *options, char **s)
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;
 	else if (!ft_strncmp(*s, "color", 5)
-	&& (!*((*s) + 5) || *((*s) + 5) == '='))
+			&& (!*((*s) + 5) || *((*s) + 5) == '='))
 		return (!(*options |= color_option(e, s)));
 	else if (!ft_strcmp(*s, "output"))
 		*options |= O_OUTPUT;
@@ -130,16 +130,22 @@ int		valid_file(int fd, unsigned *options)
 	char	buff[1];
 	off_t	size;
 	off_t	current_pos;
-	
-	current_pos = lseek(fd, 0, SEEK_CUR);
-	size = lseek(fd, 0, SEEK_END);
-	if (size > MAX_FILE_SIZE || (!size && read(fd, buff, 1)))
+	int		ret;
+
+	if ((current_pos = lseek(fd, 0, SEEK_CUR)) == -1)
+		return (0);
+	if ((size = lseek(fd, 0, SEEK_END)) == -1)
+		return (0);
+	if ((ret = read(fd, buff, 1)) < 0)
+		return (0);
+	if (!size && ret)
 	{
 		*options |= O_INVALID_FILE_ERR;
 		close(fd);
 		return (0);
 	}
-	lseek(fd, current_pos, SEEK_SET);   
+	if ((lseek(fd, current_pos, SEEK_SET) == -1))
+		return (0);
 	return (1);
 }
 
@@ -156,12 +162,12 @@ int		parse_command_line(t_env *e, int ac, char **av)
 	{
 		s = av[i];
 		if ((*s != '-' || !*++s || (*s == '-' && !*(s + 1))
-		|| !(*s == '-' ? get_long_option(e, &options, &s)
-		: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT)))
+					|| !(*s == '-' ? get_long_option(e, &options, &s)
+						: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT)))
 		{
 			if (options & O_OUTPUT_ERR
 			|| (fd = open(av[i], O_RDONLY)) == -1
-			|| read(fd, av[i], 0) < 0 || !valid_file(fd, &options))
+			|| !valid_file(fd, &options))
 				return (error_file(e, s, av[i], options));
 			e->actual = add_file(e, av[i], options, fd);
 			options = 0;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/01 20:11:21 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/03 14:25:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,20 @@ int		cmd_multiple_define(t_env *e,int cmd) // 5
 	t_line	*line;
 	char	*scmd;
 	char	*error;
+	int len;
 
 	++e->file->warning;
+	e->file->complete |= ALREADY_DEFINE;
 	line = e->file->begin;
 	error = line->s + ft_strspn(line->s, SPACES);
 	scmd = cmd ? COMMENT_CMD_STRING : NAME_CMD_STRING;
 	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "%s already defined (ignored)\n", scmd); // passer en warning
 	err_pointer(e->tty2, line->s, error++, 0);
-	err_wave(e->tty2, error, len_err(error));
+	len = ft_strclen(error, '"');
+	len = error[len] == '"' ? len + ft_strclen(error + len + 1, '"') + 1
+	: ft_strcspn(error, SPACES"\"");
+	err_wave(e->tty2, error, len + (error[len] == '"'));
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
 }
