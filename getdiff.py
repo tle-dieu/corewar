@@ -24,7 +24,7 @@ def get_file(asm, f):
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
     if not error and output[0] == 'x' :
-        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn't been created"
+        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn' t been created"
         error += "\n" + WHITE + open
     else:
         success += "\n" + GREEN + "SUCCES: for " + asm + " " + my_file + " has been created"
@@ -99,6 +99,7 @@ def main():
             asm_42 = asm_42.split('\n')
             asm, tmp, success_tmp = get_file(ASM, arg)
             err += tmp
+
             success += success_tmp
             asm = asm.split('\n')
             print(WHITE + "\n- - - - - - - - - - - - " + arg.upper() + " - - - - - - - - - - - -\n")
@@ -115,19 +116,20 @@ def main():
                 while j < len(asm):
                     error += compare("", asm[j])
                     j += 1
-                if error > 0:
-                    print(RED + "Diff = KO (%d bad line(s))" % error)
-                else:
-                    print(GREEN + "Diff = OK")
+                print(GREEN + "Diff = OK")
+            elif "hasn' t" in tmp and "hasn' t" in err:
+                print(err)
+                print(GREEN + "Diff = OK (both files haven' t been created")
             else:
                 bad_file += "\t- " + arg + "\n"
                 nb_err += 1
                 print(err)
+                print(RED + "Diff = KO (%d bad line(s))" % error)
         i += 1
     if nb_err == 0:
-        print("%s[%d/%d]\tSUCCES" %(GREEN, i - 1 - nb_err, i - 1))
+        print("\n%s[%d/%d]\tSUCCES" %(GREEN, i - 1 - nb_err, i - 1))
     else:
-        print("%s[%d/%d]\tfound %d error(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
+        print("\n%s[%d/%d]\tfound %d error(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
         print(WHITE + bad_file)
 
     
