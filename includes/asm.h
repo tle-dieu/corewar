@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 14:22:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 18:12:11 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ typedef struct		s_file
 	t_line			*last;
 	t_label			*label;
 	struct s_file	*next;
+	int				champ_part;
 }					t_file;
 
 typedef struct		s_env

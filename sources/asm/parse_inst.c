@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 05:27:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 18:15:08 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ t_inst	*parse_inst(t_env *e, char *str)
 		check_params(e, tmp, &inst);
 		if (g_op_tab[inst.op - 1].ocp)
 			get_ocp(&inst);
+		if (!e->file->champ_part)
+			e->file->champ_part = 1;
 	}
 	else
 		error_unknow_inst(e, str);
