@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 14:48:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 15:37:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,9 @@ void	end_error(t_env *e, unsigned char *header)
 	{
 		if (e->file->i > CHAMP_MAX_SIZE)
 			ft_printf("{#ff3333}warning champ too long\n{R}");
-		if (!(e->file->complete & 1) && ++e->file->warning)
+		if (!(e->file->complete & COMMENT_CMD) && ++e->file->warning)
 			ft_dprintf(2, "{#ff3333}warning missing name{R}\n");
-		if (!(e->file->complete & 2) && ++e->file->warning)
+		if (!(e->file->complete & NAME_CMD) && ++e->file->warning)
 			ft_dprintf(2, "{#ff3333}warning missing comment{R}\n");
 	}
 	if (e->file->warning)

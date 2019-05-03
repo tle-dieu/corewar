@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/02 14:26:34 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 17:19:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@
 
 int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 {
-	char	buff[BS_HEADER + 1];
+	char	buff[BS_HEADER];
 	int		i;
 	char	*t;
 	int		end;
 
 	i = 0;
 	end = 0;
-	if (e->file->complete & (cmd + 1)) // gerer error comment trouve et instructions trouvees
+	if (e->file->complete & cmd) // gerer error comment trouve et instructions trouvees
 		if (cmd_multiple_define(e, cmd) == -1)
 			return (0);
-	e->file->complete |= cmd + 1;
+	e->file->complete |= cmd;
 	if (!(t = ft_strchr(s, '"')))
 		return (expect_str(e, s, cmd) == -1 || check_end_str(e, s, cmd, 0));
 	if (check_end_str(e, s, cmd, '"') == -1)
@@ -37,7 +37,7 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	{
 		while (*s && *s != '"')
 		{
-			if (i >= (cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH))
+			if (i >= (cmd == NAME_CMD ? PROG_NAME_LENGTH : COMMENT_LENGTH))
 			{
 				i = -1;
 				if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1)
@@ -54,10 +54,16 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		}
 		else if (add_line(e, &s) != 1)
 			return (missing_quote(e, e->file->begin->s));
+		else if (i >= (cmd == NAME_CMD ? PROG_NAME_LENGTH : COMMENT_LENGTH))
+		{
+			i = -1;
+			if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1) // remplacer par fonction
+				return (0);
+		}
 		else if (i != -1)
 			buff[i++] = '\n';
 	}
-	if (!e->file->error)
+	if (!e->file->error && !(e->file->complete & ALREADY_DEFINE))
 		while (i--)
 			*(cp + i) = buff[i];
 	return (1);
@@ -75,17 +81,17 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 	if (!ft_strncmp(line, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
 	{
 		line += sizeof(NAME_CMD_STRING) - 1; 
-		cmd = 0;
+		cmd = NAME_CMD;
 	}
 	else if (!ft_strncmp(COMMENT_CMD_STRING, line, sizeof(COMMENT_CMD_STRING) - 1))
 	{
 		line += sizeof(COMMENT_CMD_STRING) - 1; 
-		cmd = 1;
+		cmd = COMMENT_CMD;
 	}
 	if (cmd == -1 || !ft_strchr(SPACES"\"", *line))
 		invalid_cmd(e, cmd != -1 ? tmp : line, -1);
 	else
-		!cmd ? parse_cmd(e, line, cp, cmd)
+		cmd == NAME_CMD ? parse_cmd(e, line, cp, cmd)
 			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
