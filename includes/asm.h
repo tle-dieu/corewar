@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 05:26:41 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/03 05:43:16 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define DEFAULT_COMMENT "description"
 
 /* # define BS_ASM		4096 */
-# define BS_ASM		64
+# define BS_ASM		64 // remettre a 4096 mais mieux pour tester bug et segfaults
 # define GREEN_CURS "{bold}{green}"
 
 # define ERR_LINE 1
