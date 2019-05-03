@@ -74,7 +74,7 @@ void	error_unknow_inst(t_env *e, char *str)
 {
 	int len;
 
-	len = ft_strcspn(str, SPACES SEPARATOR_CHAR);
+	len = ft_strcspn(str, SPACES","SEPARATOR_CHAR);
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
 		e->file->last->y, str - e->file->last->s);
