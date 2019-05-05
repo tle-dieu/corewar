@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 15:12:27 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 16:42:15 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		add_line(t_env *e, char **line)
 	else
 	{
 		if (e->file->last != e->file->begin)
-			free_line(&e->file->last);
+			free_line(&e->file->last, 0);
 		e->file->last = new;
 	}
 	e->file->last = new;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 15:10:58 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 16:42:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ void	get_bytecode(t_env *e, unsigned char *header)
 				parse_inst(e, line);
 		}
 		if (e->file->last != e->file->begin)
-			free_line(&e->file->last);
+			free_line(&e->file->last, 0);
 		else
 			e->file->last = NULL;
-		free_line(&e->file->begin);
+		free_line(&e->file->begin, 0);
 	}
 	check_label_call(e);
 	if (e->file->error >= MAX_ERROR)

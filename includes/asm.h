@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:57:12 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 16:41:43 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,6 @@ void				err_wave(int tty, char *s, int n);
 int					check_end_str(t_env *e, char *s, int cmd, char c);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					add_line(t_env *e, char **line);
-void				free_line(t_line **line);
 void				get_bytecode(t_env *e, unsigned char *header);
 int					alloc_error(t_env *e);
 t_inst				*parse_inst(t_env *e, char *str);
@@ -193,6 +192,8 @@ void				print_buff(t_buff *buff);
 void				cmd_part_champ(t_env *e, int cmd);
 void				check_label_call(t_env *e);
 int					redefine_label(t_env *e, char *error, int y);
+void				free_line(t_line **line, int label); 
+
 //verifier include dans .c et verifier proto fonctions
 
 /*

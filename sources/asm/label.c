@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 03:56:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 16:38:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
 		free(new);
 		exit(0);
 	}
-	e->file->last->free = 0;
+	e->file->last->free = -(e->file->last->free == 0);
 	call->line = e->file->last;
 	call->index_inst = e->file->i;
 	call->index_call = inst->index;
