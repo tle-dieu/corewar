@@ -6,36 +6,13 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 04:10:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 13:50:26 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
 #include <stdlib.h>
-
-void	print_call_error(t_env *e)
-{
-	t_label *label;
-	t_call	*call;
-
-	label = e->file->label;
-	while (label)
-	{
-		if (label->index == -1)
-		{
-			call = label->call;
-			ft_printf("{red}{bold}----- %s -----{R}\n", label->name);
-			while (call)
-			{
-				ft_printf("{bold}%d:%d: {R}'%s'\n", call->line->y, call->s - call->line->s, call->line->s);
-				// erreur print x
-				call = call->next;
-			}
-		}
-		label = label->next;
-	}
-}
 
 void	print_label(t_env *e)
 {

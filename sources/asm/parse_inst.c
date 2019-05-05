@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 18:15:08 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:33:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,6 @@ void	write_inst(t_env *e, t_inst *inst)
 	int	buff[MAX_LEN_INST];
 
 	i = 0;
-	if (!inst->error && inst->index > CHAMP_MAX_SIZE && !e->file->too_long) //fonction error
-	{
-		e->file->too_long = 1;
-		++e->file->warning;
-	}
 	j = 0;
 	if (!inst->error && !e->file->error)
 	{

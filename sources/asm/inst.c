@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 18:35:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:08:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	get_label(t_env *e, char *s, int len)
 		free(new);
 		alloc_error(e);
 	}
+	new->y = e->file->last->y;
 	new->index = e->file->i;
 	new->call = NULL;
 	new->next = e->file->label;

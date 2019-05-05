@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 20:50:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:26:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,29 +164,34 @@ void	missing_cmd(t_env *e, unsigned char *header, int cmd)
 
 void    label_call_error(t_env *e)
 {
-    t_label *label;
-    t_call  *call;
+	t_label *label;
+	t_call  *call;
 	int		len;
 
-    label = e->file->label;
-    while (label && e->file->error < MAX_ERROR)
-    {
-        if (label->index == -1)
-        {
-            call = label->call;
-            while (call && e->file->error < MAX_ERROR)
-            {
-				len = ft_strcspn(call->s, SPACES SEPARATOR_CHAR); // changer strcspn pour norme et laisser passer label char ?
+	label = e->file->label;
+	while (label && e->file->error < MAX_ERROR)
+	{
+		if (label->index == -1)
+		{
+			call = label->call;
+			while (call && e->file->error < MAX_ERROR)
+			{
 				++e->file->error;
+				len = ft_strspn(call->s, LABEL_CHARS);
 				ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, call->line->y, call->s - call->line->s);
 				ft_dprintf(2, "label '%.*s' is undefined\n", len, call->s); // revoir erreur
 				err_pointer(e->tty2, call->line->s, call->s, 0);
 				ft_dprintf(2, "\n");
 				call = call->next;
-            }
-        }
-        label = label->next;
-    }
+			}
+		}
+		label = label->next;
+	}
+	if (e->file->error >= MAX_ERROR) // fonction ?
+	{
+		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
+		ft_dprintf(2, "too many errors emitted, stopping now\n");
+	}
 }
 
 //checker pour tous les err_file que la couleur est reset
@@ -195,7 +200,8 @@ void	end_error(t_env *e, unsigned char *header)
 	label_call_error(e);
 	if (e->file->error < MAX_ERROR && e->file->i > CHAMP_MAX_SIZE)
 	{
-		ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
+		++e->file->warning;
+		ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name); //fct
 		ft_printf("bytecode of the champion too big for the vm (%d for %d bytes)\n", e->file->i, CHAMP_MAX_SIZE);
 		if (e->tty2)
 			ft_printf("{R}");
@@ -259,7 +265,6 @@ void	print_entire_file(t_env *e)
 	ft_printf("\t->error: %d\n", e->file->error);
 	ft_printf("\t->warning: %d\n", e->file->warning);
 	ft_printf("\t->line_nb: %d\n", e->file->line_nb);
-	ft_printf("\t->too_long: %d\n", e->file->too_long);
 	ft_printf("\t->begin: %p\n", e->file->begin);
 	ft_printf("\t->last: %p\n", e->file->last);
 	ft_printf("\t->label: %p\n", e->file->label);
