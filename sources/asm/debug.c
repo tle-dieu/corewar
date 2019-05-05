@@ -6,13 +6,32 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 13:50:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:13:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
 #include <stdlib.h>
+
+void	print_inst(t_inst *inst, char *str)
+{
+	int i;
+
+	i = 0;
+	ft_printf("\nstr\t= %s\n", str);
+	ft_printf("op\t= %d\n", inst->op);
+	ft_printf("ocp\t= %d\n", inst->ocp);
+	ft_printf("nb_p\t= %d\n", inst->nb_p);
+	ft_printf("params:\n");
+	while (i < inst->nb_p)
+	{
+		ft_printf("\t p[%d] = %d", i, inst->p[i]);
+		ft_printf("\t s[%d] = %d", i, inst->s[i]);
+		ft_printf("\t t[%d] = %d\n", i, inst->t[i]);
+		i++;
+	}
+}
 
 void	print_label(t_env *e)
 {

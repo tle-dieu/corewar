@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:57:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:11:33 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,6 @@
 
 #include <unistd.h>
 
-void	print_buff(t_buff *buff)
-{
-	int j;
-	int i;
-	int k;
-
-	k = 0;
-	ft_printf("print buff\n");
-	while (buff)
-	{
-		i = 0;
-		j = 0;
-		ft_printf("BUFF: %d\n", k);
-		while (i < buff->len)
-		{
-			ft_printf("%02x ", buff->s[i++]);
-			if (++j == 16)
-			{
-				ft_printf("\n");
-				j = 0;
-			}
-		}
-		ft_printf("\n");
-		++k;
-		buff = buff->next;
-	}
-}
-
 //verifier si il est possible d'avoir un buff non cree mais normalement nn
 void	write_label_call(t_env *e, t_call *call)
 {
@@ -57,16 +29,9 @@ void	write_label_call(t_env *e, t_call *call)
 	while (call)
 	{
 		buff = e->file->begin_buff;
-		if (PRINT)
-		{
-			ft_printf("{cyan}label call:{R}\n");
-			ft_printf(" -index: %zu\n", call->index_call);
-		}
 		while (call->index_call >= BS_ASM)
 		{
 			call->index_call -= buff->len;
-			if (PRINT)
-				ft_printf(" -index: %zu\n", call->index_call);
 			buff = buff->next;
 		}
 		i = 0;
@@ -74,16 +39,9 @@ void	write_label_call(t_env *e, t_call *call)
 		{
 			if (call->index_call >= BS_ASM)
 			{
-				if (PRINT)
-				{
-					ft_printf("{yellow} -new index file: %d\n", call->index_call);
-					ft_printf(" -new avance{R}\n");
-				}
 				call->index_call = 0;
 				buff = buff->next;
 			}
-			if (PRINT)
-				ft_printf("index file: %d\n", call->index_call);
 			byte = (e->file->i - call->index_inst) >> call->size * 8;
 			buff->s[call->index_call++] = byte;
 		}
@@ -107,8 +65,6 @@ int		search_label(t_env *e, char *s, int len)
 		{
 			label->index = e->file->i;
 			call = label->call;
-			if (PRINT)
-				ft_printf("error: %d\n", e->file->error);
 			if (!e->file->error)
 				write_label_call(e, call);
 		}
@@ -123,8 +79,6 @@ void	get_label(t_env *e, char *s, int len)
 	t_label	*new;
 
 	new = NULL;
-	if (PRINT)
-		ft_printf("{yellow}label OK: '%.*s'\n{R}", len + 1, s);
 	if (!(new = (t_label *)malloc(sizeof(t_label))))
 		alloc_error(e);
 	if (!(new->name = ft_strndup(s, len)))

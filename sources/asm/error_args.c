@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 20:09:18 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:09:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ int		error_file(t_env *e, char *error, char *file, unsigned opt)
 			ft_dprintf(2, "unknow option -- %s\n", error);
 		else if (opt & (O_COL_AMBIGUOUS_ERR | O_COL_INVALID_ERR))
 		{
-			ft_printf("%s argument '%s' for '--color'\n",
+			ft_dprintf(2, "%s argument '%s' for '--color'\n",
 				opt & O_COL_AMBIGUOUS_ERR ? "ambiguous" : "invalid", error);
-			ft_printf("Valid arguments are:\n  - 'always', 'yes', 'force'\n\
+			ft_dprintf(2, "Valid arguments are:\n  - 'always', 'yes', 'force'\n\
 				- 'never', 'no', 'none'\n  - 'auto', 'tty', 'if-tty'\n");
 		}
 		else if (opt & O_INVALID_FILE_ERR)
-			ft_printf("invalid file '%s'\n", file);
+			ft_dprintf(2, "invalid file '%s'\n", file);
 		else
-			ft_printf("argument to '-o' is missing\n");
+			ft_dprintf(2, "argument to '-o' is missing\n");
 	}
 	else
 		ft_dprintf(2, "%s: '%s'\n", strerror(errno), file);

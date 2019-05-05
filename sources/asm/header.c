@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:43:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:10:58 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,26 +109,11 @@ void	get_bytecode(t_env *e, unsigned char *header)
 			if (!only_label(e, &line))
 				parse_inst(e, line);
 		}
-		if (PRINT)
-		{
-			ft_printf("{yellow}in get_bytecode :: {R}\n");
-			ft_printf("last: %p != begin: %p\n", e->file->last, e->file->begin);
-		}
 		if (e->file->last != e->file->begin)
-		{
-			if (PRINT)
-				ft_printf("{cyan}before e->file->last {R}%p\n", e->file->last);
 			free_line(&e->file->last);
-			if (PRINT)
-				ft_printf("{bold}{red}after e->file->last {R}%p\n", e->file->last);
-		}
 		else
 			e->file->last = NULL;
-		if (PRINT)
-			ft_printf("{cyan}before e->file->begin {R}%p\n", e->file->begin);
 		free_line(&e->file->begin);
-		if (PRINT)
-			ft_printf("{red}{bold}after e->file->begin {R}%p\n", e->file->begin);
 	}
 	check_label_call(e);
 	if (e->file->error >= MAX_ERROR)
