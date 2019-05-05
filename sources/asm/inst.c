@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:08:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:57:02 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ int		search_label(t_env *e, char *s, int len)
 		label = label->next;
 	if (label)
 	{
-		if (label->index != -1 && ++e->file->error) // enlever increment error
-			ft_dprintf(2, "{#ff3333}error double assign label{R}\n");
+		if (label->index != -1) // enlever increment error
+			redefine_label(e, s, label->y);
 		else
 		{
 			label->index = e->file->i;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 19:57:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:58:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,20 @@ int		expect_str(t_env *e, char *error, int cmd)
 		line->y, error - line->s + 1);
 	ft_dprintf(2, "expected string after %s\n", scmd);
 	err_pointer(e->tty2, line->s, error + (ft_strchr(SPACES, *error) != NULL), 0);
+	ft_dprintf(2, "\n");
+	return (-(e->file->error >= 20));
+}
+
+int		redefine_label(t_env *e, char *error, int y)
+{
+	t_line *line;
+
+	line = e->file->last;
+	++e->file->error;
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, 
+	line->y, error - line->s + 1);
+	ft_dprintf(2, "redefinition of '%.*s' (previous definition line: %d)\n", ft_strchr(error, LABEL_CHAR) - error, error, y);
+	err_pointer(e->tty2, line->s, error, 0);
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
 }
