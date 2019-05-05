@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:26:40 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:43:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	missing_cmd(t_env *e, unsigned char *header, int cmd)
 	ft_memcpy(header, default_str, len);
 }
 
-void    label_call_error(t_env *e)
+void    check_label_call(t_env *e)
 {
 	t_label *label;
 	t_call  *call;
@@ -187,17 +187,11 @@ void    label_call_error(t_env *e)
 		}
 		label = label->next;
 	}
-	if (e->file->error >= MAX_ERROR) // fonction ?
-	{
-		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
-		ft_dprintf(2, "too many errors emitted, stopping now\n");
-	}
 }
 
 //checker pour tous les err_file que la couleur est reset
 void	end_error(t_env *e, unsigned char *header)
 {
-	label_call_error(e);
 	if (e->file->error < MAX_ERROR && e->file->i > CHAMP_MAX_SIZE)
 	{
 		++e->file->warning;

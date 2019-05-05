@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/03 18:58:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:43:51 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 	new->warning = 0;
 	new->buff = NULL;
 	new->begin_buff = NULL;
-	new->too_long = 0;
 	new->line_nb = 1;
 	new->output = NULL;
 	new->champ_part = 0;

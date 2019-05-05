@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:33:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/05 14:43:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ t_inst				*parse_inst(t_env *e, char *str);
 void				basic_error(t_env *e, char *str, char *err_string, int wave);
 void				print_buff(t_buff *buff);
 void				cmd_part_champ(t_env *e, int cmd);
+void				check_label_call(t_env *e);
 //verifier include dans .c et verifier proto fonctions
 
 /*
