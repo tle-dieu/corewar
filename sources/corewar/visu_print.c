@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/03 14:39:24 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:28:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ static void			get_posessions(t_env *e)
 
 	i = -1;
 	while (++i < MEM_SIZE)
-		if (e->v.color_map[i] != 6)
+		if (e->v.map[i] != 6)
 		{
-			if (e->v.color_map[i] < 0)
-				e->v.posess[-e->v.color_map[i] - 2]++;
+			if (e->v.map[i] < 0)
+				e->v.posess[-e->v.map[i] - 2]++;
 			else
-				e->v.posess[e->v.color_map[i] - 2]++;
+				e->v.posess[e->v.map[i] - 2]++;
 		}
 }
 
@@ -92,9 +92,9 @@ void				print_current_map(t_env *e)
 	print_current_stats(e);
 	while (++i < MEM_SIZE)
 	{
-		highlight = e->v.color_map[i] < 0 ? 1 : 0;
-		e->v.color_map[i] = highlight ? -e->v.color_map[i] : e->v.color_map[i];
-		attron(COLOR_PAIR(e->v.color_map[i]));
+		highlight = e->v.map[i] < 0 ? 1 : 0;
+		e->v.map[i] = highlight ? -e->v.map[i] : e->v.map[i];
+		attron(COLOR_PAIR(e->v.map[i]));
 		if (!(i % 64) || i)
 			!(i % 64) ? printw("\n") : printw(" ");
 		highlight ? attron(A_STANDOUT) : 0;

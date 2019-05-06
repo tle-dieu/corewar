@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:07:55 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:18:24 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void			param_to_str(t_env *e, int param, int size, int i)
 	else if (size == 2)
 	{
 		if (g_op_tab[e->d.op - 1].dir_size && (param == 128
-				|| param == 32 || param == 8))
+			|| param == 32 || param == 8))
 			e->d.tab[e->d.y][e->d.x++] = '%';
 		nb_in_buff(&e->d, (short)compute_param(e, e->d.champ, i, 2), 0);
 	}

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 15:38:28 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:29:14 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ static int			exec_cycle(t_env *e, t_proc *ptr)
 		ptr->cycle--;
 		ptr->pc = ptr->pc % MEM_SIZE;
 		if (!ptr->dead && e->visu && e->dump == -1)
-			e->v.color_map[ptr->pc % MEM_SIZE] =
-				-e->v.color_map[ptr->pc % MEM_SIZE];
+			e->v.map[ptr->pc % MEM_SIZE] = -e->v.map[ptr->pc % MEM_SIZE];
 		if (!ptr->dead && (ptr->op != e->mem[ptr->pc % MEM_SIZE]
 				|| ptr->op < 1 || ptr->op > 16))
 		{

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 15:35:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:30:55 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef	struct		s_champ
 typedef struct		s_visu
 {
 	int				posess[4];
-	int				color_map[MEM_SIZE];
+	int				map[MEM_SIZE];
 	int				color;
 	int				live_color;
 	unsigned int	sleep_value;

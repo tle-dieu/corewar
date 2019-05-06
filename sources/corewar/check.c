@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:05:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:17:09 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ static void		split_champ(t_env *e, int i)
 	k = 0;
 	while (++j < MAX_SIZE)
 	{
-		if (j == PROG_NAME_LENGTH + 8 || j == PROG_NAME_LENGTH
-				+ COMMENT_LENGTH + 16)
+		if (j == PROG_NAME_LENGTH + 8 || j == NAME_COMM_SIZE + 16)
 			k = 0;
 		if (j < PROG_NAME_LENGTH + 8)
 			e->champs[i].name[k++] = e->line[j];
-		else if (j >= PROG_NAME_LENGTH + COMMENT_LENGTH + 16)
+		else if (j >= NAME_COMM_SIZE + 16)
 			e->champs[i].content[k++] = e->line[j];
 		else if (j > PROG_NAME_LENGTH + 11)
 			e->champs[i].comment[k++] = e->line[j];
@@ -87,8 +86,7 @@ int				check_champ(t_env *e, char *arg, int i)
 	close(fd);
 	if (!err && (ret == -1 || !(check_magic_number(e))) && (err = 1))
 		ft_dprintf(2, "{bold}%s: {#ed000b}%s{R}\n",
-			ret == -1 ? strerror(errno)
-			: "Does not contain magic number", arg);
+			ret == -1 ? strerror(errno) : "Magic number missing", arg);
 	if (!err && !(check_champ_size(e, arg, ret, i)))
 		err = 1;
 	if (err)

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:26:03 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 20:05:58 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:27:36 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void			init_color_map(t_env *e)
 	champ = -1;
 	i = -1;
 	while (++i < MEM_SIZE)
-		e->v.color_map[i] = 6;
+		e->v.map[i] = 6;
 	while (++champ < e->nb_champ)
 	{
 		j = -1;
 		i = champ * (MEM_SIZE / e->nb_champ);
 		while (++j < e->champs[champ].size)
-			e->v.color_map[i++] = champ + 2;
+			e->v.map[i++] = champ + 2;
 	}
 	e->v.sleep_value = 50000;
 }

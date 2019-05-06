@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/03 17:34:13 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:22:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	reg = e->mem[(*pc + 2 + check.s[0]) % MEM_SIZE];
 	if (!check.error && reg > 0 && reg < 17)
 	{
@@ -68,7 +68,7 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 	int		reg2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	reg1 = e->mem[(*pc + 2) % MEM_SIZE];
 	reg2 = e->mem[(*pc + 2 + check.s[0]) % MEM_SIZE];
 	if (!check.error && reg1 > 0 && reg1 < 17)
@@ -93,7 +93,7 @@ void		add(t_env *e, int *pc, t_proc *ptr)
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 4) % MEM_SIZE]))
@@ -115,7 +115,7 @@ void		sub(t_env *e, int *pc, t_proc *ptr)
 	int		v2;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check_reg(e->mem[(*pc + 2) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 3) % MEM_SIZE])
 		|| !check_reg(e->mem[(*pc + 4) % MEM_SIZE]))

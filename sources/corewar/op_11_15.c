@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/03 18:06:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:21:11 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		sti(t_env *e, int *pc, t_proc *ptr)
 		{
 			e->v.color = e->visu ? ptr->color : 0;
 			insert(e, (*pc + ((check.v[1] + check.v[2]) % IDX_MOD))
-					% MEM_SIZE, (void*)&ptr->r[reg], REG_SIZE);
+				% MEM_SIZE, (void*)&ptr->r[reg], REG_SIZE);
 		}
 	}
 	*pc = *pc + 2 + check.s[0] + check.s[1] + check.s[2];

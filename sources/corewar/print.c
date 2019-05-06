@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 14:48:03 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:29:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ void		print_winner(t_env *e)
 			attron(COLOR_PAIR(e->champs[i].color));
 			if (e->last_live == e->champs[i].id)
 				printw("WINNER %40s(%d)\n",
-						e->champs[i].name, e->champs[i].id);
+					e->champs[i].name, e->champs[i].id);
 			else
 				printw("LOOSER %40s(%d)\n",
-						e->champs[i].name, e->champs[i].id);
+					e->champs[i].name, e->champs[i].id);
 			attroff(COLOR_PAIR(e->champs[i].color));
 		}
 		printw("%*s\n\n", PROGRESS_BAR_SIZE, "PRESS SPACE TO EXIT");

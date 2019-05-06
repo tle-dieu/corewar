@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/02 16:00:33 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:22:56 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check.error)
 	{
 		param_value(e, &check, ptr, 0);
@@ -38,7 +38,7 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check.error)
 	{
 		param_value(e, &check, ptr, 0);
@@ -58,7 +58,7 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check.error)
 	{
 		param_value(e, &check, ptr, 0);
@@ -93,7 +93,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	int		reg;
 
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
-		g_op_tab[ptr->op - 1].dir_size, ptr->op);
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	if (!check.error)
 	{
 		param_value(e, &check, ptr, 1);
