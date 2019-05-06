@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/03 20:08:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:26:35 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 	type += (type == 3);
 	if (!(g_op_tab[inst->op - 1].nb_param > inst->i && !(type & op_type)))
 		return ;
+	inst->error++;
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
 		e->file->last->y, str - e->file->last->s);
@@ -59,7 +60,7 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 	ft_dprintf(2, "\n");
 }
 
-void	error_register_nb(t_env *e, char *str, int nb)
+int		error_register_nb(t_env *e, char *str, int nb)
 {
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
@@ -68,6 +69,7 @@ void	error_register_nb(t_env *e, char *str, int nb)
 	err_pointer(e->tty2, e->file->last->s, str, 0);
 	err_wave(e->tty2, str, ft_strspn(str, "0123456789") - 1);
 	ft_dprintf(2, "\n");
+	return (-1);
 }
 
 void	error_unknow_inst(t_env *e, char *str)

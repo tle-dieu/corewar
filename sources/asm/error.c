@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 14:58:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:51:34 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		alloc_error(t_env *e)
 	return (-1);
 }
 
-void	basic_error(t_env *e, char *str, char *err_string, int wave)
+int basic_error(t_env *e, char *str, char *err_string, int wave)
 {
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
@@ -36,6 +36,7 @@ void	basic_error(t_env *e, char *str, char *err_string, int wave)
 	if (wave)
 		err_wave(e->tty2, str, wave);
 	ft_dprintf(2, "\n"); // return -1 si error >= 20
+	return (1);
 }
 
 int		expect_str(t_env *e, char *error, int cmd)

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 03:07:33 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:34:01 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,8 @@ int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					add_line(t_env *e, char **line);
 void				get_bytecode(t_env *e, unsigned char *header);
 int					alloc_error(t_env *e);
-t_inst				*parse_inst(t_env *e, char *str);
-void				basic_error(t_env *e, char *str, char *err_string, int wave);
+void				parse_inst(t_env *e, char *str);
+int					basic_error(t_env *e, char *str, char *err_string, int wave);
 void				print_buff(t_buff *buff);
 void				cmd_part_champ(t_env *e, int cmd);
 void				check_label_call(t_env *e);
@@ -206,7 +206,7 @@ void				free_line(t_line **line, int label);
 
 void				error_nb_param(t_env *e, char *str, int have, int should_have);
 void				error_param_type(t_env *e, t_inst *inst, char *str);
-void				error_register_nb(t_env *e, char *str, int nb);
+int					error_register_nb(t_env *e, char *str, int nb);
 void				error_unknow_inst(t_env *e, char *str);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 02:32:25 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:18:33 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,19 @@ int		label_is_good(t_env *e, char *str)
 	err = 0;
 	tmp = str;
 	tmp += ft_strspn(tmp, LABEL_CHARS);
-	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
+	if (e->file->error < 19 && *tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
 	{
 		basic_error(e, tmp, "illegal character for label\n", 0);
 		err = 1;
 	}
 	tmp += ft_strcspn(tmp, SPACES",");
 	tmp += ft_strspn(tmp, SPACES);
-	if (*tmp && *tmp != *SEPARATOR_CHAR)
+	if (e->file->error < 19 && *tmp && *tmp != *SEPARATOR_CHAR)
 	{
 		basic_error(e, tmp, "unexpected expression after parameter\n",
 			ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
+	err += (e->file->error >=  MAX_ERROR);
 	return (!err);
 }
