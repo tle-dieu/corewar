@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 16:42:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:32:45 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	get_bytecode(t_env *e, unsigned char *header)
 {
 	char	*line;
 
-	while (e->file->error < 20 && add_line(e, &line) == 1)
+	while (e->file->error < MAX_ERROR && add_line(e, &line) == 1)
 	{
 		if (*line == '.')
 			get_cmd(e, header + 4, line);
