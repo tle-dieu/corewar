@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 02:47:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:23:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void    check_label_call(t_env *e)
 				ft_dprintf(2, "(%d other%s", tt, tt > 1 ? "s)" : ")"); // revoir erreur
 			ft_dprintf(2, "\n");
 			err_pointer(e->tty2, call->line->s, call->s, 0);
-			ft_printf("\n");
+			ft_dprintf(2, "\n");
 			if (!note)
 			{
 				ft_dprintf(2, line_error(NOTE_LINE, e->tty2), e->file->name, call->line->y, call->s - call->line->s);

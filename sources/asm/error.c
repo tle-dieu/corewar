@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 15:51:34 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/06 17:22:50 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "op.h"
 #include <errno.h>
 #include <stdlib.h>
-
-//verifier que tout est print sur stderr
 
 int		alloc_error(t_env *e)
 {
@@ -28,9 +26,9 @@ int		alloc_error(t_env *e)
 
 int basic_error(t_env *e, char *str, char *err_string, int wave)
 {
-	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
-		e->file->last->y , str - e->file->last->s);
+	++e->file->error;
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, e->file->last->y, str - e->file->last->s + 1);
 	ft_dprintf(2, err_string);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
 	if (wave)
@@ -45,12 +43,12 @@ int		expect_str(t_env *e, char *error, int cmd)
 	char	*scmd;
 
 	++e->file->error;
-	scmd = (cmd == NAME_CMD ? COMMENT_CMD_STRING : NAME_CMD_STRING);
+	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
 	line = e->file->begin;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, 
-		line->y, error - line->s + 1);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "expected string after %s\n", scmd);
-	err_pointer(e->tty2, line->s, error + (ft_strchr(SPACES, *error) != NULL), 0);
+	err_pointer(e->tty2, line->s, error + 1 - (!ft_strchr(SPACES, *error)), 0);
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
 }
@@ -61,8 +59,11 @@ void	redefine_label(t_env *e, char *error, int y)
 
 	line = e->file->last;
 	++e->file->warning;
-	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
-	ft_dprintf(2, "label '%.*s' redifinition not allowed (definition line %d)\n", ft_strchr(error, LABEL_CHAR) - error, error, y);
+	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, "redefinition of label '%.*s' not allowed",
+		ft_strchr(error, LABEL_CHAR) - error, error);
+	ft_dprintf(2, "previous definition line %d)\n", y);
 	err_pointer(e->tty2, line->s, error, 0);
 	ft_dprintf(2, "\n");
 }
@@ -74,10 +75,11 @@ int		cmd_too_long(t_env *e, char *error, int cmd)
 	int		max;
 
 	++e->file->error;
-	max = cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH;
+	max = cmd == COMMENT_CMD ? COMMENT_LENGTH : PROG_NAME_LENGTH;
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
 	line = e->file->begin;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "%s declaration too long (Max length: %d)\n", scmd, max);
 	err_pointer(e->tty2, line->s, error++, 0);
 	err_wave(e->tty2, error, ft_strclen(error, '"') + 1);
@@ -93,7 +95,8 @@ int		unexpected_expression(t_env *e, char *error, int cmd)
 	++e->file->error;
 	line = e->file->last;
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "unexpected expression in %s declaration\n", scmd);
 	err_pointer(e->tty2, e->file->last->s, error, 0);
 	if (ft_strcspn(e->file->last->s, "\"") + e->file->last->s > error)
@@ -110,7 +113,8 @@ int		missing_quote(t_env *e, char *error)
 
 	line = e->file->begin;
 	++e->file->error;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "missing terminating '\"' character\n");
 	err_pointer(e->tty2, line->s, error + ft_strlen(error), 0);
 	ft_dprintf(2, "\n");
@@ -128,12 +132,13 @@ void	cmd_part_champ(t_env *e, int cmd)
 	++e->file->warning;
 	error = line->s + ft_strspn(line->s, SPACES);
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
-	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
-	ft_dprintf(2, "%s should be before instruction or label\n", scmd); // passer en warning
+	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, "%s should be before instruction or label\n", scmd);
 	err_pointer(e->tty2, line->s, error++, 0);
 	len = ft_strclen(error, '"');
 	len = error[len] == '"' ? len + ft_strclen(error + len + 1, '"') + 1
-	: ft_strcspn(error, SPACES"\"");
+		: ft_strcspn(error, SPACES"\"");
 	err_wave(e->tty2, error, len + (error[len] == '"'));
 	ft_dprintf(2, "\n");
 }
@@ -150,12 +155,13 @@ void	cmd_multiple_define(t_env *e, int cmd)
 	line = e->file->begin;
 	error = line->s + ft_strspn(line->s, SPACES);
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
-	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
-	ft_dprintf(2, "%s already defined (ignored)\n", scmd); // passer en warning
+	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, "%s already defined (ignored)\n", scmd);
 	err_pointer(e->tty2, line->s, error++, 0);
 	len = ft_strclen(error, '"');
 	len = error[len] == '"' ? len + ft_strclen(error + len + 1, '"') + 1
-	: ft_strcspn(error, SPACES"\"");
+		: ft_strcspn(error, SPACES"\"");
 	err_wave(e->tty2, error, len + (error[len] == '"'));
 	ft_dprintf(2, "\n");
 }
@@ -168,8 +174,10 @@ void	invalid_cmd(t_env *e, char *error, int cmd)
 	++e->file->warning;
 	line = e->file->begin;
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
-	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
-	ft_dprintf(2, "invalid command '%.*s'{R}\n", ft_strcspn(error, SPACES"\""), error);
+	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, "invalid command '%.*s'{R}\n",
+		ft_strcspn(error, SPACES"\""), error);
 	err_pointer(e->tty2, e->file->begin->s, error, 0);
 	err_wave(e->tty2, error, ft_strcspn(error + 1, SPACES"\""));
 	ft_dprintf(2, "\n");

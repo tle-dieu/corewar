@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 01:59:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:55:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,22 @@ static t_file	*add_file(t_env *e, char *name, unsigned options, int fd)
 
 int		color_option(t_env *e, char **line)
 {
-	int tmp;
-	size_t len;
+	int		tmp;
+	size_t	len;
 	char	*s;
 
 	tmp = -1;
-	(*line) += 5;
-	if (**line == '=')
+	if (*((*line) += 5) == '=')
 	{
 		s = ++(*line);
-		len = ft_strlen(s);
-		if (!ft_strncmp(s, "always", len) || !ft_strncmp(s, "yes", len) || !ft_strncmp(s, "force", len))
-			tmp = 1;	
-		else if (!ft_strncmp(s, "never", len) || !ft_strncmp(s, "no", len) || !ft_strncmp(s, "none", len))
+		if (!ft_strncmp(s, "always", (len = ft_strlen(s)))
+			|| !ft_strncmp(s, "yes", len) || !ft_strncmp(s, "force", len))
+			tmp = 1;
+		else if (!ft_strncmp(s, "never", len) || !ft_strncmp(s, "no", len)
+			|| !ft_strncmp(s, "none", len))
 			tmp = 0;
-		if (!ft_strncmp(s, "auto", len) || !ft_strncmp(s, "tty", len) || !ft_strncmp(s, "if-tty", len))
+		if (!ft_strncmp(s, "auto", len) || !ft_strncmp(s, "tty", len)
+			|| !ft_strncmp(s, "if-tty", len))
 			tmp = tmp != -1 ? 2 : e->tty2;
 		if (tmp == 2)
 			return (O_COL_AMBIGUOUS_ERR);
@@ -132,7 +133,7 @@ static int		get_long_option(t_env *e, unsigned *options, char **s)
 
 int		valid_file(int fd, unsigned *options)
 {
-	char	buff[BS_INVALID];
+	char	buff[1];
 	off_t	size;
 	off_t	current_pos;
 	int		ret;
