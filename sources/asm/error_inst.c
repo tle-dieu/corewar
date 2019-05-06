@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 15:26:35 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/06 17:52:10 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 void	error_nb_param(t_env *e, char *str, int have, int should_have)
 {
 	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name,
-		e->file->last->y, str - e->file->last->s);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y, str - e->file->last->s + 1);
 	if (have > should_have)
 		ft_dprintf(2, "too many parameter, have %d parameter expected %d\n",
 			have, should_have);
@@ -26,7 +25,7 @@ void	error_nb_param(t_env *e, char *str, int have, int should_have)
 		ft_dprintf(2, "missing parameter, have %d parameter expected %d\n",
 			have, should_have);
 	err_pointer(e->tty2, e->file->last->s, str, 0);
-	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));
+ 	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));
 	ft_dprintf(2, "\n");
 }
 

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 16:28:23 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/06 17:51:13 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 	char	*begin;
 
 	tmp = str;
+	begin = tmp;
 	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
 	while (*tmp && e->file->error < MAX_ERROR)
 	{
