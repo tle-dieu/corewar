@@ -6,13 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/03 14:20:16 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:27:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void			freedom(t_env *e, int to_exit)
+static void		free_processes(t_env *e)
 {
 	t_proc	*ptr;
 	t_proc	*tmp;
@@ -31,8 +31,16 @@ void			freedom(t_env *e, int to_exit)
 		free(tmp);
 	}
 	e->proc = NULL;
+}
+
+void			freedom(t_env *e, int to_exit)
+{
+	free_processes(e);
 	if (to_exit)
+	{
+		ft_dprintf(2, "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno));
 		exit(1);
+	}
 	if (e->visu && e->dump == -1)
 	{
 		while (getch() != ' ')

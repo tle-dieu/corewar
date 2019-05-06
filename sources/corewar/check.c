@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 15:13:00 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:27:10 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int				check_champ(t_env *e, char *arg, int i)
 	err = 0;
 	if ((fd == -1 || !fd) && (err = 1))
 	{
-		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error: %s\n", arg,
+		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
 			strerror(errno));
 		return (0);
 	}
