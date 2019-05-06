@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 17:34:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 21:48:53 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		alloc_error(t_env *e)
 	return (-1);
 }
 
-int basic_error(t_env *e, char *str, char *err_string, int wave)
+int		basic_error(t_env *e, char *str, char *err_string, int wave)
 {
 	++e->file->error;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
@@ -33,7 +33,7 @@ int basic_error(t_env *e, char *str, char *err_string, int wave)
 	err_pointer(e->tty2, e->file->last->s, str, 0);
 	if (wave)
 		err_wave(e->tty2, str, wave);
-	ft_dprintf(2, "\n"); // return -1 si error >= 20
+	ft_dprintf(2, "\n");
 	return (1);
 }
 
@@ -123,7 +123,7 @@ int		missing_quote(t_env *e, char *error)
 
 void	cmd_part_champ(t_env *e, int cmd)
 {
-	t_line *line;
+	t_line	*line;
 	char	*scmd;
 	char	*error;
 	int		len;

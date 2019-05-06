@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 21:36:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 21:45:50 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "op.h"
 #include <stdlib.h>
 
-int		get_color(int i, int last, int tty)
+static int	get_color(int i, int last, int tty)
 {
 	char	*color;
 	int		code;
@@ -41,7 +41,7 @@ int		get_color(int i, int last, int tty)
 	return (code);
 }
 
-void	print_ascii(t_env *e, unsigned char *bin, int size, int i)
+static void	print_ascii(t_env *e, unsigned char *bin, int size, int i)
 {
 	char	c;
 	int		color;
@@ -64,7 +64,7 @@ void	print_ascii(t_env *e, unsigned char *bin, int size, int i)
 		ft_printf("\n");
 }
 
-int		print_line(t_env *e, unsigned char *bin, int size, int i)
+static int	print_line(t_env *e, unsigned char *bin, int size, int i)
 {
 	int len;
 	int j;
@@ -91,7 +91,7 @@ int		print_line(t_env *e, unsigned char *bin, int size, int i)
 	return (j);
 }
 
-int		pass_bytes(t_file *file, unsigned char *bin, int size, int i)
+static int	pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 {
 	int j;
 	int len;
@@ -108,53 +108,23 @@ int		pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 	return (0);
 }
 
-unsigned char	*lst_to_char(t_env *e, unsigned char *header, int *size)
+void		print_bin(t_env *e, unsigned char *header)
 {
-	unsigned char	*str;	
-	t_buff			*buff;
 	int				i;
-	int				j;
-
-	buff = e->file->begin_buff;
-	i = HEADER_SIZE + buff->len;
-	while ((buff = buff->next))
-		i += buff->len;
-	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * i)))
-		alloc_error(e);
-	*size = i;
-	i = 0;
-	while (i < HEADER_SIZE)
-		str[i++] = *header++;
-	buff = e->file->begin_buff;
-	while (buff)
-	{
-		j = 0;
-		while (j < buff->len)
-			str[i++] = buff->s[j++];
-		buff = buff->next;
-	}
-	return (str);
-}
-
-void	print_bin(t_env *e, unsigned char *header)
-{
-	int i;
-	int	len;
-	int	size;
-	int	ret;
-	int old;
-	unsigned char *bin;
+	int				size;
+	int				ret;
+	int				old;
+	unsigned char	*bin;
 
 	i = 0;
 	old = 0;
 	ret = 0;
 	bin = lst_to_char(e, header, &size);
-	len = e->file->options & O_HEXA ? 16 : 6;
 	while (i < size)
 	{
 		if (!(e->file->options & O_LONG)
-		&& (ret = pass_bytes(e->file, bin, size, i)) == -1 && old)
-				break ;
+			&& (ret = pass_bytes(e->file, bin, size, i)) == -1 && old)
+			break ;
 		if (old && !ret)
 			ft_printf("*\n");
 		if (!old || !ret)

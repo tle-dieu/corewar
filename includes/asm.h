@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 16:43:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 22:04:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@
 # define TAB_SIZE 4
 # define MAX_ERROR 20
 
-# define PRINT 0 // a enlever
+# define NAME_C "{#f1c40f}"
+# define COMMENT_C "{#3498f0}"
+# define CHAMP_C "{#e74c3c}"
+# define SIZE_C "{#2ecc71}"
+# define MAGIC_C "{#9b59b6}"
 
 # define NAME_CMD 1
 # define COMMENT_CMD 2
@@ -154,13 +158,6 @@ typedef struct		s_env
 ** ---------- DEBUG ----------
 */
 
-# define FT_C "{#2ecc71}" // a suppr
-# define STR_C "{#0bd195}" // a suppr
-# define NAME_C "{#f1c40f}"
-# define COMMENT_C "{#3498f0}"
-# define CHAMP_C "{#e74c3c}"
-# define SIZE_C "{#2ecc71}"
-# define MAGIC_C "{#9b59b6}"
 
 void				print_files(t_file *file);
 void				print_bin(t_env *e, unsigned char *header);
@@ -199,6 +196,14 @@ void				free_line(t_line **line, int label);
 //verifier include dans .c et verifier proto fonctions
 
 /*
+** ----------- OPTIONS ------------
+*/
+
+int					get_short_option(t_env *e, unsigned *options, char **s);
+int					get_long_option(t_env *e, unsigned *options, char **s);
+int					output_file(t_env *e, int ac, char **av, unsigned *options);
+
+/*
 ** ---------- ERROR_INST ----------
 */
 
@@ -214,6 +219,7 @@ void				error_unknow_inst(t_env *e, char *str);
 int					inst_atoi(char *str);
 int					is_a_number(t_env *e, char *str);
 size_t				param_strrspn(const char *s, const char *accept, char stop);
+unsigned char		*lst_to_char(t_env *e, unsigned char *header, int *size);
 
 /*
 **	---------- LABEL ----------
