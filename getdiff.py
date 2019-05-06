@@ -11,16 +11,14 @@ RED = "\x1b[1;38;2;241;76;76m"
 WHITE = "\x1b[1;38;2;255;255;255m"
 
 def get_file(asm, f):
+    my_file = f.split('.')[0] + ".cor"
+    sp.getoutput('rm ' + my_file)
     open = sp.getoutput("./" + asm + " --color=force " + f)
     output = ""
     error = ""
-    my_file = ""
     success = ""
     if open:
-        f = f.split('.')
-        my_file = f[0] + ".cor"
         output = sp.getoutput('xxd ' + my_file)
-        test = sp.getoutput('rm ' + my_file)
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
     if not error and output[0] == 'x' :
