@@ -119,7 +119,7 @@ def main():
                 print(GREEN + "Diff = OK")
             elif "hasn' t" in tmp and "hasn' t" in err:
                 print(err)
-                print(GREEN + "Diff = OK (both files haven' t been created")
+                print(GREEN + "Diff = OK (both files haven't been created)")
             else:
                 bad_file += "\t- " + arg + "\n"
                 nb_err += 1

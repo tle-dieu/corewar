@@ -1,6 +1,6 @@
 NAME = libft.a
 NAME_SHARED = libft.so
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Werror -Wextra
 
 AR = ar rc

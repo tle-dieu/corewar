@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 16:42:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 02:47:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,14 @@ void	compile_write(t_env *e, unsigned char *header)
 		if (!(s = ft_strrchr(e->file->name, '.')))
 		{
 			if (!(e->file->output = ft_strjoin(e->file->name, ".cor")))
-				exit (0); // alloc error
+				alloc_error(e);
 		}
 		else
 		{
 			if (!(e->file->output = ft_strnew(s - e->file->name + 4))
 					|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
 					|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
-				exit(0); //alloc error
+				alloc_error(e);
 		}
 	}
 	if ((fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR)) != -1)
@@ -112,9 +112,10 @@ void	compile_write(t_env *e, unsigned char *header)
 	}
 	else
 	{
-		ft_dprintf(2, "error: %s: '%s'\n", strerror(errno), e->file->output);
-		exit(0); // errno
+		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
+		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
 	}
+	
 }
 
 void	missing_cmd(t_env *e, unsigned char *header, int cmd)
@@ -142,23 +143,39 @@ void    check_label_call(t_env *e)
 	t_label *label;
 	t_call  *call;
 	int		len;
+	int		note;
+	int		tt;
 
 	label = e->file->label;
+	note = 0;
 	while (label && e->file->error < MAX_ERROR)
 	{
 		if (label->index == -1)
 		{
+			tt = 0;
 			call = label->call;
-			while (call && e->file->error < MAX_ERROR)
+			while (call->next)
 			{
-				++e->file->error;
-				len = ft_strspn(call->s, LABEL_CHARS);
-				ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, call->line->y, call->s - call->line->s);
-				ft_dprintf(2, "label '%.*s' is undefined\n", len, call->s); // revoir erreur
-				err_pointer(e->tty2, call->line->s, call->s, 0);
-				ft_dprintf(2, "\n");
+				++tt;
 				call = call->next;
 			}
+			++e->file->error;
+			len = ft_strspn(call->s, LABEL_CHARS);
+			ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, call->line->y, call->s - call->line->s);
+			ft_dprintf(2, "label '%.*s' is undefined ", len, call->s); // revoir erreur
+			if (tt)
+				ft_dprintf(2, "(%d other%s", tt, tt > 1 ? "s)" : ")"); // revoir erreur
+			ft_dprintf(2, "\n");
+			err_pointer(e->tty2, call->line->s, call->s, 0);
+			ft_printf("\n");
+			if (!note)
+			{
+				ft_dprintf(2, line_error(NOTE_LINE, e->tty2), e->file->name, call->line->y, call->s - call->line->s);
+				ft_dprintf(2, "undefined label reported only once\n");
+				note = 1;
+			}
+			if (e->tty2)
+				ft_dprintf(2, "{R}");
 		}
 		label = label->next;
 	}
@@ -218,7 +235,6 @@ int		main(int ac, char **av)
 {
 	t_env	e;
 	t_file	*next;
-
 
 	e = (t_env){isatty(1), isatty(2), 0, NULL, NULL, av[0], NULL};
 	if (ac < 2)

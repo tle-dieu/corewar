@@ -27,6 +27,8 @@ char	*line_error(int line, int tty)
 		return (tty ? WARNING_FILE_C : WARNING_FILE_NC);
 	else if (line == ERR_ARGS)
 		return (tty ? ERR_ARGS_C : ERR_ARGS_NC);
+	else if (line == NOTE_LINE)
+		return (tty ? NOTE_LINE_C : NOTE_LINE_NC);
 	return (NULL);
 }
 

@@ -54,18 +54,16 @@ int		expect_str(t_env *e, char *error, int cmd)
 	return (-(e->file->error >= 20));
 }
 
-int		redefine_label(t_env *e, char *error, int y)
+void	redefine_label(t_env *e, char *error, int y)
 {
 	t_line *line;
 
 	line = e->file->last;
-	++e->file->error;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, 
-	line->y, error - line->s + 1);
-	ft_dprintf(2, "redefinition of '%.*s' (previous definition line: %d)\n", ft_strchr(error, LABEL_CHAR) - error, error, y);
+	++e->file->warning;
+	ft_dprintf(2, line_error(WARNING_LINE, e->tty2), e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, "label '%.*s' redifinition not allowed (definition line %d)\n", ft_strchr(error, LABEL_CHAR) - error, error, y);
 	err_pointer(e->tty2, line->s, error, 0);
 	ft_dprintf(2, "\n");
-	return (-(e->file->error >= 20));
 }
 
 int		cmd_too_long(t_env *e, char *error, int cmd)

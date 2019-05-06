@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/05 16:38:59 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 02:32:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,18 @@ int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
 	if (!label)
 	{
 		if (!(new = (t_label *)malloc(sizeof(t_label))))
-			exit (0); // alloc error
+			alloc_error(e);
 		label = new;
 		new->index = -1;
 		label->call = NULL;
 		new->next = e->file->label;
 		e->file->label = new;
-		if (!(new->name = ft_strndup(s, e->i)))
-		{
-			free(new);
-			exit(0); // alloc error
-		}
+		new->name = NULL;
+		if (!(new->name = ft_strndup(s, e->i))) // erreur parti sans raison (a retester)
+			alloc_error(e);
 	}
 	if (!(call = (t_call *)malloc(sizeof(t_call))))
-	{
-		if (new)
-			free(new->name); // remplacer par fonction free call ?
-		free(new);
-		exit(0);
-	}
+		alloc_error(e);
 	e->file->last->free = -(e->file->last->free == 0);
 	call->line = e->file->last;
 	call->index_inst = e->file->i;

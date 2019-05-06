@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/05 15:13:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 02:36:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	add_buff(t_env *e)
 	t_buff	*new;
 
 	if (!(new = (t_buff *)malloc(sizeof(t_buff))))
-		exit(0); // alloc error
+		alloc_error(e);
 	new->next = NULL;
 	if (!e->file->begin_buff)
 		e->file->begin_buff = new;

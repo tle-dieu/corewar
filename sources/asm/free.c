@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 17:00:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 02:12:54 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
 
-void	free_label(t_label **label) // segfault
+void	free_label(t_label **label)
 {
 	t_call *next;
 	t_call *call;

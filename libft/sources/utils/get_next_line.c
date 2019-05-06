@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 18:00:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 15:49:58 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 03:06:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int		free_fd(t_gnl **begin, t_gnl *del)
+static int		free_fd(t_gnl **begin, t_gnl *del, char *tmp)
 {
 	t_gnl *prev;
 	t_gnl *actual;
 
+	free(tmp);
 	prev = NULL;
 	actual = *begin;
 	while (actual != del)
@@ -77,7 +78,11 @@ static int		check_line(t_gnl *actual, int ret, char **line, char *next_line)
 	if (next_line)
 	{
 		if (!(tmp = ft_memdup(next_line + 1, actual->len - len - 1)))
+		{
+			free(*line);
+			*line = NULL;
 			return (-1);
+		}
 		free(actual->str);
 		actual->str = tmp;
 	}
@@ -103,13 +108,13 @@ int				get_next_line(const int fd, char **line)
 			break ;
 		tmp = actual->str;
 		if (!(actual->str = ft_memjoin(actual->str, buff, actual->len, ret)))
-			return (free_fd(&list, actual));
+			return (free_fd(&list, actual, tmp));
 		actual->len += ret;
 		free(tmp);
 		if (actual->len > MAX_SIZE_STATIC)
-			return (!free_fd(&list, actual));
+			return (!free_fd(&list, actual, NULL));
 	}
 	if ((ret = check_line(actual, ret, line, tmp)) <= 0)
-		free_fd(&list, actual);
+		free_fd(&list, actual, NULL);
 	return (ret);
 }

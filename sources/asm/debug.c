@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/05 15:13:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 02:38:53 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ unsigned char *lst_to_char(t_env *e, unsigned char *header, int *size)
 		buff = buff->next;
 	}
 	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * len)))
-		return (NULL);
+		alloc_error(e);
 	*size = len;
 	i = 0;
 	while (i < HEADER_SIZE)
@@ -217,4 +217,5 @@ void	print_bin(t_env *e, unsigned char *header)
 		}
 		old = ret;
 	}
+	free(bin);
 }
