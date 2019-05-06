@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/03 14:39:27 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 14:48:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 void		usage(char *path)
 {
 	if (path)
-		ft_printf("usage:\n\
-			%s [-dump nbr_cycles] [[-n number]champion1.cor] ...\n\
+		ft_printf("input {bold}{#ed000b}error{R}:\n\
+			{bold}%s{R} [-dump nbr_cycles] [[-n number]champion1.cor] [-v]...\n\
 			You must enter between 2 and 4 champions\n\
-			Champions must have the .cor extension\n\n", path);
+			Champions must have the .cor extension\n\n\
+			-dump to print memory at a precise cycle\n\
+			-n to give a player number\n\
+			-v to enable viewer\n\n", path);
 }
 
 void		print_memory(t_env *e, int cursor)
@@ -31,9 +34,9 @@ void		print_memory(t_env *e, int cursor)
 		if (i && !(i % 32))
 			ft_printf("\n", e->mem[i]);
 		if (i && i == cursor)
-			ft_printf("{#f4428c}%02x {reset}", e->mem[i]);
+			ft_printf("{#f4428c}%02x {R}", e->mem[i]);
 		else if (!e->mem[i])
-			ft_printf("{#63676d}%02x {reset}", e->mem[i]);
+			ft_printf("{#63676d}%02x {R}", e->mem[i]);
 		else
 			ft_printf("%02x ", e->mem[i]);
 	}

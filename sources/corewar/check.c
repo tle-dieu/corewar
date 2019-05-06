@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/03 15:38:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 14:48:07 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,23 @@ static int		check_magic_number(t_env *e)
 	return (1);
 }
 
-static int		check_champ_size(t_env *e, int ret, int i)
+static int		check_champ_size(t_env *e, char *arg, int ret, int i)
 {
 	e->champs[i].size = e->line[PROG_NAME_LENGTH + 10] * 256
 		+ e->line[PROG_NAME_LENGTH + 11];
-	return (ret < MAX_SIZE || e->champs[i].size < CHAMP_MAX_SIZE
-		|| e->champs[i].size < 0);
+	if (e->champs[i].size <= 0)
+	{
+		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small (%d){R}\n",
+			arg, e->champs[i].size);
+		return (0);
+	}
+	else if (ret > MAX_SIZE || e->champs[i].size > CHAMP_MAX_SIZE)
+	{
+		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too big\
+			(%d > %d){R}\n", arg, e->champs[i].size, CHAMP_MAX_SIZE);
+		return (0);
+	}
+	return (1);
 }
 
 int				check_champ(t_env *e, char *arg, int i)
@@ -67,18 +78,18 @@ int				check_champ(t_env *e, char *arg, int i)
 	err = 0;
 	if ((fd == -1 || !fd) && (err = 1))
 	{
-		ft_dprintf(2, "\nWrong .cor file: %s\n", arg);
+		ft_dprintf(2, "{bold}Non-existent .cor file: {#ed000b}%s{R}\n", arg);
 		return (0);
 	}
 	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
 	ret = !err ? read(fd, e->line, MAX_SIZE + 1) : -1;
 	close(fd);
 	if (!err && (ret == -1 || !(check_magic_number(e))) && (err = 1))
-		ft_dprintf(2, "\n%s: %s\n", ret == -1 ? "Not a valid file"
+		ft_dprintf(2, "{bold}%s: {#ed000b}%s{R}\n",
+			ret == -1 ? "Not a valid file"
 			: "Does not contain magic number", arg);
-	if (!err && !(check_champ_size(e, ret, i)) && (err = 1))
-		ft_dprintf(2, "\nChampion %s too big (%d > %d)\n", arg,
-			e->champs[i].size, CHAMP_MAX_SIZE);
+	if (!err && !(check_champ_size(e, arg, ret, i)))
+		err = 1;
 	if (err)
 		return (0);
 	split_champ(e, i);
