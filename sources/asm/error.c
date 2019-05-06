@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 16:46:16 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 17:22:50 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		expect_str(t_env *e, char *error, int cmd)
 	char	*scmd;
 
 	++e->file->error;
-	scmd = (cmd == NAME_CMD ? COMMENT_CMD_STRING : NAME_CMD_STRING);
+	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
 	line = e->file->begin;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 1);
@@ -75,7 +75,7 @@ int		cmd_too_long(t_env *e, char *error, int cmd)
 	int		max;
 
 	++e->file->error;
-	max = cmd ? COMMENT_LENGTH : PROG_NAME_LENGTH;
+	max = cmd == COMMENT_CMD ? COMMENT_LENGTH : PROG_NAME_LENGTH;
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
 	line = e->file->begin;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
