@@ -21,6 +21,7 @@ def get_file(asm, f):
         output = sp.getoutput('xxd ' + my_file)
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
+        sp.getoutput('rm ' + my_file)
     if not error and output[0] == 'x' :
         error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn' t been created"
         error += "\n" + WHITE + open

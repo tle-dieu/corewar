@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 02:36:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:37:32 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,13 @@ void	write_inst(t_env *e, t_inst *inst)
 	if (!inst->error)
 		e->file->i = inst->index;
 }
-
-t_inst	*parse_inst(t_env *e, char *str)
+void	parse_inst(t_env *e, char *str)
 {	
 	t_inst	inst;
 	char	*tmp;
 
 	inst = (t_inst){.ocp = 0}; // verifier norme
-	if ((inst.op = get_curr_inst(str)) <= 16)
+	if (e->file->error < MAX_ERROR && (inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;
 		tmp = str + ft_strlen(g_op_tab[inst.op - 1].label);
@@ -117,8 +116,10 @@ t_inst	*parse_inst(t_env *e, char *str)
 		if (!e->file->champ_part)
 			e->file->champ_part = 1;
 	}
-	else
+	else if (e->file->error < MAX_ERROR)
+	{
+		inst.error++;
 		error_unknow_inst(e, str);
+	}
 	write_inst(e, &inst);
-	return (NULL);
 }

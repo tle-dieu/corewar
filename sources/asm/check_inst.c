@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 14:44:11 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:28:23 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,19 @@ int		is_valid_register(t_env *e, char *str)
 	while (ft_isdigit(*tmp))
 		tmp++;
 	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
-	{
-		basic_error(e, tmp, "illegal character for label\n", 0);
-		err = 1;
-	}
+		err += basic_error(e, tmp, "illegal character for label\n", 0);
 	tmp += ft_strcspn(tmp, SPACES",");
 	tmp += ft_strspn(tmp, SPACES);
-	if (*tmp && *tmp != *SEPARATOR_CHAR)
-	{
-		basic_error(e, tmp, "unexpected expression after parameter\n",
+	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
+		err += basic_error(e, tmp, "unexpected expression after parameter\n",
 				ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
-		err = 1;
-	}
 	return (!err);
 }
 
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
 	char	*tmp;
-
+	
 	tmp = str;
 	if (*tmp == 'r')
 	{
@@ -111,7 +105,7 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 			inst->p[inst->i] = inst_atoi(tmp);
 		else
 			inst->error++;
-		if (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER)
+		if (e->file->error < MAX_ERROR && (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER))
 		{
 			error_register_nb(e, tmp, inst->p[inst->i]);
 			inst->error++;
@@ -128,7 +122,7 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 
 	tmp = str;
 	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
-	while (*tmp)
+	while (*tmp && e->file->error < MAX_ERROR)
 	{
 		tmp += ft_strspn(tmp, SPACES);
 		if (g_op_tab[inst->op - 1].nb_param > inst->i)
@@ -136,7 +130,7 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 			begin = tmp;
 			is_direct(e, tmp, inst) || is_reg(e, tmp, inst)
 			|| is_indirect(e, tmp, inst);
-			if (inst->t[inst->i])
+			if (e->file->error < MAX_ERROR && inst->t[inst->i])
 			{
 				error_param_type(e, inst, begin);
 				inst->index += inst->s[inst->i];
@@ -145,7 +139,7 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 		tmp += ft_strspn(tmp, SPACES);
 		tmp += ft_strcspn(tmp, SEPARATOR_CHAR);
 		inst->i++;
-		if (!*tmp)
+		if (!*tmp || e->file->error >= MAX_ERROR)
 			break ;
 		if (*tmp++ == ',' && !tmp[ft_strspn(tmp, SPACES)])
 		{
@@ -153,6 +147,8 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 			inst->error++;
 		}
 	}
+	if (e->file->error >= MAX_ERROR)
+		return (-1);
 	if (inst->i != g_op_tab[inst->op - 1].nb_param)
 	{
 		inst->error++;
