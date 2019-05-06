@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 00:07:33 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 20:24:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ int		error_file(t_env *e, char *error, char *file, unsigned opt)
 		{
 			ft_dprintf(2, "%s argument '%s' for '--color'\n",
 				opt & O_COL_AMBIGUOUS_ERR ? "ambiguous" : "invalid", error);
-			ft_dprintf(2, "Valid arguments are:\n  - 'always', 'yes', 'force'\n\
-				- 'never', 'no', 'none'\n  - 'auto', 'tty', 'if-tty'\n");
+			ft_dprintf(2, "Valid arguments are:\n");
+			ft_dprintf(2, "  - 'always', 'yes', 'force'\n");
+			ft_dprintf(2, "  - 'never', 'no', 'none'\n");
+			ft_dprintf(2, "  - 'auto', 'tty', 'if-tty'\n");
 		}
 		else if (opt & O_INVALID_FILE_ERR)
 			ft_dprintf(2, "invalid file '%s'\n", file);

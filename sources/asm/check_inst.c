@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 17:51:13 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/06 20:07:33 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int		is_valid_register(t_env *e, char *str)
 int		is_reg(t_env *e, char *str, t_inst *inst)
 {
 	char	*tmp;
-	
+
 	tmp = str;
 	if (*tmp == 'r')
 	{
@@ -105,7 +105,8 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 			inst->p[inst->i] = inst_atoi(tmp);
 		else
 			inst->error++;
-		if (e->file->error < MAX_ERROR && (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER))
+		if (e->file->error < MAX_ERROR
+		&& (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER))
 		{
 			error_register_nb(e, tmp, inst->p[inst->i]);
 			inst->error++;

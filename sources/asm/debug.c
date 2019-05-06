@@ -6,74 +6,13 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 02:38:53 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 21:36:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "op.h"
 #include <stdlib.h>
-
-void	print_inst(t_inst *inst, char *str)
-{
-	int i;
-
-	i = 0;
-	ft_printf("\nstr\t= %s\n", str);
-	ft_printf("op\t= %d\n", inst->op);
-	ft_printf("ocp\t= %d\n", inst->ocp);
-	ft_printf("nb_p\t= %d\n", inst->nb_p);
-	ft_printf("params:\n");
-	while (i < inst->nb_p)
-	{
-		ft_printf("\t p[%d] = %d", i, inst->p[i]);
-		ft_printf("\t s[%d] = %d", i, inst->s[i]);
-		ft_printf("\t t[%d] = %d\n", i, inst->t[i]);
-		i++;
-	}
-}
-
-void	print_label(t_env *e)
-{
-	t_label *label;
-
-	label = e->file->label;
-	ft_printf("{yellow}---- Print Label ----{R}\n");
-	ft_printf("actual index: %02x :: %d\n", e->file->i, e->file->i);
-	while (label)
-	{
-		ft_printf(MAGIC_C"name: {R}%s"MAGIC_C" | index: {R}", label->name);
-		if (label->index != -1)
-			ft_printf("%02x "MAGIC_C"::{R} %d\n", label->index, label->index);
-		else
-			ft_printf("{#ff3333}missing{R}\n");
-		label = label->next;
-	}
-}
-
-void			print_option(char *output, unsigned options, char *s)
-{
-	ft_printf(STR_C"filename: {R}%s\n", s);
-	ft_printf(STR_C"  => hexa:   {R}%s\n", options & O_HEXA ? "yes" : "no");
-	ft_printf(STR_C"  => binary: {R}%s\n", options & O_BIN ? "yes" : "no");
-	ft_printf(STR_C"  => long:   {R}%s\n", options & O_LONG ? "yes" : "no");
-	ft_printf(STR_C"  => disas:  {R}%s\n", options & O_DISAS ? "yes" : "no");
-	if (output)
-		ft_printf(STR_C"  => output: {R}yes: %s\n", output);
-	else
-		ft_printf(STR_C"  => output: {R}no\n", output);
-	ft_printf("\n");
-}
-
-void			print_files(t_file *file)
-{
-	ft_printf("{yellow}----- Print File -----{R}\n");
-	while (file)
-	{
-		print_option(file->output, file->options, file->name);
-		file = file->next;
-	}
-}
 
 int		get_color(int i, int last, int tty)
 {
@@ -102,6 +41,29 @@ int		get_color(int i, int last, int tty)
 	return (code);
 }
 
+void	print_ascii(t_env *e, unsigned char *bin, int size, int i)
+{
+	char	c;
+	int		color;
+	int		j;
+	int		len;
+
+	j = 0;
+	color = 0;
+	len = e->file->options & O_HEXA ? 16 : 6;
+	while (i + j < size && j < len)
+	{
+		color = get_color(j + i, color, e->tty1);
+		c = (bin[j + i] >= 32 && bin[j + i] < 127) ? bin[j + i] : '.';
+		ft_printf("%c", c);
+		j++;
+	}
+	if (e->tty1)
+		ft_printf("{R}");
+	if (i < size)
+		ft_printf("\n");
+}
+
 int		print_line(t_env *e, unsigned char *bin, int size, int i)
 {
 	int len;
@@ -111,7 +73,7 @@ int		print_line(t_env *e, unsigned char *bin, int size, int i)
 	color = 0;
 	len = e->file->options & O_HEXA ? 16 : 6;
 	j = 0;
-	if (i + j < size)
+	if (i < size)
 		ft_printf("%08x:  ", i);
 	while (i + j < size && j < len)
 	{
@@ -123,18 +85,9 @@ int		print_line(t_env *e, unsigned char *bin, int size, int i)
 	if (e->tty1)
 		ft_printf("{R}");
 	if (j)
-		ft_printf("%*c", (len == 6 ? 9 : 3) * (len - j) + (j < len / 2) + 1, ' ');
-	j = 0;
-	color = 0;
-	while (i + j < size && j < len)
-	{
-		color = get_color(j + i, color, e->tty1);
-		ft_printf("%c", (bin[j + i] >= 32 && bin[j + i] < 127) ? bin[j + i] : '.');
-		j++;
-	}
-	if (e->tty1)
-		ft_printf("{R}");
-	ft_printf("\n");
+		ft_printf("%*c",
+			(len == 6 ? 9 : 3) * (len - j) + (j < len / 2) + 1, ' ');
+	print_ascii(e, bin, size, i);
 	return (j);
 }
 
@@ -144,36 +97,31 @@ int		pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 	int len;
 
 	j = 0;
-	len = file->options & O_HEXA ? 16 : 6;
+	len = file->options & O_HEXA ? 16 : 6 - 1;
 	while (!bin[j + i])
 	{
 		if (j + i >= size)
 			return (-1);
-		if (j == len)
+		if (++j == len)
 			return (j);
-		j++;
 	}
 	return (0);
 }
 
-unsigned char *lst_to_char(t_env *e, unsigned char *header, int *size)
+unsigned char	*lst_to_char(t_env *e, unsigned char *header, int *size)
 {
 	unsigned char	*str;	
-	int				len;
 	t_buff			*buff;
 	int				i;
 	int				j;
 
 	buff = e->file->begin_buff;
-	len = HEADER_SIZE;
-	while (buff)
-	{
-		len += buff->len;
-		buff = buff->next;
-	}
-	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * len)))
+	i = HEADER_SIZE + buff->len;
+	while ((buff = buff->next))
+		i += buff->len;
+	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * i)))
 		alloc_error(e);
-	*size = len;
+	*size = i;
 	i = 0;
 	while (i < HEADER_SIZE)
 		str[i++] = *header++;
@@ -187,6 +135,7 @@ unsigned char *lst_to_char(t_env *e, unsigned char *header, int *size)
 	}
 	return (str);
 }
+
 void	print_bin(t_env *e, unsigned char *header)
 {
 	int i;
@@ -204,17 +153,14 @@ void	print_bin(t_env *e, unsigned char *header)
 	while (i < size)
 	{
 		if (!(e->file->options & O_LONG)
-		&& (ret = pass_bytes(e->file, bin, size, i)) == -1)
+		&& (ret = pass_bytes(e->file, bin, size, i)) == -1 && old)
 				break ;
-		if (ret)
-			i += ret;
+		if (old && !ret)
+			ft_printf("*\n");
+		if (!old || !ret)
+			i += print_line(e, bin, size, i);
 		else
-		{
-			if (old)
-				ft_printf("*\n");
-			i += print_line(e, bin, size, i);
-			i += print_line(e, bin, size, i);
-		}
+			i += ret;
 		old = ret;
 	}
 	free(bin);

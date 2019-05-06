@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 16:55:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/06 20:42:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int		get_short_option(t_env *e, unsigned *options, char **s)
 		else if (**s == 'b')
 			tmp |= O_BIN;
 		else if (**s == 'l')
-			tmp |= O_LONG; // changer en short ou pas
+			tmp |= O_LONG;
 		else if (**s == 'd')
 			tmp |= O_DISAS;
 		else if (**s == 'o')
@@ -120,7 +120,7 @@ static int		get_long_option(t_env *e, unsigned *options, char **s)
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;
 	else if (!ft_strncmp(*s, "color", 5)
-			&& (!*((*s) + 5) || *((*s) + 5) == '='))
+		&& (!*((*s) + 5) || *((*s) + 5) == '='))
 		return (!(*options |= color_option(e, s)));
 	else if (!ft_strcmp(*s, "output"))
 		*options |= O_OUTPUT;
@@ -156,40 +156,44 @@ int		valid_file(int fd, unsigned *options)
 	return (1);
 }
 
+int		output_file(t_env *e, int ac, char **av, unsigned *options)
+{
+	*options &= ~O_OUTPUT;
+	if (++e->i >= ac)
+	{
+		*options |= O_OUTPUT_ERR;
+		return (error_file(e, NULL, av[e->i], *options));
+	}
+	else if (*av[e->i])
+		e->output = av[e->i];
+	return (1);
+}
+
 int		parse_command_line(t_env *e, int ac, char **av)
 {
-	unsigned options;
-	int		fd;
-	char	*s;
-	int		i;
+	unsigned	options;
+	int			fd;
+	char		*s;
 
 	options = 0;
-	i = 0;
-	while (++i < ac)
+	while (++e->i < ac)
 	{
-		s = av[i];
+		s = av[e->i];
 		if ((*s != '-' || !*++s || (*s == '-' && !*(s + 1))
-					|| !(*s == '-' ? get_long_option(e, &options, &s)
-						: get_short_option(e, &options, &s))) && (!(options & O_OUTPUT)))
+				|| !(*s == '-' ? get_long_option(e, &options, &s)
+					: get_short_option(e, &options, &s)))
+			&& (!(options & O_OUTPUT)))
 		{
 			if (options & O_OUTPUT_ERR
-					|| (fd = open(av[i], O_RDONLY)) == -1
+					|| (fd = open(av[e->i], O_RDONLY)) == -1
 					|| !valid_file(fd, &options))
-				return (error_file(e, s, av[i], options));
-			e->actual = add_file(e, av[i], options, fd);
+				return (error_file(e, s, av[e->i], options));
+			e->actual = add_file(e, av[e->i], options, fd);
 			options = 0;
 		}
 		if (O_OUTPUT & options)
-		{
-			options &= ~O_OUTPUT;
-			if (++i >= ac)
-			{
-				options |= O_OUTPUT_ERR;
-				return (error_file(e, s, av[i], options)); // pas d'utiliser error file
-			}
-			else if (*av[i])
-				e->output = av[i];
-		}
+			if (!output_file(e, ac, av, &options))
+				return (0);
 	}
 	return (1);
 }
