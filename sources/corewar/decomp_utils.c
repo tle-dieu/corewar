@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:47:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/29 17:59:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:08:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,15 @@ int				generate_decomp_file(t_decomp *d, char *arg)
 
 	i = 0;
 	if (!(name = ft_strjoin(arg, "_decomp")))
+	{
+		ft_dprintf(2, "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno));
 		return (0);
+	}
 	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (!fd || fd == -1)
 	{
+		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
+			strerror(errno));
 		free(name);
 		return (0);
 	}
