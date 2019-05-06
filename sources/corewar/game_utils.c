@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 16:34:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:35:41 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 
 	i = -1;
 	e->nb_proc++;
-	if (!(new = (t_proc *)ft_memalloc(sizeof(t_proc))))
+	if (!(new = (t_proc*)malloc(sizeof(t_proc))))
 		return (0);
 	new->owner = ptr->owner;
 	new->dead = 0;
 	new->color = ptr->color;
+	new->id = e->nb_proc;
 	new->live = ptr->live;
-	new->carry = ptr->carry;
-	new->op = e->mem[pc % MEM_SIZE];
-	new->cycle = choose_cycle(new->op);
 	while (++i <= 17)
 		new->r[i] = ptr->r[i];
 	new->pc = pc;
-	new->id = e->nb_proc;
+	new->carry = ptr->carry;
+	new->op = e->mem[pc % MEM_SIZE];
+	new->cycle = choose_cycle(new->op);
 	new->next = e->new_proc;
 	if (!e->new_proc)
 		e->proc_to_load = new;

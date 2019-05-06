@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/01 18:49:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:35:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,21 @@ void			init(t_env *e)
 int				init_proc(t_env *e, int j, int begin)
 {
 	t_proc	*new;
+	int		i;
 
-	if (!(new = (t_proc*)ft_memalloc(sizeof(t_proc))))
+	i = -1;
+	if (!(new = (t_proc*)malloc(sizeof(t_proc))))
 		return (0);
+	new->owner = e->champs[j].id;
+	new->dead = 0;
+	new->color = e->champs[j].color;
 	new->id = j + 1;
+	new->live = 0;
+	while (++i <= 17)
+		new->r[i] = 0;
 	new->r[1] = e->champs[j].id;
 	new->pc = begin;
-	new->dead = 0;
-	new->owner = e->champs[j].id;
-	new->color = e->champs[j].color;
+	new->carry = 0;
 	new->op = e->champs[j].content[0];
 	new->cycle = choose_cycle(new->op);
 	new->next = e->proc;
