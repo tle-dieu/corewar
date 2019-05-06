@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 14:48:07 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:13:00 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int				check_champ(t_env *e, char *arg, int i)
 	err = 0;
 	if ((fd == -1 || !fd) && (err = 1))
 	{
-		ft_dprintf(2, "{bold}Non-existent .cor file: {#ed000b}%s{R}\n", arg);
+		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error: %s\n", arg,
+			strerror(errno));
 		return (0);
 	}
 	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
@@ -86,7 +87,7 @@ int				check_champ(t_env *e, char *arg, int i)
 	close(fd);
 	if (!err && (ret == -1 || !(check_magic_number(e))) && (err = 1))
 		ft_dprintf(2, "{bold}%s: {#ed000b}%s{R}\n",
-			ret == -1 ? "Not a valid file"
+			ret == -1 ? strerror(errno)
 			: "Does not contain magic number", arg);
 	if (!err && !(check_champ_size(e, arg, ret, i)))
 		err = 1;

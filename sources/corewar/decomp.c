@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 10:26:51 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/02 15:04:31 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:09:24 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,6 @@ static void			move_forward(t_env *e)
 
 static void			param_to_str(t_env *e, int param, int size, int i)
 {
-	int		nb;
-
-	nb = 0;
 	if (size == 1)
 	{
 		e->d.tab[e->d.y][e->d.x++] = 'r';

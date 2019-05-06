@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 14:48:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:13:02 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <errno.h>
 # include <ncurses.h>
 # include "op.h"
 # define NAME_COMM_SIZE PROG_NAME_LENGTH + COMMENT_LENGTH
