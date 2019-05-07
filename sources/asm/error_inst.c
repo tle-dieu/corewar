@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 20:02:47 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 10:37:41 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 void	error_nb_param(t_env *e, char *str, int have, int should_have)
 {
 	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->file->name, e->file->last->y, str - e->file->last->s + 1);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, e->file->last->y, str - e->file->last->s + 1);
 	if (have > should_have)
 		ft_dprintf(2, "too many parameter, have %d parameter expected %d\n",
 			have, should_have);
@@ -25,7 +26,7 @@ void	error_nb_param(t_env *e, char *str, int have, int should_have)
 		ft_dprintf(2, "missing parameter, have %d parameter expected %d\n",
 			have, should_have);
 	err_pointer(e->tty2, e->file->last->s, str + (!*str), 0);
- 	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));
+	err_wave(e->tty2, str, param_strrspn(str, SPACES, 0));
 	ft_dprintf(2, "\n");
 }
 
@@ -35,9 +36,8 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 	int			op_type;
 	const char	*types[4] = {REGISTER, DIRECT, "", INDIRECT}; //norme
 
-	type = inst->t[inst->i];
+	type = inst->t[inst->i] + (inst->t[inst->i] == 3);
 	op_type = g_op_tab[inst->op - 1].param[inst->i];
-	type += (type == 3);
 	if (!(g_op_tab[inst->op - 1].nb_param > inst->i && !(type & op_type)))
 		return ;
 	inst->error++;
@@ -55,7 +55,7 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 	if (op_type & T_REG)
 		ft_dprintf(2, REGISTER);
 	ft_dprintf(2, ") for instruction '%s'\n", g_op_tab[inst->op - 1].label);
-	err_pointer(e->tty2, e->file->last->s, str, param_strrspn(str, SPACES, *SEPARATOR_CHAR));
+	err_pointer(e->tty2, e->file->last->s, str, param_strrspn(str, SPACES, ','));
 	ft_dprintf(2, "\n");
 }
 

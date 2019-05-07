@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 05:39:51 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 12:28:58 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		label_is_good(t_env *e, char *str)
 			ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
-	err += (e->file->error >=  MAX_ERROR);
+	err += (e->file->error >= MAX_ERROR);
 	return (!err);
 }
 
@@ -61,14 +61,10 @@ int		is_direct(t_env *e, char *str, t_inst *inst)
 			if (is_a_number(e, tmp))
 				inst->p[inst->i] = inst_atoi(tmp);
 			else
-			{
-				inst->error++;
-				return (!(inst->t[inst->i] = 0));
-			}
+				return (++inst->error && !(inst->t[inst->i] = 0));
 		}
-		return (1);
 	}
-	return (0);
+	return (*str == DIRECT_CHAR);
 }
 
 int		is_indirect(t_env *e, char *str, t_inst *inst)

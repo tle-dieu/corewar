@@ -21,9 +21,8 @@ def get_file(asm, f):
         output = sp.getoutput('xxd ' + my_file)
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
-        sp.getoutput('rm ' + my_file)
     if not error and output[0] == 'x' :
-        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn't been created"
+        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn' t been created"
         error += "\n" + WHITE + open
     else:
         success += "\n" + GREEN + "SUCCES: for " + asm + " " + my_file + " has been created"
@@ -128,7 +127,7 @@ def main():
     if nb_err == 0:
         print("\n%s[%d/%d]\tSUCCES" %(GREEN, i - 1 - nb_err, i - 1))
     else:
-        print("\n%s[%d/%d]\tfound %d error(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
+        print("\n%s[%d/%d]\tfound %d diff(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
         print(WHITE + bad_file)
 
     

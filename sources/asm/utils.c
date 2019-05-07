@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:41:36 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 21:44:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 12:02:13 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "asm.h"
 #include <stdlib.h>
 
-int		inst_atoi(char *str)
+int				inst_atoi(char *str)
 {
 	int					sign;
 	unsigned long long	result;
@@ -35,7 +35,7 @@ int		inst_atoi(char *str)
 	return ((int)result * sign);
 }
 
-int		is_a_number(t_env *e, char *str)
+int				is_a_number(t_env *e, char *str)
 {
 	char	*tmp;
 	int		err;
@@ -46,7 +46,8 @@ int		is_a_number(t_env *e, char *str)
 	tmp = str + (*str == '-');
 	while (ft_isdigit(*tmp))
 		tmp++;
-	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR && !ft_strchr(SPACES, *tmp))
+	if (e->file->error < MAX_ERROR && *tmp
+		&& *tmp != *SEPARATOR_CHAR && !ft_strchr(SPACES, *tmp))
 		err += basic_error(e, tmp, "invalid parameter\n",
 			param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
 	tmp += ft_strcspn(tmp, SPACES",");
@@ -56,7 +57,7 @@ int		is_a_number(t_env *e, char *str)
 	return (!err);
 }
 
-size_t	param_strrspn(const char *s, const char *accept, char stop)
+size_t			param_strrspn(const char *s, const char *accept, char stop)
 {
 	const char	*tmp;
 	size_t		i;

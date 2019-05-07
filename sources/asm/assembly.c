@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 06:12:31 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 10:16:56 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	write_bytecode(t_env *e, unsigned char *header)
 		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
 		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
 	}
-	
 }
 
 static void	assembly_error(t_env *e, unsigned char *header)

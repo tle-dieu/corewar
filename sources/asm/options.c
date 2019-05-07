@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 22:08:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 12:03:26 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	color_option(t_env *e, char **line)
 	return (0);
 }
 
-int		output_file(t_env *e, int ac, char **av, unsigned *options)
+int			output_file(t_env *e, int ac, char **av, unsigned *options)
 {
 	ft_printf("ui\n");
 	*options &= ~O_OUTPUT;
@@ -55,7 +55,7 @@ int		output_file(t_env *e, int ac, char **av, unsigned *options)
 	return (1);
 }
 
-int		get_short_option(t_env *e, unsigned *options, char **s)
+int			get_short_option(t_env *e, unsigned *options, char **s)
 {
 	unsigned tmp;
 
@@ -83,7 +83,7 @@ int		get_short_option(t_env *e, unsigned *options, char **s)
 	return (*options |= tmp);
 }
 
-int		get_long_option(t_env *e, unsigned *options, char **s)
+int			get_long_option(t_env *e, unsigned *options, char **s)
 {
 	if (!ft_strcmp(++(*s), "hexa"))
 		*options |= O_HEXA;

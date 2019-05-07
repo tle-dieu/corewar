@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 16:37:32 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 10:39:52 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		get_curr_inst(char *str)
 	return (i + 1);
 }
 
-void get_ocp(t_inst *inst)
+void	get_ocp(t_inst *inst)
 {
 	int			i;
 	int			ocp;
@@ -46,7 +46,6 @@ void get_ocp(t_inst *inst)
 	}
 	inst->ocp = ocp;
 }
-
 
 void	add_buff(t_env *e)
 {
@@ -99,8 +98,9 @@ void	write_inst(t_env *e, t_inst *inst)
 	if (!inst->error)
 		e->file->i = inst->index;
 }
+
 void	parse_inst(t_env *e, char *str)
-{	
+{
 	t_inst	inst;
 	char	*tmp;
 

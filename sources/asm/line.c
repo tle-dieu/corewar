@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 06:01:24 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 06:04:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 12:01:16 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	assign_line(t_env *e, char *line)
 		e->file->last = new;
 	}
 	e->file->last = new;
-
 }
 
 int			add_line(t_env *e, char **line)

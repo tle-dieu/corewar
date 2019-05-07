@@ -6,17 +6,17 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 05:39:33 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 12:06:36 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
 
-void    check_label_call(t_env *e)
+void			check_label_call(t_env *e)
 {
-	t_label *label;
-	t_call  *call;
+	t_label	*label;
+	t_call	*call;
 	int		note;
 	int		tt;
 
@@ -102,7 +102,7 @@ static int		create_call(t_env *e, t_inst *inst, char *s, t_label *label)
 	return (1);
 }
 
-void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
+void			get_label_call(t_env *e, t_inst *inst, char *s, int i)
 {
 	t_label *label;
 

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 06:48:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 12:10:36 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,20 @@ static int	parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 
 static void	get_cmd(t_env *e, unsigned char *cp, char *line)
 {
-	int cmd;
-	char *tmp;
+	int		cmd;
+	char	*tmp;
 
 	cmd = -1;
 	tmp = line;
 	if (!ft_strncmp(line, NAME_CMD_STRING, sizeof(NAME_CMD_STRING) - 1))
 	{
-		line += sizeof(NAME_CMD_STRING) - 1; 
+		line += sizeof(NAME_CMD_STRING) - 1;
 		cmd = NAME_CMD;
 	}
 	else if (!ft_strncmp(COMMENT_CMD_STRING, line,
 			sizeof(COMMENT_CMD_STRING) - 1))
 	{
-		line += sizeof(COMMENT_CMD_STRING) - 1; 
+		line += sizeof(COMMENT_CMD_STRING) - 1;
 		cmd = COMMENT_CMD;
 	}
 	if (cmd == -1 || !ft_strchr(SPACES"\"", *line))

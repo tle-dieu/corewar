@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 05:07:41 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 10:52:40 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "asm.h"
 
-static int	search_label(t_env *e, char *s, int len)
+static int		search_label(t_env *e, char *s, int len)
 {
 	t_label			*label;
 	t_call			*call;
@@ -37,7 +37,7 @@ static int	search_label(t_env *e, char *s, int len)
 	return (0);
 }
 
-static void	get_label(t_env *e, char *s, int len)
+static void		get_label(t_env *e, char *s, int len)
 {
 	t_label	*new;
 
@@ -56,7 +56,7 @@ static void	get_label(t_env *e, char *s, int len)
 	e->file->label = new;
 }
 
-int     	only_label(t_env *e, char **line)
+int				only_label(t_env *e, char **line)
 {
 	char	*s;
 
