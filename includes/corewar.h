@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 16:30:55 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/07 13:56:34 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,15 @@ typedef struct		s_visu
 
 }					t_visu;
 
+typedef struct		s_buff_d
+{
+	char			tab[100][100];
+	struct s_buff_d	*next;
+}					t_buff_d;
+
 typedef struct		s_decomp
 {
-	char			tab[300][COMMENT_LENGTH];
+	t_buff_d		*buff_d;
 	int				y;
 	int				x;
 	int				i;
@@ -216,7 +222,7 @@ void				place_champ(t_env *e);
 void				freedom(t_env *e, int to_exit);
 
 /*
-** DECOMP.C (5)
+** DECOMP.C (7)
 */
 int					decompile_champ(t_env *e, char *arg, int champ);
 
