@@ -90,7 +90,7 @@ ifneq (,$(filter $(flags),n no))
 	CFLAGS =
 endif
 
-ifneq (,$(filter $(fsanitize),y yes))
+ifneq (,$(filter $(fsanitize), y yes))
 	CFLAGS += -g3
 	CFLAGS += -fsanitize=address
 endif
