@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 20:28:28 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 21:59:09 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 	if (op_type & T_REG)
 		ft_dprintf(2, REGISTER);
 	ft_dprintf(2, ") for instruction '%s'\n", g_op_tab[inst->op - 1].label);
-	err_pointer(e->tty2, e->file->last->s, str, param_strrspn(str, SPACES, ','));
+	err_pointer(e->tty2, e->file->last->s,
+		str, param_strrspn(str, SPACES, ','));
 	ft_dprintf(2, "\n");
 }
 
