@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 12:03:26 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 22:25:00 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int			get_long_option(t_env *e, unsigned *options, char **s)
 		*options |= O_HEXA;
 	else if (!ft_strcmp(*s, "binary"))
 		*options |= O_BIN;
-	else if (!ft_strcmp(*s, "long-print"))
+	else if (!ft_strcmp(*s, "long-dump"))
 		*options |= O_LONG;
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;

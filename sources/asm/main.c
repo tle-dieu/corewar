@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 18:05:42 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 23:18:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		main(int ac, char **av)
 		if (e.file->options & O_DISAS)
 			ft_printf("DISASSEMBLY\n");
 		else
-			assembly(&e);
+			assemble(&e);
 		next = e.file->next;
 		free_file(&e.file);
 		e.file = next;

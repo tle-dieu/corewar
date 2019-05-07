@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 10:52:40 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 21:29:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int		search_label(t_env *e, char *s, int len)
 		label = label->next;
 	if (label)
 	{
-		if (label->index != -1) // enlever increment error
+		if (label->index != -1)
 			redefine_label(e, s, label->y);
 		else
 		{

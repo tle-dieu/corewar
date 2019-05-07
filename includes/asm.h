@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 17:29:25 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 23:01:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,10 +201,10 @@ void				champ_too_big(t_env *e);
 //verifier include dans .c et verifier proto fonctions
 
 /*
-** ---------------- ASSEMBLY ----------------
+** ---------------- ASSEMBLE ----------------
 */
 
-void				assembly(t_env *e);
+void				assemble(t_env *e);
 
 /*
 ** ---------------- OPTIONS -----------------

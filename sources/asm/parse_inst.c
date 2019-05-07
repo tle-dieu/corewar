@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:43:51 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 17:29:39 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 21:29:09 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,43 +90,6 @@ void	write_inst(t_env *e, t_inst *inst)
 	if (!inst->error)
 		e->file->i = inst->index;
 }
-
-/* void	write_inst(t_env *e, t_inst *inst) */
-/* { */
-/* 	int i; */
-/* 	int	k; */
-/* 	int j; */
-/* 	int	buff[MAX_LEN_INST]; */
-
-/* 	i = 0; */
-/* 	j = 0; */
-/* 	if (!inst->error && !e->file->error) */
-/* 	{ */
-/* 		buff[j++] = inst->op; */
-/* 		if (g_op_tab[inst->op - 1].ocp) */
-/* 			buff[j++] = inst->ocp; */
-/* 		while (i < inst->nb_p) */
-/* 		{ */
-/* 			k = inst->s[i]; */
-/* 			while (k--) */
-/* 				buff[j++] = inst->p[i] >> k * 8; */
-/* 			i++; */
-/* 		} */
-/* 	} */
-/* 	if (!e->file->begin_buff && j) */
-/* 		add_buff(e); */
-/* 	if (e->file->buff) */
-/* 		k = e->file->buff->len; */
-/* 	i = 0; */
-/* 	while (i < j) */
-/* 	{ */
-/* 		if (e->file->buff->len >= BS_ASM) */
-/* 			add_buff(e); */
-/* 		e->file->buff->s[e->file->buff->len++] = buff[i++]; */
-/* 	} */
-/* 	if (!inst->error) */
-/* 		e->file->i = inst->index; */
-/* } */
 
 void	parse_inst(t_env *e, char *str)
 {
