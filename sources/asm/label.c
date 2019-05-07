@@ -3,95 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   label.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 16:18:33 by matleroy         ###   ########.fr       */
+/*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/05/07 05:07:41 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
-#include "asm.h"
 #include <stdlib.h>
+#include "asm.h"
 
-int		create_call(t_env *e, t_inst *inst, char *s, t_label *label, int i)
+static int	search_label(t_env *e, char *s, int len)
 {
-	t_label *new;
-	t_call	*call;
-
-	new = NULL;
-	if (!label)
-	{
-		if (!(new = (t_label *)malloc(sizeof(t_label))))
-			alloc_error(e);
-		label = new;
-		new->index = -1;
-		label->call = NULL;
-		new->next = e->file->label;
-		e->file->label = new;
-		new->name = NULL;
-		if (!(new->name = ft_strndup(s, e->i))) // erreur parti sans raison (a retester)
-			alloc_error(e);
-	}
-	if (!(call = (t_call *)malloc(sizeof(t_call))))
-		alloc_error(e);
-	e->file->last->free = -(e->file->last->free == 0);
-	call->line = e->file->last;
-	call->index_inst = e->file->i;
-	call->index_call = inst->index;
-	call->s = s;
-	call->size = inst->s[i]; //envoyer que inst et pas i
-	call->next = label->call;
-	label->call = call;
-	return (1);
-}
-
-void	get_label_call(t_env *e, t_inst *inst, char *s, int i)
-{
-	int		len;
-	t_label *label;
+	t_label			*label;
+	t_call			*call;
 
 	label = e->file->label;
-	len = ft_strcspn(s, SPACES",");
-	e->i = len;
-	while (label)
-	{
-		if (!ft_strncmp(s, label->name, len) && !label->name[len])
-		{
-			if (label->index != -1)
-			{
-				inst->p[i] = label->index - e->file->i;
-				return ;
-			}
-			break ;
-		}
+	while (label && (ft_strncmp(s, label->name, len) || label->name[len]))
 		label = label->next;
+	if (label)
+	{
+		if (label->index != -1) // enlever increment error
+			redefine_label(e, s, label->y);
+		else
+		{
+			label->index = e->file->i;
+			call = label->call;
+			if (!e->file->error)
+				write_label_call(e, call);
+		}
+		return (1);
 	}
-	if (!label || label->index == -1)
-		create_call(e, inst, s, label, i); // separer en deux pour trop args
+	return (0);
 }
 
-int		label_is_good(t_env *e, char *str)
+static void	get_label(t_env *e, char *s, int len)
 {
-	char	*tmp;
-	int		err;
+	t_label	*new;
 
-	err = 0;
-	tmp = str;
-	tmp += ft_strspn(tmp, LABEL_CHARS);
-	if (e->file->error < 19 && *tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
+	new = NULL;
+	if (!(new = (t_label *)malloc(sizeof(t_label))))
+		alloc_error(e);
+	if (!(new->name = ft_strndup(s, len)))
 	{
-		basic_error(e, tmp, "illegal character for label\n", 0);
-		err = 1;
+		free(new);
+		alloc_error(e);
 	}
-	tmp += ft_strcspn(tmp, SPACES",");
-	tmp += ft_strspn(tmp, SPACES);
-	if (e->file->error < 19 && *tmp && *tmp != *SEPARATOR_CHAR)
-	{
-		basic_error(e, tmp, "unexpected expression after parameter\n",
-			ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
-		err = 1;
-	}
-	err += (e->file->error >=  MAX_ERROR);
-	return (!err);
+	new->y = e->file->last->y;
+	new->index = e->file->i;
+	new->call = NULL;
+	new->next = e->file->label;
+	e->file->label = new;
+}
+
+int     	only_label(t_env *e, char **line)
+{
+	char	*s;
+
+	s = *line + ft_strspn(*line, LABEL_CHARS);
+	if (*s != LABEL_CHAR)
+		return (0);
+	e->file->champ_part = 1;
+	if (!search_label(e, *line, s - *line))
+		get_label(e, *line, s - *line);
+	*line = s + ft_strspn(s + 1, SPACES) + 1;
+	return (!**line);
 }

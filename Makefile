@@ -14,7 +14,9 @@ VM_DIR = corewar/
 # --------------- Sources --------------- #
 
 ASM_SOURCES_FILES = main.c \
+					assembly.c \
 					free.c \
+					line.c \
 					print.c \
 					args.c \
 					options.c \
@@ -22,12 +24,12 @@ ASM_SOURCES_FILES = main.c \
 					utils_error.c \
 					error_args.c \
 					header.c \
-					inst.c \
+					label.c \
 					op.c \
 					parse_inst.c \
 					error_inst.c \
 					utils.c \
-					label.c \
+					label_call.c \
 					check_inst.c
 
 VM_SOURCES_FILES = main.c \

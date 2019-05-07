@@ -6,12 +6,13 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:04:37 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 22:21:33 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 06:01:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	free_label(t_label **label)
 {
@@ -80,6 +81,7 @@ void	free_file(t_file **file)
 		free_label(&(*file)->label);
 		(*file)->label = next;
 	}
+	close((*file)->fd);
 	free(*file);
 	*file = NULL;
 }

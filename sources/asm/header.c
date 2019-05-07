@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 18:09:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 06:48:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,32 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
+static int	line_in_buff(t_env *e, char *buff, char **s, int cmd)
 {
-	char	buff[BS_HEADER];
-	int		i;
-	char	*t;
+	while (**s && **s != '"')
+	{
+		if (e->i >= (cmd == NAME_CMD ? PROG_NAME_LENGTH : COMMENT_LENGTH))
+		{
+			e->i = -1;
+			if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1)
+				return (0);
+		}
+		else if (e->i != -1)
+			buff[e->i++] = **s;
+		(*s)++;
+	}
+	return (1);
+}
+
+static int	parse_str_cmd(t_env *e, char *buff, char *s, int cmd)
+{
 	int		end;
 
-	i = 0;
 	end = 0;
-	if (e->file->champ_part)
-		cmd_part_champ(e, cmd);
-	if (e->file->complete & cmd) // gerer error comment trouve et instructions trouvees
-		cmd_multiple_define(e, cmd);
-	e->file->complete |= cmd;
-	if (!(t = ft_strchr(s, '"')))
-		return (expect_str(e, s, cmd) == -1 || check_end_str(e, s, cmd, 0));
-	if (check_end_str(e, s, cmd, '"') == -1)
-		return (0);
-	s = t + 1;
 	while (!end)
 	{
-		while (*s && *s != '"')
-		{
-			if (i >= (cmd == NAME_CMD ? PROG_NAME_LENGTH : COMMENT_LENGTH))
-			{
-				i = -1;
-				if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1)
-					return (0);
-			}
-			else if (i != -1)
-				buff[i++] = *s;
-			s++;
-		}
+		if (!line_in_buff(e, buff, &s, cmd))
+			return (0);
 		if (*s == '"' && (end = 1))
 		{
 			if (check_end_str(e, s + 1, cmd, 0) <= 0)
@@ -55,24 +48,42 @@ int		parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		}
 		else if (add_line(e, &s) != 1)
 			return (missing_quote(e, e->file->begin->s));
-		else if (i >= (cmd == NAME_CMD ? PROG_NAME_LENGTH : COMMENT_LENGTH))
+		else if (e->i >= (cmd == NAME_CMD ? PROG_NAME_LENGTH : COMMENT_LENGTH))
 		{
-			i = -1;
-			if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1) // remplacer par fonction
+			e->i = -1;
+			if (cmd_too_long(e, ft_strchr(e->file->begin->s, '"'), cmd) == -1)
 				return (0);
 		}
-		else if (i != -1)
-			buff[i++] = '\n';
+		else if (e->i != -1)
+			buff[e->i++] = '\n';
 	}
-	if (!e->file->error && !(e->file->complete & ALREADY_DEFINE))
-		while (i--)
-			*(cp + i) = buff[i];
 	return (1);
 }
 
-//verifier si line = NULL est utile
+static int	parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
+{
+	char	buff[BS_HEADER];
+	char	*t;
 
-void	get_cmd(t_env *e, unsigned char *cp, char *line)
+	e->i = 0;
+	if (e->file->champ_part)
+		cmd_part_champ(e, cmd);
+	if (e->file->complete & cmd)
+		cmd_multiple_define(e, cmd);
+	e->file->complete |= cmd;
+	if (!(t = ft_strchr(s, '"')))
+		return (expect_str(e, s, cmd) == -1 || check_end_str(e, s, cmd, 0));
+	if (check_end_str(e, s, cmd, '"') == -1)
+		return (0);
+	if (!parse_str_cmd(e, buff, t + 1, cmd))
+		return (0);
+	if (!e->file->error && !(e->file->complete & ALREADY_DEFINE))
+		while (e->i--)
+			*(cp + e->i) = buff[e->i];
+	return (1);
+}
+
+static void	get_cmd(t_env *e, unsigned char *cp, char *line)
 {
 	int cmd;
 	char *tmp;
@@ -84,7 +95,8 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 		line += sizeof(NAME_CMD_STRING) - 1; 
 		cmd = NAME_CMD;
 	}
-	else if (!ft_strncmp(COMMENT_CMD_STRING, line, sizeof(COMMENT_CMD_STRING) - 1))
+	else if (!ft_strncmp(COMMENT_CMD_STRING, line,
+			sizeof(COMMENT_CMD_STRING) - 1))
 	{
 		line += sizeof(COMMENT_CMD_STRING) - 1; 
 		cmd = COMMENT_CMD;
@@ -96,7 +108,7 @@ void	get_cmd(t_env *e, unsigned char *cp, char *line)
 			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
 }
 
-void	get_bytecode(t_env *e, unsigned char *header)
+void		get_bytecode(t_env *e, unsigned char *header)
 {
 	char	*line;
 

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 21:48:53 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 05:48:54 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,61 @@ int		basic_error(t_env *e, char *str, char *err_string, int wave)
 		err_wave(e->tty2, str, wave);
 	ft_dprintf(2, "\n");
 	return (1);
+}
+
+void	missing_cmd(t_env *e, unsigned char *header, int cmd)
+{
+	char	*scmd;
+	char	*default_str;
+	int		len;
+
+	++e->file->warning;
+	if (cmd == NAME_CMD)
+		len = sizeof(DEFAULT_NAME);
+	else
+		len = sizeof(DEFAULT_COMMENT);
+	default_str = (cmd == NAME_CMD ? DEFAULT_NAME : DEFAULT_COMMENT);
+	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
+	ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
+	ft_dprintf(2, "'%s' is undefined (set to '%s')\n", scmd, default_str);
+	if (e->tty2)
+		ft_dprintf(2, "{R}");
+	ft_memcpy(header, default_str, len);
+}
+
+void	champ_too_big(t_env *e)
+{
+	++e->file->warning;
+	ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
+	ft_dprintf(2, "bytecode of the champion too big for the vm ");
+	ft_dprintf(2, "(%d for %d bytes)\n", e->file->i, CHAMP_MAX_SIZE);
+	if (e->tty2)
+		ft_dprintf(2, "{R}");
+}
+
+void	undefined_label(t_env *e, t_call *call, int *note, int tt)
+{
+	int len;
+
+	++e->file->error;
+	len = ft_strspn(call->s, LABEL_CHARS);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, call->line->y, call->s - call->line->s);
+	ft_dprintf(2, "label '%.*s' is undefined ", len, call->s);
+	if (tt)
+		ft_dprintf(2, "(%d other%s", tt, tt > 1 ? "s)" : ")");
+	ft_dprintf(2, "\n");
+	err_pointer(e->tty2, call->line->s, call->s, 0);
+	ft_dprintf(2, "\n");
+	if (!*note)
+	{
+		ft_dprintf(2, line_error(NOTE_LINE, e->tty2),
+			e->file->name, call->line->y, call->s - call->line->s);
+		ft_dprintf(2, "undefined label reported only once\n");
+		*note = 1;
+	}
+	if (e->tty2)
+		ft_dprintf(2, "{R}");
 }
 
 int		expect_str(t_env *e, char *error, int cmd)

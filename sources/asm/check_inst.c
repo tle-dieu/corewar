@@ -6,12 +6,38 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 21:38:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 05:39:51 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
 #include "asm.h"
+
+int		label_is_good(t_env *e, char *str)
+{
+	char	*tmp;
+	int		err;
+
+	err = 0;
+	tmp = str;
+	tmp += ft_strspn(tmp, LABEL_CHARS);
+	if (e->file->error < 19 && *tmp != *SEPARATOR_CHAR
+		&& *tmp && !ft_strchr(SPACES, *tmp))
+	{
+		basic_error(e, tmp, "illegal character for label\n", 0);
+		err = 1;
+	}
+	tmp += ft_strcspn(tmp, END_PARAM);
+	tmp += ft_strspn(tmp, SPACES);
+	if (e->file->error < 19 && *tmp && *tmp != *SEPARATOR_CHAR)
+	{
+		basic_error(e, tmp, "unexpected expression after parameter\n",
+			ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
+		err = 1;
+	}
+	err += (e->file->error >=  MAX_ERROR);
+	return (!err);
+}
 
 int		is_direct(t_env *e, char *str, t_inst *inst)
 {

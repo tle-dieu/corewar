@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 16:02:59 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 05:10:14 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <unistd.h>
 
-char	*line_error(int line, int tty)
+char		*line_error(int line, int tty)
 {
 	if (line == ERR_LINE)
 		return (tty ? ERR_LINE_C : ERR_LINE_NC);
@@ -32,7 +32,7 @@ char	*line_error(int line, int tty)
 	return (NULL);
 }
 
-void	put_strtab(char *s, char replace, int n)
+static void	put_strtab(char *s, char replace, int n)
 {
 	char	buff[100];
 	int		i;
@@ -59,7 +59,7 @@ void	put_strtab(char *s, char replace, int n)
 	}
 }
 
-int		check_end_str(t_env *e, char *s, int cmd, char c)
+int			check_end_str(t_env *e, char *s, int cmd, char c)
 {
 	char	chr[sizeof(SPACES) + 1];
 	int		i;
@@ -84,7 +84,7 @@ int		check_end_str(t_env *e, char *s, int cmd, char c)
 	return (0);
 }
 
-void	err_pointer(int tty, char *s, char *end, int sp)
+void		err_pointer(int tty, char *s, char *end, int sp)
 {
 	int space;
 
@@ -102,7 +102,7 @@ void	err_pointer(int tty, char *s, char *end, int sp)
 		ft_dprintf(2, "^");
 }
 
-void	err_wave(int tty, char *s, int n)
+void		err_wave(int tty, char *s, int n)
 {
 	if (tty)
 		ft_dprintf(2, GREEN_CURS);
