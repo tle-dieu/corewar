@@ -6,13 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/07 13:56:28 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/07 14:52:13 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-//Need check_champ, check_magic_number, split_champ, structs t_champ, t_decomp, et t_buff_d;
+//Need check_champ,check_magic_number,split_champ,t_champ,t_decomp, et t_buff_d;
 
 void			init_line(t_env *e)
 {
@@ -25,7 +25,7 @@ void			init_line(t_env *e)
 	e->d.buff_d->tab[e->d.y][e->d.x++] = ' ';
 }
 
-int				generate_decomp_file(t_decomp *d, char *arg)
+int				generate_decomp_file(t_env *e, t_decomp *d, char *arg)
 {
 	int			i;
 	int			fd;
@@ -33,18 +33,15 @@ int				generate_decomp_file(t_decomp *d, char *arg)
 	t_buff_d	*ptr;
 
 	ptr = d->buff_d;
-	if (!(name = ft_strjoin(arg, "_decomp")))
-	{
-		ft_dprintf(2, "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno));
-		return (0);
-	}
+	if (!(name = ft_strjoin(arg, "_decomp")) && ft_dprintf(2,
+				"{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno)))
+		return (free_buff_decomp(e));
 	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
-	if (!fd || fd == -1)
+	if ((!fd || fd == -1) && ft_dprintf(2,
+			"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg, strerror(errno)))
 	{
-		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
-				strerror(errno));
 		free(name);
-		return (0);
+		return (free_buff_decomp(e));
 	}
 	while (ptr)
 	{

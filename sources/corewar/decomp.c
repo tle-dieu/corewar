@@ -6,13 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/07 13:56:32 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/07 14:52:15 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-static int			free_buff_decomp(t_env *e)
+int					free_buff_decomp(t_env *e)
 {
 	t_buff_d	*ptr;
 	t_buff_d	*tmp;
@@ -150,5 +150,5 @@ int					decompile_champ(t_env *e, char *arg, int champ)
 			add_buff_link(e);
 		e->d.y++;
 	}
-	return (generate_decomp_file(&e->d, arg));
+	return (generate_decomp_file(e, &e->d, arg));
 }

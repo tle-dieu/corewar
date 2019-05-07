@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 13:56:34 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/07 14:52:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,13 +224,14 @@ void				freedom(t_env *e, int to_exit);
 /*
 ** DECOMP.C (7)
 */
+int					free_buff_decomp(t_env *e);
 int					decompile_champ(t_env *e, char *arg, int champ);
 
 /*
 ** DECOMP_UTILS.C (5)
 */
 void				init_line(t_env *e);
-int					generate_decomp_file(t_decomp *d, char *arg);
+int					generate_decomp_file(t_env *e, t_decomp *d, char *arg);
 void				nb_in_buff(t_decomp *d, int nb, int padding);
 void				str_in_buff(t_decomp *d, char *s);
 int					compute_param(t_env *e, int champ, int i, int size);
