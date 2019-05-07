@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 23:01:42 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/05/07 23:48:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ int					is_reg(t_env *e, char *str, t_inst *inst);
 int					is_valid_register(t_env *e, char *str);
 int					is_indirect(t_env *e, char *str, t_inst *inst);
 int					is_direct(t_env *e, char *str, t_inst *inst);
-int					check_params(t_env *e, char *str, t_inst *inst);
+void				check_params(t_env *e, char *str, t_inst *inst);
 
 
 #endif
