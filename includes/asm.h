@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 05:49:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/07 18:28:17 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ int					is_reg(t_env *e, char *str, t_inst *inst);
 int					is_valid_register(t_env *e, char *str);
 int					is_indirect(t_env *e, char *str, t_inst *inst);
 int					is_direct(t_env *e, char *str, t_inst *inst);
-int					check_params(t_env *e, char *str, t_inst *inst);
+void				check_params(t_env *e, char *str, t_inst *inst);
 
 
 #endif

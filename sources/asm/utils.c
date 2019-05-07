@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:41:36 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 12:02:13 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 20:25:31 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int				is_a_number(t_env *e, char *str)
 		tmp++;
 	if (e->file->error < MAX_ERROR && *tmp
 		&& *tmp != *SEPARATOR_CHAR && !ft_strchr(SPACES, *tmp))
-		err += basic_error(e, tmp, "invalid parameter\n",
+		err += basic_error(e, str, "invalid parameter\n",
 			param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
 	tmp += ft_strcspn(tmp, SPACES",");
 	tmp += ft_strspn(tmp, SPACES);

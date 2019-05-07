@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 12:28:58 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/07 21:55:35 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,14 +138,8 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 	return (0);
 }
 
-int		check_params(t_env *e, char *str, t_inst *inst)
+void		get_params(t_env *e, t_inst *inst, char *begin, char *tmp)
 {
-	char	*tmp;
-	char	*begin;
-
-	tmp = str;
-	begin = tmp;
-	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
 	while (*tmp && e->file->error < MAX_ERROR)
 	{
 		tmp += ft_strspn(tmp, SPACES);
@@ -160,23 +154,27 @@ int		check_params(t_env *e, char *str, t_inst *inst)
 				inst->index += inst->s[inst->i];
 			}
 		}
-		tmp += ft_strspn(tmp, SPACES);
-		tmp += ft_strcspn(tmp, SEPARATOR_CHAR);
+		tmp += ft_strcspn(tmp + ft_strspn(tmp, SPACES), SEPARATOR_CHAR);
 		inst->i++;
 		if (!*tmp || e->file->error >= MAX_ERROR)
 			break ;
-		if (*tmp++ == ',' && !tmp[ft_strspn(tmp, SPACES)])
-		{
+		if (e->file->error < MAX_ERROR && *tmp == ','
+			&& !tmp[ft_strspn(tmp, SPACES)] && ++inst->error)
 			basic_error(e, tmp - 1, "expected parameter after ','\n", 0);
-			inst->error++;
-		}
+		tmp++;
 	}
-	if (e->file->error >= MAX_ERROR)
-		return (-1);
-	if (inst->i != g_op_tab[inst->op - 1].nb_param)
-	{
-		inst->error++;
+}
+
+void		check_params(t_env *e, char *str, t_inst *inst)
+{
+	char	*tmp;
+	char	*begin;
+
+	tmp = str;
+	begin = tmp;
+	inst->index = e->file->i + g_op_tab[inst->op - 1].ocp + 1;
+	get_params(e, inst, begin, tmp);
+	if (e->file->error < MAX_ERROR
+		&& inst->i != g_op_tab[inst->op - 1].nb_param && ++inst->error)
 		error_nb_param(e, begin, inst->i, g_op_tab[inst->op - 1].nb_param);
-	}
-	return (1);
 }
