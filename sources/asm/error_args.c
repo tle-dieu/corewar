@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 23:47:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 00:05:38 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int		usage(t_env *e, int err)
 	ft_dprintf(err, "       %s -d [-o <file>] <sourcefile.cor> ...\n", e->exname);
 	if (err == 1)
 	{
-		ft_printf("-d, --disassemble: from bytecode to corewar assembly\n");
+		ft_printf("\n-d, --disassemble: from bytecode to corewar assembly\n");
 		ft_printf("-x, --hexa: display bytecode generate from sourcefile.s (hexadecimal)\n");
 		ft_printf("-b, --binary: display bytecode generate from sourcefile.s (binary)\n");
 		ft_printf("-l, --long-dump: display entire bytecode (-x or -b is needed to be effective)\n");
 		ft_printf("-o, --output <output>: write output to <file>\n");
 		ft_printf("--color[=WHEN]: specify when to display in color (ex: always, never, auto)\n");
-		//FREE
+		free_lst_file(e);
 		exit(0);
 	}
 	ft_dprintf(err, "Try `%s (-h | --help)' for more information.\n",
