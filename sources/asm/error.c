@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 22:23:51 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 22:47:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int		expect_str(t_env *e, char *error, int cmd)
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
 	line = e->file->begin;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
-		e->file->name, line->y, error - line->s + 1);
+		e->file->name, line->y, error - line->s + 2);
 	ft_dprintf(2, "expected string after %s\n", scmd);
 	err_pointer(e->tty2, line->s, error + 1 - (!ft_strchr(SPACES, *error)), 0);
 	ft_dprintf(2, "\n");

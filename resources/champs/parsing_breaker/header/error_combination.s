@@ -1,58 +1,61 @@
-;[1mresources/champs/parsing_breaker/header/error_combination.s:60:14: [1m[31merror: [0m[1munexpected expression in .name declaration
+;[1mresources/champs/parsing_breaker/header/error_combination.s:63:14: [1m[31merror: [0m[1munexpected expression in .name declaration
 ;[0m.name     "Zork"end
 ;                [1m[32m^[0m[1m[32m~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:61:1: [1m[31merror: [0m[1munknow instruction 'error'
+;[1mresources/champs/parsing_breaker/header/error_combination.s:64:1: [1m[31merror: [0m[1munknow instruction 'error'
 ;[0merror
 ;[1m[32m^[0m[1m[32m~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:62:1: [1m[35mwarning: [0m[1minvalid command '.invalid'[0m
+;[1mresources/champs/parsing_breaker/header/error_combination.s:65:1: [1m[35mwarning: [0m[1minvalid command '.invalid'[0m
 ;[0m.invalid
 ;[1m[32m^[0m[1m[32m~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:63:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:66:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
 ;[0m.name         
 ;[1m[32m^[0m[1m[32m~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:63:6: [1m[31merror: [0m[1mexpected string after .name
+;error: ' 		'
+;[1mresources/champs/parsing_breaker/header/error_combination.s:66:7: [1m[31merror: [0m[1mexpected string after .name
 ;[0m.name         
 ;      [1m[32m^[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:64:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:67:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
 ;[0m.name         end
 ;[1m[32m^[0m[1m[32m~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:64:6: [1m[31merror: [0m[1mexpected string after .name
+;error: ' 		end'
+;[1mresources/champs/parsing_breaker/header/error_combination.s:67:7: [1m[31merror: [0m[1mexpected string after .name
 ;[0m.name         end
 ;      [1m[32m^[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:64:9: [1m[31merror: [0m[1munexpected expression in .name declaration
+;[1mresources/champs/parsing_breaker/header/error_combination.s:67:9: [1m[31merror: [0m[1munexpected expression in .name declaration
 ;[0m.name         end
 ;              [1m[32m^[0m[1m[32m~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:65:9: [1m[31merror: [0m[1mexpected string after .comment
+;error: ''
+;[1mresources/champs/parsing_breaker/header/error_combination.s:68:10: [1m[31merror: [0m[1mexpected string after .comment
 ;[0m.comment
 ;         [1m[32m^[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:66:1: [1m[35mwarning: [0m[1m.comment already defined (ignored)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:69:1: [1m[35mwarning: [0m[1m.comment already defined (ignored)
 ;[0m.comment ""
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:67:1: [1m[35mwarning: [0m[1m.comment already defined (ignored)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:70:1: [1m[35mwarning: [0m[1m.comment already defined (ignored)
 ;[0m.comment "Hello
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:69:2: [1m[31merror: [0m[1munexpected expression in .comment declaration
+;[1mresources/champs/parsing_breaker/header/error_combination.s:72:2: [1m[31merror: [0m[1munexpected expression in .comment declaration
 ;[0m"f
 ; [1m[32m^[0m[1m[32m[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:72:1: [1m[35mwarning: [0m[1m.name should be before instruction or label
+;[1mresources/champs/parsing_breaker/header/error_combination.s:75:1: [1m[35mwarning: [0m[1m.name should be before instruction or label
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:72:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:75:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:72:7: [1m[31merror: [0m[1m.name declaration too long (Max length: 128)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:75:7: [1m[31merror: [0m[1m.name declaration too long (Max length: 128)
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;      [1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:73:11: [1m[31merror: [0m[1munexpected expression in .name declaration
+;[1mresources/champs/parsing_breaker/header/error_combination.s:76:11: [1m[31merror: [0m[1munexpected expression in .name declaration
 ;[0maaaaaaa"        end
 ;                [1m[32m^[0m[1m[32m~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:74:1: [1m[35mwarning: [0m[1m.name should be before instruction or label
+;[1mresources/champs/parsing_breaker/header/error_combination.s:77:1: [1m[35mwarning: [0m[1m.name should be before instruction or label
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:74:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
+;[1mresources/champs/parsing_breaker/header/error_combination.s:77:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:74:133: [1m[31merror: [0m[1mmissing terminating '"' character
+;[1mresources/champs/parsing_breaker/header/error_combination.s:77:133: [1m[31merror: [0m[1mmissing terminating '"' character
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;                                                                                                                                    [1m[32m^[0m
 ;9 warnings and 10 errors generated.
