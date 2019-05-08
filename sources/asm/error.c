@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 05:48:54 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 22:23:51 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,13 +165,15 @@ int		unexpected_expression(t_env *e, char *error, int cmd)
 int		missing_quote(t_env *e, char *error)
 {
 	t_line	*line;
+	int		len;
 
 	line = e->file->begin;
 	++e->file->error;
+	len = ft_strlen(error);
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
-		e->file->name, line->y, error - line->s + 1);
+		e->file->name, line->y, error + len - line->s + 1);
 	ft_dprintf(2, "missing terminating '\"' character\n");
-	err_pointer(e->tty2, line->s, error + ft_strlen(error), 0);
+	err_pointer(e->tty2, line->s, error + len, 0);
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
 }

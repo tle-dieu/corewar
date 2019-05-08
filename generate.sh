@@ -16,9 +16,6 @@ for ((i = 1; i <= $#; i++ )); do
 		done
 		sed 's/^/;/' <<<"$res" > ${!i}
 		printf "\n%s" "$old" >> ${!i}
-	fi
-	
-	if [[ $# && -f ${!i} ]]; then
 		res=$(./asm ${!i} --color=f 2>&1)
 		if [[ $(echo $res | grep 'Writing output program to') ]]; then
 			res=$(./asm -x ${!i} --color=f 2>&1)
