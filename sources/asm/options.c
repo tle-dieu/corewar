@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 02:39:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 03:51:31 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			get_short_option(t_env *e, unsigned *options, char **s)
 
 int			get_long_option(t_env *e, unsigned *options, char **s)
 {
-	if (!ft_strcmp(++(*s), "hexa"))
+	if (!ft_strcmp(++(*s), "hexadecimal"))
 		*options |= O_HEXA;
 	else if (!ft_strcmp(*s, "binary"))
 		*options |= O_BIN;

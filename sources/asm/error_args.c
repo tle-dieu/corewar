@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 02:48:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 03:51:56 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	help(t_env *e)
 	ft_printf("Usage: %s [options] file ...\n", e->exname);
 	ft_printf("Options:\n");
 	ft_printf("  -d, --disassemble: from bytecode to corewar assembly\n");
-	ft_printf("  -x, --hexa: display bytecode generate from file.s (hexadecimal)\n");
+	ft_printf("  -x, --hexadecimal: display bytecode generate from file.s (hexadecimal)\n");
 	ft_printf("  -b, --binary: display bytecode generate from file.s (binary)\n");
 	ft_printf("  -l, --long-dump: display entire bytecode (-x or -b is needed to be effective)\n");
 	ft_printf("  -o, --output <output>: write output to <file>\n");
