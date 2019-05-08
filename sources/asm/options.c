@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 22:25:00 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 02:39:14 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int			get_short_option(t_env *e, unsigned *options, char **s)
 		else if (**s == 'o')
 			tmp |= O_OUTPUT;
 		else if (**s == 'h')
-			usage(e, 1);
+			help(e);
 		else
 			tmp |= O_SHORT_ERR;
 		if ((*options |= tmp & ~0xff) & ~0xff)
@@ -99,7 +99,7 @@ int			get_long_option(t_env *e, unsigned *options, char **s)
 	else if (!ft_strcmp(*s, "output"))
 		*options |= O_OUTPUT;
 	else if (!ft_strcmp(*s, "help"))
-		usage(e, 1);
+		help(e);
 	else
 		*options |= O_LONG_ERR;
 	return (!(~0xff & *options));

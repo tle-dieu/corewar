@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 23:48:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 02:42:24 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ void				free_line(t_line **line, int label);
 void				undefined_label(t_env *e, t_call *call, int *note, int tt);
 void				missing_cmd(t_env *e, unsigned char *header, int cmd);
 void				champ_too_big(t_env *e);
+void				help(t_env *e);
 
 //verifier include dans .c et verifier proto fonctions
 
