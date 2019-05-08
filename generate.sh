@@ -1,4 +1,7 @@
 #!/bin/bash
+if [[ $# == 0 ]]; then
+	echo "Usage: ./generate.sh file.s..."
+fi
 for ((i = 1; i <= $#; i++ )); do
 	if [[ $# && -f ${!i} ]]; then
 		res=$(./asm ${!i} --color=f 2>&1)
