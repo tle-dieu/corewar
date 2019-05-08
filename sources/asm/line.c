@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 06:01:24 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 05:24:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 00:19:52 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ int			add_line(t_env *e, char **line)
 		else
 			break ;
 	}
-	if (ret <= 0)
-		return (ret == -1 ? alloc_error(e) : 0);
+	if (ret == -1)
+		alloc_error(e);
+	if (!ret)
+		return (0);
 	assign_line(e, *line);
 	*line = without_space ? without_space : *line;
 	return (1);

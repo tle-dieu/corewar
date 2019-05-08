@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 23:48:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 00:18:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ int					check_end_str(t_env *e, char *s, int cmd, char c);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
 int					add_line(t_env *e, char **line);
 void				get_bytecode(t_env *e, unsigned char *header);
-int					alloc_error(t_env *e);
+void				alloc_error(t_env *e);
 void				parse_inst(t_env *e, char *str);
 int					basic_error(t_env *e, char *str, char *err_string, int wave);
 void				print_buff(t_buff *buff);

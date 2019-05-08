@@ -1,7 +1,7 @@
-;[1mresources/champs/parsing_breaker/label/label_redeclaration.s:22:1: [1m[35mwarning: [0m[1mredefinition of label 'label' not allowedprevious definition line 20)
+;[1mresources/champs/parsing_breaker/label/label_redeclaration.s:22:1: [1m[35mwarning: [0m[1mredefinition of label 'label' not allowed (previous definition line 20)
 ;[0mlabel:
 ;[1m[32m^[0m
-;[1mresources/champs/parsing_breaker/label/label_redeclaration.s:24:1: [1m[35mwarning: [0m[1mredefinition of label 'label' not allowedprevious definition line 20)
+;[1mresources/champs/parsing_breaker/label/label_redeclaration.s:24:1: [1m[35mwarning: [0m[1mredefinition of label 'label' not allowed (previous definition line 20)
 ;[0mlabel:
 ;[1m[32m^[0m
 ;2 warnings generated.

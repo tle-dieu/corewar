@@ -40,7 +40,7 @@
 ;[1mresources/champs/parsing_breaker/other/wave_spaces.s:67:11: [1m[31merror: [0m[1millegal character for label
 ;[0mand r1,     ra        ,r1
 ;             [1m[32m^[0m
-;[1mresources/champs/parsing_breaker/other/wave_spaces.s:68:2: [1m[35mwarning: [0m[1mredefinition of label 'label' not allowedprevious definition line 60)
+;[1mresources/champs/parsing_breaker/other/wave_spaces.s:68:2: [1m[35mwarning: [0m[1mredefinition of label 'label' not allowed (previous definition line 60)
 ;[0m    label:            
 ;    [1m[32m^[0m
 ;5 warnings and 10 errors generated.
