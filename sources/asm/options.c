@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 03:51:31 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:22:29 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	color_option(t_env *e, char **line)
 
 int			output_file(t_env *e, int ac, char **av, unsigned *options)
 {
-	ft_printf("ui\n");
 	*options &= ~O_OUTPUT;
 	if (++e->i >= ac)
 	{

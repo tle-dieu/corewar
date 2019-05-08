@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 21:59:09 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:24:18 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	error_nb_param(t_env *e, char *str, int have, int should_have)
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, e->file->last->y, str - e->file->last->s + 1);
-	ft_printf("'%s'\n", str);
+	ft_dprintf(2, "'%s'\n", str);
 	if (have > should_have)
 		ft_dprintf(2, "too many parameter, have %d parameter expected %d\n",
 			have, should_have);
