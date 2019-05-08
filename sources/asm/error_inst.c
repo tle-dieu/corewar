@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/08 23:50:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 23:59:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 		ft_dprintf(2, REGISTER);
 	ft_dprintf(2, ") for instruction '%s'\n", g_op_tab[inst->op - 1].label);
 	err_pointer(e->tty2, e->file->last->s, str);
+	// dernier param de err_pointer inutile donc retire, donc j'ai remplace la ligne, ancienne en dessous
 	/* err_pointer(e->tty2, e->file->last->s, str, param_strrspn(str, SPACES, ',')); */	// WTF ?
+	//ct peut etre un err_wave que tu voulais faire
 	ft_dprintf(2, "\n");
 }
 
