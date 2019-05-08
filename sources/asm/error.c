@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:38:33 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 22:47:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 23:45:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,36 @@ int		basic_error(t_env *e, char *str, char *err_string, int wave)
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, e->file->last->y, str - e->file->last->s + 1);
 	ft_dprintf(2, err_string);
-	err_pointer(e->tty2, e->file->last->s, str, 0);
+	err_pointer(e->tty2, e->file->last->s, str);
 	if (wave)
 		err_wave(e->tty2, str, wave);
 	ft_dprintf(2, "\n");
 	return (1);
+}
+
+void	redefine_label(t_env *e, char *error, int y)
+{
+	t_line *line;
+
+	line = e->file->last;
+	++e->file->warning;
+	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
+		e->file->name, line->y, error - line->s + 1);
+	ft_dprintf(2, "redefinition of label '%.*s' not allowed",
+		ft_strchr(error, LABEL_CHAR) - error, error);
+	ft_dprintf(2, "previous definition line %d)\n", y);
+	err_pointer(e->tty2, line->s, error);
+	ft_dprintf(2, "\n");
+}
+
+void	champ_too_big(t_env *e)
+{
+	++e->file->warning;
+	ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
+	ft_dprintf(2, "bytecode of the champion too big for the vm ");
+	ft_dprintf(2, "(%d for %d bytes)\n", e->file->i, CHAMP_MAX_SIZE);
+	if (e->tty2)
+		ft_dprintf(2, "{R}");
 }
 
 void	missing_cmd(t_env *e, unsigned char *header, int cmd)
@@ -57,16 +82,6 @@ void	missing_cmd(t_env *e, unsigned char *header, int cmd)
 	ft_memcpy(header, default_str, len);
 }
 
-void	champ_too_big(t_env *e)
-{
-	++e->file->warning;
-	ft_dprintf(2, line_error(WARNING_FILE, e->tty2), e->file->name);
-	ft_dprintf(2, "bytecode of the champion too big for the vm ");
-	ft_dprintf(2, "(%d for %d bytes)\n", e->file->i, CHAMP_MAX_SIZE);
-	if (e->tty2)
-		ft_dprintf(2, "{R}");
-}
-
 void	undefined_label(t_env *e, t_call *call, int *note, int tt)
 {
 	int len;
@@ -79,7 +94,7 @@ void	undefined_label(t_env *e, t_call *call, int *note, int tt)
 	if (tt)
 		ft_dprintf(2, "(%d other%s", tt, tt > 1 ? "s)" : ")");
 	ft_dprintf(2, "\n");
-	err_pointer(e->tty2, call->line->s, call->s, 0);
+	err_pointer(e->tty2, call->line->s, call->s);
 	ft_dprintf(2, "\n");
 	if (!*note)
 	{
@@ -103,24 +118,9 @@ int		expect_str(t_env *e, char *error, int cmd)
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 2);
 	ft_dprintf(2, "expected string after %s\n", scmd);
-	err_pointer(e->tty2, line->s, error + 1 - (!ft_strchr(SPACES, *error)), 0);
+	err_pointer(e->tty2, line->s, error + 1 - (!ft_strchr(SPACES, *error)));
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
-}
-
-void	redefine_label(t_env *e, char *error, int y)
-{
-	t_line *line;
-
-	line = e->file->last;
-	++e->file->warning;
-	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
-		e->file->name, line->y, error - line->s + 1);
-	ft_dprintf(2, "redefinition of label '%.*s' not allowed",
-		ft_strchr(error, LABEL_CHAR) - error, error);
-	ft_dprintf(2, "previous definition line %d)\n", y);
-	err_pointer(e->tty2, line->s, error, 0);
-	ft_dprintf(2, "\n");
 }
 
 int		cmd_too_long(t_env *e, char *error, int cmd)
@@ -136,7 +136,7 @@ int		cmd_too_long(t_env *e, char *error, int cmd)
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "%s declaration too long (Max length: %d)\n", scmd, max);
-	err_pointer(e->tty2, line->s, error++, 0);
+	err_pointer(e->tty2, line->s, error++);
 	err_wave(e->tty2, error, ft_strclen(error, '"') + 1);
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
@@ -153,7 +153,7 @@ int		unexpected_expression(t_env *e, char *error, int cmd)
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "unexpected expression in %s declaration\n", scmd);
-	err_pointer(e->tty2, e->file->last->s, error, 0);
+	err_pointer(e->tty2, e->file->last->s, error);
 	if (ft_strcspn(e->file->last->s, "\"") + e->file->last->s > error)
 		err_wave(e->tty2, error, ft_strcspn(error, SPACES"\"") - 1);
 	else
@@ -173,7 +173,7 @@ int		missing_quote(t_env *e, char *error)
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, line->y, error + len - line->s + 1);
 	ft_dprintf(2, "missing terminating '\"' character\n");
-	err_pointer(e->tty2, line->s, error + len, 0);
+	err_pointer(e->tty2, line->s, error + len);
 	ft_dprintf(2, "\n");
 	return (-(e->file->error >= 20));
 }
@@ -192,7 +192,7 @@ void	cmd_part_champ(t_env *e, int cmd)
 	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "%s should be before instruction or label\n", scmd);
-	err_pointer(e->tty2, line->s, error++, 0);
+	err_pointer(e->tty2, line->s, error++);
 	len = ft_strclen(error, '"');
 	len = error[len] == '"' ? len + ft_strclen(error + len + 1, '"') + 1
 		: ft_strcspn(error, SPACES"\"");
@@ -215,7 +215,7 @@ void	cmd_multiple_define(t_env *e, int cmd)
 	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "%s already defined (ignored)\n", scmd);
-	err_pointer(e->tty2, line->s, error++, 0);
+	err_pointer(e->tty2, line->s, error++);
 	len = ft_strclen(error, '"');
 	len = error[len] == '"' ? len + ft_strclen(error + len + 1, '"') + 1
 		: ft_strcspn(error, SPACES"\"");
@@ -235,7 +235,7 @@ void	invalid_cmd(t_env *e, char *error, int cmd)
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "invalid command '%.*s'{R}\n",
 		ft_strcspn(error, SPACES"\""), error);
-	err_pointer(e->tty2, e->file->begin->s, error, 0);
+	err_pointer(e->tty2, e->file->begin->s, error);
 	err_wave(e->tty2, error, ft_strcspn(error + 1, SPACES"\""));
 	ft_dprintf(2, "\n");
 }

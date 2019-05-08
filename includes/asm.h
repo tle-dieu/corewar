@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/08 02:42:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/08 23:48:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ char				*line_error(int line, int tty);
 int					usage(t_env *e, int err);
 int					only_label(t_env *e, char **line);
 int					parse_command_line(t_env *e, int ac, char **av);
-void				err_pointer(int tty, char *s, char *end, int sp);
+void				err_pointer(int tty, char *s, char *end);
 void				err_wave(int tty, char *s, int n);
 int					check_end_str(t_env *e, char *s, int cmd, char c);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
