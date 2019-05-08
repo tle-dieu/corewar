@@ -6,24 +6,40 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 06:01:24 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 12:01:16 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/08 05:24:38 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
 
-static char	*pass_line(char *s)
+static char	*pass_line(char *s, int quote)
 {
+	char	*tmp;
+	int		len;
 	int		i;
 
-	s += ft_strspn(s, SPACES);
-	if (!*s || ft_strchr(COMMENT_CHAR, *s))
-		return (NULL);
-	if (*(s + (i = ft_strcspn(s, COMMENT_CHAR)))
-			&& (!(ft_ncount_occ(s, '"', i) & 1) || !ft_strchr(s + i, '"')))
-		*(s + i) = '\0';
-	return (s);
+	len = sizeof(COMMENT_CHAR) - 1;
+	if (!quote)
+	{
+		s += ft_strspn(s, SPACES);
+		if (!*s || ft_strchr(COMMENT_CHAR, *s))
+			return (NULL);
+	}
+	tmp = s;
+	while (*s)
+	{
+		i = len;
+		if (*s == '"')
+			quote = (quote & 1) + 1;
+		else
+			while (i-- && *s)
+				if (*s == COMMENT_CHAR[i] && !(quote & 1))
+					*s-- = '\0';
+		s++;
+			
+	}
+	return (tmp);
 }
 
 static void	assign_line(t_env *e, char *line)
@@ -58,7 +74,7 @@ int			add_line(t_env *e, char **line)
 	*line = NULL;
 	while ((ret = get_next_line(e->file->fd, line)) > 0)
 	{
-		if (!e->file->begin && !(without_space = pass_line(*line)))
+		if (!(without_space = pass_line(*line, e->file->begin != NULL)))
 		{
 			e->file->line_nb++;
 			free(*line);
