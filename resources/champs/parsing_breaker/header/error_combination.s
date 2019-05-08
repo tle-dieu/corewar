@@ -52,7 +52,7 @@
 ;[1mresources/champs/parsing_breaker/header/error_combination.s:74:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-;[1mresources/champs/parsing_breaker/header/error_combination.s:74:1: [1m[31merror: [0m[1mmissing terminating '"' character
+;[1mresources/champs/parsing_breaker/header/error_combination.s:74:133: [1m[31merror: [0m[1mmissing terminating '"' character
 ;[0m.name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ;                                                                                                                                    [1m[32m^[0m
 ;9 warnings and 10 errors generated.
