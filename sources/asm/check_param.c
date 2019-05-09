@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 15:07:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 17:43:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 19:11:53 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		is_valid_register(t_env *e, char *str)
 		tmp++;
 	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
 		err += basic_error(e, tmp, "illegal character for label\n", 0);
-	tmp += ft_strcspn(tmp, SPACES",");
+	tmp += ft_strcspn(tmp, END_PARAM);
 	tmp += ft_strspn(tmp, SPACES);
 	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
 		err += basic_error(e, tmp, "unexpected expression after parameter\n",
@@ -93,7 +93,7 @@ int		is_a_number(t_env *e, char *str)
 			&& *tmp != *SEPARATOR_CHAR && !ft_strchr(SPACES, *tmp))
 		err += basic_error(e, str, "invalid parameter\n",
 				param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
-	tmp += ft_strcspn(tmp, SPACES",");
+	tmp += ft_strcspn(tmp, END_PARAM);
 	tmp += ft_strspn(tmp, SPACES);
 	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
 		err += basic_error(e, tmp, "unexpected expression after parameter\n",

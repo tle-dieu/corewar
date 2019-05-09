@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 17:44:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 18:58:33 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	error_unknow_inst(t_env *e, char *str)
 {
 	int len;
 
-	len = ft_strcspn(str, SPACES",");
+	len = ft_strcspn(str, END_PARAM);
 	e->file->error++;
 	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
 		e->file->name, e->file->last->y, str - e->file->last->s + 1);
