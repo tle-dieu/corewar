@@ -33,6 +33,8 @@ ASM_SOURCES_FILES = main.c \
 					error_label.c \
 					utils.c \
 					free.c \
+					decomp.c \
+					decomp_utils.c \
 					dump.c \
 					op.c \
 					param.c \
@@ -43,8 +45,6 @@ VM_SOURCES_FILES = main.c \
 				   print.c \
 				   clean.c \
 				   args.c \
-				   decomp.c \
-				   decomp_utils.c \
 				   check.c \
 				   op.c \
 				   game_utils.c \

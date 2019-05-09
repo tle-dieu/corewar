@@ -6,47 +6,48 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/07 14:52:13 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/09 19:57:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
+#include "asm.h"
+#include <errno.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
-//Need check_champ,check_magic_number,split_champ,t_champ,t_decomp, et t_buff_d;
-
-void			init_line(t_env *e)
+void			init_line(t_decomp *d)
 {
-	e->d.x = 0;
-	e->d.op = e->champs[e->d.champ].content[e->d.i];
-	nb_in_buff(&e->d, e->d.i, 1);
-	str_in_buff(&e->d, ":\t\t");
-	str_in_buff(&e->d,
-			g_op_tab[e->champs[e->d.champ].content[e->d.i++] - 1].label);
-	e->d.buff_d->tab[e->d.y][e->d.x++] = ' ';
+	d->x = 0;
+	d->op = d->content[d->i];
+	nb_in_buff(d, d->i, 1);
+	str_in_buff(d, ":\t\t");
+	str_in_buff(d, g_op_tab[d->content[d->i++] - 1].label);
+	d->buff_d->tab[d->y][d->x++] = ' ';
 }
 
-int				generate_decomp_file(t_env *e, t_decomp *d, char *arg)
+int				generate_decomp_file(t_decomp *d, t_file *file)
 {
 	int			i;
 	int			fd;
 	char		*name;
 	t_buff_d	*ptr;
 
-	ptr = d->buff_d;
-	if (!(name = ft_strjoin(arg, "_decomp")) && ft_dprintf(2,
+	ptr = d->main_ptr;
+	ft_printf("generate\n");
+	if (!(name = ft_strjoin(file->name, "_decomp")) && ft_dprintf(2,
 				"{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno)))
-		return (free_buff_decomp(e));
+		return (free_buff_decomp(d));
 	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if ((!fd || fd == -1) && ft_dprintf(2,
-			"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg, strerror(errno)))
+			"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", file->name, strerror(errno)))
 	{
 		free(name);
-		return (free_buff_decomp(e));
+		return (free_buff_decomp(d));
 	}
 	while (ptr)
 	{
 		i = 0;
-		while (*ptr->tab[i])
+		while (*ptr->tab[i + 1])
 			ft_dprintf(fd, "%s\n", ptr->tab[i++]);
 		ptr = ptr->next;
 	}
@@ -89,7 +90,7 @@ void			str_in_buff(t_decomp *d, char *s)
 		d->buff_d->tab[d->y][d->x++] = *s++;
 }
 
-int				compute_param(t_env *e, int champ, int i, int size)
+int				compute_param(t_decomp *d, int i, int size)
 {
 	int		nb;
 	int		j;
@@ -99,7 +100,7 @@ int				compute_param(t_env *e, int champ, int i, int size)
 	while (size--)
 	{
 		nb *= 256;
-		nb += e->champs[champ].content[i + j++];
+		nb += d->content[i + j++];
 	}
 	return (nb);
 }

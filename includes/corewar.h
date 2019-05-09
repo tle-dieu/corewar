@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 14:52:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/09 19:21:36 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,6 @@ typedef struct		s_visu
 
 }					t_visu;
 
-typedef struct		s_buff_d
-{
-	char			tab[100][100];
-	struct s_buff_d	*next;
-}					t_buff_d;
-
-typedef struct		s_decomp
-{
-	t_buff_d		*buff_d;
-	int				y;
-	int				x;
-	int				i;
-	int				op;
-	int				champ;
-}					t_decomp;
-
 typedef	struct		s_env
 {
 	int				dump;
@@ -111,7 +95,6 @@ typedef	struct		s_env
 	int				c_total;
 	int				nb_champ;
 	t_visu			v;
-	t_decomp		d;
 	t_champ			champs[4];
 	t_proc			*proc;
 	t_proc			*new_proc;
@@ -220,21 +203,6 @@ void				place_champ(t_env *e);
 ** CLEAN.C (2)
 */
 void				freedom(t_env *e, int to_exit);
-
-/*
-** DECOMP.C (7)
-*/
-int					free_buff_decomp(t_env *e);
-int					decompile_champ(t_env *e, char *arg, int champ);
-
-/*
-** DECOMP_UTILS.C (5)
-*/
-void				init_line(t_env *e);
-int					generate_decomp_file(t_env *e, t_decomp *d, char *arg);
-void				nb_in_buff(t_decomp *d, int nb, int padding);
-void				str_in_buff(t_decomp *d, char *s);
-int					compute_param(t_env *e, int champ, int i, int size);
 
 extern t_op			g_op_tab[17];
 
