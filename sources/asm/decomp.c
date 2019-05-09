@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/09 19:57:49 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:24:28 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ int					free_buff_decomp(t_decomp *d)
 	t_buff_d	*ptr;
 	t_buff_d	*tmp;
 
-	ptr = d->buff_d;
+	ptr = d->main_ptr;
+	if (d->content)
+		free(d->content);
 	while (ptr)
 	{
 		tmp = ptr;
@@ -109,12 +111,11 @@ static int			add_buff_link(t_decomp *d)
 	int			i;
 
 	i = -1;
-	ft_printf("add link\n");
 	d->y = 0;
 	if (!(new = (t_buff_d*)malloc(sizeof(t_buff_d))))
 		return (0);
 	new->next = NULL;
-	while (++i <= 100)
+	while (++i < BS_DECOMP)
 		ft_bzero(new->tab[i], COMMENT_LENGTH + 11);
 	if (!d->buff_d)
 	{
@@ -185,6 +186,7 @@ static int			put_header(t_decomp *d, t_file *file)
 
 	i = -1;
 	d->buff_d = NULL;
+	d->content = NULL;
 	d->i = 0;
 	if (!check_champ_decomp(d, file) || !add_buff_link(d))
 		return (free_buff_decomp(d));
@@ -261,7 +263,6 @@ int					decompile_champ(t_file *file)
 
 	if (!put_header(&d, file))
 		return (0);
-	ft_printf("size = %d\n", d.size);
 	while (d.i < d.size)
 	{
 		if (d.content[d.i] < 1 || d.content[d.i] > 16)
@@ -278,7 +279,7 @@ int					decompile_champ(t_file *file)
 		else
 			move_forward(&d);
 		d.y++;
-		if (d.y >= 100)
+		if (d.y == BS_DECOMP - 1)
 			add_buff_link(&d);
 	}
 	return (generate_decomp_file(&d, file));

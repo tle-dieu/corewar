@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/09 19:57:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:24:30 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int				generate_decomp_file(t_decomp *d, t_file *file)
 	t_buff_d	*ptr;
 
 	ptr = d->main_ptr;
-	ft_printf("generate\n");
 	if (!(name = ft_strjoin(file->name, "_decomp")) && ft_dprintf(2,
 				"{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno)))
 		return (free_buff_decomp(d));
@@ -46,12 +45,13 @@ int				generate_decomp_file(t_decomp *d, t_file *file)
 	}
 	while (ptr)
 	{
-		i = 0;
-		while (*ptr->tab[i + 1])
-			ft_dprintf(fd, "%s\n", ptr->tab[i++]);
+		i = -1;
+		while (*ptr->tab[++i])
+			ft_dprintf(fd, "%s\n", ptr->tab[i]);
 		ptr = ptr->next;
 	}
 	free(name);
+	free_buff_decomp(d);
 	return (1);
 }
 
@@ -79,7 +79,7 @@ void			nb_in_buff(t_decomp *d, int nb, int padding)
 	d->buff_d->tab[d->y][d->x] = (abs % 10) + 48;
 	if (nb < 0)
 		d->buff_d->tab[d->y][--d->x] = '-';
-	while (d->x >= (int)tmp && padding)
+	while (d->x > (int)tmp && padding)
 		d->buff_d->tab[d->y][--d->x] = '0';
 	d->x = padding ? tmp + 6 : tmp + len;
 }

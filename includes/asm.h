@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 20:00:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:24:36 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 # include "libft.h"
 # include "op.h"
 
-//
-# define NAME_COMM_SIZE PROG_NAME_LENGTH + COMMENT_LENGTH
-//
 //retirer corewar.html et resources/parsing_breaker
 
 # define DEFAULT_NAME "no name"
@@ -83,6 +80,9 @@
 # define O_OUTPUT_ERR 4096
 # define O_INVALID_FILE_ERR 8192
 
+# define NAME_COMM_SIZE (PROG_NAME_LENGTH + COMMENT_LENGTH)
+# define BS_DECOMP 100
+
 typedef	struct		s_buff
 {
 	unsigned char	s[BS_ASM];
@@ -140,7 +140,7 @@ typedef struct		s_ocp
 
 typedef struct		s_buff_d
 {
-	char			tab[100][COMMENT_LENGTH + 11];
+	char			tab[BS_DECOMP][COMMENT_LENGTH + 11];
 	int				id;
 	struct s_buff_d	*next;
 }					t_buff_d;
