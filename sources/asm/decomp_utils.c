@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 00:16:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/10 00:18:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ void			init_line(t_decomp *d)
 	d->buff_d->tab[d->y][d->x++] = ' ';
 }
 
-int				generate_decomp_file(t_decomp *d, t_file *file)
+int				generate_decomp_file(t_decomp *d, t_buff_d *ptr, t_file *file)
 {
 	int			i;
 	int			fd;
 	char		*s;
 	char		*name;
-	t_buff_d	*ptr;
 
 	ptr = d->main_ptr;
 	if (!(s = ft_strrchr(file->name, '.')))
@@ -51,15 +50,15 @@ int				generate_decomp_file(t_decomp *d, t_file *file)
 				/* "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno))) */
 		/* return (free_buff_decomp(d)); */
 	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
-	if ((!fd || fd == -1) && ft_dprintf(2,
-			"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", file->name, strerror(errno)))
+	if (fd == -1 && ft_dprintf(2,
+		"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", file->name,
+		strerror(errno)))
 	{
 		free(name);
 		return (free_buff_decomp(d));
 	}
-	while (ptr)
+	while (ptr && (i = -1))
 	{
-		i = -1;
 		while (*ptr->tab[++i])
 			ft_dprintf(fd, "%s\n", ptr->tab[i]);
 		ptr = ptr->next;

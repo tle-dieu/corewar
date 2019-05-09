@@ -1,0 +1,137 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_decomp.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
+/*   Updated: 2019/05/09 23:50:21 by acompagn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "asm.h"
+#include <unistd.h>
+#include <stdlib.h>
+
+static void	check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
+{
+	int i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		if (i < g_op_tab[inst - 1].nb_param)
+		{
+			if (!((g_op_tab[inst - 1].param[i]
+							>> (((ocp >> ((3 - i) * 2)) & 3) - 1)) & 1))
+				check->error = 1;
+		}
+		else if ((ocp >> ((3 - i) * 2)) & 3)
+			check->error = 1;
+	}
+}
+
+static void	find_param_size(t_ocp *check, int ocp, int on_two)
+{
+	if (ocp >= 192 || ocp < 64)
+		check->s[0] = (ocp >= 192) ? 2 : 0;
+	else
+	{
+		if (ocp >= 128)
+			check->s[0] = on_two ? 2 : 4;
+		else
+			check->s[0] = 1;
+	}
+	if (ocp - check->p[0] >= 48 || ocp - check->p[0] < 16)
+		check->s[1] = (ocp - check->p[0] >= 48) ? 2 : 0;
+	else
+	{
+		if (ocp - check->p[0] >= 32)
+			check->s[1] = on_two ? 2 : 4;
+		else
+			check->s[1] = 1;
+	}
+	if (check->p[2] == 12 || check->p[2] == 4)
+		check->s[2] = (check->p[2] == 12) ? 2 : 1;
+	else if (check->p[2] == 8)
+		check->s[2] = on_two ? 2 : 4;
+}
+
+t_ocp		check_ocp(int ocp, int on_two, int inst)
+{
+	t_ocp	check;
+	int		i;
+
+	i = -1;
+	while (++i < 3)
+	{
+		check.v[i] = 0;
+		check.p[i] = 0;
+		check.s[i] = 0;
+	}
+	check.shift = 64;
+	check.error = ocp < 64;
+	if (ocp >= 192 || ocp < 64)
+		check.p[0] = (ocp >= 192) ? 192 : 0;
+	else
+		check.p[0] = (ocp >= 128) ? 128 : 64;
+	if (ocp - check.p[0] >= 48 || ocp - check.p[0] < 16)
+		check.p[1] = (ocp - check.p[0] >= 48) ? 48 : 0;
+	else
+		check.p[1] = (ocp - check.p[0] >= 32) ? 32 : 16;
+	check.p[2] = ocp - check.p[0] - check.p[1];
+	find_param_size(&check, ocp, on_two);
+	check_ocp_rights(&check, inst, ocp);
+	return (check);
+}
+
+static int	split_champ(t_decomp *d, t_file *file, unsigned char *line, int ret)
+{
+	int		i;
+	int		k;
+
+	i = 0;
+	k = 0;
+	d->size = line[PROG_NAME_LENGTH + 10] * 256
+		+ line[PROG_NAME_LENGTH + 11];
+	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
+			* (d->size + 2))))
+		return (0);
+	ft_bzero(d->content, d->size + 2);
+	while (i++ < NAME_COMM_SIZE + 8)
+	{
+		if (i == PROG_NAME_LENGTH + 8)
+			k = 0;
+		if (i < PROG_NAME_LENGTH + 8)
+			d->name[k++] = line[i];
+		else if (i > PROG_NAME_LENGTH + 11)
+			d->comment[k++] = line[i];
+	}
+	if ((ret = read(file->fd, d->content, d->size + 1)) == -1)
+		return (0);
+	if (d->content[d->size])
+		free_buff_decomp(d);
+	return (!d->content[d->size]);
+}
+
+int			check_champ_decomp(t_decomp *d, t_file *file)
+{
+	unsigned char	line[NAME_COMM_SIZE + 16];
+	int				ret;
+	int				b;
+	int				i;
+
+	b = 16;
+	i = 0;
+	ft_bzero(line, NAME_COMM_SIZE + 16);
+	if ((ret = read(file->fd, line, NAME_COMM_SIZE + 16) == -1))
+		return (0);
+	while (b >= 0)
+	{
+		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff))
+			return (0);
+		b -= 8;
+	}
+	return (split_champ(d, file, line, ret));
+}

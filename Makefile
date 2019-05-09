@@ -2,7 +2,7 @@ PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 CC = clang
 VISU = -lncurses
 LDFLAG = -L./$(LIBFT_DIR) -lft
@@ -35,6 +35,8 @@ ASM_SOURCES_FILES = main.c \
 					free.c \
 					decomp.c \
 					decomp_utils.c \
+					parse_decomp.c \
+					decomp_lst.c \
 					dump.c \
 					op.c \
 					param.c \
