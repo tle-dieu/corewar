@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 15:17:54 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 16:28:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@
 # define ALREADY_DEFINE 128
 
 # define O_HEXA 1
-# define O_BIN 2 
+# define O_BIN 2
 # define O_DISAS 4
 # define O_OUTPUT 8
 # define O_LONG 16
@@ -79,7 +79,7 @@
 
 typedef	struct		s_buff
 {
-	unsigned char	s[BS_ASM];	
+	unsigned char	s[BS_ASM];
 	long			len;
 	struct s_buff	*next;
 }					t_buff;

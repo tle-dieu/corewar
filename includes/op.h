@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 17:19:05 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:48:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 16:29:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- ** Toutes les tailles sont en octets.
- ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
- */
+** Toutes les tailles sont en octets.
+** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
+*/
 
 #ifndef OP_H
 # define OP_H
@@ -64,11 +64,10 @@ typedef char			t_arg_type;
 # define MAX_LEN_INST			14
 
 # if PROG_NAME_LENGTH > COMMENT_LENGTH
-# define BS_HEADER PROG_NAME_LENGTH
+#  define BS_HEADER PROG_NAME_LENGTH
 # else
-# define BS_HEADER COMMENT_LENGTH
+#  define BS_HEADER COMMENT_LENGTH
 # endif
-
 
 # define REGISTER "REGISTER"
 # define DIRECT "DIRECT"
