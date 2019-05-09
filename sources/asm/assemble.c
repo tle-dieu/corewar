@@ -6,14 +6,14 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 01:30:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 02:17:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <unistd.h>
 
 static void	get_output_file(t_env *e)
 {
