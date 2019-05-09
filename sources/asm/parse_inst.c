@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 01:53:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 12:17:24 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void		parse_inst(t_env *e, char *str)
 	char	*tmp;
 
 	inst = (t_inst){.ocp = 0}; // verifier norme
-	if (e->file->error < MAX_ERROR && (inst.op = get_curr_inst(str)) <= 16) // impossible que error >= MAX_ERROR des le debut de la fonction
+	if (e->file->error < MAX_ERROR && (inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;
 		tmp = str + ft_strlen(g_op_tab[inst.op - 1].label);

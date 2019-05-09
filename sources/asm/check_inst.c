@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 11:20:44 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 12:01:38 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,25 +92,6 @@ int		is_indirect(t_env *e, char *str, t_inst *inst)
 		}
 	}
 	return (1);
-}
-
-int		is_valid_register(t_env *e, char *str)
-{
-	char	*tmp;
-	int		err;
-
-	err = 0;
-	tmp = str;
-	while (ft_isdigit(*tmp))
-		tmp++;
-	if (*tmp != *SEPARATOR_CHAR && *tmp && !ft_strchr(SPACES, *tmp))
-		err += basic_error(e, tmp, "illegal character for label\n", 0);
-	tmp += ft_strcspn(tmp, SPACES",");
-	tmp += ft_strspn(tmp, SPACES);
-	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
-		err += basic_error(e, tmp, "unexpected expression after parameter\n",
-				ft_strcspn(tmp, END_PARAM) - 1);
-	return (!err);
 }
 
 int		is_reg(t_env *e, char *str, t_inst *inst)

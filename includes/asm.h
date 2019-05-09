@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 11:16:45 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 12:03:07 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,6 +264,7 @@ void				parse_inst(t_env *e, char *str);
 /*
 ** ------------------ Utils -----------------
 */
+int					is_valid_register(t_env *e, char *str);
 int					inst_atoi(char *str);
 int					is_a_number(t_env *e, char *str);
 size_t				param_strrspn(const char *s, const char *accept, char stop);

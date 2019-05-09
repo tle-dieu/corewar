@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 10:31:05 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 12:14:58 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,12 @@ void	error_nb_param(t_env *e, char *str, int have, int should_have)
 
 void	print_expected_types(t_inst *inst, int type, int op_type)
 {
-	const char	types[4][20] = {REGISTER, DIRECT, "", INDIRECT}; //norme
-	
+	char	*types[4];
+
+	types[0] = REGISTER;
+	types[1] = DIRECT;
+	types[2] = "";
+	types[3] = INDIRECT;
 	ft_dprintf(2, "parameter[%d] type is %s, expected type(s) (",
 		inst->i + 1, types[type - 1]);
 	if (op_type & T_IND)
@@ -44,7 +48,6 @@ void	print_expected_types(t_inst *inst, int type, int op_type)
 			&& ft_dprintf(2, " | ");
 	if (op_type & T_REG)
 		ft_dprintf(2, REGISTER);
-	
 }
 
 void	error_param_type(t_env *e, t_inst *inst, char *str)
