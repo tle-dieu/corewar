@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:17:12 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 21:59:09 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/08 12:36:27 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,10 @@ void	error_nb_param(t_env *e, char *str, int have, int should_have)
 	ft_dprintf(2, "\n");
 }
 
-void	error_param_type(t_env *e, t_inst *inst, char *str)
+void	print_expected_types(t_inst *inst, int type, int op_type)
 {
-	int			type;
-	int			op_type;
-	const char	*types[4] = {REGISTER, DIRECT, "", INDIRECT}; //norme
-
-	type = inst->t[inst->i] + (inst->t[inst->i] == 3);
-	op_type = g_op_tab[inst->op - 1].param[inst->i];
-	if (!(g_op_tab[inst->op - 1].nb_param > inst->i && !(type & op_type)))
-		return ;
-	inst->error++;
-	e->file->error++;
-	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
-		e->file->name, e->file->last->y, str - e->file->last->s + 1);
+	const char	types[4][20] = {REGISTER, DIRECT, "", INDIRECT}; //norme
+	
 	ft_dprintf(2, "parameter[%d] type is %s, expected type(s) (",
 		inst->i + 1, types[type - 1]);// tableau de macro
 	if (op_type & T_IND)
@@ -55,6 +45,23 @@ void	error_param_type(t_env *e, t_inst *inst, char *str)
 			&& ft_dprintf(2, " | ");
 	if (op_type & T_REG)
 		ft_dprintf(2, REGISTER);
+	
+}
+
+void	error_param_type(t_env *e, t_inst *inst, char *str)
+{
+	int			type;
+	int			op_type;
+
+	type = inst->t[inst->i] + (inst->t[inst->i] == 3);
+	op_type = g_op_tab[inst->op - 1].param[inst->i];
+	if (!(g_op_tab[inst->op - 1].nb_param > inst->i && !(type & op_type)))
+		return ;
+	inst->error++;
+	e->file->error++;
+	print_expected_types(inst, type, op_type);
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2),
+		e->file->name, e->file->last->y, str - e->file->last->s + 1);
 	ft_dprintf(2, ") for instruction '%s'\n", g_op_tab[inst->op - 1].label);
 	err_pointer(e->tty2, e->file->last->s,
 		str, param_strrspn(str, SPACES, ','));
