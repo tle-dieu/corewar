@@ -6,11 +6,12 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:13:44 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 00:46:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 02:50:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "op.h"
 
 void	redefine_label(t_env *e, char *error, int y)
 {
@@ -22,7 +23,6 @@ void	redefine_label(t_env *e, char *error, int y)
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "redefinition of label '%.*s' not allowed",
 		ft_strchr(error, LABEL_CHAR) - error, error);
-	(void)y;
 	ft_dprintf(2, " (previous definition line %d)\n", y);
 	err_pointer(e->tty2, line->s, error);
 	ft_dprintf(2, "\n");
