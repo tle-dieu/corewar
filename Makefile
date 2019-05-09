@@ -32,7 +32,7 @@ ASM_SOURCES_FILES = main.c \
 					error_label.c \
 					utils.c \
 					free.c \
-					print.c \
+					dump.c \
 					op.c
 
 VM_SOURCES_FILES = main.c \

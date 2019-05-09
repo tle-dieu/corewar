@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 23:19:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 01:30:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,6 @@ static void	assembly_error(t_env *e, unsigned char *header)
 			e->file->error > 1 ? "errors" : "error");
 	if (e->file->error || e->file->warning)
 		ft_dprintf(2, "generated.\n");
-	if (!e->file->error)
-	{
-		if (!e->file->error && e->file->options & (O_HEXA | O_BIN))
-			print_bin(e, header);
-		if (!e->file->error && !(e->file->options & (O_HEXA | O_BIN)))
-			write_bytecode(e, header);
-	}
 }
 
 void		assemble(t_env *e)
@@ -102,4 +95,11 @@ void		assemble(t_env *e)
 	while (i--)
 		header[PROG_NAME_LENGTH + 11 - i] = e->file->i >> i * 8;
 	assembly_error(e, header);
+	if (!e->file->error)
+	{
+		if (!e->file->error && e->file->options & (O_HEXA | O_BIN))
+			dump_bytecode(e, header);
+		if (!e->file->error && !(e->file->options & (O_HEXA | O_BIN)))
+			write_bytecode(e, header);
+	}
 }

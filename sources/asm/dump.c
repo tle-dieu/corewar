@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   dump.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 20:50:06 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 21:45:50 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/05/09 01:31:18 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/05/09 01:31:20 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static int	pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 	return (0);
 }
 
-void		print_bin(t_env *e, unsigned char *header)
+void		dump_bytecode(t_env *e, unsigned char *header)
 {
 	int				i;
 	int				size;

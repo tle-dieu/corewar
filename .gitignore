@@ -41,6 +41,7 @@
 *.su
 *.idb
 *.pdb
+*.tmp
 
 # Swap
 [._]*.s[a-v][a-z]
