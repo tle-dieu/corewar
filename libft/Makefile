@@ -167,7 +167,7 @@ so: $(NAME_SHARED)
 $(NAME_SHARED): $(OBJECTS) Makefile
 	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
-	$(CC) -shared $(OBJECTS) -o $@
+	$(CC) $(CFLAGS) -shared $(OBJECTS) -o $@
 	printf "$(GREEN)$@ has been created$(RESET)\n" $(REDIRECT)
 
 objects/%.o: %.c $(INCLUDES) Makefile

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:40:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 05:10:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 02:53:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ int			check_end_str(t_env *e, char *s, int cmd, char c)
 	return (0);
 }
 
-void		err_pointer(int tty, char *s, char *end, int sp)
+void		err_pointer(int tty, char *s, char *end)
 {
 	int space;
 
 	if (tty)
 		ft_dprintf(2, "{R}");
 	put_strtab(s, 0, -1);
-	space = end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1) + sp;
+	space = end - s + ft_ncount_occ(s, '\t', end - s) * (TAB_SIZE - 1);
 	if (s != end)
 		ft_dprintf(2, "\n%*c", space, ' ');
 	else

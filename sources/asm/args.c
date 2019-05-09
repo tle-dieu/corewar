@@ -6,13 +6,13 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 04:16:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 02:14:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include <fcntl.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 static void		init_file(t_file *file)

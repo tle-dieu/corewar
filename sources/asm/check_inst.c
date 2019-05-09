@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 23:06:12 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 11:20:44 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int		is_valid_register(t_env *e, char *str)
 	tmp += ft_strspn(tmp, SPACES);
 	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
 		err += basic_error(e, tmp, "unexpected expression after parameter\n",
-				ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
+				ft_strcspn(tmp, END_PARAM) - 1);
 	return (!err);
 }
 

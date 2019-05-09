@@ -14,23 +14,26 @@ VM_DIR = corewar/
 # --------------- Sources --------------- #
 
 ASM_SOURCES_FILES = main.c \
-					assemble.c \
-					free.c \
-					line.c \
-					print.c \
 					args.c \
 					options.c \
-					error.c \
+					assemble.c \
+					line.c \
+					header.c \
+					parse_inst.c \
+					check_inst.c \
+					label.c \
+					label_call.c \
 					utils_error.c \
 					error_args.c \
-					header.c \
-					label.c \
-					op.c \
-					parse_inst.c \
+					error_cmd_format.c \
+					error_cmd_global.c \
+					error_global.c \
 					error_inst.c \
+					error_label.c \
 					utils.c \
-					label_call.c \
-					check_inst.c
+					free.c \
+					dump.c \
+					op.c
 
 VM_SOURCES_FILES = main.c \
 				   init.c \
@@ -100,16 +103,6 @@ ifneq (,$(filter $(silent), y yes))
 	HIDE :=
 	REDIRECT := > /dev/null
 endif
-
-# ifneq (,$(filter $(valgrind),y yes))
-# 	RUN_OPTION += valgrind --leak-check=full --track-origins=yes --read-inline-info=yes --read-var-info=yes --num-callers=100 --show-possibly-lost=no
-# 	CFLAGS += -g3
-# endif
-
-# ifneq (,$(filter $(time),y yes))
-# 	RUN_OPTION = time -p
-# endif
-#
 
 all: $(PROGRAMMES) Makefile
 

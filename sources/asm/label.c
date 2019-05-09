@@ -6,12 +6,13 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 15:12:41 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 21:29:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 02:51:09 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "asm.h"
+#include "op.h"
+#include <stdlib.h>
 
 static int		search_label(t_env *e, char *s, int len)
 {
@@ -27,6 +28,7 @@ static int		search_label(t_env *e, char *s, int len)
 			redefine_label(e, s, label->y);
 		else
 		{
+			label->y = e->file->last->y;
 			label->index = e->file->i;
 			call = label->call;
 			if (!e->file->error)

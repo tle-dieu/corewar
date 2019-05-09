@@ -11,7 +11,16 @@ RED = "\x1b[1;38;2;241;76;76m"
 WHITE = "\x1b[1;38;2;255;255;255m"
 
 def get_file(asm, f):
-    my_file = f.split('.')[0] + ".cor"
+    i = 0
+    split_name = f.split('.')
+    my_file = ""
+    if split_name[len(split_name) - 1] == 's':
+        while i < len(split_name) - 1:
+            my_file += split_name[i] + "."
+            i += 1
+    else:
+        my_file = f
+    my_file += "cor"
     sp.getoutput('rm ' + my_file)
     open = sp.getoutput("./" + asm + " --color=force " + f)
     output = ""
@@ -83,52 +92,55 @@ def compare(str1, str2):
 
 def main():
     i = 0
-    print(ASM_42 + ": -")
-    print(ASM + ": +")
-    tmp = ""
-    succes = ""
-    bad_file = ""
-    nb_err = 0
-    for arg in sys.argv:
-        error = 0
-        err = ""
-        if i > 0:
-            asm_42, err , success = get_file(ASM_42, arg)
-            asm_42 = asm_42.split('\n')
-            asm, tmp, success_tmp = get_file(ASM, arg)
-            err += tmp
+    if len(sys.argv) >= 2:
+        print(ASM_42 + ": -")
+        print(ASM + ": +")
+        tmp = ""
+        succes = ""
+        bad_file = ""
+        nb_err = 0
+        for arg in sys.argv:
+            error = 0
+            err = ""
+            if i > 0:
+                asm_42, err , success = get_file(ASM_42, arg)
+                asm_42 = asm_42.split('\n')
+                asm, tmp, success_tmp = get_file(ASM, arg)
+                err += tmp
 
-            success += success_tmp
-            asm = asm.split('\n')
-            print(WHITE + "\n- - - - - - - - - - - - " + arg.upper() + " - - - - - - - - - - - -\n")
-            if success:
-                print(success + WHITE)
-            if not err:
-                j = 0
-                while j < len(asm) and j < len(asm_42):
-                    error += compare(asm_42[j], asm[j])
-                    j += 1
-                while j < len(asm_42):
-                    error += compare(asm_42[j], "")
-                    j += 1
-                while j < len(asm):
-                    error += compare("", asm[j])
-                    j += 1
-                print(GREEN + "Diff = OK")
-            elif "hasn' t" in tmp and "hasn' t" in err:
-                print(err)
-                print(GREEN + "Diff = OK (both files haven't been created)")
-            else:
-                bad_file += "\t- " + arg + "\n"
-                nb_err += 1
-                print(err)
-                print(RED + "Diff = KO (%d bad line(s))" % error)
-        i += 1
-    if nb_err == 0:
-        print("\n%s[%d/%d]\tSUCCES" %(GREEN, i - 1 - nb_err, i - 1))
+                success += success_tmp
+                asm = asm.split('\n')
+                print(WHITE + "\n- - - - - - - - - - - - " + arg.upper() + " - - - - - - - - - - - -\n")
+                if success:
+                    print(success + WHITE)
+                if not err:
+                    j = 0
+                    while j < len(asm) and j < len(asm_42):
+                        error += compare(asm_42[j], asm[j])
+                        j += 1
+                    while j < len(asm_42):
+                        error += compare(asm_42[j], "")
+                        j += 1
+                    while j < len(asm):
+                        error += compare("", asm[j])
+                        j += 1
+                    print(GREEN + "Diff = OK")
+                elif "hasn' t" in tmp and "hasn' t" in err:
+                    print(err)
+                    print(GREEN + "Diff = OK (both files haven't been created)")
+                else:
+                    bad_file += "\t- " + arg + "\n"
+                    nb_err += 1
+                    print(err)
+                    print(RED + "Diff = KO (%d bad line(s))" % error)
+            i += 1
+        if nb_err == 0:
+            print("\n%s[%d/%d]\tSUCCES" %(GREEN, i - 1 - nb_err, i - 1))
+        else:
+            print("\n%s[%d/%d]\tfound %d diff(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
+            print(WHITE + bad_file)
     else:
-        print("\n%s[%d/%d]\tfound %d diff(s):" %(RED, i - 1 - nb_err, i - 1, nb_err))
-        print(WHITE + bad_file)
+        print("Usage: %s file.s ..." % (sys.argv[0]))
 
     
 

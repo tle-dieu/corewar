@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:41:36 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/07 20:25:31 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 11:20:49 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int				is_a_number(t_env *e, char *str)
 			param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
 	tmp += ft_strcspn(tmp, SPACES",");
 	tmp += ft_strspn(tmp, SPACES);
-	if (*tmp && *tmp != *SEPARATOR_CHAR)
-		err = 1;
+	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR && (err = 1))
+		err += basic_error(e, tmp, "unexpected expression after parameter\n",
+		ft_strcspn(tmp, END_PARAM) - 1);
 	return (!err);
 }
 

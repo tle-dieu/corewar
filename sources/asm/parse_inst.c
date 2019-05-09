@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/07 23:48:26 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 01:53:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "asm.h"
 #include <stdlib.h>
 
-int		get_curr_inst(char *str)
+static int	get_curr_inst(char *str)
 {
 	int	i;
 
@@ -28,7 +28,7 @@ int		get_curr_inst(char *str)
 	return (i + 1);
 }
 
-void	get_ocp(t_inst *inst)
+static void	get_ocp(t_inst *inst)
 {
 	int			i;
 	int			ocp;
@@ -47,7 +47,7 @@ void	get_ocp(t_inst *inst)
 	inst->ocp = ocp;
 }
 
-void	add_buff(t_env *e)
+static void	add_buff(t_env *e)
 {
 	t_buff	*new;
 
@@ -62,7 +62,7 @@ void	add_buff(t_env *e)
 	e->file->buff = new;
 }
 
-void	write_inst(t_env *e, t_inst *inst)
+static void	write_inst(t_env *e, t_inst *inst)
 {
 	int i;
 
@@ -88,16 +88,16 @@ void	write_inst(t_env *e, t_inst *inst)
 			}
 	}
 	if (!inst->error)
-		e->file->i = inst->index;
+		e->file->i = inst->index; // tester inst->error
 }
 
-void	parse_inst(t_env *e, char *str)
+void		parse_inst(t_env *e, char *str)
 {
 	t_inst	inst;
 	char	*tmp;
 
 	inst = (t_inst){.ocp = 0}; // verifier norme
-	if (e->file->error < MAX_ERROR && (inst.op = get_curr_inst(str)) <= 16)
+	if (e->file->error < MAX_ERROR && (inst.op = get_curr_inst(str)) <= 16) // impossible que error >= MAX_ERROR des le debut de la fonction
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;
 		tmp = str + ft_strlen(g_op_tab[inst.op - 1].label);
@@ -108,7 +108,7 @@ void	parse_inst(t_env *e, char *str)
 		if (!e->file->champ_part)
 			e->file->champ_part = 1;
 	}
-	else if (e->file->error < MAX_ERROR)
+	else if (e->file->error < MAX_ERROR) // la aussi du coup ? a part si pls erreurs dans get_curr_inst
 	{
 		inst.error++;
 		error_unknow_inst(e, str);
