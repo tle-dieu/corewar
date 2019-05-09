@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:22:32 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 20:54:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:21:11 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,120 +15,81 @@
 void		sti(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		sum;
-	int		err;
-	int		m;
+	int		reg;
 
-	err = 0;
-	m = 0;
-	sum = 0;
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
-	if (check.p1 == 64 && check.p2 && check.p3 < 12)
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error)
 	{
-		m = 2 + check.s1;
-		if (check.p2 == 16)
-			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.s2)];
-		else if (check.p2 > 32)
-			sum += e->mem[*pc + (param_sum(e,
-						(*pc + m) % MEM_SIZE, check.s2) % IDX_MOD)];
-		else
-			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.s2);
-		m = 2 + check.s1 + check.s2;
-		if (!err && check.p3 == 8)
-			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.s3);
-		else if (!err && check.p3 == 4)
-			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.s3)];
-		else
-			err = 1;
-		m = 2;
-		insert(e, (*pc + (sum % IDX_MOD)) % MEM_SIZE,
-			(void*)&ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, 1)], 4);
+		param_value(e, &check, ptr, 1);
+		reg = e->mem[(*pc + 2) % MEM_SIZE];
+		if (!check.error && reg > 0 && reg < 17)
+		{
+			e->v.color = e->visu ? ptr->color : 0;
+			insert(e, (*pc + ((check.v[1] + check.v[2]) % IDX_MOD))
+				% MEM_SIZE, (void*)&ptr->r[reg], REG_SIZE);
+		}
 	}
-	*pc += 2 + check.s1 + check.s2 + check.s3;
+	*pc = *pc + 2 + check.s[0] + check.s[1] + check.s[2];
 }
 
 void		op_fork(t_env *e, int *pc, t_proc *ptr)
 {
-	int		ind;
+	short	addr;
 
-	ind = param_sum(e, *pc + 1, 2);
-	if (!(create_new_process(e, *pc + (ind % IDX_MOD), ptr)))
-		freedom(e);
-	*pc += 2;
+	addr = param_sum(e, *pc + 1, 2);
+	if (!(create_new_process(e, (*pc + (addr % IDX_MOD)) % MEM_SIZE, ptr)))
+		freedom(e, 1);
+	*pc += 3;
 }
 
 void		lld(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		error;
-	int		addr;
-	int		value;
+	short	addr;
+	int		reg;
 
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 0);
-	addr = find_param_value(e, check, 1, pc, ptr);
-	error = (!check.p1 || check.p2 != 16 || check.p3) ? 1 : 0;
-	if (!error && check_reg(e->mem[(*pc + 2 + check.s1) % MEM_SIZE]))
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	reg = e->mem[(*pc + 2 + check.s[0]) % MEM_SIZE];
+	if (!check.error && reg > 0 && reg < 17)
 	{
-		if (check.s1 == 1 && check_reg(e->mem[(*pc + 2) % MEM_SIZE]))
+		if (check.s[0] == 2)
 		{
-			value = ptr->r[e->mem[(*pc + 2) % MEM_SIZE]];
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
+			addr = param_sum(e, *pc + 2, 2);
+			ptr->r[reg] = param_sum(e, *pc + addr % MEM_SIZE, REG_SIZE);
 		}
-		else if (check.s1 == 2)
-		{
-			value = param_sum(e, *pc + addr, REG_SIZE);
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = value;
-		}
-		else if (check.s1 == 4)
-			ptr->r[e->mem[(*pc + 2 + check.s1) % MEM_SIZE]] = addr;
+		else if (check.s[0] == 4)
+			ptr->r[reg] = param_sum(e, ptr->pc + 2, check.s[0]);
+		ptr->carry = !ptr->r[reg];
 	}
-	*pc += 2 + check.s1 + check.s2 + check.s3;
-	ptr->carry = (!error && !value) ? 1 : 0;
+	*pc = *pc + 2 + check.s[0] + check.s[1] + check.s[2];
 }
 
 void		lldi(t_env *e, int *pc, t_proc *ptr)
 {
 	t_ocp	check;
-	int		sum;
-	int		m;
-	int		err;
+	int		reg;
 
-	err = 0;
-	sum = 0;
-	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE], 1);
-	if (check.p3 == 4 && check.p2 <= 32 && check.p3)
+	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
+			g_op_tab[ptr->op - 1].dir_size, ptr->op);
+	if (!check.error)
 	{
-		m = 2;
-		if (check.p1 == 4)
-			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p1)];
-		else if (check.p1 > 8)
-			sum += e->mem[(*pc + param_sum(e,
-						(*pc + m) % MEM_SIZE, IND_SIZE)) % MEM_SIZE];
-		else
-			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p3);
-		m = 2 + check.s1;
-		if (!err && check.p2 == 16)
-			sum += ptr->r[param_sum(e, (*pc + m) % MEM_SIZE, check.p2)];
-		else if (!err && check.p2 == 32)
-			sum += param_sum(e, (*pc + m) % MEM_SIZE, check.p2);
-		else
-			err = 1;
-		m = 2 + check.s1 + check.s2;
-		if (!err && check.p3 == 64)
-			ptr->r[param_sum(e, *pc % MEM_SIZE, check.p3)] = sum;
-		else
-			err = 1;
-		ptr->carry = !sum;
+		param_value(e, &check, ptr, 0);
+		reg = e->mem[(*pc + 2 + check.s[0] + check.s[1]) % MEM_SIZE];
+		if (!check.error && reg > 0 && reg < 17)
+			ptr->r[reg] = param_sum(e,
+					(*pc + check.v[0] + check.v[1]) % MEM_SIZE, REG_SIZE);
 	}
-	*pc += 2 + check.s1 + check.s2 + check.s3;
+	*pc = *pc + 2 + check.s[0] + check.s[1] + check.s[2];
 }
 
 void		lfork(t_env *e, int *pc, t_proc *ptr)
 {
-	int		ind;
+	short	addr;
 
-	ind = param_sum(e, *pc + 1, 2);
-	if (!(create_new_process(e, *pc + ind, ptr)))
-		freedom(e);
-	*pc += 2;
+	addr = param_sum(e, *pc + 1, 2);
+	if (!(create_new_process(e, (*pc + addr) % MEM_SIZE, ptr)))
+		freedom(e, 1);
+	*pc += 3;
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 14:27:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:51:47 by tle-dieu         ###   ########.fr       */
+/*   Created: 2019/05/09 16:36:26 by tle-dieu          #+#    #+#             */
+/*   Updated: 2019/05/09 16:58:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		main(int ac, char **av)
 	t_env	e;
 	t_file	*next;
 
-	e = (t_env){isatty(1), isatty(2), 0, NULL, NULL, av[0], NULL};
+	e = (t_env){isatty(1), isatty(2), 0, NULL, NULL, av[0], NULL, NULL};
 	if (ac < 2)
 		return (usage(&e, 3));
 	if (!parse_command_line(&e, ac, av))

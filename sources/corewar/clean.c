@@ -6,54 +6,45 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 19:57:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:38:16 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void			freedom(t_env *e)
-{
-	ft_printf("free\n");
-	(void)e;
-}
-
-void			destroy_process(t_env *e, int i, t_proc *to_del)
+static void		free_processes(t_env *e)
 {
 	t_proc	*ptr;
 	t_proc	*tmp;
 
-	ptr = e->champs[i].proc;
-	if (ptr == to_del)
+	if (e->new_proc)
 	{
-		tmp = ptr;
-		e->champs[i].proc = ptr->next;
-		free(tmp);
-		return ;
+		e->proc_to_load->next = e->proc;
+		e->proc = e->new_proc;
+		e->new_proc = NULL;
 	}
-	while (ptr && ptr->next)
-	{
-		if (ptr->next == to_del)
-		{
-			tmp = ptr->next;
-			ptr->next = to_del->next;
-			free(tmp);
-		}
-		ptr = ptr->next;
-	}
-}
-
-void			destroy_all(t_env *e, int i)
-{
-	t_proc	*ptr;
-	t_proc	*tmp;
-
-	ptr = e->champs[i].proc;
+	ptr = e->proc;
 	while (ptr)
 	{
 		tmp = ptr;
 		ptr = ptr->next;
 		free(tmp);
 	}
-	e->champs[i].proc = NULL;
+	e->proc = NULL;
+}
+
+void			freedom(t_env *e, int to_exit)
+{
+	free_processes(e);
+	if (to_exit)
+	{
+		ft_dprintf(2, "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno));
+		exit(1);
+	}
+	if (e->visu && e->dump == -1)
+	{
+		while (getch() != ' ')
+			;
+		endwin();
+	}
 }

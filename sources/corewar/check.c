@@ -6,16 +6,11 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/04/11 20:58:26 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/07 14:52:10 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-
-int				check_reg(int reg)
-{
-	return (reg > 0 && reg < 17);
-}
 
 static void		split_champ(t_env *e, int i)
 {
@@ -26,17 +21,15 @@ static void		split_champ(t_env *e, int i)
 	k = 0;
 	while (++j < MAX_SIZE)
 	{
-		if (j == PROG_NAME_LENGTH + 8 || j == PROG_NAME_LENGTH
-				+ COMMENT_LENGTH + 16)
+		if (j == PROG_NAME_LENGTH + 8 || j == NAME_COMM_SIZE + 16)
 			k = 0;
 		if (j < PROG_NAME_LENGTH + 8)
 			e->champs[i].name[k++] = e->line[j];
-		else if (j >= PROG_NAME_LENGTH + COMMENT_LENGTH + 16)
+		else if (j >= NAME_COMM_SIZE + 16)
 			e->champs[i].content[k++] = e->line[j];
 		else if (j > PROG_NAME_LENGTH + 11)
 			e->champs[i].comment[k++] = e->line[j];
 	}
-	e->champs[i].proc = NULL;
 }
 
 static int		check_magic_number(t_env *e)
@@ -55,40 +48,49 @@ static int		check_magic_number(t_env *e)
 	return (1);
 }
 
-static int		check_champ_size(t_env *e, int ret, int i)
+static int		check_champ_size(t_env *e, char *arg, int ret, int i)
 {
-	if (ret > MAX_SIZE || e->line[PROG_NAME_LENGTH + 10] * 256
-			+ e->line[PROG_NAME_LENGTH + 11] > CHAMP_MAX_SIZE)
-		return (0);
-	else
+	e->champs[i].size = e->line[PROG_NAME_LENGTH + 10] * 256
+		+ e->line[PROG_NAME_LENGTH + 11];
+	if (e->champs[i].size <= 0)
 	{
-		e->champs[i].size = e->line[PROG_NAME_LENGTH + 10] * 256
-			+ e->line[PROG_NAME_LENGTH + 11];
-		return (1);
+		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small (%d){R}\n",
+			arg, e->champs[i].size);
+		return (0);
 	}
+	else if (ret > MAX_SIZE || e->champs[i].size > CHAMP_MAX_SIZE)
+	{
+		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too big\
+			(%d > %d){R}\n", arg, e->champs[i].size, CHAMP_MAX_SIZE);
+		return (0);
+	}
+	return (1);
 }
 
 int				check_champ(t_env *e, char *arg, int i)
 {
 	int		fd;
 	int		ret;
+	int		err;
 
 	fd = open(arg, O_RDONLY);
-	if (fd == -1 || !fd)
-		return (0);
-	ft_bzero(e->line, MAX_SIZE);
-	ret = read(fd, e->line, MAX_SIZE + 1);
-	if (!(check_champ_size(e, ret, i)))
+	err = 0;
+	if ((fd == -1 || !fd) && (err = 1))
 	{
-		ft_printf("Champ too big -> %d > %d\n",
-				e->champs[i].size, CHAMP_MAX_SIZE);
+		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
+			strerror(errno));
 		return (0);
 	}
-	if (!(check_magic_number(e)))
-	{
-		ft_printf("Wrong magic number\n");
+	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
+	ret = !err ? read(fd, e->line, MAX_SIZE + 1) : -1;
+	close(fd);
+	if (!err && (ret == -1 || !(check_magic_number(e))) && (err = 1))
+		ft_dprintf(2, "{bold}%s: {#ed000b}%s{R}\n",
+			ret == -1 ? strerror(errno) : "Magic number missing", arg);
+	if (!err && !(check_champ_size(e, arg, ret, i)))
+		err = 1;
+	if (err)
 		return (0);
-	}
 	split_champ(e, i);
 	return (1);
 }

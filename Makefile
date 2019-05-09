@@ -4,6 +4,7 @@ ASM = asm
 
 CFLAGS = -Wall -Werror -Wextra
 CC = clang
+VISU = -lncurses
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
 RM = rm -rf
@@ -42,12 +43,18 @@ VM_SOURCES_FILES = main.c \
 				   print.c \
 				   clean.c \
 				   args.c \
-				   debug.c \
+				   decomp.c \
+				   decomp_utils.c \
 				   check.c \
+				   op.c \
+				   game_utils.c \
 				   op_utils.c \
+				   ocp_utils.c \
 				   op_1_5.c \
 				   op_6_10.c \
 				   op_11_15.c \
+				   visu.c \
+				   visu_print.c \
 				   play.c
 
 SOURCES_DIR = sources/
@@ -88,7 +95,6 @@ HIDE = tput civis
 SHOW = tput cnorm
 SLEEP = sleep 0.01
 
-
 # --------------- Options --------------- #
 
 ifneq (,$(filter $(flags),n no))
@@ -118,7 +124,7 @@ $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
 	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
-	$(CC) $(CFLAGS) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
+	$(CC) $(CFLAGS) $(VISU) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)
 
 $(ASM_OBJECTS_DIR)%.o: $(ASM_SOURCES_DIR)%.c $(ASM_INCLUDES) Makefile
