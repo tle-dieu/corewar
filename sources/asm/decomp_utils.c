@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/09 22:24:30 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 00:16:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,27 @@ int				generate_decomp_file(t_decomp *d, t_file *file)
 {
 	int			i;
 	int			fd;
+	char		*s;
 	char		*name;
 	t_buff_d	*ptr;
 
 	ptr = d->main_ptr;
-	if (!(name = ft_strjoin(file->name, "_decomp")) && ft_dprintf(2,
-				"{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno)))
-		return (free_buff_decomp(d));
+	if (!(s = ft_strrchr(file->name, '.')))
+	{
+		if (!(name = ft_strjoin(file->name, "_disass.s")))
+			exit(0); // free;
+	}
+	else
+	{
+		if (!(name = ft_strnew(s - file->name + 9))
+			|| !ft_memcpy(name, file->name, s - file->name)
+			|| !ft_memcpy(name + (s - file->name), "_disass.s", 9))
+			exit(0); // free;
+	}
+	ft_printf("name: %s\n", name);
+	/* if (!(name = ft_strjoin(file->name, "_decomp")) && ft_dprintf(2, */
+				/* "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno))) */
+		/* return (free_buff_decomp(d)); */
 	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if ((!fd || fd == -1) && ft_dprintf(2,
 			"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", file->name, strerror(errno)))
