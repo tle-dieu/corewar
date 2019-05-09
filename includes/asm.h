@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 12:03:07 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 15:17:54 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,9 +245,26 @@ void				check_label_call(t_env *e);
 void				write_label_call(t_env *e, t_call *call);
 
 /*
-** ----------------- Line -----------------
+** ----------------- Line ------------------
 */
 int					add_line(t_env *e, char **line);
+
+/*
+** ----------------- Param -----------------
+*/
+
+int					is_reg(t_env *e, char *str, t_inst *inst);
+int					is_indirect(t_env *e, char *str, t_inst *inst);
+int					is_direct(t_env *e, char *str, t_inst *inst);
+
+/*
+** ---------------- Check_param -------------
+*/
+
+int					label_is_good(t_env *e, char *str);
+int					inst_atoi(char *str);
+int					is_valid_register(t_env *e, char *str);
+int					is_a_number(t_env *e, char *str);
 
 /*
 ** ---------------- Options -----------------
@@ -264,9 +281,6 @@ void				parse_inst(t_env *e, char *str);
 /*
 ** ------------------ Utils -----------------
 */
-int					is_valid_register(t_env *e, char *str);
-int					inst_atoi(char *str);
-int					is_a_number(t_env *e, char *str);
 size_t				param_strrspn(const char *s, const char *accept, char stop);
 unsigned char		*lst_to_char(t_env *e, unsigned char *header, int *size);
 

@@ -33,7 +33,9 @@ ASM_SOURCES_FILES = main.c \
 					utils.c \
 					free.c \
 					dump.c \
-					op.c
+					op.c \
+					param.c \
+					check_param.c
 
 VM_SOURCES_FILES = main.c \
 				   init.c \
