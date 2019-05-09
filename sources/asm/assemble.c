@@ -6,10 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:17:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 02:53:55 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "op.h"
 #include "asm.h"
 #include <unistd.h>
 #include <fcntl.h>
