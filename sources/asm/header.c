@@ -6,12 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:50:39 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:44:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include "op.h"
 
 static int	line_in_buff(t_env *e, char *buff, char **s, int cmd)
 {

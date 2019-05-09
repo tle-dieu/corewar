@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 02:51:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:46:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static t_label	*add_undefined_label(t_env *e, char *s)
 	new->next = e->file->label;
 	e->file->label = new;
 	new->name = NULL;
-	if (!(new->name = ft_strndup(s, e->i))) // erreur partie sans raison (a retester)
+	if (!(new->name = ft_strndup(s, e->i)))
 		alloc_error(e);
 	return (new);
 }

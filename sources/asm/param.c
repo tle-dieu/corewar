@@ -6,11 +6,10 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 15:03:50 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 15:08:07 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:45:14 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
 #include "asm.h"
 
 int		is_direct(t_env *e, char *str, t_inst *inst)

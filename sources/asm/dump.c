@@ -6,12 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 01:31:18 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 01:31:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:43:43 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include "op.h"
 #include <stdlib.h>
 
 static int	get_color(int i, int last, int tty)

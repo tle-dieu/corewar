@@ -6,12 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 06:01:24 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:51:39 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:44:49 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include "op.h"
 #include <stdlib.h>
 
 static char	*pass_line(char *s, int quote)

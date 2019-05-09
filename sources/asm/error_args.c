@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:37:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:49:03 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:51:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 void	help(t_env *e)
 {
 	ft_printf("Usage: %s [options] file ...\n", e->exname);
-	ft_printf("Options:\n");
-	ft_printf("  -d, --disassemble: from bytecode to corewar assembly\n");
-	ft_printf("  -x, --hexadecimal: display bytecode generate from file.s (hexadecimal)\n");
-	ft_printf("  -b, --binary: display bytecode generate from file.s (binary)\n");
-	ft_printf("  -l, --long-dump: display entire bytecode (-x or -b is needed to be effective)\n");
-	ft_printf("  -o, --output <output>: write output to <file>\n");
-	ft_printf("  --color[=WHEN]: specify when to display in color (ex: always, never, auto)\n");
+	ft_printf("Options:\n\
+	-d, --disassemble: from bytecode to corewar assembly\n\
+	-x, --hexadecimal: display bytecode generate from file.s (hexadecimal)\n\
+	-b, --binary: display bytecode generate from file.s (binary)\n\
+	-l, --long-dump: display entire bytecode (-x or -b is needed to be effective)\n\
+	-o, --output <output>: write output to <file>\n\
+	--color[=WHEN]: specify when to display in color (ex: always, never, auto)\n");
 	free_lst_file(e);
 	exit(0);
 }
