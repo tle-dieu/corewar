@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:00:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:48:04 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,72 +181,74 @@ typedef struct		s_env
 }					t_env;
 
 /*
- ** ------------------ Args ------------------
- */
+** ------------------ Args ------------------
+*/
 int					parse_command_line(t_env *e, int ac, char **av);
 
 /*
- ** ---------------- Assemble ----------------
- */
+** ---------------- Assemble ----------------
+*/
 void				assemble(t_env *e);
 
 /*
- ** --------------- Check_inst ---------------
- */
+** --------------- Check_inst ---------------
+*/
 void				check_params(t_env *e, char *str, t_inst *inst);
 
 /*
- ** ----------------- Dump -----------------
- */
+** ----------------- Dump -----------------
+*/
 void				dump_bytecode(t_env *e, unsigned char *header);
 
 /*
- ** --------------- Error_args ---------------
- */
+** --------------- Error_args ---------------
+*/
 void				help(t_env *e);
 int					usage(t_env *e, int err);
 int					error_file(t_env *e, char *error, char *file, unsigned opt);
 
 /*
- ** ------------ Error_cmd_format ------------
- */
+** ------------ Error_cmd_format ------------
+*/
 int					unexpected_expression(t_env *e, char *error, int cmd);
 int					missing_quote(t_env *e, char *error);
 int					cmd_too_long(t_env *e, char *error, int cmd);
 int					expect_str(t_env *e, char *error, int cmd);
 
 /*
- ** ------------ Error_cmd_global ------------
- */
+** ------------ Error_cmd_global ------------
+*/
 void				cmd_multiple_define(t_env *e, int cmd);
 void				cmd_part_champ(t_env *e, int cmd);
 void				missing_cmd(t_env *e, unsigned char *header, int cmd);
 
 /*
- ** -------------- Error_global --------------
- */
+** -------------- Error_global --------------
+*/
 void				alloc_error(t_env *e);
-int					basic_error(t_env *e, char *str, char *err_string, int wave);
 void				champ_too_big(t_env *e);
 void				invalid_cmd(t_env *e, char *error, int cmd);
+int					basic_error(t_env *e, char *str, char *err_string,
+					int wave);
 
 /*
- ** --------------- Error_inst ---------------
- */
+** --------------- Error_inst ---------------
+*/
 void				error_unknow_inst(t_env *e, char *str);
 int					error_register_nb(t_env *e, char *str, int nb);
 void				error_param_type(t_env *e, t_inst *inst, char *str);
-void				error_nb_param(t_env *e, char *str, int have, int should_have);
+void				error_nb_param(t_env *e, char *str, int have,
+					int should_have);
 
 /*
- ** --------------- Error_label --------------
- */
+** --------------- Error_label --------------
+*/
 void				undefined_label(t_env *e, t_call *call, int *note, int tt);
 void				redefine_label(t_env *e, char *error, int y);
 
 /*
- ** ------------------ Free ------------------
- */
+** ------------------ Free ------------------
+*/
 void				free_label(t_label **label);
 void				free_buff(t_file *file);
 void				free_line(t_line **line, int label);
@@ -254,38 +256,38 @@ void				free_file(t_file **file);
 void				free_lst_file(t_env *e);
 
 /*
- ** ----------------- Header -----------------
- */
+** ----------------- Header -----------------
+*/
 void				get_bytecode(t_env *e, unsigned char *header);
 
 /*
- ** ----------------- Label ------------------
- */
+** ----------------- Label ------------------
+*/
 int					only_label(t_env *e, char **line);
 
 /*
- ** --------------- Label_call ---------------
- */
+** --------------- Label_call ---------------
+*/
 void				get_label_call(t_env *e, t_inst *inst, char *s, int i);
 void				check_label_call(t_env *e);
 void				write_label_call(t_env *e, t_call *call);
 
 /*
- ** ----------------- Line ------------------
- */
+** ----------------- Line ------------------
+*/
 int					add_line(t_env *e, char **line);
 
 /*
- ** ----------------- Param -----------------
- */
+** ----------------- Param -----------------
+*/
 
 int					is_reg(t_env *e, char *str, t_inst *inst);
 int					is_indirect(t_env *e, char *str, t_inst *inst);
 int					is_direct(t_env *e, char *str, t_inst *inst);
 
 /*
- ** ---------------- Check_param -------------
- */
+** ---------------- Check_param -------------
+*/
 
 int					label_is_good(t_env *e, char *str);
 int					inst_atoi(char *str);
@@ -293,26 +295,26 @@ int					is_valid_register(t_env *e, char *str);
 int					is_a_number(t_env *e, char *str);
 
 /*
- ** ---------------- Options -----------------
- */
+** ---------------- Options -----------------
+*/
 int					output_file(t_env *e, int ac, char **av, unsigned *options);
 int					get_short_option(t_env *e, unsigned *options, char **s);
 int					get_long_option(t_env *e, unsigned *options, char **s);
 
 /*
- ** --------------- Parse_inst ---------------
- */
+** --------------- Parse_inst ---------------
+*/
 void				parse_inst(t_env *e, char *str);
 
 /*
- ** ------------------ Utils -----------------
- */
+** ------------------ Utils -----------------
+*/
 size_t				param_strrspn(const char *s, const char *accept, char stop);
 unsigned char		*lst_to_char(t_env *e, unsigned char *header, int *size);
 
 /*
- ** --------------- Utils_error --------------
- */
+** --------------- Utils_error --------------
+*/
 void				err_wave(int tty, char *s, int n);
 void				err_pointer(int tty, char *s, char *end);
 int					check_end_str(t_env *e, char *s, int cmd, char c);

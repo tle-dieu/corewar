@@ -6,11 +6,10 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 15:07:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 15:20:45 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:43:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
 #include "asm.h"
 
 int		inst_atoi(char *str)

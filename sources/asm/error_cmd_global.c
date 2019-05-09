@@ -6,12 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:27:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:54:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:44:07 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include "op.h"
 
 void	missing_cmd(t_env *e, unsigned char *header, int cmd)
 {

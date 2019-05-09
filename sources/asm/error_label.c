@@ -6,12 +6,11 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:13:44 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 02:50:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:44:23 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include "op.h"
 
 void	redefine_label(t_env *e, char *error, int y)
 {

@@ -6,11 +6,10 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 17:17:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 15:06:58 by matleroy         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:43:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
 #include "asm.h"
 
 void		get_params(t_env *e, t_inst *inst, char *begin, char *tmp)
