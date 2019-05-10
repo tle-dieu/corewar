@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 13:12:02 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 15:23:12 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void			init_line(t_decomp *d)
 	d->x = 0;
 	d->op = d->content[d->i];
 	nb_in_buff(d, d->i, 1);
-	str_in_buff(d, ":\t\t"); // espaces au lieu de tab (macro TAB_SIZE)
+	str_in_buff(d, ":\t\t"); // espaces au lieu de tab (macro TAB_SIZE) ?
 	str_in_buff(d, g_op_tab[d->content[d->i++] - 1].label);
 	d->buff_d->tab[d->y][d->x++] = ' ';
 }
