@@ -6,13 +6,14 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 15:23:14 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:03:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
 
 static void	check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 {
@@ -97,15 +98,12 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, int ret)
 		+ line[PROG_NAME_LENGTH + 11];
 	if (d->size <= 0)
 	{
-		ft_printf("Champion too small (%d)\n", d->size);
-		//message
+		ft_printf("Champion too small: %d\n", d->size);
 		return (0);
 	}
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
 			* (d->size + 2))))
-	{
-		alloc_error(e); // rien d'autre malloc avant ? mm non je crois pas
-	}
+		alloc_error(e);
 	ft_bzero(d->content, d->size + 2);
 	while (i++ < NAME_COMM_SIZE + 8)
 	{
@@ -118,12 +116,38 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, int ret)
 	}
 	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 || ret != d->size)
 	{
-		return (free_buff_decomp(d)); // erreur ? yes faut qu'on fasse des messages, 
-		//on envoie a free_buff_decomp l'erreur ?
+		if (ret == -1)
+			ft_printf("error: %s\n", strerror(errno));
+		else
+			ft_printf("Read size %d different from announced size %d\n", ret, d->size);
+		return (free_buff_decomp(d));
 	}
-	if (d->content[d->size])
-		free_buff_decomp(d);
 	return (!d->content[d->size]);
+}
+
+static int	check_padding(unsigned char *line)
+{
+	int		i;
+	int		k;
+
+	i = PROG_NAME_LENGTH + 3;
+	k = 4;
+	while (1)
+	{
+		k = i < COMMENT_LENGTH ? 6 : 4;
+		while (k--)
+		{
+			if (line[i++])
+			{
+				ft_printf("wrong separators\n");
+				return (0);
+			}
+		}
+		if (i > COMMENT_LENGTH)
+			break ;
+		i += COMMENT_LENGTH + 3;
+	}
+	return (1);
 }
 
 int			check_champ_decomp(t_env *e, t_decomp *d)
@@ -136,17 +160,24 @@ int			check_champ_decomp(t_env *e, t_decomp *d)
 	b = 16;
 	i = 0;
 	ft_bzero(line, NAME_COMM_SIZE + 16);
-	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16) == -1))
-		return (free_buff_decomp(d)); // erreur ? message
-	ft_printf("ret name comm + 16 = %d\n", ret);
+	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16) == -1) || line[0])
+	{
+		if (ret == -1)
+			ft_printf("error: %s\n", strerror(errno));
+		else
+			ft_printf("Invalid magic\n");
+		return (free_buff_decomp(d));
+	}
 	while (b >= 0)
 	{
 		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff))
 		{
-			ft_printf("no magic\n");
+			ft_printf("Invalid magic\n");
 			return (0);
 		}
 		b -= 8;
 	}
+	if (!check_padding(line))
+		return (0);
 	return (split_champ(e, d, line, ret));
 }
