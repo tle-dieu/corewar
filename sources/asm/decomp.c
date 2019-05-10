@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/09 23:50:19 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 03:59:38 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-static int			put_header(t_decomp *d, t_file *file)
+static int			put_header(t_env *e, t_decomp *d)
 {
 	int		i;
 
@@ -23,7 +23,7 @@ static int			put_header(t_decomp *d, t_file *file)
 	d->buff_d = NULL;
 	d->content = NULL;
 	d->i = 0;
-	if (!check_champ_decomp(d, file) || !add_buff_link(d))
+	if (!check_champ_decomp(e, d) || !add_buff_link(e, d))
 		return (free_buff_decomp(d));
 	i = -1;
 	d->x = 0;
@@ -91,12 +91,12 @@ static int			check_decomp_params(t_decomp *d, t_ocp check)
 	return (1);
 }
 
-int					decompile_champ(t_file *file)
+int					decompile_champ(t_env *e)
 {
 	t_ocp		check;
 	t_decomp	d;
 
-	if (!put_header(&d, file))
+	if (!put_header(e, &d))
 		return (0);
 	while (d.i < d.size)
 	{
@@ -115,7 +115,7 @@ int					decompile_champ(t_file *file)
 		else
 			move_forward(&d);
 		d.y++;
-		d.y == BS_DECOMP - 1 ? add_buff_link(&d) : 1;
+		d.y == BS_DECOMP - 1 ? add_buff_link(e, &d) : 1;
 	}
-	return (generate_decomp_file(&d, d.main_ptr, file));
+	return (generate_decomp_file(e, &d, d.main_ptr));
 }

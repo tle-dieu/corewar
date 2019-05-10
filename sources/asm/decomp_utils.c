@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 00:18:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/10 03:45:50 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,56 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 void			init_line(t_decomp *d)
 {
 	d->x = 0;
 	d->op = d->content[d->i];
 	nb_in_buff(d, d->i, 1);
-	str_in_buff(d, ":\t\t");
+	str_in_buff(d, ":\t\t"); // espaces au lieu de tab (macro TAB_SIZE)
 	str_in_buff(d, g_op_tab[d->content[d->i++] - 1].label);
 	d->buff_d->tab[d->y][d->x++] = ' ';
 }
 
-int				generate_decomp_file(t_decomp *d, t_buff_d *ptr, t_file *file)
+int				generate_decomp_file(t_env *e, t_decomp *d, t_buff_d *ptr)
 {
 	int			i;
 	int			fd;
 	char		*s;
-	char		*name;
 
 	ptr = d->main_ptr;
-	if (!(s = ft_strrchr(file->name, '.')))
+	if (!(s = ft_strrchr(e->file->name, '.')))
+		e->file->output = ft_strjoin(e->file->name, "_disass.s");
+	else
 	{
-		if (!(name = ft_strjoin(file->name, "_disass.s")))
-			exit(0); // free;
+		(e->file->output = ft_strnew(s - e->file->name + 9))
+			&& ft_memcpy(e->file->output, e->file->name, s - e->file->name)
+			&& ft_memcpy(e->file->output + (s - e->file->name), "_disass.s", 9);
+	}
+	if (!e->file->output)
+	{
+		free_buff_decomp(d);
+		alloc_error(e);
+	}
+	fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+	if (fd != -1)
+	{
+		while (ptr && (i = -1))
+		{
+			while (*ptr->tab[++i])
+				ft_dprintf(fd, "%s\n", ptr->tab[i]);
+			ptr = ptr->next;
+		}
+		ft_printf("Writing output assembly to %s\n", e->file->output);
+		close(fd);
 	}
 	else
 	{
-		if (!(name = ft_strnew(s - file->name + 9))
-			|| !ft_memcpy(name, file->name, s - file->name)
-			|| !ft_memcpy(name + (s - file->name), "_disass.s", 9))
-			exit(0); // free;
+		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
+		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
 	}
-	ft_printf("name: %s\n", name);
-	/* if (!(name = ft_strjoin(file->name, "_decomp")) && ft_dprintf(2, */
-				/* "{bold}{#ed000b}fatal error:{R} %s\n", strerror(errno))) */
-		/* return (free_buff_decomp(d)); */
-	fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
-	if (fd == -1 && ft_dprintf(2,
-		"{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", file->name,
-		strerror(errno)))
-	{
-		free(name);
-		return (free_buff_decomp(d));
-	}
-	while (ptr && (i = -1))
-	{
-		while (*ptr->tab[++i])
-			ft_dprintf(fd, "%s\n", ptr->tab[i]);
-		ptr = ptr->next;
-	}
-	free(name);
-	free_buff_decomp(d);
-	return (1);
+	return (free_buff_decomp(d));
 }
 
 void			nb_in_buff(t_decomp *d, int nb, int padding)

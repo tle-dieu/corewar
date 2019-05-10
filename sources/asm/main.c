@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:36:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 20:00:55 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 03:39:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		main(int ac, char **av)
 	while (e.file)
 	{
 		if (e.file->options & O_DISAS)
-			decompile_champ(e.file);
+			decompile_champ(&e);
 		else
 			assemble(&e);
 		next = e.file->next;

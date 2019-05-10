@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 23:50:24 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 03:59:06 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,24 +335,24 @@ char				*line_error(int line, int tty);
 ** -------------- Decomp_lst ---------------
 */
 int					free_buff_decomp(t_decomp *d);
-int					add_buff_link(t_decomp *d);
+int					add_buff_link(t_env *e, t_decomp *d);
 
 /*
 ** -------------- Parse_decomp --------------
 */
-int					check_champ_decomp(t_decomp *d, t_file *file);
+int					check_champ_decomp(t_env *e, t_decomp *d);
 t_ocp				check_ocp(int ocp, int on_two, int inst);
 
 /*
 ** -------------- Decomp --------------------
 */
-int					decompile_champ(t_file *file);
+int					decompile_champ(t_env *e);
 
 /*
 ** -------------- Decomp_utils ---------------
 */
 void				init_line(t_decomp *d);
-int					generate_decomp_file(t_decomp *d, t_buff_d *ptr, t_file *file);
+int					generate_decomp_file(t_env *e, t_decomp *d, t_buff_d *ptr);
 void				nb_in_buff(t_decomp *d, int nb, int padding);
 void				str_in_buff(t_decomp *d, char *s);
 int					compute_param(t_decomp *d, int i, int size);
