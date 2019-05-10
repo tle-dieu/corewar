@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 03:59:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/10 13:11:49 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int			put_header(t_env *e, t_decomp *d)
 
 	i = -1;
 	d->buff_d = NULL;
+	d->main_ptr = NULL;
 	d->content = NULL;
 	d->i = 0;
 	if (!check_champ_decomp(e, d) || !add_buff_link(e, d))

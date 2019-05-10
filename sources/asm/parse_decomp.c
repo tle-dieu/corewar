@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 03:57:38 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/10 13:11:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, int ret)
 	k = 0;
 	d->size = line[PROG_NAME_LENGTH + 10] * 256
 		+ line[PROG_NAME_LENGTH + 11];
+	if (d->size <= 0)
+		return (0);
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
 			* (d->size + 2))))
 	{
@@ -111,7 +113,7 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, int ret)
 			d->comment[k++] = line[i];
 	}
 	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1)
-		return (0); // erreur ?
+		return (free_buff_decomp(d)); // erreur ?
 	if (d->content[d->size])
 		free_buff_decomp(d);
 	return (!d->content[d->size]);
@@ -128,7 +130,7 @@ int			check_champ_decomp(t_env *e, t_decomp *d)
 	i = 0;
 	ft_bzero(line, NAME_COMM_SIZE + 16);
 	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16) == -1))
-		return (0); // erreur ?
+		return (free_buff_decomp(d)); // erreur ?
 	while (b >= 0)
 	{
 		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff))
