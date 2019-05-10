@@ -1,4 +1,4 @@
-.name "êƒóZork"
+.name "Zork"
 .comment "Hello"
 
 

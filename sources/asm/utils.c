@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:41:36 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 17:45:22 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/10 20:19:33 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,20 @@ unsigned char	*lst_to_char(t_env *e, unsigned char *header, int *size)
 	int				j;
 
 	buff = e->file->begin_buff;
-	i = HEADER_SIZE + buff->len;
-	while ((buff = buff->next))
-		i += buff->len;
-	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * i)))
+	*size = HEADER_SIZE;
+	while (buff)
+	{
+		*size += buff->len;
+		buff = buff->next;
+	}
+	if (!(str = (unsigned char *)malloc(sizeof(unsigned char) * *size)))
 		alloc_error(e);
-	*size = i;
 	i = 0;
 	while (i < HEADER_SIZE)
 		str[i++] = *header++;
 	buff = e->file->begin_buff;
-	while (buff)
+	while (buff && !(j = 0))
 	{
-		j = 0;
 		while (j < buff->len)
 			str[i++] = buff->s[j++];
 		buff = buff->next;
