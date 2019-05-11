@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 17:30:38 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 18:00:55 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static int		split_champ(t_env *e, int i)
 		else if (j > PROG_NAME_LENGTH + 11)
 			e->champs[i].comment[k++] = e->line[j];
 	}
+	if (!e->champs[i].name[0])
+		ft_memcpy(e->champs[i].name, "no name", 7);
 	return (1);
 }
 
