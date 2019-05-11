@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 16:52:23 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 17:01:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ static int		check_champ_size(t_env *e, char *arg, int ret, int i)
 	}
 	else if (ret > MAX_SIZE || e->champs[i].size > CHAMP_MAX_SIZE)
 	{
-		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too big\
-				(%d > %d){R}\n", arg, e->champs[i].size, CHAMP_MAX_SIZE);
+		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too big{R}\n",
+			arg);
 		return (0);
 	}
 	else if (ret - (NAME_COMM_SIZE + 16) != e->champs[i].size)

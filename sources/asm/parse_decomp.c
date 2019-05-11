@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 16:52:28 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 17:01:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,7 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
 		if (ret == -1)
 			ft_dprintf(2, "error: %s\n", strerror(errno));
 		else if (ret < d->size)
-			ft_dprintf(2, "Champion smaller than expected\n");
-		else if (ret > d->size)
-			ft_dprintf(2, "Champion bigger than expected\n");
+			ft_dprintf(2, "Champion size does not match\n");
 		return (free_buff_decomp(d));
 	}
 	return (!d->content[d->size]);

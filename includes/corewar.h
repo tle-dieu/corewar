@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/11 16:52:25 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 17:01:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef	struct		s_champ
 	int				color;
 	int				id;
 	int				chosen_id[2];
-	int				size;
+	ssize_t			size;
 }					t_champ;
 
 typedef struct		s_visu

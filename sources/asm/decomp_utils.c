@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 16:52:22 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 17:01:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,9 @@ void			str_in_buff(t_decomp *d, char *s)
 int				compute_param(t_decomp *d, int i, int size)
 {
 	int		nb;
-	int		j;
 
 	nb = 0;
-	j = 0;
 	while (size--)
-	{
-		nb *= 256;
-		nb += d->content[i + j++];
-	}
+		nb += d->content[i++] << (8 * size);
 	return (nb);
 }
