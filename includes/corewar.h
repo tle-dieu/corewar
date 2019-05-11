@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 19:21:36 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:52:25 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void				print_current_map(t_env *e);
 int					parse_args(t_env *e, int ac, char **av);
 
 /*
-** CHECK.C (4)
+** CHECK.C (5)
 */
 int					check_champ(t_env *e, char *arg, int i);
 

@@ -6,14 +6,12 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:43:05 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 13:12:01 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:25:59 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
-
-// autres malloc ?
 
 int					free_buff_decomp(t_decomp *d)
 {
@@ -21,8 +19,7 @@ int					free_buff_decomp(t_decomp *d)
 	t_buff_d	*tmp;
 
 	ptr = d->main_ptr;
-	if (d->content) // pas besoin de checker si NULL
-		free(d->content);
+	free(d->content);
 	d->content = NULL;
 	while (ptr)
 	{
@@ -49,18 +46,15 @@ int					add_buff_link(t_env *e, t_decomp *d)
 	new->next = NULL;
 	while (++i < BS_DECOMP)
 		ft_bzero(new->tab[i], COMMENT_LENGTH + 11);
-	if (!d->buff_d)
+	if (!d->buff_d && (d->main_ptr = new))
 	{
 		d->buff_d = new;
-		d->main_ptr = new;
+		return (1);
 	}
-	else
-	{
-		ptr = d->buff_d;
-		while (ptr && ptr->next)
-			ptr = ptr->next;
-		ptr->next = new;
-		d->buff_d = ptr->next;
-	}
+	ptr = d->buff_d;
+	while (ptr && ptr->next)
+		ptr = ptr->next;
+	ptr->next = new;
+	d->buff_d = ptr->next;
 	return (1);
 }

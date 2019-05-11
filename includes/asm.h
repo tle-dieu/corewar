@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/10 03:59:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:51:07 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ typedef struct		s_ocp
 typedef struct		s_buff_d
 {
 	char			tab[BS_DECOMP][COMMENT_LENGTH + 11];
-	int				id;
 	struct s_buff_d	*next;
 }					t_buff_d;
 
@@ -152,7 +151,7 @@ typedef struct		s_decomp
 	char			name[PROG_NAME_LENGTH];
 	char			comment[COMMENT_LENGTH];
 	unsigned char	*content;
-	int				size;
+	ssize_t			size;
 	int				y;
 	int				x;
 	int				i;

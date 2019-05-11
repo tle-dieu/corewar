@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 15:29:13 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:52:30 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,18 @@ static void			move_forward(t_decomp *d)
 	}
 }
 
-static void			param_to_str(t_decomp *d, int param, int size, int i)
+static int			param_to_str(t_decomp *d, int param, int size, int i)
 {
 	if (size == 1)
 	{
 		d->buff_d->tab[d->y][d->x++] = 'r';
-		nb_in_buff(d, d->content[i], 0);
+		if (d->content[i] > 0 && d->content[i] < 17)
+			nb_in_buff(d, d->content[i], 0);
+		else
+		{
+			ft_dprintf(2, "Wrong register, must be between 1 and 16.\n");
+			return (0);
+		}
 	}
 	else if (size == 2)
 	{
@@ -73,21 +79,25 @@ static void			param_to_str(t_decomp *d, int param, int size, int i)
 		d->buff_d->tab[d->y][d->x++] = '%';
 		nb_in_buff(d, compute_param(d, i, 4), 0);
 	}
+	return (1);
 }
 
 static int			check_decomp_params(t_decomp *d, t_ocp check)
 {
-	param_to_str(d, check.p[0], check.s[0], d->i + 1);
+	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1))
+		return (0);
 	if (check.p[1])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
-		param_to_str(d, check.p[1], check.s[1], d->i + 1 + check.s[0]);
+		if (!param_to_str(d, check.p[1], check.s[1], d->i + 1 + check.s[0]))
+			return (0);
 	}
 	if (check.p[2])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
-		param_to_str(d, check.p[2], check.s[2],
-				d->i + 1 + check.s[0] + check.s[1]);
+		if (!param_to_str(d, check.p[2], check.s[2],
+					d->i + 1 + check.s[0] + check.s[1]))
+			return (0);
 	}
 	return (1);
 }
@@ -101,7 +111,8 @@ int					decompile_champ(t_env *e)
 		return (0);
 	while (d.i < d.size)
 	{
-		if (d.content[d.i] < 1 || d.content[d.i] > 16)
+		if ((d.content[d.i] < 1 || d.content[d.i] > 16)
+			&& (ft_dprintf(2, "Wrong instruction %02x\n", d.content[d.i])))
 			return (free_buff_decomp(&d));
 		init_line(&d);
 		if (g_op_tab[d.content[d.i - 1] - 1].ocp)

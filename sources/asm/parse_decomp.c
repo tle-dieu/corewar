@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 16:03:54 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:52:28 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,18 @@ t_ocp		check_ocp(int ocp, int on_two, int inst)
 	return (check);
 }
 
-static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, int ret)
+static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
 {
 	int		i;
 	int		k;
 
 	i = 3;
 	k = 0;
-	d->size = line[PROG_NAME_LENGTH + 10] * 256
-		+ line[PROG_NAME_LENGTH + 11];
+	d->size = (line[PROG_NAME_LENGTH + 8] << 24) + (line[PROG_NAME_LENGTH + 9] << 16)
+		+ (line[PROG_NAME_LENGTH + 10] << 8) + line[PROG_NAME_LENGTH + 11];
 	if (d->size <= 0)
 	{
-		ft_printf("Champion too small: %d\n", d->size);
+		ft_dprintf(2, "Champion too small: %d\n", d->size);
 		return (0);
 	}
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
@@ -117,9 +117,11 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, int ret)
 	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 || ret != d->size)
 	{
 		if (ret == -1)
-			ft_printf("error: %s\n", strerror(errno));
-		else
-			ft_printf("Read size %d different from announced size %d\n", ret, d->size);
+			ft_dprintf(2, "error: %s\n", strerror(errno));
+		else if (ret < d->size)
+			ft_dprintf(2, "Champion smaller than expected\n");
+		else if (ret > d->size)
+			ft_dprintf(2, "Champion bigger than expected\n");
 		return (free_buff_decomp(d));
 	}
 	return (!d->content[d->size]);
@@ -139,7 +141,7 @@ static int	check_padding(unsigned char *line)
 		{
 			if (line[i++])
 			{
-				ft_printf("wrong separators\n");
+				ft_dprintf(2, "Wrong separators at %d\n", i);
 				return (0);
 			}
 		}
@@ -153,7 +155,7 @@ static int	check_padding(unsigned char *line)
 int			check_champ_decomp(t_env *e, t_decomp *d)
 {
 	unsigned char	line[NAME_COMM_SIZE + 16];
-	int				ret;
+	ssize_t			ret;
 	int				b;
 	int				i;
 
@@ -163,16 +165,16 @@ int			check_champ_decomp(t_env *e, t_decomp *d)
 	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16) == -1) || line[0])
 	{
 		if (ret == -1)
-			ft_printf("error: %s\n", strerror(errno));
+			ft_dprintf(2, "error: %s\n", strerror(errno));
 		else
-			ft_printf("Invalid magic\n");
+			ft_dprintf(2, "Invalid magic\n");
 		return (free_buff_decomp(d));
 	}
 	while (b >= 0)
 	{
 		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff))
 		{
-			ft_printf("Invalid magic\n");
+			ft_dprintf(2, "Invalid magic\n");
 			return (0);
 		}
 		b -= 8;

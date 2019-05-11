@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:28:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:52:04 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,8 @@ int				param_sum(t_env *e, int pc, int size)
 	res = e->mem[pc % MEM_SIZE];
 	j = 1;
 	tmp = size;
-	while (--size)
-	{
-		res *= 256;
-		res += e->mem[(pc + j++) % MEM_SIZE];
-	}
+	while (size--)
+		res += e->mem[pc++ % MEM_SIZE] << 8 * size;
 	return ((tmp == 2) ? (short)res : res);
 }
 
