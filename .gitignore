@@ -56,6 +56,8 @@ asm
 corewar
 !sources/*
 !resources/champs/invalid_cor/*.cor
+resources/champs/invalid_cor/*disass.cor
+resources/champs/invalid_cor/*disass.s
 
 #Macos
 .DS_Store
