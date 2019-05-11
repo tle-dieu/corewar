@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:08:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:46:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/11 20:08:48 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@ void	alloc_error(t_env *e)
 	ft_dprintf(2, "%s\n", strerror(errno));
 	free_lst_file(e);
 	exit(-1);
+}
+
+int			decomp_error(t_env *e, char *error, int errno, t_decomp *d)
+{
+	ft_dprintf(2, line_error(ERR_LINE, e->tty2), e->exname);
+	if (errno)
+		ft_dprintf(2, "%s\n", strerror(errno));
+	else
+		ft_dprintf(2, "%s\n", error);
+	if (e->tty2)
+		ft_dprintf(2, "{R}");
+	free_buff_decomp(d);
+	return (0);
 }
 
 int		basic_error(t_env *e, char *str, char *err_string, int wave)

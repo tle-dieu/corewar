@@ -3,24 +3,22 @@
 import sys
 import os
 import subprocess as sp
+import mimetypes
 
-ASM_42 = "resources/asm_42"
-ASM = "asm"
+ASM = "resources/asm_42"
+ASM_42 = "asm"
 GREEN = "\x1b[1;38;2;35;209;139m"
 RED = "\x1b[1;38;2;241;76;76m"
 WHITE = "\x1b[1;38;2;255;255;255m"
 
 def get_file(asm, f):
     i = 0
-    split_name = f.split('.')
-    my_file = ""
-    if split_name[len(split_name) - 1] == 's':
-        while i < len(split_name) - 1:
-            my_file += split_name[i] + "."
-            i += 1
-    else:
-        my_file = f
-    my_file += "cor"
+    textchars = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
+    is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
+    print(is_binary_string(open(f, 'rb').read(1024)))
+    my_file = os.path.splitext(f)[0] + ".cor"
+    mime = mimetypes.guess_type(f)
+    print(mime)
     sp.getoutput('rm ' + my_file)
     open = sp.getoutput("./" + asm + " --color=force " + f)
     output = ""
@@ -31,7 +29,7 @@ def get_file(asm, f):
     else:
         error = RED + "ERROR: " + f + " doesn't match any file"
     if not error and output[0] == 'x' :
-        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn' t been created"
+        error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn't been created"
         error += "\n" + WHITE + open
     else:
         success += "\n" + GREEN + "SUCCES: for " + asm + " " + my_file + " has been created"
@@ -125,7 +123,7 @@ def main():
                         error += compare("", asm[j])
                         j += 1
                     print(GREEN + "Diff = OK")
-                elif "hasn' t" in tmp and "hasn' t" in err:
+                elif "hasn't" in tmp and "hasn't" in err:
                     print(err)
                     print(GREEN + "Diff = OK (both files haven't been created)")
                 else:

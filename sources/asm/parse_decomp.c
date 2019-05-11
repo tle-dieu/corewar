@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 17:01:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 19:54:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,8 @@ static int	check_padding(unsigned char *line)
 
 	i = PROG_NAME_LENGTH + 3;
 	k = 4;
-	while (1)
+	while ((k = i < COMMENT_LENGTH ? 6 : 4))
 	{
-		k = i < COMMENT_LENGTH ? 6 : 4;
 		while (k--)
 		{
 			if (line[i++])
@@ -160,21 +159,12 @@ int			check_champ_decomp(t_env *e, t_decomp *d)
 	b = 16;
 	i = 0;
 	ft_bzero(line, NAME_COMM_SIZE + 16);
-	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16) == -1) || line[0])
-	{
-		if (ret == -1)
-			ft_dprintf(2, "error: %s\n", strerror(errno));
-		else
-			ft_dprintf(2, "Invalid magic\n");
-		return (free_buff_decomp(d));
-	}
+	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16)) == -1)
+		return (decomp_error(e, NULL, 1, d));
 	while (b >= 0)
 	{
-		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff))
-		{
-			ft_dprintf(2, "Invalid magic\n");
-			return (0);
-		}
+		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff) || *line)
+			return (decomp_error(e, "Invalid magic", 0, d));
 		b -= 8;
 	}
 	if (!check_padding(line))
