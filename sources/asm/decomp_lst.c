@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:43:05 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/10 16:25:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 23:13:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int					free_buff_decomp(t_decomp *d)
 	ptr = d->main_ptr;
 	free(d->content);
 	d->content = NULL;
+	d->main_ptr = NULL;
 	while (ptr)
 	{
 		tmp = ptr;

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 17:01:48 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/11 23:08:09 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void			move_forward(t_decomp *d)
 	}
 }
 
-static int			param_to_str(t_decomp *d, int param, int size, int i)
+static int			param_to_str(t_decomp *d, int param, int size, int i, t_env *e)
 {
 	if (size == 1)
 	{
@@ -62,10 +62,7 @@ static int			param_to_str(t_decomp *d, int param, int size, int i)
 		if (d->content[i] > 0 && d->content[i] < 17)
 			nb_in_buff(d, d->content[i], 0);
 		else
-		{
-			ft_dprintf(2, "Wrong register, must be between 1 and 16.\n");
-			return (0);
-		}
+			return (decomp_error(e, "Wrong register, must be between 1 and 16", d));
 	}
 	else if (size == 2)
 	{
@@ -82,21 +79,21 @@ static int			param_to_str(t_decomp *d, int param, int size, int i)
 	return (1);
 }
 
-static int			check_decomp_params(t_decomp *d, t_ocp check)
+static int			check_decomp_params(t_decomp *d, t_ocp check, t_env *e)
 {
-	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1))
+	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1, e))
 		return (0);
 	if (check.p[1])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
-		if (!param_to_str(d, check.p[1], check.s[1], d->i + 1 + check.s[0]))
+		if (!param_to_str(d, check.p[1], check.s[1], d->i + 1 + check.s[0], e))
 			return (0);
 	}
 	if (check.p[2])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
 		if (!param_to_str(d, check.p[2], check.s[2],
-					d->i + 1 + check.s[0] + check.s[1]))
+					d->i + 1 + check.s[0] + check.s[1], e))
 			return (0);
 	}
 	return (1);
@@ -111,17 +108,16 @@ int					decompile_champ(t_env *e)
 		return (0);
 	while (d.i < d.size)
 	{
-		if ((d.content[d.i] < 1 || d.content[d.i] > 16)
-			&& (ft_dprintf(2, "Wrong instruction %02x\n", d.content[d.i])))
-			return (free_buff_decomp(&d));
+		if (d.content[d.i] < 1 || d.content[d.i] > 16)
+			return (decomp_error(e, "Wrong instruction", &d));
 		init_line(&d);
 		if (g_op_tab[d.content[d.i - 1] - 1].ocp)
 		{
 			check = check_ocp(d.content[d.i],
 					g_op_tab[d.content[d.i - 1] - 1].dir_size,
 					d.content[d.i - 1]);
-			if (check.error == -1 || !(check_decomp_params(&d, check)))
-				return (free_buff_decomp(&d));
+			if (check.error == -1 || !(check_decomp_params(&d, check, e)))
+				return (check.error == -1 ? free_buff_decomp(&d) : 0);
 			d.i += 1 + check.s[0] + check.s[1] + check.s[2];
 		}
 		else

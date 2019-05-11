@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 19:54:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/11 22:55:15 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,7 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
 	d->size = (line[PROG_NAME_LENGTH + 8] << 24) + (line[PROG_NAME_LENGTH + 9] << 16)
 		+ (line[PROG_NAME_LENGTH + 10] << 8) + line[PROG_NAME_LENGTH + 11];
 	if (d->size <= 0)
-	{
-		ft_dprintf(2, "Champion too small: %d\n", d->size);
-		return (0);
-	}
+		return (decomp_error(e, "Champion too small", d));
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
 			* (d->size + 2))))
 		alloc_error(e);
@@ -117,10 +114,9 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
 	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 || ret != d->size)
 	{
 		if (ret == -1)
-			ft_dprintf(2, "error: %s\n", strerror(errno));
-		else if (ret < d->size)
-			ft_dprintf(2, "Champion size does not match\n");
-		return (free_buff_decomp(d));
+			return (decomp_error(e, NULL, d));
+		else
+			return (decomp_error(e, "Champion size does not match", d));
 	}
 	return (!d->content[d->size]);
 }
@@ -135,13 +131,8 @@ static int	check_padding(unsigned char *line)
 	while ((k = i < COMMENT_LENGTH ? 6 : 4))
 	{
 		while (k--)
-		{
 			if (line[i++])
-			{
-				ft_dprintf(2, "Wrong separators at %d\n", i);
 				return (0);
-			}
-		}
 		if (i > COMMENT_LENGTH)
 			break ;
 		i += COMMENT_LENGTH + 3;
@@ -160,14 +151,14 @@ int			check_champ_decomp(t_env *e, t_decomp *d)
 	i = 0;
 	ft_bzero(line, NAME_COMM_SIZE + 16);
 	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16)) == -1)
-		return (decomp_error(e, NULL, 1, d));
+		return (decomp_error(e, NULL, d));
 	while (b >= 0)
 	{
 		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff) || *line)
-			return (decomp_error(e, "Invalid magic", 0, d));
+			return (decomp_error(e, "Invalid magic", d));
 		b -= 8;
 	}
 	if (!check_padding(line))
-		return (0);
+		return (decomp_error(e, "Wrong separators", d));
 	return (split_champ(e, d, line, ret));
 }
