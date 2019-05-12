@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:43:05 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/12 22:34:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 23:03:11 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int					add_buff_link(t_env *e, t_disass *d)
 
 	i = -1;
 	d->y = 0;
-	/* if (!(new = (t_buff_d*)malloc(sizeof(t_buff_d)))) */
-	if (!(new = (t_buff_d*)malloc(4234329847328749)))
+	if (!(new = (t_buff_d*)malloc(sizeof(t_buff_d))))
 	{
 		free_buff_disass(d);
 		alloc_error(e);
