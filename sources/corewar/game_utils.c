@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 15:35:41 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/12 23:22:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 
 	i = -1;
 	e->nb_proc++;
-	if (!(new = (t_proc*)malloc(sizeof(t_proc))))
+	if (!(new = (t_proc*)malloc(sizeof(t_proc)))) // pas de print
 		return (0);
 	new->owner = ptr->owner;
 	new->dead = 0;
