@@ -33,10 +33,10 @@ ASM_SOURCES_FILES = main.c \
 					error_label.c \
 					utils.c \
 					free.c \
-					decomp.c \
-					decomp_utils.c \
-					parse_decomp.c \
-					decomp_lst.c \
+					disass.c \
+					disass_utils.c \
+					parse_disass.c \
+					disass_lst.c \
 					dump.c \
 					op.c \
 					param.c \

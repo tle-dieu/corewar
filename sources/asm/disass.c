@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   decomp.c                                           :+:      :+:    :+:   */
+/*   disass.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-static int			put_header(t_env *e, t_decomp *d)
+static int			put_header(t_env *e, t_disass *d)
 {
 	int		i;
 
@@ -24,8 +24,8 @@ static int			put_header(t_env *e, t_decomp *d)
 	d->main_ptr = NULL;
 	d->content = NULL;
 	d->i = 0;
-	if (!check_champ_decomp(e, d) || !add_buff_link(e, d))
-		return (free_buff_decomp(d));
+	if (!check_champ_disass(e, d) || !add_buff_link(e, d))
+		return (free_buff_disass(d));
 	i = -1;
 	d->x = 0;
 	str_in_buff(d, ".name \"");
@@ -39,7 +39,7 @@ static int			put_header(t_env *e, t_decomp *d)
 	return (1);
 }
 
-static void			move_forward(t_decomp *d)
+static void			move_forward(t_disass *d)
 {
 	d->buff_d->tab[d->y][d->x++] = '%';
 	if (d->op == 1)
@@ -54,7 +54,7 @@ static void			move_forward(t_decomp *d)
 	}
 }
 
-static int			param_to_str(t_decomp *d, int param, int size, int i, t_env *e)
+static int			param_to_str(t_disass *d, int param, int size, int i, t_env *e)
 {
 	if (size == 1)
 	{
@@ -62,7 +62,7 @@ static int			param_to_str(t_decomp *d, int param, int size, int i, t_env *e)
 		if (d->content[i] > 0 && d->content[i] < 17)
 			nb_in_buff(d, d->content[i], 0);
 		else
-			return (decomp_error(e, "Wrong register, must be between 1 and 16", d));
+			return (disass_error(e, "Wrong register, must be between 1 and 16", d));
 	}
 	else if (size == 2)
 	{
@@ -79,7 +79,7 @@ static int			param_to_str(t_decomp *d, int param, int size, int i, t_env *e)
 	return (1);
 }
 
-static int			check_decomp_params(t_decomp *d, t_ocp check, t_env *e)
+static int			check_disass_params(t_disass *d, t_ocp check, t_env *e)
 {
 	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1, e))
 		return (0);
@@ -99,25 +99,25 @@ static int			check_decomp_params(t_decomp *d, t_ocp check, t_env *e)
 	return (1);
 }
 
-int					decompile_champ(t_env *e)
+int					disassile_champ(t_env *e)
 {
 	t_ocp		check;
-	t_decomp	d;
+	t_disass	d;
 
 	if (!put_header(e, &d))
 		return (0);
 	while (d.i < d.size)
 	{
 		if (d.content[d.i] < 1 || d.content[d.i] > 16)
-			return (decomp_error(e, "Wrong instruction", &d));
+			return (disass_error(e, "Wrong instruction", &d));
 		init_line(&d);
 		if (g_op_tab[d.content[d.i - 1] - 1].ocp)
 		{
 			check = check_ocp(d.content[d.i],
 					g_op_tab[d.content[d.i - 1] - 1].dir_size,
 					d.content[d.i - 1]);
-			if (check.error == -1 || !(check_decomp_params(&d, check, e)))
-				return (check.error == -1 ? free_buff_decomp(&d) : 0);
+			if (check.error == -1 || !(check_disass_params(&d, check, e)))
+				return (check.error == -1 ? free_buff_disass(&d) : 0);
 			d.i += 1 + check.s[0] + check.s[1] + check.s[2];
 		}
 		else
@@ -125,5 +125,5 @@ int					decompile_champ(t_env *e)
 		d.y++;
 		d.y == BS_DECOMP - 1 ? add_buff_link(e, &d) : 1;
 	}
-	return (generate_decomp_file(e, &d, d.main_ptr));
+	return (generate_disass_file(e, &d, d.main_ptr));
 }

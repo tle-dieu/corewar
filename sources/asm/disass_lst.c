@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   decomp_lst.c                                       :+:      :+:    :+:   */
+/*   disass_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,7 +13,7 @@
 #include "asm.h"
 #include <stdlib.h>
 
-int					free_buff_decomp(t_decomp *d)
+int					free_buff_disass(t_disass *d)
 {
 	t_buff_d	*ptr;
 	t_buff_d	*tmp;
@@ -31,7 +31,7 @@ int					free_buff_decomp(t_decomp *d)
 	return (0);
 }
 
-int					add_buff_link(t_env *e, t_decomp *d)
+int					add_buff_link(t_env *e, t_disass *d)
 {
 	t_buff_d	*new;
 	t_buff_d	*ptr;
@@ -41,7 +41,7 @@ int					add_buff_link(t_env *e, t_decomp *d)
 	d->y = 0;
 	if (!(new = (t_buff_d*)malloc(sizeof(t_buff_d))))
 	{
-		free_buff_decomp(d);
+		free_buff_disass(d);
 		alloc_error(e);
 	}
 	new->next = NULL;

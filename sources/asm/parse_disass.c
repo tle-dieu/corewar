@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_decomp.c                                     :+:      :+:    :+:   */
+/*   parse_disass.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -87,7 +87,7 @@ t_ocp		check_ocp(int ocp, int on_two, int inst)
 	return (check);
 }
 
-static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
+static int	split_champ(t_env *e, t_disass *d, unsigned char *line, ssize_t ret)
 {
 	int		i;
 	int		k;
@@ -97,7 +97,7 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
 	d->size = (line[PROG_NAME_LENGTH + 8] << 24) + (line[PROG_NAME_LENGTH + 9] << 16)
 		+ (line[PROG_NAME_LENGTH + 10] << 8) + line[PROG_NAME_LENGTH + 11];
 	if (d->size <= 0)
-		return (decomp_error(e, "Champion too small", d));
+		return (disass_error(e, "Champion too small", d));
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
 			* (d->size + 2))))
 		alloc_error(e);
@@ -114,9 +114,9 @@ static int	split_champ(t_env *e, t_decomp *d, unsigned char *line, ssize_t ret)
 	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 || ret != d->size)
 	{
 		if (ret == -1)
-			return (decomp_error(e, NULL, d));
+			return (disass_error(e, NULL, d));
 		else
-			return (decomp_error(e, "Champion size does not match", d));
+			return (disass_error(e, "Champion size does not match", d));
 	}
 	return (!d->content[d->size]);
 }
@@ -140,7 +140,7 @@ static int	check_padding(unsigned char *line)
 	return (1);
 }
 
-int			check_champ_decomp(t_env *e, t_decomp *d)
+int			check_champ_disass(t_env *e, t_disass *d)
 {
 	unsigned char	line[NAME_COMM_SIZE + 16];
 	ssize_t			ret;
@@ -151,14 +151,14 @@ int			check_champ_decomp(t_env *e, t_decomp *d)
 	i = 0;
 	ft_bzero(line, NAME_COMM_SIZE + 16);
 	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16)) == -1)
-		return (decomp_error(e, NULL, d));
+		return (disass_error(e, NULL, d));
 	while (b >= 0)
 	{
 		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff) || *line)
-			return (decomp_error(e, "Invalid magic", d));
+			return (disass_error(e, "Invalid magic", d));
 		b -= 8;
 	}
 	if (!check_padding(line))
-		return (decomp_error(e, "Wrong separators", d));
+		return (disass_error(e, "Wrong separators", d));
 	return (split_champ(e, d, line, ret));
 }

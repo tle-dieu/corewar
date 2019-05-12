@@ -22,7 +22,7 @@ void	alloc_error(t_env *e)
 	exit(-1);
 }
 
-int			decomp_error(t_env *e, char *error, t_decomp *d)
+int			disass_error(t_env *e, char *error, t_disass *d)
 {
 	ft_dprintf(2, line_error(ERR_FILE, e->tty2), e->exname);
 	if (!error)
@@ -31,7 +31,7 @@ int			decomp_error(t_env *e, char *error, t_decomp *d)
 		ft_dprintf(2, "%s\n", error);
 	if (e->tty2)
 		ft_dprintf(2, "{R}");
-	free_buff_decomp(d);
+	free_buff_disass(d);
 	return (0);
 }
 

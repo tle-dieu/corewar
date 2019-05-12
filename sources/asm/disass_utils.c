@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   decomp_utils.c                                     :+:      :+:    :+:   */
+/*   disass_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void			init_line(t_decomp *d)
+void			init_line(t_disass *d)
 {
 	d->x = 0;
 	d->op = d->content[d->i];
@@ -26,7 +26,7 @@ void			init_line(t_decomp *d)
 	d->buff_d->tab[d->y][d->x++] = ' ';
 }
 
-int				generate_decomp_file(t_env *e, t_decomp *d, t_buff_d *ptr)
+int				generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
 {
 	int			i;
 	int			fd;
@@ -43,7 +43,7 @@ int				generate_decomp_file(t_env *e, t_decomp *d, t_buff_d *ptr)
 	}
 	if (!e->file->output)
 	{
-		free_buff_decomp(d);
+		free_buff_disass(d);
 		alloc_error(e);
 	}
 	fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
@@ -63,10 +63,10 @@ int				generate_decomp_file(t_env *e, t_decomp *d, t_buff_d *ptr)
 		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
 		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
 	}
-	return (free_buff_decomp(d));
+	return (free_buff_disass(d));
 }
 
-void			nb_in_buff(t_decomp *d, int nb, int padding)
+void			nb_in_buff(t_disass *d, int nb, int padding)
 {
 	unsigned int	len;
 	unsigned int	abs;
@@ -95,13 +95,13 @@ void			nb_in_buff(t_decomp *d, int nb, int padding)
 	d->x = padding ? tmp + 6 : tmp + len;
 }
 
-void			str_in_buff(t_decomp *d, char *s)
+void			str_in_buff(t_disass *d, char *s)
 {
 	while (*s)
 		d->buff_d->tab[d->y][d->x++] = *s++;
 }
 
-int				compute_param(t_decomp *d, int i, int size)
+int				compute_param(t_disass *d, int i, int size)
 {
 	int		nb;
 

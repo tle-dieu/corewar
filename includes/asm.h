@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/11 22:49:40 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 19:32:32 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,19 +144,19 @@ typedef struct		s_buff_d
 	struct s_buff_d	*next;
 }					t_buff_d;
 
-typedef struct		s_decomp
+typedef struct		s_disass
 {
 	t_buff_d		*main_ptr;
 	t_buff_d		*buff_d;
 	char			name[PROG_NAME_LENGTH];
 	char			comment[COMMENT_LENGTH];
 	unsigned char	*content;
-	ssize_t			size;
+	long			size;
 	int				y;
 	int				x;
 	int				i;
 	int				op;
-}					t_decomp;
+}					t_disass;
 
 typedef struct		s_file
 {
@@ -187,7 +187,7 @@ typedef struct		s_env
 	t_file			*file;
 	char			*exname;
 	char			*output;
-	t_decomp		*d;
+	t_disass		*d;
 }					t_env;
 
 /*
@@ -238,7 +238,7 @@ void				missing_cmd(t_env *e, unsigned char *header, int cmd);
 void				alloc_error(t_env *e);
 void				champ_too_big(t_env *e);
 void				invalid_cmd(t_env *e, char *error, int cmd);
-int					decomp_error(t_env *e, char *error, t_decomp *d);
+int					disass_error(t_env *e, char *error, t_disass *d);
 int					basic_error(t_env *e, char *str, char *err_string,
 					int wave);
 
@@ -334,27 +334,27 @@ char				*line_error(int line, int tty);
 /*
 ** -------------- Decomp_lst ---------------
 */
-int					free_buff_decomp(t_decomp *d);
-int					add_buff_link(t_env *e, t_decomp *d);
+int					free_buff_disass(t_disass *d);
+int					add_buff_link(t_env *e, t_disass *d);
 
 /*
-** -------------- Parse_decomp --------------
+** -------------- Parse_disass --------------
 */
-int					check_champ_decomp(t_env *e, t_decomp *d);
+int					check_champ_disass(t_env *e, t_disass *d);
 t_ocp				check_ocp(int ocp, int on_two, int inst);
 
 /*
 ** -------------- Decomp --------------------
 */
-int					decompile_champ(t_env *e);
+int					disassile_champ(t_env *e);
 
 /*
 ** -------------- Decomp_utils ---------------
 */
-void				init_line(t_decomp *d);
-int					generate_decomp_file(t_env *e, t_decomp *d, t_buff_d *ptr);
-void				nb_in_buff(t_decomp *d, int nb, int padding);
-void				str_in_buff(t_decomp *d, char *s);
-int					compute_param(t_decomp *d, int i, int size);
+void				init_line(t_disass *d);
+int					generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr);
+void				nb_in_buff(t_disass *d, int nb, int padding);
+void				str_in_buff(t_disass *d, char *s);
+int					compute_param(t_disass *d, int i, int size);
 
 #endif
