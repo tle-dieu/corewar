@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:27:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:44:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 22:43:49 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	cmd_multiple_define(t_env *e, int cmd)
 	int		len;
 
 	++e->file->warning;
-	e->file->complete |= ALREADY_DEFINE;
+	e->file->complete |= ALREADY_DEFINE * cmd;
 	line = e->file->begin;
 	error = line->s + ft_strspn(line->s, SPACES);
 	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);

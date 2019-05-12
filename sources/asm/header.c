@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:44:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 22:49:15 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	return (1);
 }
 
-static void	get_cmd(t_env *e, unsigned char *cp, char *line)
+void	get_cmd(t_env *e, unsigned char *cp, char *line)
 {
 	int		cmd;
 	char	*tmp;
@@ -103,31 +103,4 @@ static void	get_cmd(t_env *e, unsigned char *cp, char *line)
 	else
 		cmd == NAME_CMD ? parse_cmd(e, line, cp, cmd)
 			: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);
-}
-
-void		get_bytecode(t_env *e, unsigned char *header)
-{
-	char	*line;
-
-	while (e->file->error < MAX_ERROR && add_line(e, &line) == 1)
-	{
-		if (*line == '.')
-			get_cmd(e, header + 4, line);
-		else if (*line)
-		{
-			if (!only_label(e, &line))
-				parse_inst(e, line);
-		}
-		if (e->file->last != e->file->begin)
-			free_line(&e->file->last, 0);
-		else
-			e->file->last = NULL;
-		free_line(&e->file->begin, 0);
-	}
-	check_label_call(e);
-	if (e->file->error >= MAX_ERROR)
-	{
-		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
-		ft_dprintf(2, "too many errors emitted, stopping now\n");
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:43:25 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 22:48:34 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,33 @@ static void	assembly_error(t_env *e, unsigned char *header)
 			e->file->error > 1 ? "errors" : "error");
 	if (e->file->error || e->file->warning)
 		ft_dprintf(2, "generated.\n");
+}
+
+static void	get_bytecode(t_env *e, unsigned char *header)
+{
+	char	*line;
+
+	while (e->file->error < MAX_ERROR && add_line(e, &line) == 1)
+	{
+		if (*line == '.')
+			get_cmd(e, header + 4, line);
+		else if (*line)
+		{
+			if (!only_label(e, &line))
+				parse_inst(e, line);
+		}
+		if (e->file->last != e->file->begin)
+			free_line(&e->file->last, 0);
+		else
+			e->file->last = NULL;
+		free_line(&e->file->begin, 0);
+	}
+	check_label_call(e);
+	if (e->file->error >= MAX_ERROR)
+	{
+		ft_dprintf(2, line_error(ERR_FATAL, e->tty2));
+		ft_dprintf(2, "too many errors emitted, stopping now\n");
+	}
 }
 
 void		assemble(t_env *e)

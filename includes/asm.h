@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/12 19:32:32 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 22:49:24 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@
 
 # define NAME_CMD 1
 # define COMMENT_CMD 2
-# define ALREADY_DEFINE 128
+# define ALREADY_DEFINE 64
 
 # define O_HEXA 1
 # define O_BIN 2
@@ -269,7 +269,7 @@ void				free_lst_file(t_env *e);
 /*
 ** ----------------- Header -----------------
 */
-void				get_bytecode(t_env *e, unsigned char *header);
+void				get_cmd(t_env *e, unsigned char *cp, char *line);
 
 /*
 ** ----------------- Label ------------------
