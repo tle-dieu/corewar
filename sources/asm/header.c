@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/12 22:49:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/12 22:53:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 		return (0);
 	if (!parse_str_cmd(e, buff, t + 1, cmd))
 		return (0);
-	if (!e->file->error && !(e->file->complete & ALREADY_DEFINE))
+	if (!e->file->error && !(e->file->complete & ALREADY_DEFINE * cmd))
 		while (e->i--)
 			*(cp + e->i) = buff[e->i];
 	return (1);
