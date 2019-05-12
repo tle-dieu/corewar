@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 18:00:55 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/13 00:25:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_padding(unsigned char *line, char *arg)
 			if (line[i++])
 			{
 				ft_dprintf(2,
-					"{bold}Champion {#ed000b}%s{#ffffff} has wrong separators\n",
+					"{bold}Champion {#ed000b}%s{#ffffff} has wrong separators{R}\n",
 					arg);
 				return (0);
 			}
@@ -100,7 +100,7 @@ static int		check_champ_size(t_env *e, char *arg, int ret, int i)
 	}
 	else if (ret - (NAME_COMM_SIZE + 16) != e->champs[i].size)
 	{
-		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} size does not match\n",
+		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
 			arg);
 		return (0);
 	}
