@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ $# > 2 ]]; then
+if [[ $# > 1 ]]; then
 	while IFS=  read -r -d $'\0'; do
 		echo "${@:2}"
 		echo "$REPLY"

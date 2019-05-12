@@ -149,6 +149,10 @@ $(LIBFT): force
 force:
 	true
 
+clean-test:
+	find . -type f -name "*.cor" | grep -v invalid_cor | xargs $(RM)
+	find . -type f -name "*_disass*.s" -o -name "*_disass*.cor" -exec rm {} \;
+
 clean:
 	$(MAKE) $@ -C $(LIBFT_DIR)
 	$(RM) $(OBJECTS_DIR)
@@ -167,4 +171,4 @@ re: fclean all
 
 .PHONY: all clean fclean
 
-.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(LIBFT) $(VM_OBJECTS) force clean fclean run
+.SILENT: all $(PROGRAMMES) $(ASM_OBJECTS) $(LIBFT) $(VM_OBJECTS) force clean clean-test fclean run
