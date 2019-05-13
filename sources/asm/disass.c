@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 23:08:09 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/13 13:20:09 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void			move_forward(t_disass *d)
 	}
 }
 
-static int			param_to_str(t_disass *d, int param, int size, int i, t_env *e)
+static int			param_to_str(t_disass *d, int param, int size, int i)
 {
 	if (size == 1)
 	{
@@ -62,7 +62,7 @@ static int			param_to_str(t_disass *d, int param, int size, int i, t_env *e)
 		if (d->content[i] > 0 && d->content[i] < 17)
 			nb_in_buff(d, d->content[i], 0);
 		else
-			return (disass_error(e, "Wrong register, must be between 1 and 16", d));
+			return (0);
 	}
 	else if (size == 2)
 	{
@@ -79,27 +79,29 @@ static int			param_to_str(t_disass *d, int param, int size, int i, t_env *e)
 	return (1);
 }
 
-static int			check_disass_params(t_disass *d, t_ocp check, t_env *e)
+static int			check_disass_params(t_env *e, t_disass *d, t_ocp check)
 {
-	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1, e))
-		return (0);
+	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1))
+		return (disass_error(e, "Wrong register, must be between 1 and 16", d));
 	if (check.p[1])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
-		if (!param_to_str(d, check.p[1], check.s[1], d->i + 1 + check.s[0], e))
-			return (0);
+		if (!param_to_str(d, check.p[1], check.s[1], d->i + 1 + check.s[0]))
+			return (disass_error(e,
+					"Wrong register, must be between 1 and 16", d));
 	}
 	if (check.p[2])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
 		if (!param_to_str(d, check.p[2], check.s[2],
-					d->i + 1 + check.s[0] + check.s[1], e))
-			return (0);
+					d->i + 1 + check.s[0] + check.s[1]))
+			return (disass_error(e,
+					"Wrong register, must be between 1 and 16", d));
 	}
 	return (1);
 }
 
-int					disassile_champ(t_env *e)
+int					disassemble_champ(t_env *e)
 {
 	t_ocp		check;
 	t_disass	d;
@@ -116,7 +118,7 @@ int					disassile_champ(t_env *e)
 			check = check_ocp(d.content[d.i],
 					g_op_tab[d.content[d.i - 1] - 1].dir_size,
 					d.content[d.i - 1]);
-			if (check.error == -1 || !(check_disass_params(&d, check, e)))
+			if (check.error == -1 || !(check_disass_params(e, &d, check)))
 				return (check.error == -1 ? free_buff_disass(&d) : 0);
 			d.i += 1 + check.s[0] + check.s[1] + check.s[2];
 		}

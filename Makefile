@@ -36,7 +36,7 @@ ASM_SOURCES_FILES = main.c \
 					disass.c \
 					disass_utils.c \
 					parse_disass.c \
-					disass_lst.c \
+					disass_lst_file.c \
 					dump.c \
 					op.c \
 					param.c \

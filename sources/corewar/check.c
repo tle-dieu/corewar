@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 00:25:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/13 12:40:43 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_padding(unsigned char *line, char *arg)
 			if (line[i++])
 			{
 				ft_dprintf(2,
-					"{bold}Champion {#ed000b}%s{#ffffff} has wrong separators{R}\n",
+					"{bold}{#ed000b}%s{#ffffff}: wrong separators{R}\n",
 					arg);
 				return (0);
 			}
@@ -39,7 +39,7 @@ static int	check_padding(unsigned char *line, char *arg)
 	return (1);
 }
 
-static int		split_champ(t_env *e, int i)
+static int	split_champ(t_env *e, int i)
 {
 	int		j;
 	int		k;
@@ -64,7 +64,7 @@ static int		split_champ(t_env *e, int i)
 	return (1);
 }
 
-static int		check_magic_number(t_env *e)
+static int	check_magic_number(t_env *e)
 {
 	int		b;
 	int		i;
@@ -82,10 +82,12 @@ static int		check_magic_number(t_env *e)
 	return (1);
 }
 
-static int		check_champ_size(t_env *e, char *arg, int ret, int i)
+static int	check_champ_size(t_env *e, char *arg, int ret, int i)
 {
-	e->champs[i].size = (e->line[PROG_NAME_LENGTH + 8] << 24) + (e->line[PROG_NAME_LENGTH + 9] << 16)
-		+ (e->line[PROG_NAME_LENGTH + 10] << 8) + e->line[PROG_NAME_LENGTH + 11];
+	e->champs[i].size = (e->line[PROG_NAME_LENGTH + 8] << 24)
+		+ (e->line[PROG_NAME_LENGTH + 9] << 16)
+		+ (e->line[PROG_NAME_LENGTH + 10] << 8)
+		+ e->line[PROG_NAME_LENGTH + 11];
 	if (e->champs[i].size <= 0)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small{R}\n",
@@ -100,14 +102,15 @@ static int		check_champ_size(t_env *e, char *arg, int ret, int i)
 	}
 	else if (ret - (NAME_COMM_SIZE + 16) != e->champs[i].size)
 	{
-		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
+		ft_dprintf(2,
+			"{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
 			arg);
 		return (0);
 	}
 	return (1);
 }
 
-int				check_champ(t_env *e, char *arg, int i)
+int			check_champ(t_env *e, char *arg, int i)
 {
 	int		fd;
 	int		ret;

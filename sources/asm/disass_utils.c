@@ -6,64 +6,20 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 17:01:47 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/13 13:06:14 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include <errno.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 void			init_line(t_disass *d)
 {
 	d->x = 0;
 	d->op = d->content[d->i];
 	nb_in_buff(d, d->i, 1);
-	str_in_buff(d, ":\t\t"); // espaces au lieu de tab (macro TAB_SIZE) ?
+	str_in_buff(d, ":\t\t");
 	str_in_buff(d, g_op_tab[d->content[d->i++] - 1].label);
 	d->buff_d->tab[d->y][d->x++] = ' ';
-}
-
-int				generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
-{
-	int			i;
-	int			fd;
-	char		*s;
-
-	ptr = d->main_ptr;
-	if (!(s = ft_strrchr(e->file->name, '.')))
-		e->file->output = ft_strjoin(e->file->name, "_disass.s");
-	else
-	{
-		(e->file->output = ft_strnew(s - e->file->name + 9))
-			&& ft_memcpy(e->file->output, e->file->name, s - e->file->name)
-			&& ft_memcpy(e->file->output + (s - e->file->name), "_disass.s", 9);
-	}
-	if (!e->file->output)
-	{
-		free_buff_disass(d);
-		alloc_error(e);
-	}
-	fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
-	if (fd != -1)
-	{
-		while (ptr && (i = -1))
-		{
-			while (*ptr->tab[++i])
-				ft_dprintf(fd, "%s\n", ptr->tab[i]);
-			ptr = ptr->next;
-		}
-		ft_printf("Writing output assembly to %s\n", e->file->output);
-		close(fd);
-	}
-	else
-	{
-		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
-		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
-	}
-	return (free_buff_disass(d));
 }
 
 void			nb_in_buff(t_disass *d, int nb, int padding)

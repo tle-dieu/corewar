@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/12 23:09:11 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/13 13:18:29 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,40 +87,6 @@ t_ocp		check_ocp(int ocp, int on_two, int inst)
 	return (check);
 }
 
-static int	split_champ(t_env *e, t_disass *d, unsigned char *line, ssize_t ret)
-{
-	int		i;
-	int		k;
-
-	i = 3;
-	k = 0;
-	d->size = (line[PROG_NAME_LENGTH + 8] << 24) + (line[PROG_NAME_LENGTH + 9] << 16)
-		+ (line[PROG_NAME_LENGTH + 10] << 8) + line[PROG_NAME_LENGTH + 11];
-	if (d->size <= 0)
-		return (disass_error(e, "Champion too small", d));
-	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
-			* (d->size + 2))))
-		alloc_error(e);
-	ft_bzero(d->content, d->size + 2);
-	while (i++ < NAME_COMM_SIZE + 8)
-	{
-		if (i == PROG_NAME_LENGTH + 8)
-			k = 0;
-		if (i < PROG_NAME_LENGTH + 8)
-			d->name[k++] = line[i];
-		else if (i > PROG_NAME_LENGTH + 11)
-			d->comment[k++] = line[i];
-	}
-	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 || ret != d->size)
-	{
-		if (ret == -1)
-			return (disass_error(e, NULL, d));
-		else
-			return (disass_error(e, "Champion size does not match", d));
-	}
-	return (!d->content[d->size]);
-}
-
 static int	check_padding(unsigned char *line)
 {
 	int		i;
@@ -160,5 +126,11 @@ int			check_champ_disass(t_env *e, t_disass *d)
 	}
 	if (!check_padding(line))
 		return (disass_error(e, "Wrong separators", d));
+	d->size = (line[PROG_NAME_LENGTH + 8] << 24)
+		+ (line[PROG_NAME_LENGTH + 9] << 16)
+		+ (line[PROG_NAME_LENGTH + 10] << 8)
+		+ line[PROG_NAME_LENGTH + 11];
+	if (d->size <= 0)
+		return (disass_error(e, "Champion too small", d));
 	return (split_champ(e, d, line, ret));
 }

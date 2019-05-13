@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/12 22:49:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/13 13:22:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,27 +332,29 @@ int					check_end_str(t_env *e, char *s, int cmd, char c);
 char				*line_error(int line, int tty);
 
 /*
-** -------------- Decomp_lst ---------------
+** -------------- Disass_lst_file ------------
 */
 int					free_buff_disass(t_disass *d);
 int					add_buff_link(t_env *e, t_disass *d);
+int					generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr);
+int					split_champ(t_env *e, t_disass *d, unsigned char *line,
+	ssize_t ret);
 
 /*
 ** -------------- Parse_disass --------------
 */
-int					check_champ_disass(t_env *e, t_disass *d);
 t_ocp				check_ocp(int ocp, int on_two, int inst);
+int					check_champ_disass(t_env *e, t_disass *d);
 
 /*
-** -------------- Decomp --------------------
+** -------------- Disass --------------------
 */
-int					disassile_champ(t_env *e);
+int					disassemble_champ(t_env *e);
 
 /*
-** -------------- Decomp_utils ---------------
+** -------------- Disass_utils ---------------
 */
 void				init_line(t_disass *d);
-int					generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr);
 void				nb_in_buff(t_disass *d, int nb, int padding);
 void				str_in_buff(t_disass *d, char *s);
 int					compute_param(t_disass *d, int i, int size);
