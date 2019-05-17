@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/17 12:42:31 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 14:37:03 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct		s_visu
 typedef	struct		s_env
 {
 	int				dump;
+	int				verbose;
 	int				visu;
 	int				total_live;
 	int				total_proc;
