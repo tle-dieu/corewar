@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 17:46:59 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:51:11 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@ void			check_label_call(t_env *e)
 {
 	t_label	*label;
 	t_call	*call;
-	int		note;
 	int		tt;
 
 	label = e->file->label;
-	note = 0;
 	while (label && e->file->error < MAX_ERROR)
 	{
 		if (label->index == -1)
@@ -31,9 +29,9 @@ void			check_label_call(t_env *e)
 			while (call->next)
 			{
 				++tt;
-				undefined_label(e, call, &note, tt);
 				call = call->next;
 			}
+			undefined_label(e, label->call, tt++);
 		}
 		label = label->next;
 	}

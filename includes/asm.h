@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 00:33:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:51:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ void				error_nb_param(t_env *e, char *str, int have,
 /*
 ** --------------- Error_label --------------
 */
-void				undefined_label(t_env *e, t_call *call, int *note, int tt);
+void				undefined_label(t_env *e, t_call *call, int tt);
 void				redefine_label(t_env *e, char *error, int y);
 
 /*

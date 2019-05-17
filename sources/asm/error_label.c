@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:13:44 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:44:23 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:52:46 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	redefine_label(t_env *e, char *error, int y)
 	ft_dprintf(2, "\n");
 }
 
-void	undefined_label(t_env *e, t_call *call, int *note, int tt)
+void	undefined_label(t_env *e, t_call *call, int tt)
 {
 	int len;
 
@@ -41,12 +41,11 @@ void	undefined_label(t_env *e, t_call *call, int *note, int tt)
 	ft_dprintf(2, "\n");
 	err_pointer(e->tty2, call->line->s, call->s);
 	ft_dprintf(2, "\n");
-	if (!*note)
+	if (tt)
 	{
 		ft_dprintf(2, line_error(NOTE_LINE, e->tty2),
 			e->file->name, call->line->y, call->s - call->line->s);
 		ft_dprintf(2, "undefined label reported only once\n");
-		*note = 1;
 	}
 	if (e->tty2)
 		ft_dprintf(2, "{R}");
