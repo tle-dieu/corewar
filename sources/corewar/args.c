@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:17:08 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:08:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ int				parse_args(t_env *e, int ac, char **av)
 	e->verbose = 0;
 	if (ac > 2)
 		check_params(e, ac, av, &show);
-	if (show || e->nb_champ < 2 || e->nb_champ > 4)
-		usage(av[0]);
+	if (ac == 2 && !ft_strcmp(av[1], "--help"))
+		usage(av[0], 1);
+	else if (show || e->nb_champ < 2 || e->nb_champ > 4)
+		usage(av[0], 0);
 	return (!(show || e->nb_champ < 2 || e->nb_champ > 4));
 }
