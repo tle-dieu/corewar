@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 12:49:18 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:51:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void			print_current_stats(t_env *e)
 	e->v.live_color ? attron(COLOR_PAIR(e->v.live_color)) : 1;
 	printw("%-30d", e->last_live);
 	e->v.live_color ? attroff(COLOR_PAIR(e->v.live_color)) : 1;
+	attron(COLOR_PAIR(WRITING));
 	printw("     +/- SPEED\n\n");
 	while (++i < e->nb_champ)
 	{
@@ -34,10 +35,10 @@ static void			print_current_stats(t_env *e)
 		printw(" Player %11d : ", e->champs[i].id);
 		attron(COLOR_PAIR(e->champs[i].color));
 		if (e->champs[i].nb_live <= 1)
-			printw(" %60s %5d live\n", e->champs[i].name,
+			printw(" %128s %5d live\n", e->champs[i].name,
 				e->champs[i].nb_live);
 		else
-			printw(" %60s %5d lives\n", e->champs[i].name,
+			printw(" %128s %5d lives\n", e->champs[i].name,
 				e->champs[i].nb_live);
 	}
 	printw("\n");
@@ -81,6 +82,7 @@ static void			print_progress_bar(t_env *e)
 	attron(COLOR_PAIR(PROGRESS_NO));
 	while (total_size++ < (int)PROGRESS_BAR_SIZE)
 		printw("#");
+	printw("\n");
 	attroff(COLOR_PAIR(PROGRESS_NO));
 }
 

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/17 15:09:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:46:45 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int					choose_cycle(int op)
 
 static int			exec_cycle(t_env *e, t_proc *ptr)
 {
-	!e->visu && e->verbose >= 2 ? ft_printf("> Cycle %d <\n", e->c_total) : 1;
+	if (!e->visu && e->verbose >= 2)
+		ft_printf("{bold}{#4286f4}- Cycle %d -\n{R}", e->c_total);
 	while (ptr)
 	{
 		ptr->cycle--;
