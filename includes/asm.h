@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/17 18:37:42 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:33:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,7 @@ int					free_buff_disass(t_disass *d);
 int					add_buff_link(t_env *e, t_disass *d);
 int					generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr);
 int					split_champ(t_env *e, t_disass *d, unsigned char *line,
-	ssize_t ret);
+					long ret);
 
 /*
 ** -------------- Parse_disass --------------

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 13:22:01 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:34:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int			generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
 	return (free_buff_disass(d));
 }
 
-int			split_champ(t_env *e, t_disass *d, unsigned char *line, ssize_t ret)
+int			split_champ(t_env *e, t_disass *d, unsigned char *line, long ret)
 {
 	int		i;
 	int		k;

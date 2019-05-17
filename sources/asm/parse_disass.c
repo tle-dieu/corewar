@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 13:18:29 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:34:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static int	check_padding(unsigned char *line)
 int			check_champ_disass(t_env *e, t_disass *d)
 {
 	unsigned char	line[NAME_COMM_SIZE + 16];
-	ssize_t			ret;
+	long			ret;
 	int				b;
 	int				i;
 
