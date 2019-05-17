@@ -1,4 +1,5 @@
-;[1mresources/champs/parsing_breaker/header/invalid_cmd1.s:16:1: [1m[35mwarning: [0m[1minvalid command '.invalid'[0m
+;[33mfile:[0m resources/champs/parsing_breaker/header/invalid_cmd1.s
+;[1mresources/champs/parsing_breaker/header/invalid_cmd1.s:17:1: [1m[35mwarning: [0m[1minvalid command '.invalid'[0m
 ;[0m.invalid "blabla"
 ;[1m[32m^[0m[1m[32m~~~~~~~[0m
 ;[1mresources/champs/parsing_breaker/header/invalid_cmd1.s: [1m[35mwarning: [0m[1m'.name' is undefined (set to 'no name')

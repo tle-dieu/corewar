@@ -1,4 +1,5 @@
-;[1mresources/champs/parsing_breaker/header/comment_double_define.s:16:1: [1m[35mwarning: [0m[1m.comment already defined (ignored)
+;[33mfile:[0m resources/champs/parsing_breaker/header/comment_double_define.s
+;[1mresources/champs/parsing_breaker/header/comment_double_define.s:17:1: [1m[35mwarning: [0m[1m.comment already defined (ignored)
 ;[0m.comment "Hello, i'm Kroz"
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 ;1 warning generated.

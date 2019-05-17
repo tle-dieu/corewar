@@ -1,4 +1,5 @@
-;[1mresources/champs/parsing_breaker/header/name_midle.s:20:1: [1m[35mwarning: [0m[1m.name should be before instruction or label
+;[33mfile:[0m resources/champs/parsing_breaker/header/name_midle.s
+;[1mresources/champs/parsing_breaker/header/name_midle.s:21:1: [1m[35mwarning: [0m[1m.name should be before instruction or label
 ;[0m.name "Kroz"
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~[0m
 ;1 warning generated.

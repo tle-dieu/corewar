@@ -1,4 +1,5 @@
-;[1mresources/champs/parsing_breaker/header/invalid_cmd3.s:14:1: [1m[35mwarning: [0m[1minvalid command '.'[0m
+;[33mfile:[0m resources/champs/parsing_breaker/header/invalid_cmd3.s
+;[1mresources/champs/parsing_breaker/header/invalid_cmd3.s:15:1: [1m[35mwarning: [0m[1minvalid command '.'[0m
 ;[0m.
 ;[1m[32m^[0m[1m[32m[0m
 ;1 warning generated.

@@ -1,4 +1,5 @@
-;[1mresources/champs/parsing_breaker/header/name_double_define.s:16:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
+;[33mfile:[0m resources/champs/parsing_breaker/header/name_double_define.s
+;[1mresources/champs/parsing_breaker/header/name_double_define.s:17:1: [1m[35mwarning: [0m[1m.name already defined (ignored)
 ;[0m.name "Kroz"
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~[0m
 ;1 warning generated.

@@ -1,3 +1,4 @@
+;[33mfile:[0m resources/champs/parsing_breaker/header/no_name.s
 ;[1mresources/champs/parsing_breaker/header/no_name.s: [1m[35mwarning: [0m[1m'.name' is undefined (set to 'no name')
 ;[0m1 warning generated.
 ;00000000:  [38;2;155;89;182m00 ea 83 f3 [38;2;241;196;15m6e 6f 20 6e  61 6d 65 00 00 00 00 00 [0m [38;2;155;89;182m....[38;2;241;196;15mno name.....[0m

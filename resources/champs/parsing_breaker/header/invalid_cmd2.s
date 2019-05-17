@@ -1,4 +1,5 @@
-;[1mresources/champs/parsing_breaker/header/invalid_cmd2.s:15:1: [1m[35mwarning: [0m[1minvalid command '.name_invalid'[0m
+;[33mfile:[0m resources/champs/parsing_breaker/header/invalid_cmd2.s
+;[1mresources/champs/parsing_breaker/header/invalid_cmd2.s:16:1: [1m[35mwarning: [0m[1minvalid command '.name_invalid'[0m
 ;[0m.name_invalid "Kroz"
 ;[1m[32m^[0m[1m[32m~~~~~~~~~~~~[0m
 ;[1mresources/champs/parsing_breaker/header/invalid_cmd2.s: [1m[35mwarning: [0m[1m'.name' is undefined (set to 'no name')
