@@ -6,23 +6,25 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:19:48 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:08:28 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include <ncurses.h>
 
-void		usage(char *path)
+void		usage(char *path, int help_option)
 {
+	if (path && !help_option)
+		ft_printf("input {bold}{#ed000b}error{R}:\n");
 	if (path)
-		ft_printf("input {bold}{#ed000b}error{R}:\n\
+		ft_printf("\
 			{bold}%s{R} [-dump nbr_cycles] [[-n number]champion1.cor] [-v]...\n\
 			You must enter between 2 and 4 champions\n\
 			Champions must have the .cor extension\n\n\
 			-dump to print memory at a precise cycle\n\
 			-n to give a player number\n\
-			-verbose to enable verbosity [0 to 4]\n\
+			-verbose to enable verbosity [0 to 4] (without viewer)\n\
 			-v to enable viewer\n\n", path);
 }
 
