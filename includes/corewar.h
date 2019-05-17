@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/17 16:04:54 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 17:32:52 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef	struct		s_proc
 	int				color;
 	int				id;
 	int				live;
-	int				r[17];
+	int				r[REG_NUMBER + 1];
 	int				pc;
 	int				carry;
 	int				op;

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:41:59 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 17:33:41 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	new->color = ptr->color;
 	new->id = e->nb_proc;
 	new->live = ptr->live;
-	while (++i <= 17)
+	while (++i <= REG_NUMBER + 1)
 		new->r[i] = ptr->r[i];
 	new->pc = pc;
 	new->carry = ptr->carry;
@@ -57,5 +57,5 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 
 int				check_reg(int reg)
 {
-	return (reg > 0 && reg < 17);
+	return (reg > 0 && reg < REG_NUMBER + 1);
 }

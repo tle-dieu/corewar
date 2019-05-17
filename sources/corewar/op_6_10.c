@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:20:02 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:22:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 17:35:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		and(t_env *e, int *pc, t_proc *ptr)
 	{
 		param_value(e, &check, ptr, 0);
 		reg = e->mem[(*pc + 2 + check.s[0] + check.s[1]) % MEM_SIZE];
-		if (!check.error && reg > 0 && reg < 17)
+		if (!check.error && reg > 0 && reg < REG_NUMBER + 1)
 		{
 			ptr->r[reg] = check.v[0] & check.v[1];
 			ptr->carry = !ptr->r[reg];
@@ -43,7 +43,7 @@ void		or(t_env *e, int *pc, t_proc *ptr)
 	{
 		param_value(e, &check, ptr, 0);
 		reg = e->mem[(*pc + 2 + check.s[0] + check.s[1]) % MEM_SIZE];
-		if (!check.error && reg > 0 && reg < 17)
+		if (!check.error && reg > 0 && reg < REG_NUMBER + 1)
 		{
 			ptr->r[reg] = check.v[0] | check.v[1];
 			ptr->carry = !ptr->r[reg];
@@ -63,7 +63,7 @@ void		xor(t_env *e, int *pc, t_proc *ptr)
 	{
 		param_value(e, &check, ptr, 0);
 		reg = e->mem[(*pc + 2 + check.s[0] + check.s[1]) % MEM_SIZE];
-		if (!check.error && reg > 0 && reg < 17)
+		if (!check.error && reg > 0 && reg < REG_NUMBER + 1)
 		{
 			ptr->r[reg] = check.v[0] ^ check.v[1];
 			ptr->carry = !ptr->r[reg];
@@ -98,7 +98,7 @@ void		ldi(t_env *e, int *pc, t_proc *ptr)
 	{
 		param_value(e, &check, ptr, 1);
 		reg = e->mem[(*pc + 2 + check.s[0] + check.s[1]) % MEM_SIZE];
-		if (!check.error && reg > 0 && reg < 17)
+		if (!check.error && reg > 0 && reg < REG_NUMBER + 1)
 			ptr->r[reg] = param_sum(e,
 					(*pc + check.v[0] + check.v[1]) % MEM_SIZE, REG_SIZE);
 	}

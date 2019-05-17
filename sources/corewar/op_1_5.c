@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:19:56 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 17:35:09 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		ld(t_env *e, int *pc, t_proc *ptr)
 	check = check_ocp(e->mem[(*pc + 1) % MEM_SIZE],
 			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	reg = e->mem[(*pc + 2 + check.s[0]) % MEM_SIZE];
-	if (!check.error && reg > 0 && reg < 17)
+	if (!check.error && reg > 0 && reg < REG_NUMBER + 1)
 	{
 		if (check.s[0] == 2)
 		{
@@ -71,9 +71,9 @@ void		st(t_env *e, int *pc, t_proc *ptr)
 			g_op_tab[ptr->op - 1].dir_size, ptr->op);
 	reg1 = e->mem[(*pc + 2) % MEM_SIZE];
 	reg2 = e->mem[(*pc + 2 + check.s[0]) % MEM_SIZE];
-	if (!check.error && reg1 > 0 && reg1 < 17)
+	if (!check.error && reg1 > 0 && reg1 < REG_NUMBER + 1)
 	{
-		if (check.s[1] == 1 && reg2 > 0 && reg2 < 17)
+		if (check.s[1] == 1 && reg2 > 0 && reg2 < REG_NUMBER + 1)
 			ptr->r[reg2] = ptr->r[reg1];
 		else if (check.s[1] == 2)
 		{
