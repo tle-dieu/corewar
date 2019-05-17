@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:08:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/11 22:58:49 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/17 14:02:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	alloc_error(t_env *e)
 	exit(-1);
 }
 
-int			disass_error(t_env *e, char *error, t_disass *d)
+int		disass_error(t_env *e, char *error, t_disass *d)
 {
 	ft_dprintf(2, line_error(ERR_FILE, e->tty2), e->exname);
 	if (!error)

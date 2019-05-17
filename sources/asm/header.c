@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/12 22:53:10 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/17 14:02:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	parse_cmd(t_env *e, char *s, unsigned char *cp, int cmd)
 	return (1);
 }
 
-void	get_cmd(t_env *e, unsigned char *cp, char *line)
+void		get_cmd(t_env *e, unsigned char *cp, char *line)
 {
 	int		cmd;
 	char	*tmp;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 06:01:24 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:44:49 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/17 13:58:29 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static char	*pass_line(char *s, int quote)
 				if (*s == COMMENT_CHAR[i] && !(quote & 1))
 					*s-- = '\0';
 		s++;
-			
 	}
 	return (tmp);
 }
