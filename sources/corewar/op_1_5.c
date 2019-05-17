@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 14:37:38 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:09:41 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 		{
 			if (e->visu)
 				e->v.live_color = j + 2;
-			else if (e->verbose)
+			else if (e->verbose >= 1)
 				ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
 					e->champs[j].id, e->champs[j].name);
 			e->last_live = e->champs[j].id;

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 14:40:12 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:08:30 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ static void		save_dump(t_env *e, char *av, int *show, int *i)
 	*i += 2;
 }
 
-static void		verbosity_on(t_env *e, int *i)
+static void		verbosity_on(t_env *e, char *av, int *show, int *i)
 {
-	e->verbose = 1;
-	*i += 1;
+	e->verbose = ft_atoi(av);
+	*show = (e->verbose < 0 || e->verbose > 3) ? 1 : *show;
+	*i += 2;
 }
 
 static void		check_params(t_env *e, int ac, char **av, int *show)
@@ -58,8 +59,9 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 		}
 		else if (!ft_strcmp(av[i], "-v") && (e->visu = 1))
 			i++;
-		else if (!ft_strcmp(av[i], "-verbose"))
-			verbosity_on(e, &i);
+		else if (ac > i + 1 && !ft_strcmp(av[i], "-verbose")
+			&& digit(av[i + 1]))
+			verbosity_on(e, av[i + 1], show, &i);
 		else if (ac > i + 1 && !ft_strcmp(av[i], "-dump") && digit(av[i + 1]))
 			save_dump(e, av[i + 1], show, &i);
 		else if ((tmp = ft_strrchr(av[i], '.')) && !ft_strcmp(tmp, ".cor"))

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/17 14:37:03 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:07:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,9 @@ int					parse_args(t_env *e, int ac, char **av);
 int					check_champ(t_env *e, char *arg, int i);
 
 /*
-** GAME_UTILS.C (2)
+** GAME_UTILS.C (3)
 */
+void				print_verbosity(t_env *e, t_proc *ptr);
 int					create_new_process(t_env *e, int pc, t_proc *ptr);
 int					check_reg(int reg);
 

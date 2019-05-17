@@ -6,12 +6,26 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 12:46:21 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:09:48 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include <stdlib.h>
+
+void			print_verbosity(t_env *e, t_proc *ptr)
+{
+	if (e->verbose >= 3 && !ptr->dead)
+	{
+		if (ptr->cycle)
+			ft_printf("Le processus %d du joueur %d doit attendre %d %s\n",
+				ptr->id, ptr->owner, ptr->cycle,
+				ptr->cycle <= 1 ? "cycle" : "cycles");
+		else if (ptr->op > 0 && ptr->op < 17)
+			ft_printf("Le processus %d du joueur %d effectue l'op %d\n",
+				ptr->id, ptr->owner, ptr->op);
+	}
+}
 
 int				create_new_process(t_env *e, int pc, t_proc *ptr)
 {

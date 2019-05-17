@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/17 12:49:09 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:09:53 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ int					choose_cycle(int op)
 
 static int			exec_cycle(t_env *e, t_proc *ptr)
 {
+	!e->visu && e->verbose >= 2 ? ft_printf("> Cycle %d <\n", e->c_total) : 1;
 	while (ptr)
 	{
 		ptr->cycle--;
+		!ptr->dead && e->verbose && !e->visu ? print_verbosity(e, ptr) : 1;
 		ptr->pc = ptr->pc % MEM_SIZE + (ptr->pc < 0 ? MEM_SIZE : 0);
 		if (!ptr->dead && e->visu && e->dump == -1)
 			e->v.map[ptr->pc % MEM_SIZE] = -e->v.map[ptr->pc % MEM_SIZE];
@@ -51,6 +53,8 @@ static void			is_alive(t_env *e, t_proc *ptr)
 	int		i;
 
 	i = -1;
+	if (e->verbose >= 2 && !e->visu)
+		ft_printf("cycle_to_die: %d\n", e->c_to_die);
 	if (e->visu && e->dump == -1)
 		while (++i < e->nb_champ)
 			e->champs[i].nb_live = 0;
