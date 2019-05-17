@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:24:00 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/09 15:04:09 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 01:04:54 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char		*dec_color(char *color, char *rgb)
 	if (*(color = atoi_jr(color + 1, &g) + 1) != ',')
 		return (NULL);
 	if ((*(color = atoi_jr(color + 1, &b) + 1) != ')')
-	|| (*(color + 1) != '}' && ft_strcmp(color + 1, ":bg}")))
+		|| (*(color + 1) != '}' && ft_strcmp(color + 1, ":bg}")))
 		return (NULL);
 	if (r > 255 || b > 255 || g > 255)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:25:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/01/14 12:46:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 01:00:17 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_bint	*apply_prec(t_bint *intpart, t_bint *floatpart, int p)
 	if (!p || (p == len && floatpart->next))
 	{
 		cut = p ? floatpart->next : floatpart;
-		if (cut->digit > 5 || (cut->digit == 5 &&
-		(((p ? floatpart->digit : intpart->digit) % 2)
-		|| (cut->next && (cut->next->digit || cut->next->next)))))
+		if (cut->digit > 5 || (cut->digit == 5
+				&& (((p ? floatpart->digit : intpart->digit) % 2)
+					|| (cut->next && (cut->next->digit || cut->next->next)))))
 			floatpart->digit = p ? floatpart->digit + 1 : 10;
 		if (ret_floatpart(lst) && lst->digit > 9 && (intpart->digit += 1))
 			lst->digit -= 10;

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 17:27:49 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/30 00:31:43 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:46:48 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # define GET_NEXT_LINE_H
 # define BS_GNL 100
-# define MAX_SIZE_STATIC 10000000
+# define MAX_SIZE_STATIC 10000
 
 # include <string.h>
 

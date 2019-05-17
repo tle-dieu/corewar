@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/18 16:37:36 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/06 03:23:31 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 01:42:52 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int		check_line(t_gnl *actual, int ret, char **line, char *next_line)
 	if (ret == 0 && !actual->len)
 		return (0);
 	if (ret < 0 || !(*line = (char *)malloc(sizeof(char) * (len + 1)))
-	|| !(ft_memcpy(*line, actual->str, len)))
+		|| !(ft_memcpy(*line, actual->str, len)))
 		return (-1);
 	(*line)[len] = '\0';
 	if (next_line)

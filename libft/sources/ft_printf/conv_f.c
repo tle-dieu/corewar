@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:24:58 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/01/16 18:15:42 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 01:07:42 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void		f_conv(va_list args, t_print *buff, t_flag *flags, char conv)
 
 	flags->prec = (flags->prec == -1 ? 6 : flags->prec);
 	i = flags->llf ? lftoa(&f, va_arg(args, long double), flags->prec)
-	: ftoa(&f, va_arg(args, double), flags->prec);
+		: ftoa(&f, va_arg(args, double), flags->prec);
 	if (i && (flags->prec = -1))
 	{
 		flags->zero = 0;
