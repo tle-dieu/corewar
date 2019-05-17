@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:36:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/14 11:51:12 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:54:32 by matleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		main(int ac, char **av)
 		return (usage(&e, 3));
 	while (e.file)
 	{
-		ft_printf("{yellow}file:{R} %s\n", e.file->name);
+		ft_printf("{yellow}file:{R} %s\n", e.file->name); // a enlever
 		if (e.file->options & O_DISAS)
 			disassemble_champ(&e);
 		else

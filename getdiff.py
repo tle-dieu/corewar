@@ -17,10 +17,7 @@ def get_file(asm, f):
     output = ""
     error = ""
     success = ""
-    if open:
-        output = sp.getoutput('xxd ' + my_file)
-    else:
-        error = RED + "ERROR: " + f + " doesn't match any file"
+    output = sp.getoutput('xxd ' + my_file)
     if not error and output[0] == 'x' :
         error += "\n" + RED + "ERROR: " + "for " + asm + " " + my_file + " hasn't been created"
         error += "\n" + WHITE + open
@@ -97,14 +94,12 @@ def main():
                 asm_42, err , success = get_file(ASM_42, arg)
                 asm_42 = asm_42.split('\n')
                 asm, tmp, success_tmp = get_file(ASM, arg)
-                err += tmp
-
                 success += success_tmp
                 asm = asm.split('\n')
                 print(WHITE + "\n- - - - - - - - - - - - " + arg.upper() + " - - - - - - - - - - - -\n")
                 if success:
                     print(success + WHITE)
-                if not err:
+                if not err and not tmp:
                     j = 0
                     while j < len(asm) and j < len(asm_42):
                         error += compare(asm_42[j], asm[j])
@@ -117,12 +112,12 @@ def main():
                         j += 1
                     print(GREEN + "Diff = OK")
                 elif "hasn't" in tmp and "hasn't" in err:
-                    print(err)
+                    print(err, tmp)
                     print(GREEN + "Diff = OK (both files haven't been created)")
                 else:
                     bad_file += "\t- " + arg + "\n"
                     nb_err += 1
-                    print(err)
+                    print(err, tmp)
                     print(RED + "Diff = KO (%d bad line(s))" % error)
             i += 1
         if nb_err == 0:

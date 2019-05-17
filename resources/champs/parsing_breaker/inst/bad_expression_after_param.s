@@ -1,8 +1,8 @@
 .name "Zork"
 .comment "Hello, i'm Zork"          
 
-sti r1,%:live,1        
+and r1, r1, r1 end 
 ld %0, r16
 live:
-live r1
+live %1
 zjmp %:live
