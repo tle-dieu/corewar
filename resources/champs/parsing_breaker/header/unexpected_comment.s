@@ -1,7 +1,6 @@
-;[33mfile:[0m resources/champs/parsing_breaker/header/unexpected_comment.s
-;[1mresources/champs/parsing_breaker/header/unexpected_comment.s:8:27: [1m[31merror: [0m[1munexpected expression in .comment declaration
-;[0m.comment "Hello, i'm Kroz"end
-;                          [1m[32m^[0m[1m[32m~~[0m
+;resources/parsing_breaker/char_after_comment_mult.s:8:8: error: unexpected expression in .comment declaration
+;     Kroz"fin
+;          ^~~
 ;1 error generated.
 
 .name "Zork"
