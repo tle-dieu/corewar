@@ -2,7 +2,7 @@ PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
 
-CFLAGS = -Wall -Werror -Wextra -g3
+CFLAGS = -Wall -Werror -Wextra
 CC = clang
 VISU = -lncurses
 LDFLAG = -L./$(LIBFT_DIR) -lft
