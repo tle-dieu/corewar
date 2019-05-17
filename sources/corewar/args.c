@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:08:30 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:17:08 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void		save_dump(t_env *e, char *av, int *show, int *i)
 static void		verbosity_on(t_env *e, char *av, int *show, int *i)
 {
 	e->verbose = ft_atoi(av);
-	*show = (e->verbose < 0 || e->verbose > 3) ? 1 : *show;
+	*show = (e->verbose < 0 || e->verbose > 4) ? 1 : *show;
 	*i += 2;
 }
 

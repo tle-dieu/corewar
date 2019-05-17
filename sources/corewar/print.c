@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:10:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:17:32 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		usage(char *path)
 			Champions must have the .cor extension\n\n\
 			-dump to print memory at a precise cycle\n\
 			-n to give a player number\n\
-			-verbose to enable verbosity [0 to 3]\n\
+			-verbose to enable verbosity [0 to 4]\n\
 			-v to enable viewer\n\n", path);
 }
 
