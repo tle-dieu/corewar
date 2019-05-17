@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:51:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:56:13 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void			print_current_stats(t_env *e)
 	printw("LAST LIVE FROM PLAYER ");
 	e->v.live_color ? attron(COLOR_PAIR(e->v.live_color)) : 1;
 	printw("%-30d", e->last_live);
-	e->v.live_color ? attroff(COLOR_PAIR(e->v.live_color)) : 1;
 	attron(COLOR_PAIR(WRITING));
 	printw("     +/- SPEED\n\n");
 	while (++i < e->nb_champ)
