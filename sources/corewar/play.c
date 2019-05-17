@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/06 16:29:14 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:49:09 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ static int			exec_cycle(t_env *e, t_proc *ptr)
 	while (ptr)
 	{
 		ptr->cycle--;
-		ptr->pc = ptr->pc % MEM_SIZE;
+		ptr->pc = ptr->pc % MEM_SIZE + (ptr->pc < 0 ? MEM_SIZE : 0);
 		if (!ptr->dead && e->visu && e->dump == -1)
 			e->v.map[ptr->pc % MEM_SIZE] = -e->v.map[ptr->pc % MEM_SIZE];
-		if (!ptr->dead && (ptr->op != e->mem[ptr->pc % MEM_SIZE]
-				|| ptr->op < 1 || ptr->op > 16))
+		if (!ptr->dead && (ptr->op < 1 || ptr->op > 16))
 		{
 			ptr->pc++;
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
@@ -39,6 +38,7 @@ static int			exec_cycle(t_env *e, t_proc *ptr)
 		{
 			g_op_tab[ptr->op - 1].ft_ptr(e, &ptr->pc, ptr);
 			ptr->op = e->mem[ptr->pc % MEM_SIZE];
+			ptr->pc = ptr->pc % MEM_SIZE + (ptr->pc < 0 ? MEM_SIZE : 0);
 			ptr->cycle = choose_cycle(ptr->op);
 		}
 		ptr = ptr->next;

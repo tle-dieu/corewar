@@ -6,11 +6,12 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/12 23:22:24 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:52:43 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include <stdlib.h>
 
 void			check_taken_id(t_env *e)
 {
@@ -91,7 +92,7 @@ int				init_proc(t_env *e, int j, int begin)
 
 	i = -1;
 	if (!(new = (t_proc*)malloc(sizeof(t_proc))))
-		return (0);
+		freedom(e, 1);
 	new->owner = e->champs[j].id;
 	new->dead = 0;
 	new->color = e->champs[j].color;
@@ -122,8 +123,7 @@ void			place_champ(t_env *e)
 	{
 		j = 0;
 		i = champ * (MEM_SIZE / e->nb_champ);
-		if (!(init_proc(e, champ, i)))
-			freedom(e, 1);
+		init_proc(e, champ, i);
 		while (j < CHAMP_MAX_SIZE)
 			e->mem[i++] = e->champs[champ].content[j++];
 	}

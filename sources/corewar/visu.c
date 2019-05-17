@@ -6,11 +6,12 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 21:26:03 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:27:36 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:46:47 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include <ncurses.h>
 
 void				get_keys(t_env *e)
 {

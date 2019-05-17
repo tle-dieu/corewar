@@ -6,11 +6,13 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:28:54 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:49:18 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include <ncurses.h>
+#include <unistd.h>
 
 static void			print_current_stats(t_env *e)
 {

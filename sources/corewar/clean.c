@@ -6,11 +6,14 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:55:35 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 12:48:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:44:58 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include <errno.h>
+#include <ncurses.h>
+#include <stdlib.h>
 
 static void		free_processes(t_env *e)
 {

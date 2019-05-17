@@ -6,11 +6,12 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/06 16:29:53 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:43:23 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include <ncurses.h>
 
 void		usage(char *path)
 {

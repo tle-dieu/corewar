@@ -6,11 +6,14 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 12:40:43 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:51:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 static int	check_padding(unsigned char *line, char *arg)
 {
@@ -121,7 +124,7 @@ int			check_champ(t_env *e, char *arg, int i)
 	if (fd == -1 && (err = 1))
 	{
 		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
-				strerror(errno));
+			strerror(errno));
 		return (0);
 	}
 	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
@@ -129,7 +132,7 @@ int			check_champ(t_env *e, char *arg, int i)
 	close(fd);
 	if (!err && (ret == -1 || !check_magic_number(e)) && (err = 1))
 		ft_dprintf(2, "{bold}%s: {#ed000b}%s{R}\n",
-				ret == -1 ? strerror(errno) : "Invalid magic", arg);
+			ret == -1 ? strerror(errno) : "Invalid magic", arg);
 	if (!err && !(check_champ_size(e, arg, ret, i)))
 		err = 1;
 	if (err || !check_padding(e->line, arg) || (!split_champ(e, i)))

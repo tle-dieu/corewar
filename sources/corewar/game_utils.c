@@ -6,12 +6,12 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:05:42 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 12:49:06 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:46:21 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-#include <errno.h>
+#include <stdlib.h>
 
 int				create_new_process(t_env *e, int pc, t_proc *ptr)
 {
@@ -21,7 +21,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 	i = -1;
 	e->nb_proc++;
 	if (!(new = (t_proc*)malloc(sizeof(t_proc))))
-		return (0);
+		freedom(e, 1);
 	new->owner = ptr->owner;
 	new->dead = 0;
 	new->color = ptr->color;
@@ -31,6 +31,7 @@ int				create_new_process(t_env *e, int pc, t_proc *ptr)
 		new->r[i] = ptr->r[i];
 	new->pc = pc;
 	new->carry = ptr->carry;
+	pc = pc % MEM_SIZE + (pc < 0 ? MEM_SIZE : 0);
 	new->op = e->mem[pc % MEM_SIZE];
 	new->cycle = choose_cycle(new->op);
 	new->next = e->new_proc;

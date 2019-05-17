@@ -6,18 +6,13 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/11 20:10:25 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/17 12:42:31 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COREWAR_H
 # define COREWAR_H
 # include "libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <errno.h>
-# include <ncurses.h>
 # include "op.h"
 # define NAME_COMM_SIZE PROG_NAME_LENGTH + COMMENT_LENGTH
 # define MAX_SIZE CHAMP_MAX_SIZE + NAME_COMM_SIZE + 16
