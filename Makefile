@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/05/18 03:20:05 by tle-dieu          #+#    #+#              #
+#    Updated: 2019/05/18 03:20:06 by tle-dieu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
@@ -151,7 +163,7 @@ force:
 
 clean-test:
 	find . -type f -name "*.cor" | grep -v invalid_cor | xargs $(RM)
-	find . -type f -name "*_disass*.s" -o -name "*_disass*.cor" -exec rm {} \;
+	find . -type f -name "*_disass*.s" -o -name "*_disass*.cor" | xargs $(RM)
 
 clean:
 	$(MAKE) $@ -C $(LIBFT_DIR)
