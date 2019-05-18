@@ -6,12 +6,14 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/27 22:10:27 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 13:16:45 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+# include <string.h>
 
 # define OSX 1
 # define LINUX 2
@@ -21,8 +23,6 @@
 # else
 #  define OS 0
 # endif
-
-# include <string.h>
 
 typedef struct	s_list
 {

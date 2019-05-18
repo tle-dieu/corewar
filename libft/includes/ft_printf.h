@@ -6,17 +6,18 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 21:48:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 00:36:02 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 13:17:57 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# define BS_PRINTF 8192
 
 # include <stdarg.h>
 # include <inttypes.h>
 # include <wchar.h>
+
+# define BS_PRINTF 8192
 
 typedef struct		s_print
 {

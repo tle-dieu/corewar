@@ -6,17 +6,17 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 17:27:49 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/04/22 15:46:48 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 13:18:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
-
 # define GET_NEXT_LINE_H
-# define BS_GNL 100
-# define MAX_SIZE_STATIC 10000
 
 # include <string.h>
+
+# define BS_GNL 100
+# define MAX_SIZE_STATIC 10000
 
 typedef struct		s_gnl
 {
