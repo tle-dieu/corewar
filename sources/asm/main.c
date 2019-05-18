@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:36:26 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 12:56:04 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 13:11:45 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ int		main(int ac, char **av)
 		free_file(&e.file);
 		e.file = next;
 	}
+	return (0);
 }
