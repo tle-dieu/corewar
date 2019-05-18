@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 02:24:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 03:31:14 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int			split_champ(t_env *e, t_disass *d, unsigned char *line, long ret)
 	i = 3;
 	k = 0;
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
-				* (d->size + 2))))
+					* (d->size + 2))))
 		alloc_error(e);
 	ft_bzero(d->content, d->size + 2);
 	while (i++ < NAME_COMM_SIZE + 8)
