@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 10:50:50 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 15:56:13 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/18 03:12:11 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void			print_progress_bar(t_env *e)
 	{
 		attron(COLOR_PAIR(e->champs[i].color + 6));
 		size = ((double)e->v.posess[i]
-			/ (double)MEM_SIZE) * (double)PROGRESS_BAR_SIZE;
+				/ (double)MEM_SIZE) * (double)PROGRESS_BAR_SIZE;
 		total_size += (int)size;
 		while ((int)size-- > 0)
 			printw("#");
