@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 03:31:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 12:57:20 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	generate_file_name(t_env *e, t_disass *d)
 		e->file->output = ft_strjoin(e->file->name, "_disass.s");
 	else
 	{
-		(e->file->output = ft_strnew(s - e->file->name + 9)) // norme assignation ?
+		(e->file->output = ft_strnew(s - e->file->name + 9))
 		&& ft_memcpy(e->file->output, e->file->name, s - e->file->name)
 		&& ft_memcpy(e->file->output + (s - e->file->name), "_disass.s", 9);
 	}
@@ -129,7 +129,7 @@ int			split_champ(t_env *e, t_disass *d, unsigned char *line, long ret)
 		else if (i > PROG_NAME_LENGTH + 11)
 			d->comment[k++] = line[i];
 	}
-	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 // norme assignation ?
+	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1
 		|| ret != d->size)
 	{
 		return (disass_error(e,

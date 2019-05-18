@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 03:30:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 12:43:44 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static void	get_output_file(t_env *e)
 	}
 	else
 	{
-		if (!(e->file->output = ft_strnew(s - e->file->name + 4)) // norme assignation ?
-			|| !ft_memcpy(e->file->output, e->file->name, s - e->file->name)
-			|| !ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5))
+		if (!(e->file->output = ft_strnew(s - e->file->name + 4)))
 			alloc_error(e);
+		ft_memcpy(e->file->output, e->file->name, s - e->file->name);
+		ft_memcpy(e->file->output + (s - e->file->name), ".cor", 5);
 	}
 }
 

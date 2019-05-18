@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 02:43:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 12:59:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	color_option(t_env *e, char **line)
 	if (*((*line) += 5) == '=')
 	{
 		s = ++(*line);
-		if (!ft_strncmp(s, "always", (len = ft_strlen(s))) // norme assignation ?
+		if (!ft_strncmp(s, "always", (len = ft_strlen(s)))
 			|| !ft_strncmp(s, "yes", len) || !ft_strncmp(s, "force", len))
 			tmp = 1;
 		else if (!ft_strncmp(s, "never", len) || !ft_strncmp(s, "no", len)

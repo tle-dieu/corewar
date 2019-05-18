@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:32:50 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 02:52:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 12:58:08 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int				parse_command_line(t_env *e, int ac, char **av)
 		if (!check_args(e, &arg, &options))
 		{
 			if (options & O_OUTPUT_ERR
-				|| (fd = open(av[e->i], O_RDONLY)) == -1 // norme assignation ?
+				|| (fd = open(av[e->i], O_RDONLY)) == -1
 				|| !valid_file(fd, &options))
 				return (error_file(e, arg, av[e->i], options));
 			e->actual = add_file(e, av[e->i], options, fd);
