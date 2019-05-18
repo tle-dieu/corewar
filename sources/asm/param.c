@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 15:03:50 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 17:45:14 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:43:53 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		is_reg(t_env *e, char *str, t_inst *inst)
 		else
 			inst->error++;
 		if (e->file->error < MAX_ERROR
-				&& (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER))
+			&& (inst->p[inst->i] < 0 || inst->p[inst->i] > REG_NUMBER))
 		{
 			error_register_nb(e, tmp, inst->p[inst->i]);
 			inst->error++;

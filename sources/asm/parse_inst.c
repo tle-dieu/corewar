@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/17 18:06:08 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:50:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	get_curr_inst(char *str)
 	i = 0;
 	while (g_op_tab[i].label
 		&& (ft_strncmp(str, g_op_tab[i].label, g_op_tab[i].len)
-		|| ft_isalnum(str[g_op_tab[i].len])))
+			|| ft_isalnum(str[g_op_tab[i].len])))
 		i++;
 	if (!g_op_tab[i].label)
 		return (42);

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 00:34:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:24:06 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ static void	generate_file_name(t_env *e, t_disass *d)
 		e->file->output = ft_strjoin(e->file->name, "_disass.s");
 	else
 	{
-		(e->file->output = ft_strnew(s - e->file->name + 9))
-			&& ft_memcpy(e->file->output, e->file->name, s - e->file->name)
-			&& ft_memcpy(e->file->output + (s - e->file->name), "_disass.s", 9);
+		(e->file->output = ft_strnew(s - e->file->name + 9)) // norme assignation ?
+		&& ft_memcpy(e->file->output, e->file->name, s - e->file->name)
+		&& ft_memcpy(e->file->output + (s - e->file->name), "_disass.s", 9);
 	}
 	if (!e->file->output)
 	{
@@ -117,7 +117,7 @@ int			split_champ(t_env *e, t_disass *d, unsigned char *line, long ret)
 	i = 3;
 	k = 0;
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
-					* (d->size + 2))))
+				* (d->size + 2))))
 		alloc_error(e);
 	ft_bzero(d->content, d->size + 2);
 	while (i++ < NAME_COMM_SIZE + 8)
@@ -129,11 +129,11 @@ int			split_champ(t_env *e, t_disass *d, unsigned char *line, long ret)
 		else if (i > PROG_NAME_LENGTH + 11)
 			d->comment[k++] = line[i];
 	}
-	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1
-			|| ret != d->size)
+	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1 // norme assignation ?
+		|| ret != d->size)
 	{
 		return (disass_error(e,
-					ret == -1 ? NULL : "Champion size does not match", d));
+				ret == -1 ? NULL : "Champion size does not match", d));
 	}
 	return (!d->content[d->size]);
 }

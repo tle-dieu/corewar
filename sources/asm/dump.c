@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 01:31:18 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 17:43:43 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:26:00 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	get_color(int i, int last, int tty)
 	else if (++code && i < PROG_NAME_LENGTH + 12 && i >= PROG_NAME_LENGTH + 8)
 		color = SIZE_C;
 	else if (++code && i < COMMENT_LENGTH + PROG_NAME_LENGTH + 12
-	&& i >= PROG_NAME_LENGTH + 12 && ++code)
+		&& i >= PROG_NAME_LENGTH + 12 && ++code)
 		color = COMMENT_C;
 	else if (++code && i >= COMMENT_LENGTH + PROG_NAME_LENGTH + 16)
 		color = CHAMP_C;

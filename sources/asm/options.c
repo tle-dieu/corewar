@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 21:49:13 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/09 01:12:54 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:43:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static int	color_option(t_env *e, char **line)
 	if (*((*line) += 5) == '=')
 	{
 		s = ++(*line);
-		if (!ft_strncmp(s, "always", (len = ft_strlen(s)))
-				|| !ft_strncmp(s, "yes", len) || !ft_strncmp(s, "force", len))
+		if (!ft_strncmp(s, "always", (len = ft_strlen(s))) // norme assignation ?
+			|| !ft_strncmp(s, "yes", len) || !ft_strncmp(s, "force", len))
 			tmp = 1;
 		else if (!ft_strncmp(s, "never", len) || !ft_strncmp(s, "no", len)
-				|| !ft_strncmp(s, "none", len))
+			|| !ft_strncmp(s, "none", len))
 			tmp = 0;
 		if (!ft_strncmp(s, "auto", len) || !ft_strncmp(s, "tty", len)
-				|| !ft_strncmp(s, "if-tty", len))
+			|| !ft_strncmp(s, "if-tty", len))
 			tmp = tmp != -1 ? 2 : e->tty2;
 		if (tmp == 2)
 			return (O_COL_AMBIGUOUS_ERR);
@@ -93,7 +93,7 @@ int			get_long_option(t_env *e, unsigned *options, char **s)
 	else if (!ft_strcmp(*s, "disassembly"))
 		*options |= O_DISAS;
 	else if (!ft_strncmp(*s, "color", 5)
-			&& (!*((*s) + 5) || *((*s) + 5) == '='))
+		&& (!*((*s) + 5) || *((*s) + 5) == '='))
 		return (!(*options |= color_option(e, s)));
 	else if (!ft_strcmp(*s, "output"))
 		*options |= O_OUTPUT;

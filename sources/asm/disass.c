@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 13:20:09 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:14:46 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int			param_to_str(t_disass *d, int param, int size, int i)
 	else if (size == 2)
 	{
 		if (g_op_tab[d->op - 1].dir_size && (param == 128
-					|| param == 32 || param == 8))
+				|| param == 32 || param == 8))
 			d->buff_d->tab[d->y][d->x++] = '%';
 		nb_in_buff(d, (short)compute_param(d, i, 2), 0);
 	}
@@ -94,7 +94,7 @@ static int			check_disass_params(t_env *e, t_disass *d, t_ocp check)
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';
 		if (!param_to_str(d, check.p[2], check.s[2],
-					d->i + 1 + check.s[0] + check.s[1]))
+				d->i + 1 + check.s[0] + check.s[1]))
 			return (disass_error(e,
 					"Wrong register, must be between 1 and 16", d));
 	}

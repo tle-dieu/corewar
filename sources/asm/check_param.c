@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 15:07:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/09 19:11:53 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/05/18 02:09:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		label_is_good(t_env *e, char *str)
 	tmp = str;
 	tmp += ft_strspn(tmp, LABEL_CHARS);
 	if (e->file->error < 19 && *tmp != *SEPARATOR_CHAR
-			&& *tmp && !ft_strchr(SPACES, *tmp))
+		&& *tmp && !ft_strchr(SPACES, *tmp))
 	{
 		basic_error(e, tmp, "illegal character for label\n", 0);
 		err = 1;
@@ -52,7 +52,7 @@ int		label_is_good(t_env *e, char *str)
 	if (e->file->error < 19 && *tmp && *tmp != *SEPARATOR_CHAR)
 	{
 		basic_error(e, tmp, "unexpected expression after parameter\n",
-				ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
+			ft_strcspn(tmp, SEPARATOR_CHAR) - 1);
 		err = 1;
 	}
 	err += (e->file->error >= MAX_ERROR);
@@ -74,7 +74,7 @@ int		is_valid_register(t_env *e, char *str)
 	tmp += ft_strspn(tmp, SPACES);
 	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
 		err += basic_error(e, tmp, "unexpected expression after parameter\n",
-				ft_strcspn(tmp, END_PARAM) - 1);
+			ft_strcspn(tmp, END_PARAM) - 1);
 	return (!err);
 }
 
@@ -90,13 +90,13 @@ int		is_a_number(t_env *e, char *str)
 	while (ft_isdigit(*tmp))
 		tmp++;
 	if (e->file->error < MAX_ERROR && *tmp
-			&& *tmp != *SEPARATOR_CHAR && !ft_strchr(SPACES, *tmp))
+		&& *tmp != *SEPARATOR_CHAR && !ft_strchr(SPACES, *tmp))
 		err += basic_error(e, str, "invalid parameter\n",
-				param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
+			param_strrspn(tmp, SPACES, *SEPARATOR_CHAR));
 	tmp += ft_strcspn(tmp, END_PARAM);
 	tmp += ft_strspn(tmp, SPACES);
 	if (e->file->error < MAX_ERROR && *tmp && *tmp != *SEPARATOR_CHAR)
 		err += basic_error(e, tmp, "unexpected expression after parameter\n",
-				ft_strcspn(tmp, END_PARAM) - 1);
+			ft_strcspn(tmp, END_PARAM) - 1);
 	return (!err);
 }
