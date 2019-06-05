@@ -50,7 +50,7 @@
 [._]ss[a-gi-z]
 [._]sw[a-p]
 
-# Corewar
+# Project
 *.cor
 asm
 corewar
@@ -59,7 +59,7 @@ corewar
 *disass*.cor
 *disass*.s
 
-#Macos
+# Macos
 .DS_Store
 
 # Kernel Module Compile Results
