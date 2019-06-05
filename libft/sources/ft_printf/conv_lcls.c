@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 11:16:18 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/03/07 15:26:39 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 16:46:47 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	wchar_in_buff(t_print *buff, wint_t c, int len)
 	return (len);
 }
 
-static int	check_wchar(t_print *buff, t_flag *flags, char **format, wchar_t *s)
+static int	check_wchar(t_print *buff, t_flag *f, char **format, wchar_t *s)
 {
 	int len;
 	int k;
@@ -52,7 +52,7 @@ static int	check_wchar(t_print *buff, t_flag *flags, char **format, wchar_t *s)
 			buff->error = 1;
 			return (-1);
 		}
-		if (!i && flags->prec != -1 && len + k > flags->prec)
+		if (!i && f->prec != -1 && len + k > f->prec)
 			return (len);
 		len += k;
 		s++;

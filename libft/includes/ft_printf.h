@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 21:48:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 13:17:57 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 16:51:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ typedef struct		s_flag
 ** ------------------GENERAL-------------------
 */
 
-intmax_t			get_signed(va_list args, t_flag *flags);
-uintmax_t			get_unsigned(va_list args, t_flag *flags);
+intmax_t			get_signed(va_list arg, t_flag *flags);
+uintmax_t			get_unsigned(va_list arg, t_flag *flags);
 int					base_len(uintmax_t nb, int base);
 char				*atoi_jr(char *format, int *nb);
 
@@ -59,7 +59,7 @@ char				*atoi_jr(char *format, int *nb);
 ** --------------------FLAG--------------------
 */
 
-int					get_flags(va_list args, t_flag *flags, char **format);
+int					get_flags(va_list arg, t_flag *flags, char **format);
 int					init_flags(t_flag *flags);
 
 /*
@@ -72,7 +72,7 @@ void				p_conv(t_print *buff, t_flag *flags, uintmax_t nb);
 void				di_conv(t_print *buff, t_flag *flags, intmax_t nb);
 void				oux_conv(t_print *buff, t_flag *flags,
 		uintmax_t nb, char *base);
-void				f_conv(va_list args, t_print *buff,
+void				f_conv(va_list arg, t_print *buff,
 		t_flag *flags, char conv);
 void				lc_conv(t_print *buff, t_flag *flags,
 		char **format, wint_t c);

@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 23:54:23 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/03/07 15:27:07 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 16:45:36 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ intmax_t	get_signed(va_list args, t_flag *flags)
 	else if (flags->l)
 		nb = flags->l == 1 ? va_arg(args, long) : va_arg(args, long long);
 	else if (flags->h)
-		nb = flags->h == 1 ? (short)va_arg(args, int) : (char)va_arg(args, int);
+	{
+		nb = flags->h == 1 ? (short)va_arg(args, int)
+			: (char)va_arg(args, int);
+	}
 	else
 		nb = va_arg(args, int);
 	return (nb);

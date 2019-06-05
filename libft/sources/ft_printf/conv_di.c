@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 17:58:34 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/03/07 15:25:21 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 16:52:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	di_flags(t_print *buff, t_flag *flags, intmax_t nb)
 		if (flags->prec != -1)
 			flags->prec += (flags->plus || flags->space || nb < 0);
 		len = int_len(flags, nb) - (!nb ?
-		!(flags->prec - (flags->plus || flags->space || nb < 0)) : 0);
+				!(flags->prec - (flags->plus || flags->space || nb < 0)) : 0);
 		di_width(buff, flags, len, 0);
 		if (!flags->zero || (flags->prec != -1 && flags->zero))
 			di_plus_space(buff, flags, nb);
