@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 12:57:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 17:06:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,12 @@ int			generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
 {
 	int			i;
 	int			fd;
+	t_file		*file;
 
+	file = e->file;
 	ptr = d->main_ptr;
 	generate_file_name(e, d);
-	fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+	fd = open(file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (fd != -1)
 	{
 		while (ptr && (i = -1))
@@ -98,13 +100,13 @@ int			generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
 				ft_dprintf(fd, "%s\n", ptr->tab[i]);
 			ptr = ptr->next;
 		}
-		ft_printf("Writing output assembly to %s\n", e->file->output);
+		ft_printf("Writing output assembly to %s\n", file->output);
 		close(fd);
 	}
 	else
 	{
 		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
-		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
+		ft_dprintf(2, "%s: '%s'\n", strerror(errno), file->output);
 	}
 	return (free_buff_disass(d));
 }

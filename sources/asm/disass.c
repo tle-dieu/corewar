@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 02:14:46 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 17:09:31 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ static int			param_to_str(t_disass *d, int param, int size, int i)
 static int			check_disass_params(t_env *e, t_disass *d, t_ocp check)
 {
 	if (!param_to_str(d, check.p[0], check.s[0], d->i + 1))
-		return (disass_error(e, "Wrong register, must be between 1 and 16", d));
+	{
+		return (disass_error(e,
+				"Wrong register, must be between 1 and 16", d));
+	}
 	if (check.p[1])
 	{
 		d->buff_d->tab[d->y][d->x++] = ',';

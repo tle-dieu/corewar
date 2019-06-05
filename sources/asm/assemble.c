@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 05:20:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 12:43:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/05 17:13:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,28 @@ static void	get_output_file(t_env *e)
 static void	write_bytecode(t_env *e, unsigned char *header)
 {
 	int		fd;
+	t_file	*file;
 
-	if (!e->file->output)
+	file = e->file;
+	if (!file->output)
 		get_output_file(e);
-	fd = open(e->file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+	fd = open(file->output, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (fd != -1)
 	{
 		write(fd, header, HEADER_SIZE);
-		e->file->buff = e->file->begin_buff;
-		while (e->file->buff)
+		file->buff = file->begin_buff;
+		while (file->buff)
 		{
-			write(fd, e->file->buff->s, e->file->buff->len);
-			e->file->buff = e->file->buff->next;
+			write(fd, file->buff->s, file->buff->len);
+			file->buff = file->buff->next;
 		}
-		ft_printf("Writing output program to %s\n", e->file->output);
+		ft_printf("Writing output program to %s\n", file->output);
 		close(fd);
 	}
 	else
 	{
 		ft_dprintf(2, line_error(ERR_ARGS, e->tty2), e->exname);
-		ft_dprintf(2, "%s: '%s'\n", strerror(errno), e->file->output);
+		ft_dprintf(2, "%s: '%s'\n", strerror(errno), file->output);
 	}
 }
 
