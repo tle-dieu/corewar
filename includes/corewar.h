@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/06/06 19:04:40 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:34:50 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void				lfork(t_env *e, int *pc, t_proc *ptr);
 /*
 ** PRINT.C (5)
 */
-void				usage(char *path, int help_option);
+void				usage(char *path);
 void				print_memory(t_env *e, int cursor);
 void				print_subject_winner(t_env *e);
 void				print_winner(t_env *e);

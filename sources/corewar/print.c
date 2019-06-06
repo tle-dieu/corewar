@@ -6,17 +6,15 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/06 19:04:42 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:34:36 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include <ncurses.h>
 
-void		usage(char *path, int help_option)
+void		usage(char *path)
 {
-	if (path && !help_option)
-		ft_printf("input {bold}{#ed000b}error{R}:\n");
 	if (path)
 		ft_printf("{bold}\
 			%s{R} [-dump nbr_cycles] [[-n number] champion1.cor] [-v]...\n\
