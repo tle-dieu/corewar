@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 17:33:18 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:04:35 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void			init(t_env *e)
 		e->champs[i].chosen_id[1] = 0;
 	}
 	e->dump = -1;
-	e->total_live = 0;
+	e->no_winner = 0;
 	e->total_proc = 0;
 	e->nb_live = 0;
 	e->nb_check = 0;

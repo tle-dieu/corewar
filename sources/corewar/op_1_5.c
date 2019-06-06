@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:25:38 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 03:13:45 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:04:44 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void		live(t_env *e, int *pc, t_proc *ptr)
 	while (++j < e->nb_champ)
 		if (player_nb == e->champs[j].id)
 		{
+			e->no_winner++;
 			if (e->visu)
 				e->v.live_color = j + 2;
 			else if (e->verbose >= 1)

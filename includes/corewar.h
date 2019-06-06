@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/18 00:31:25 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:04:40 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ typedef	struct		s_env
 	int				dump;
 	int				verbose;
 	int				visu;
-	int				total_live;
 	int				total_proc;
 	int				nb_live;
+	int				no_winner;
 	int				nb_check;
 	int				last_live;
 	int				cycle;

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:37:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/05 17:10:44 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:04:42 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		print_subject_winner(t_env *e)
 	int		i;
 
 	i = -1;
-	if (!e->total_live)
+	if (!e->no_winner)
 		ft_printf("Nobody wins\n");
 	else
 	{
@@ -70,7 +70,7 @@ void		print_winner(t_env *e)
 	i = -1;
 	print_current_map(e);
 	printw("\n\n");
-	if (!e->total_live)
+	if (!e->no_winner)
 		printw("%*s\n%*s\n", PROGRESS_BAR_SIZE, "NOBODY WINS",
 			PROGRESS_BAR_SIZE, "PRESS SPACE TO EXIT");
 	else

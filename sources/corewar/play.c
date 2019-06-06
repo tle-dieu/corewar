@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:26:03 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/17 15:46:45 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/06 19:04:37 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void				play(t_env *e)
 				|| (e->nb_check && !(e->nb_check % MAX_CHECKS)))
 				e->c_to_die -= CYCLE_DELTA;
 			is_alive(e, e->proc);
-			e->total_live += e->nb_live;
 			e->cycle = 0;
 			e->nb_live = 0;
 		}
