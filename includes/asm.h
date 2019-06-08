@@ -6,16 +6,9 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 12:58:58 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/08 14:26:13 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// norm assignation ? \n si le debut de la ligne fait parti de assignation ou seulement si il y a une assignation sur une ligne au dessus
-// sources/asm/disass_lst_file.c:74: norm assignation
-// sources/asm/disass_lst_file.c:132: norm assignation
-// sources/asm/options.c:117: norm assignation
-// sources/asm/options:25: norm assignation
-// sources/asm/main.c:21: structure \n apres { ou } ? et \n apres , (invention de mbenjell)
 
 #ifndef ASM_H
 # define ASM_H
