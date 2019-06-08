@@ -10,7 +10,7 @@ echo ""
 # mais vous devez rajouter une indentation par parenthèse ou opérateur d’affectation.
 # Les opérateurs doivent être en début de ligne
 
-grep -E '[=+\-\*&\^%><\/]$' **/*.c
+grep -E '[=+\-\*&\^%><\/]$' $(find . -name "*.c")
 
 read -p "==========================> NEXT  <=========================="
 
@@ -27,7 +27,7 @@ read -p "==========================> NEXT  <=========================="
 
 # Checker a la loupe...
 
-vim **/*.h
+# vim $(find . -name "*.h")
 
 # ******************************
 
