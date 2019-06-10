@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/08 14:26:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 21:28:12 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ typedef struct		s_disass
 {
 	t_buff_d		*main_ptr;
 	t_buff_d		*buff_d;
-	char			name[PROG_NAME_LENGTH];
-	char			comment[COMMENT_LENGTH];
+	char			name[PROG_NAME_LENGTH + 1];
+	char			comment[COMMENT_LENGTH + 1];
 	unsigned char	*content;
 	long			size;
 	int				y;
@@ -336,8 +336,7 @@ char				*line_error(int line, int tty);
 int					free_buff_disass(t_disass *d);
 int					add_buff_link(t_env *e, t_disass *d);
 int					generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr);
-int					split_champ(t_env *e, t_disass *d, unsigned char *line,
-					long ret);
+int					split_champ(t_env *e, t_disass *d, unsigned char *line);
 
 /*
 ** -------------- Parse_disass --------------

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/05 17:06:40 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 21:32:34 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,26 +111,33 @@ int			generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
 	return (free_buff_disass(d));
 }
 
-int			split_champ(t_env *e, t_disass *d, unsigned char *line, long ret)
+void		print_tab(int size, unsigned char *line)
 {
-	int		i;
-	int		k;
+	int i;
 
-	i = 3;
+	i = 0;
+	while (i < size)
+		ft_printf("%x ", line[i++]);
+	ft_printf("\n");
+}
+
+int			split_champ(t_env *e, t_disass *d, unsigned char *line)
+{
+	int		k;
+	int		ret;
+
 	k = 0;
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
 					* (d->size + 2))))
 		alloc_error(e);
+	print_tab(HEADER_SIZE, line);
 	ft_bzero(d->content, d->size + 2);
-	while (i++ < NAME_COMM_SIZE + 8)
-	{
-		if (i == PROG_NAME_LENGTH + 8)
-			k = 0;
-		if (i < PROG_NAME_LENGTH + 8)
-			d->name[k++] = line[i];
-		else if (i > PROG_NAME_LENGTH + 11)
-			d->comment[k++] = line[i];
-	}
+	ft_memcpy(d->name, line + 4, PROG_NAME_LENGTH);
+	d->name[PROG_NAME_LENGTH] = '\0';
+	ft_memcpy(d->comment, line + PROG_NAME_LENGTH + 12, COMMENT_LENGTH);
+	d->comment[COMMENT_LENGTH] = '\0';
+	ft_printf("name: %s\n", d->name);
+	ft_printf("comment: %s\n", d->comment);
 	if ((ret = read(e->file->fd, d->content, d->size + 1)) == -1
 		|| ret != d->size)
 	{

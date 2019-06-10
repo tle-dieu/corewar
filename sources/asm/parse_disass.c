@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/18 02:48:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 21:28:20 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,15 @@ static int	check_padding(unsigned char *line)
 
 int			check_champ_disass(t_env *e, t_disass *d)
 {
-	unsigned char	line[NAME_COMM_SIZE + 16];
+	unsigned char	line[HEADER_SIZE];
 	long			ret;
 	int				b;
 	int				i;
 
 	b = 16;
 	i = 0;
-	ft_bzero(line, NAME_COMM_SIZE + 16);
-	if ((ret = read(e->file->fd, line, NAME_COMM_SIZE + 16)) == -1)
+	ft_bzero(line, HEADER_SIZE);
+	if ((ret = read(e->file->fd, line, HEADER_SIZE)) == -1)
 		return (disass_error(e, NULL, d));
 	while (b >= 0)
 	{
@@ -130,7 +130,7 @@ int			check_champ_disass(t_env *e, t_disass *d)
 		+ (line[PROG_NAME_LENGTH + 9] << 16)
 		+ (line[PROG_NAME_LENGTH + 10] << 8)
 		+ line[PROG_NAME_LENGTH + 11];
-	if (d->size <= 0)
+	if (d->size <= 0 || ret != HEADER_SIZE)
 		return (disass_error(e, "Champion too small", d));
-	return (split_champ(e, d, line, ret));
+	return (split_champ(e, d, line));
 }
