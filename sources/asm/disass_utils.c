@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/13 13:06:14 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/11 01:12:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ int				compute_param(t_disass *d, int i, int size)
 
 	nb = 0;
 	while (size--)
-		nb += d->content[i++] << (8 * size);
+		nb += (unsigned)d->content[i++] << (8 * size);
 	return (nb);
 }
