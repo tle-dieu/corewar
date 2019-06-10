@@ -4,8 +4,8 @@ import sys
 import os
 import subprocess as sp
 
-ASM = "resources/asm_42"
-ASM_42 = "asm"
+ASM = "asm"
+ASM_42 = "resources/asm_42"
 GREEN = "\x1b[1;38;2;35;209;139m"
 RED = "\x1b[1;38;2;241;76;76m"
 WHITE = "\x1b[1;38;2;255;255;255m"
