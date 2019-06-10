@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/10 21:49:40 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 22:32:30 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,20 +101,16 @@ int			check_champ_disass(t_env *e, t_disass *d)
 {
 	unsigned char	line[HEADER_SIZE];
 	long			ret;
-	int				b;
-	int				i;
+	unsigned		magic;
 
-	b = 16;
-	i = 0;
 	ft_bzero(line, HEADER_SIZE);
 	if ((ret = read(e->file->fd, line, HEADER_SIZE)) == -1)
 		return (disass_error(e, NULL, d));
-	while (b >= 0)
-	{
-		if (line[++i] != (COREWAR_EXEC_MAGIC >> b & 0xff) || *line)
-			return (disass_error(e, "Invalid magic", d));
-		b -= 8;
-	}
+	magic = *(unsigned *)line;
+	magic = (((magic & 0xff << 24) >> 24) | ((magic & 0xff << 16) >> 8)
+			| ((magic & 0xff << 8) << 8) | (magic & 0xff) << 24);
+	if (magic != COREWAR_EXEC_MAGIC)
+		return (disass_error(e, "Invalid magic", d));
 	if (!check_padding(line))
 		return (disass_error(e, "Wrong separators", d));
 	d->size = (line[PROG_NAME_LENGTH + 8] << 24)
