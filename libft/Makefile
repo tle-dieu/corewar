@@ -6,7 +6,7 @@
 #    By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/18 01:10:03 by tle-dieu          #+#    #+#              #
-#    Updated: 2019/05/18 01:10:07 by tle-dieu         ###   ########.fr        #
+#    Updated: 2019/06/11 00:06:03 by tle-dieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,9 @@ SOURCES = $(FT_PRINTF)buff.c \
 		  $(STRING)ft_tolower.c \
 		  $(STRING)ft_toupper.c \
 		  $(NUMERIC)ft_atoi.c \
+		  $(NUMERIC)atoi_flag.c \
 		  $(NUMERIC)ft_atoll.c \
+		  $(NUMERIC)atoui_flag.c \
 		  $(NUMERIC)ft_isalnum.c \
 		  $(NUMERIC)ft_isalpha.c \
 		  $(NUMERIC)ft_isascii.c \
@@ -105,6 +107,7 @@ SOURCES = $(FT_PRINTF)buff.c \
 		  $(NUMERIC)ft_itoa.c \
 		  $(NUMERIC)ft_sort_integer_table.c \
 		  $(NUMERIC)ft_sqrt.c \
+		  $(NUMERIC)swap_bytes.c \
 		  $(MEMORY)ft_bzero.c \
 		  $(MEMORY)ft_memalloc.c \
 		  $(MEMORY)ft_memccpy.c \
@@ -152,10 +155,14 @@ ifneq (,$(filter $(flags),n no))
 	CCFLAGS =
 endif
 
-ifneq (,$(filter $(fsanitize),y yes))
-	CCFLAGS += -g3
-	CCFLAGS += -fsanitize=address
+ifneq (,$(filter $(fsanitize), y yes))
+	CFLAGS += -g3
+	CFLAGS += -fsanitize=address
+ifeq ($(shell uname -s),Linux)
+	CFLAGS += -fsanitize=undefined
 endif
+endif
+
 
 ifneq (,$(filter $(silent), y yes))
 	HIDE :=

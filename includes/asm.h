@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/10 21:28:12 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 00:55:01 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,10 +149,10 @@ typedef struct		s_disass
 	char			name[PROG_NAME_LENGTH + 1];
 	char			comment[COMMENT_LENGTH + 1];
 	unsigned char	*content;
-	long			size;
+	unsigned long	size;
 	int				y;
 	int				x;
-	int				i;
+	unsigned long	i;
 	int				op;
 }					t_disass;
 

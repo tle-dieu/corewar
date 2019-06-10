@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 18:00:31 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/05 16:43:55 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 23:26:45 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int		check_line(t_gnl *actual, int ret, char **line, char *next)
 	return (len + 1);
 }
 
-int				get_next_line(const int fd, char **line)
+int				gnl_newline(const int fd, char **line)
 {
 	int				r;
 	char			buff[BS_GNL];

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/10 22:32:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 00:54:03 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,23 +101,16 @@ int			check_champ_disass(t_env *e, t_disass *d)
 {
 	unsigned char	line[HEADER_SIZE];
 	long			ret;
-	unsigned		magic;
 
 	ft_bzero(line, HEADER_SIZE);
 	if ((ret = read(e->file->fd, line, HEADER_SIZE)) == -1)
 		return (disass_error(e, NULL, d));
-	magic = *(unsigned *)line;
-	magic = (((magic & 0xff << 24) >> 24) | ((magic & 0xff << 16) >> 8)
-			| ((magic & 0xff << 8) << 8) | (magic & 0xff) << 24);
-	if (magic != COREWAR_EXEC_MAGIC)
+	if (swap_bytes4(*(unsigned *)line) != COREWAR_EXEC_MAGIC)
 		return (disass_error(e, "Invalid magic", d));
 	if (!check_padding(line))
 		return (disass_error(e, "Wrong separators", d));
-	d->size = (line[PROG_NAME_LENGTH + 8] << 24)
-		+ (line[PROG_NAME_LENGTH + 9] << 16)
-		+ (line[PROG_NAME_LENGTH + 10] << 8)
-		+ line[PROG_NAME_LENGTH + 11];
-	if (d->size <= 0 || ret != HEADER_SIZE)
+	d->size = swap_bytes4(*(unsigned *)(line + PROG_NAME_LENGTH + 8)); // fonctionne correctement mais a verifier
+	if (!d->size || ret != HEADER_SIZE)
 		return (disass_error(e, "Champion too small", d));
 	return (split_champ(e, d, line));
 }
