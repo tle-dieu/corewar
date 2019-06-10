@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 01:31:18 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 02:26:00 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 18:14:55 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,13 @@ static int	pass_bytes(t_file *file, unsigned char *bin, int size, int i)
 	int len;
 
 	j = 0;
-	len = file->options & O_HEXA ? 16 : 6 - 1;
-	while (!bin[j + i])
+	len = file->options & O_HEXA ? 16 : 6;
+	while (j + i < size && !bin[j + i])
 	{
-		if (j + i >= size)
-			return (-1);
 		if (++j == len)
 			return (j);
 	}
-	return (0);
+	return (0 - (j + i >= size));
 }
 
 void		dump_bytecode(t_env *e, unsigned char *header)
