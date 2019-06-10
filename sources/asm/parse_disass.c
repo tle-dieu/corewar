@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/10 21:28:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 21:49:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,12 @@ t_ocp		check_ocp(int ocp, int on_two, int inst)
 
 static int	check_padding(unsigned char *line)
 {
-	int		i;
-	int		k;
+	unsigned padding_name;
+	unsigned padding_comment;
 
-	i = PROG_NAME_LENGTH + 3;
-	k = 4;
-	while ((k = i < COMMENT_LENGTH ? 6 : 4))
-	{
-		while (k--)
-			if (line[i++])
-				return (0);
-		if (i > COMMENT_LENGTH)
-			break ;
-		i += COMMENT_LENGTH + 3;
-	}
-	return (1);
+	padding_name = *((unsigned *)(line + PROG_NAME_LENGTH + 4));
+	padding_comment = *((unsigned *)(line + HEADER_SIZE - 4));
+	return (!(padding_name || padding_comment));
 }
 
 int			check_champ_disass(t_env *e, t_disass *d)
