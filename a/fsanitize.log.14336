@@ -1,0 +1,3 @@
+./resources/champs/championships/2018/arobion/katchup.cor
+[1msources/asm/disass_lst_file.c:130:4:[1m[31m runtime error: [1m[0m[1mindex 128 out of bounds for type 'char [128]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/disass_lst_file.c:130:4 in 

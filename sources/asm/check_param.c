@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 15:07:09 by matleroy          #+#    #+#             */
-/*   Updated: 2019/06/05 17:14:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/10 19:20:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		inst_atoi(char *str)
 		result = result * 10 + tmp[i++] - 48;
 	if (i > 19 || result > 9223372036854775807)
 		return (sign < 0 ? 0 : -1);
-	return ((int)result * sign);
+	return ((int)(result * sign));
 }
 
 int		label_is_good(t_env *e, char *str)
