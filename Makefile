@@ -6,7 +6,7 @@
 #    By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/18 03:20:05 by tle-dieu          #+#    #+#              #
-#    Updated: 2019/06/11 00:46:08 by tle-dieu         ###   ########.fr        #
+#    Updated: 2019/06/11 03:20:38 by tle-dieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -116,10 +116,11 @@ ifneq (,$(filter $(flags),n no))
 endif
 
 ifneq (,$(filter $(fsanitize), y yes))
-	CFLAGS += -g3
-	CFLAGS += -fsanitize=address
+CFLAGS += -g3
 ifeq ($(shell uname -s),Linux)
-	CFLAGS += -fsanitize=undefined
+	CFLAGS += -fsanitize=address,undefined,integer,builtin,bounds
+else
+	CFLAGS += -fsanitize=address
 endif
 endif
 
