@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/11 00:55:01 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 02:11:19 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef struct		s_ocp
 
 typedef struct		s_buff_d
 {
-	char			tab[BS_DECOMP][COMMENT_LENGTH + 11];
+	char			tab[BS_DECOMP][COMMENT_LENGTH + 12 + 5];
 	struct s_buff_d	*next;
 }					t_buff_d;
 
@@ -353,7 +353,7 @@ int					disassemble_champ(t_env *e);
 ** -------------- Disass_utils ---------------
 */
 void				init_line(t_disass *d);
-void				nb_in_buff(t_disass *d, int nb, int padding);
+void				nb_in_buff(t_disass *d, long int nb, int padding);
 void				str_in_buff(t_disass *d, char *s);
 int					compute_param(t_disass *d, int i, int size);
 

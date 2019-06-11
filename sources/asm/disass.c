@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/11 00:54:49 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 02:12:46 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,14 @@ static int			put_header(t_env *e, t_disass *d)
 	d->x = 0;
 	str_in_buff(d, ".name \"");
 	str_in_buff(d, d->name);
-	str_in_buff(d, "\"\n.comment \"");
+	str_in_buff(d, "\"");
+	d->y++;
+	d->x = 0;
+	str_in_buff(d, ".comment \"");
 	str_in_buff(d, d->comment);
 	str_in_buff(d, "\"");
 	d->y++;
+	d->x = 0;
 	d->buff_d->tab[d->y][0] = '\n';
 	d->y++;
 	return (1);

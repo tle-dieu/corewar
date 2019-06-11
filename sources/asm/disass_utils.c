@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:53:06 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/11 01:12:37 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 01:53:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void			init_line(t_disass *d)
 	d->buff_d->tab[d->y][d->x++] = ' ';
 }
 
-void			nb_in_buff(t_disass *d, int nb, int padding)
+void			nb_in_buff(t_disass *d, long int nb, int padding)
 {
-	unsigned int	len;
-	unsigned int	abs;
-	unsigned int	tmp;
+	unsigned int len;
+	unsigned int abs;
+	unsigned int tmp;
 
 	len = (nb < 0) ? 2 : 1;
-	abs = (nb < 0) ? -nb : nb;
+	abs = ((nb < 0) ? -nb : nb);
 	tmp = abs;
 	while (tmp > 9)
 	{

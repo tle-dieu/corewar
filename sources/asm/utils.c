@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:41:36 by matleroy          #+#    #+#             */
-/*   Updated: 2019/06/10 18:01:05 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 02:14:00 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ size_t			param_strrspn(const char *s, const char *accept, char stop)
 	size_t		i;
 
 	i = ft_strclen(s, stop) - 1;
-	ft_printf("%p %p\n", s, accept);
+	ft_printf("%p %p\n", s, accept); // a retirer
 	//sur le fichier ./resources/corewar_42 variable s overflow: (addr de s = 0x602000094bd3 dans l'exemple)
 	//    ^0x602000094bd3 0x585720
 	//sources/asm/utils.c:44:18: runtime error: addition of unsigned offset to 0x602000094bd3 overflowed to 0x602000094bd2
