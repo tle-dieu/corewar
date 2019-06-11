@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROGRAM="asm"
-OPTIONS="-d"
+OPTIONS=""
 FILE_NAME="*"
 LOG_PATH="error/fsanitize.log"
 

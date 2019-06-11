@@ -1,7 +1,6 @@
 #!/bin/bash
 
 PROGRAM="asm"
-OPTIONS=""
 FILE_NAME="*"
 LOG_PATH="error/fsanitize.log"
 
@@ -17,7 +16,7 @@ while IFS= read -r -d $'\0'; do
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM -x $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
@@ -28,18 +27,7 @@ while IFS= read -r -d $'\0'; do
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
-		old=$nb_file
-	fi
-	i=$((i + 1))
-	nb=$(echo "$i * 100 / $percent" | bc)
-	printf "\033[2K\r$nb%%"
-
-	./$PROGRAM -xl $REPLY > /dev/null 2>&1 
-	nb_file=$(ls -1 error/ | wc -l)
-	if [[ $nb_file -gt $old ]]; then
-		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM -xl $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
@@ -50,7 +38,7 @@ while IFS= read -r -d $'\0'; do
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM -b $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
@@ -61,7 +49,7 @@ while IFS= read -r -d $'\0'; do
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM -bl $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
@@ -72,7 +60,7 @@ while IFS= read -r -d $'\0'; do
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM -o test.cor $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
@@ -84,18 +72,18 @@ while IFS= read -r -d $'\0'; do
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM -d $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
 	nb=$(echo "$i * 100 / $percent" | bc)
 	printf "\033[2K\r$nb%%"
 
-	./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1 
+	./$PROGRAM $REPLY > /dev/null 2>&1 
 	nb_file=$(ls -1 error/ | wc -l)
 	if [[ $nb_file -gt $old ]]; then
 		new_file=$(ls error/ -Art | tail -n 1)
-		echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+		echo "./$PROGRAM $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 		old=$nb_file
 	fi
 	i=$((i + 1))
@@ -107,7 +95,7 @@ done < <(find $* -type f -name "$FILE_NAME" -print0)
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=a $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
@@ -118,7 +106,7 @@ printf "\033[2K\r$nb%%"
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=f $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
@@ -129,7 +117,7 @@ printf "\033[2K\r$nb%%"
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=forcea $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
@@ -140,7 +128,7 @@ printf "\033[2K\r$nb%%"
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=al $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
@@ -151,7 +139,7 @@ printf "\033[2K\r$nb%%"
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=n $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
@@ -162,7 +150,7 @@ printf "\033[2K\r$nb%%"
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=autom $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
@@ -173,7 +161,7 @@ printf "\033[2K\r$nb%%"
 nb_file=$(ls -1 error/ | wc -l)
 if [[ $nb_file -gt $old ]]; then
 	new_file=$(ls error/ -Art | tail -n 1)
-	echo "./$PROGRAM $OPTIONS $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
+	echo "./$PROGRAM -color=aut $REPLY > /dev/null 2>&1" | cat - error/$new_file > temp && mv temp error/$new_file
 	old=$nb_file
 fi
 i=$((i + 1))
