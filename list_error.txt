@@ -1,20 +1,7 @@
 echo -e "[1;31m---------- ASM ----------[0m\n"
 
-1)
-apparait sur tous les .cor
-[1msources/asm/disass_lst_file.c:130:4:[1m[31m runtime error: [1m[0m[1mindex 128 out of bounds for type 'char [128]'[1m[0m
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/disass_lst_file.c:130:4 in 
-exemple: ./asm -d ./resources/champs/championships/2017/gnebie/ultima.cor
+1) seulement sur ./asm -d resources/champs/invalid_cor/ocp1.cor (ocp invalid)
+[1msources/asm/parse_disass.c:28:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/parse_disass.c:28:7 in 
 
 2)
-[1msources/asm/disass_utils.c:66:25:[1m[31m runtime error: [1m[0m[1mleft shift of 255 by 24 places cannot be represented in type 'int'[1m[0m
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/disass_utils.c:66:25 in 
-./asm -d ./resources/champs/basics/Gagnant.cor
-
-3)
-overflow (surement normal)
-[1msources/asm/disass_utils.c:32:19:[1m[31m runtime error: [1m[0m[1mnegation of -2147483648 cannot be represented in type 'int'; cast to an unsigned type to negate this value to itself[1m[0m
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/disass_utils.c:32:19 in 
-exemple: ./asm -d ./resources/champs/basics/42.cor
-
-4)
