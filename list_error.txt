@@ -3,5 +3,3 @@ echo -e "[1;31m---------- ASM ----------[0m\n"
 1) seulement sur ./asm -d resources/champs/invalid_cor/ocp1.cor (ocp invalid)
 [1msources/asm/parse_disass.c:28:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
 SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/parse_disass.c:28:7 in 
-
-2)
