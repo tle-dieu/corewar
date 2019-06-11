@@ -6,25 +6,12 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:41:36 by matleroy          #+#    #+#             */
-/*   Updated: 2019/06/11 04:07:56 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 05:22:05 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
-
-void			init_inst(t_inst *inst)
-{
-	inst->index = 0;
-	inst->i = 0;
-	inst->error = 0;
-	inst->op = 0;
-	inst->ocp = 0;
-	inst->nb_p = 0;
-	ft_bzero(inst->p, 3);
-	ft_bzero(inst->s, 3);
-	ft_bzero(inst->t, 3);
-}
 
 size_t			param_strrspn(const char *s, const char *accept, char stop)
 {

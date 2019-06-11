@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:48:19 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 02:50:13 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 05:21:59 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		parse_inst(t_env *e, char *str)
 	t_inst	inst;
 	char	*tmp;
 
-	init_inst(&inst);
+	ft_bzero(&inst, sizeof(t_inst));
 	if (e->file->error < MAX_ERROR && (inst.op = get_curr_inst(str)) <= 16)
 	{
 		inst.nb_p = g_op_tab[inst.op - 1].nb_param;

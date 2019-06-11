@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/11 02:11:19 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 05:22:12 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,7 +320,6 @@ void				parse_inst(t_env *e, char *str);
 */
 size_t				param_strrspn(const char *s, const char *accept, char stop);
 unsigned char		*lst_to_char(t_env *e, unsigned char *header, int *size);
-void				init_inst(t_inst *inst);
 
 /*
 ** --------------- Utils_error --------------
