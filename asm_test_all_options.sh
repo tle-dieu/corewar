@@ -9,7 +9,7 @@ rm -rf error
 mkdir error
 old=0
 printf "0%%"
-percent=$(echo "$(find $* -type f -name "$FILE_NAME" | wc -l) * 8 + 7" | bc)
+percent=$(echo "$(find $* -type f -name "$FILE_NAME" | wc -l) * 7 + 7" | bc)
 i=0
 while IFS= read -r -d $'\0'; do
 	./$PROGRAM -x $REPLY > /dev/null 2>&1 

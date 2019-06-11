@@ -3,3 +3,43 @@ echo -e "[1;31m---------- ASM ----------[0m\n"
 1) seulement sur ./asm -d resources/champs/invalid_cor/ocp1.cor (ocp invalid)
 [1msources/asm/parse_disass.c:28:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
 SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/asm/parse_disass.c:28:7 in 
+
+echo -e "[1;31m--------- COREWAR --------[0m\n"
+
+1) avec ou sans fichier
+[1msources/corewar/init.c:66:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:66:3 in 
+[1msources/corewar/init.c:67:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:67:3 in 
+[1msources/corewar/init.c:68:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:68:3 in 
+[1msources/corewar/init.c:69:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:69:3 in 
+[1msources/corewar/init.c:70:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:70:3 in 
+
+2) tous les .cor
+[1msources/corewar/check.c:59:4:[1m[31m runtime error: [1m[0m[1mindex 128 out of bounds for type 'char [128]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/check.c:59:4 in 
+
+3) tous les .cor
+[1msources/corewar/check.c:63:4:[1m[31m runtime error: [1m[0m[1mindex 2048 out of bounds for type 'char [2048]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/check.c:63:4 in 
+
+4) tous les .cor
+[1msources/corewar/init.c:102:3:[1m[31m runtime error: [1m[0m[1mindex 17 out of bounds for type 'int [17]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:102:3 in 
+
+5) tous les .cor valides
+[1msources/corewar/op_utils.c:43:7:[1m[31m runtime error: [1m[0m[1msigned integer overflow: 10092544 * 256 cannot be represented in type 'int'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/op_utils.c:43:7 in 
+
+6) corcor.cor (exemple)
+[1msources/corewar/game_utils.c:45:15:[1m[31m runtime error: [1m[0m[1mindex 17 out of bounds for type 'int [17]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/game_utils.c:45:15 in 
+[1msources/corewar/game_utils.c:45:3:[1m[31m runtime error: [1m[0m[1mindex 17 out of bounds for type 'int [17]'[1m[0m
+
+7) peu de fichiers (exemple ./resources/champs/examples/fluttershy.cor), meme cas/erreur que asm 1)
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/game_utils.c:45:3 in 
+[1msources/corewar/ocp_utils.c:25:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/ocp_utils.c:25:7 in 

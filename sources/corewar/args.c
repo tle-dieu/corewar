@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/10 16:04:15 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/11 04:19:35 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 	i = 1;
 	*show = 0;
 	//print usage si e->nb_champ > 4
+	//a tester avec fsanitize apres fix
 	while (i != ac && !*show)
 	{
 		if (!ft_strcmp(av[i], "-n") && ac > i + 2 && digit(av[i + 1]))
