@@ -1,0 +1,8 @@
+./corewar zork.cor ./resources/champs/championships/2018/sboulet/ForgottenOne.cor
+./corewar zork.cor ./resources/champs/championships/2018/nolivier/O-Maley_Miaou.cor
+./corewar zork.cor ./resources/champs/championships/2018/nolivier/Kitty_Miaou.cor
+./corewar zork.cor ./resources/champs/championships/2018/mkamel/master_of_puppets.cor
+./corewar zork.cor ./resources/champs/championships/2018/mkamel/lou_forktologue.cor
+./corewar zork.cor ./resources/champs/championships/2018/mbenjell3/wave.cor
+[1msources/corewar/ocp_utils.c:25:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/ocp_utils.c:25:7 in 

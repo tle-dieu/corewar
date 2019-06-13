@@ -1,0 +1,3 @@
+./corewar zork.cor ./resources/champs/invalid_cor/size1.cor
+[1msources/corewar/check.c:78:53:[1m[31m runtime error: [1m[0m[1mleft shift of 255 by 24 places cannot be represented in type 'int'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/check.c:78:53 in 

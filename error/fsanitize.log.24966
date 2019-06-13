@@ -1,0 +1,7 @@
+./corewar zork.cor ./resources/champs/championships/2018/sgalasso3/Stargate0_1.cor
+./corewar zork.cor ./resources/champs/championships/2018/sgalasso3/Code_eater.cor
+./corewar zork.cor ./resources/champs/championships/2018/sboulet/NoIdea.cor
+[1msources/corewar/ocp_utils.c:25:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/ocp_utils.c:25:7 in 
+[1msources/corewar/op_1_5.c:106:45:[1m[31m runtime error: [1m[0m[1msigned integer overflow: -1543373243 + -682099190 cannot be represented in type 'int'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/op_1_5.c:106:45 in 

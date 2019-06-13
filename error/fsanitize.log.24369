@@ -1,0 +1,4 @@
+./corewar zork.cor ./resources/champs/championships/2014/gleger/Machine-gun.cor
+./corewar zork.cor ./resources/champs/championships/2014/gbir/_.cor
+[1msources/corewar/ocp_utils.c:25:7:[1m[31m runtime error: [1m[0m[1mshift exponent -1 is negative[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/ocp_utils.c:25:7 in 
