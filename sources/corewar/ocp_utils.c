@@ -6,23 +6,24 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:01:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/02 14:28:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/13 21:41:51 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-static void		check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
+static void	check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 {
 	int i;
+	int	shift;
 
 	i = -1;
 	while (++i < 4)
 	{
 		if (i < g_op_tab[inst - 1].nb_param)
 		{
-			if (!((g_op_tab[inst - 1].param[i]
-						>> (((ocp >> ((3 - i) * 2)) & 3) - 1)) & 1))
+			shift = ((ocp >> ((3 - i) * 2)) & 3);
+			if (!shift || !((g_op_tab[inst - 1].param[i] >> (shift - 1)) & 1))
 				check->error = 1;
 		}
 		else if ((ocp >> ((3 - i) * 2)) & 3)
