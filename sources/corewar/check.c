@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/17 12:51:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/13 19:17:46 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static int	check_padding(unsigned char *line, char *arg)
 			if (line[i++])
 			{
 				ft_dprintf(2,
-					"{bold}{#ed000b}%s{#ffffff}: wrong separators{R}\n",
-					arg);
+						"{bold}{#ed000b}%s{#ffffff}: wrong separators{R}\n",
+						arg);
 				return (0);
 			}
 		}
@@ -44,24 +44,12 @@ static int	check_padding(unsigned char *line, char *arg)
 
 static int	split_champ(t_env *e, int i)
 {
-	int		j;
-	int		k;
-	int		size;
-
-	j = 3;
-	k = 0;
-	size = 0;
-	while (++j < MAX_SIZE)
-	{
-		if (j == PROG_NAME_LENGTH + 8 || j == NAME_COMM_SIZE + 16)
-			k = 0;
-		if (j < PROG_NAME_LENGTH + 8)
-			e->champs[i].name[k++] = e->line[j];
-		else if (j >= NAME_COMM_SIZE + 16)
-			e->champs[i].content[k++] = e->line[j];
-		else if (j > PROG_NAME_LENGTH + 11)
-			e->champs[i].comment[k++] = e->line[j];
-	}
+	ft_memcpy(e->champs[i].name, e->line + 4, PROG_NAME_LENGTH);
+	e->champs[i].name[PROG_NAME_LENGTH] = '\0';
+	ft_memcpy(e->champs[i].comment, e->line + PROG_NAME_LENGTH + 12, COMMENT_LENGTH);
+	e->champs[i].comment[COMMENT_LENGTH] = '\0';
+	ft_memcpy(e->champs[i].content, e->line + HEADER_SIZE, CHAMP_MAX_SIZE);
+	e->champs[i].content[CHAMP_MAX_SIZE] = '\0';
 	if (!e->champs[i].name[0])
 		ft_memcpy(e->champs[i].name, "no name", 7);
 	return (1);
@@ -94,20 +82,20 @@ static int	check_champ_size(t_env *e, char *arg, int ret, int i)
 	if (e->champs[i].size <= 0)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small{R}\n",
-			arg);
+				arg);
 		return (0);
 	}
 	else if (ret > MAX_SIZE || e->champs[i].size > CHAMP_MAX_SIZE)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too big{R}\n",
-			arg);
+				arg);
 		return (0);
 	}
 	else if (ret - (NAME_COMM_SIZE + 16) != e->champs[i].size)
 	{
 		ft_dprintf(2,
-			"{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
-			arg);
+				"{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
+				arg);
 		return (0);
 	}
 	return (1);
@@ -124,7 +112,7 @@ int			check_champ(t_env *e, char *arg, int i)
 	if (fd == -1 && (err = 1))
 	{
 		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
-			strerror(errno));
+				strerror(errno));
 		return (0);
 	}
 	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
@@ -132,7 +120,7 @@ int			check_champ(t_env *e, char *arg, int i)
 	close(fd);
 	if (!err && (ret == -1 || !check_magic_number(e)) && (err = 1))
 		ft_dprintf(2, "{bold}%s: {#ed000b}%s{R}\n",
-			ret == -1 ? strerror(errno) : "Invalid magic", arg);
+				ret == -1 ? strerror(errno) : "Invalid magic", arg);
 	if (!err && !(check_champ_size(e, arg, ret, i)))
 		err = 1;
 	if (err || !check_padding(e->line, arg) || (!split_champ(e, i)))

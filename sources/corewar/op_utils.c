@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:09:46 by acompagn          #+#    #+#             */
-/*   Updated: 2019/05/11 17:30:36 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/13 19:10:15 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void			insert(t_env *e, int pc, void *ptr, int size)
 
 int				param_sum(t_env *e, int pc, int size)
 {
-	int		res;
-	int		j;
-	int		tmp;
+	long int	res;
+	int			j;
+	int			tmp;
 
 	if (pc < 0)
 		pc = pc % MEM_SIZE + MEM_SIZE;

@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 11:32:19 by matleroy          #+#    #+#             */
-/*   Updated: 2019/06/06 19:34:50 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/13 19:11:33 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ typedef	struct		s_proc
 
 typedef	struct		s_champ
 {
-	char			name[PROG_NAME_LENGTH];
-	char			comment[COMMENT_LENGTH];
-	unsigned char	content[CHAMP_MAX_SIZE];
+	char			name[PROG_NAME_LENGTH + 1];
+	char			comment[COMMENT_LENGTH + 1];
+	unsigned char	content[CHAMP_MAX_SIZE + 1];
 	int				nb_live;
 	int				file;
 	int				color;

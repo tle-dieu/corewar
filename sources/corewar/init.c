@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:57:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/06 19:04:35 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/13 19:09:36 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void			init(t_env *e)
 	int		i;
 
 	i = -1;
-	while (++i <= 4)
+	while (++i < 4)
 	{
 		e->champs[i].id = 0;
 		e->champs[i].nb_live = 0;
@@ -98,7 +98,7 @@ int				init_proc(t_env *e, int j, int begin)
 	new->color = e->champs[j].color;
 	new->id = j + 1;
 	new->live = 0;
-	while (++i <= REG_NUMBER + 1)
+	while (++i < REG_NUMBER + 1)
 		new->r[i] = 0;
 	new->r[1] = e->champs[j].id;
 	new->pc = begin;
