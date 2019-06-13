@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/11 04:19:35 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/13 21:44:11 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 			verbosity_on(e, av[i + 1], show, &i);
 		else if (ac > i + 1 && !ft_strcmp(av[i], "-dump") && digit(av[i + 1]))
 			save_dump(e, av[i + 1], show, &i);
-		else if ((tmp = ft_strrchr(av[i], '.')) && !ft_strcmp(tmp, ".cor"))
+		else if ((tmp = ft_strrchr(av[i], '.')) && !ft_strcmp(tmp, ".cor") && e->nb_champ < 4)
 			e->champs[e->nb_champ++].file = i++;
 		else
 			*show = 1;
