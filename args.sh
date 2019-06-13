@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PROGRAM="corewar"
-OPTIONS="zork.cor"
-FILE_NAME="*.cor"
+PROGRAM="asm"
+OPTIONS="-d"
+FILE_NAME="*"
 LOG_PATH="error/fsanitize.log"
 
 if [[ $# -gt 0 ]]; then
