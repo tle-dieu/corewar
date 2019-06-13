@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/13 19:17:46 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/13 19:57:25 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ static int	check_magic_number(t_env *e)
 
 static int	check_champ_size(t_env *e, char *arg, int ret, int i)
 {
-	e->champs[i].size = (e->line[PROG_NAME_LENGTH + 8] << 24)
-		+ (e->line[PROG_NAME_LENGTH + 9] << 16)
-		+ (e->line[PROG_NAME_LENGTH + 10] << 8)
-		+ e->line[PROG_NAME_LENGTH + 11];
+	e->champs[i].size = swap_bytes4(*(unsigned *)(e->line + PROG_NAME_LENGTH + 8));
 	if (e->champs[i].size <= 0)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small{R}\n",
