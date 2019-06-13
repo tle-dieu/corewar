@@ -1,0 +1,22 @@
+./corewar zork.cor ./a/ocp1.cor
+./corewar zork.cor ./a/name2.cor
+./corewar zork.cor ./a/name1.cor
+./corewar zork.cor ./a/missing_header.cor
+./corewar zork.cor ./a/missing_comment2.cor
+./corewar zork.cor ./a/missing_comment1.cor
+./corewar zork.cor ./a/magic3.cor
+./corewar zork.cor ./a/magic2.cor
+./corewar zork.cor ./a/magic1.cor
+./corewar zork.cor ./a/long.cor
+[1msources/corewar/init.c:66:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:66:3 in 
+[1msources/corewar/init.c:67:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:67:3 in 
+[1msources/corewar/init.c:68:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:68:3 in 
+[1msources/corewar/init.c:69:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:69:3 in 
+[1msources/corewar/init.c:70:3:[1m[31m runtime error: [1m[0m[1mindex 4 out of bounds for type 't_champ [4]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/init.c:70:3 in 
+[1msources/corewar/check.c:71:4:[1m[31m runtime error: [1m[0m[1mindex 2048 out of bounds for type 'char [2048]'[1m[0m
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior sources/corewar/check.c:71:4 in 
