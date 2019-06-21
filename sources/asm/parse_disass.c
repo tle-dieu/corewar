@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 22:45:28 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/13 21:34:20 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/21 11:53:37 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			check_champ_disass(t_env *e, t_disass *d)
 		return (disass_error(e, "Invalid magic", d));
 	if (!check_padding(line))
 		return (disass_error(e, "Wrong separators", d));
-	d->size = swap_bytes4(*(unsigned *)(line + PROG_NAME_LENGTH + 8)); // fonctionne correctement mais a verifier
+	d->size = swap_bytes4(*(unsigned *)(line + PROG_NAME_LENGTH + 8));
 	if (!d->size || ret != HEADER_SIZE)
 		return (disass_error(e, "Champion too small", d));
 	return (split_champ(e, d, line));

@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/13 19:57:25 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/21 11:52:17 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int	split_champ(t_env *e, int i)
 {
 	ft_memcpy(e->champs[i].name, e->line + 4, PROG_NAME_LENGTH);
 	e->champs[i].name[PROG_NAME_LENGTH] = '\0';
-	ft_memcpy(e->champs[i].comment, e->line + PROG_NAME_LENGTH + 12, COMMENT_LENGTH);
+	ft_memcpy(e->champs[i].comment, e->line + PROG_NAME_LENGTH + 12,
+		COMMENT_LENGTH);
 	e->champs[i].comment[COMMENT_LENGTH] = '\0';
 	ft_memcpy(e->champs[i].content, e->line + HEADER_SIZE, CHAMP_MAX_SIZE);
 	e->champs[i].content[CHAMP_MAX_SIZE] = '\0';
@@ -75,7 +76,8 @@ static int	check_magic_number(t_env *e)
 
 static int	check_champ_size(t_env *e, char *arg, int ret, int i)
 {
-	e->champs[i].size = swap_bytes4(*(unsigned *)(e->line + PROG_NAME_LENGTH + 8));
+	e->champs[i].size = swap_bytes4(*(unsigned *)(e->line
+				+ PROG_NAME_LENGTH + 8));
 	if (e->champs[i].size <= 0)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small{R}\n",

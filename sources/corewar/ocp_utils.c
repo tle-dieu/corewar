@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:01:09 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/13 21:41:51 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/21 11:52:54 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	check_ocp_rights(t_ocp *check, int inst, unsigned char ocp)
 	}
 }
 
-static void		find_param_size(t_ocp *check, int ocp, int on_two)
+static void	find_param_size(t_ocp *check, int ocp, int on_two)
 {
 	if (ocp >= 192 || ocp < 64)
 		check->s[0] = (ocp >= 192) ? 2 : 0;
@@ -57,7 +57,7 @@ static void		find_param_size(t_ocp *check, int ocp, int on_two)
 		check->s[2] = on_two ? 2 : 4;
 }
 
-t_ocp			check_ocp(int ocp, int on_two, int inst)
+t_ocp		check_ocp(int ocp, int on_two, int inst)
 {
 	t_ocp	check;
 	int		i;

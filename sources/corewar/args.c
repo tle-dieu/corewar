@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 20:07:04 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/13 21:44:11 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/21 11:50:48 by acompagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 	int		i;
 
 	i = 1;
-	*show = 0;
-	//print usage si e->nb_champ > 4
-	//a tester avec fsanitize apres fix
 	while (i != ac && !*show)
 	{
 		if (!ft_strcmp(av[i], "-n") && ac > i + 2 && digit(av[i + 1]))
@@ -66,7 +63,8 @@ static void		check_params(t_env *e, int ac, char **av, int *show)
 			verbosity_on(e, av[i + 1], show, &i);
 		else if (ac > i + 1 && !ft_strcmp(av[i], "-dump") && digit(av[i + 1]))
 			save_dump(e, av[i + 1], show, &i);
-		else if ((tmp = ft_strrchr(av[i], '.')) && !ft_strcmp(tmp, ".cor") && e->nb_champ < 4)
+		else if ((tmp = ft_strrchr(av[i], '.')) && !ft_strcmp(tmp, ".cor")
+			&& e->nb_champ < 4)
 			e->champs[e->nb_champ++].file = i++;
 		else
 			*show = 1;
@@ -80,7 +78,10 @@ int				parse_args(t_env *e, int ac, char **av)
 	show = 1;
 	e->verbose = 0;
 	if (ac > 2)
+	{
+		show = 0;
 		check_params(e, ac, av, &show);
+	}
 	if (show || e->nb_champ < 2 || e->nb_champ > 4)
 		usage(av[0]);
 	return (!(show || e->nb_champ < 2 || e->nb_champ > 4));
