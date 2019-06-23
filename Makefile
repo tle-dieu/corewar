@@ -6,7 +6,7 @@
 #    By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/18 03:20:05 by tle-dieu          #+#    #+#              #
-#    Updated: 2019/06/13 19:07:11 by tle-dieu         ###   ########.fr        #
+#    Updated: 2019/06/21 14:35:42 by tle-dieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,6 +168,7 @@ force:
 clean-test:
 	find . -type f -name "*.cor" | grep -v invalid_cor | xargs $(RM)
 	find . -type f -name "*_disass*.s" -o -name "*_disass*.cor" | xargs $(RM)
+	git checkout @ resources/champs/invalid_cor
 
 clean:
 	$(MAKE) $@ -C $(LIBFT_DIR)
