@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:08:56 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/21 11:52:17 by acompagn         ###   ########.fr       */
+/*   Updated: 2019/06/23 12:41:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ static int	check_padding(unsigned char *line, char *arg)
 			if (line[i++])
 			{
 				ft_dprintf(2,
-						"{bold}{#ed000b}%s{#ffffff}: wrong separators{R}\n",
-						arg);
+					"{bold}{#ed000b}%s{#ffffff}: wrong separators{R}\n", arg);
 				return (0);
 			}
 		}
@@ -81,20 +80,20 @@ static int	check_champ_size(t_env *e, char *arg, int ret, int i)
 	if (e->champs[i].size <= 0)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too small{R}\n",
-				arg);
+			arg);
 		return (0);
 	}
 	else if (ret > MAX_SIZE || e->champs[i].size > CHAMP_MAX_SIZE)
 	{
 		ft_dprintf(2, "{bold}Champion {#ed000b}%s{#ffffff} too big{R}\n",
-				arg);
+			arg);
 		return (0);
 	}
 	else if (ret - (NAME_COMM_SIZE + 16) != e->champs[i].size)
 	{
 		ft_dprintf(2,
-				"{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
-				arg);
+			"{bold}Champion {#ed000b}%s{#ffffff} size does not match{R}\n",
+			arg);
 		return (0);
 	}
 	return (1);
@@ -111,7 +110,7 @@ int			check_champ(t_env *e, char *arg, int i)
 	if (fd == -1 && (err = 1))
 	{
 		ft_dprintf(2, "{bold}{#ed000b}%s{#ffffff} error:{R} %s\n", arg,
-				strerror(errno));
+			strerror(errno));
 		return (0);
 	}
 	!err ? ft_bzero(e->line, MAX_SIZE) : 1;
