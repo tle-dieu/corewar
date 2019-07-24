@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 10:50:07 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/11 00:30:47 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:21:31 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
+# include <sys/types.h>
 
 # define OSX 1
 # define LINUX 2
@@ -71,6 +72,7 @@ size_t			ft_strlen(const char *s);
 char			*ft_strlwr(char *str);
 char			*ft_strmap(char const *s, char (*f)(char));
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+void			ft_strmode(mode_t m, char *p);
 char			*ft_strncat(char *dest, const char *src, size_t n);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strncpy(char *dest, char const *src, size_t n);
@@ -148,6 +150,7 @@ t_list			*ft_lstnew(void const *content, size_t content_size);
 
 int				ft_printf(char const *format, ...);
 int				ft_dprintf(int fd, char const *format, ...);
+int				ft_sprintf(char *str, char const *format, ...);
 
 /*
 ** ------------ UTILS ------------

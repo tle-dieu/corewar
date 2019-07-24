@@ -6,7 +6,7 @@
 /*   By: matleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 16:24:04 by matleroy          #+#    #+#             */
-/*   Updated: 2019/05/18 00:51:11 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:30:21 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void			check_label_call(t_env *e)
 
 void			write_label_call(t_env *e, t_call *call)
 {
-	int				i;
 	int				byte;
 	t_buff			*buff;
 
@@ -51,7 +50,6 @@ void			write_label_call(t_env *e, t_call *call)
 			call->index_call -= buff->len;
 			buff = buff->next;
 		}
-		i = 0;
 		while (call->size--)
 		{
 			if (call->index_call >= BS_ASM)

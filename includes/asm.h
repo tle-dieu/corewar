@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:07:14 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/11 05:22:12 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:31:40 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ void				missing_cmd(t_env *e, unsigned char *header, int cmd);
 */
 void				alloc_error(t_env *e);
 void				champ_too_big(t_env *e);
-void				invalid_cmd(t_env *e, char *error, int cmd);
+void				invalid_cmd(t_env *e, char *error);
 int					disass_error(t_env *e, char *error, t_disass *d);
 int					basic_error(t_env *e, char *str, char *err_string,
 					int wave);

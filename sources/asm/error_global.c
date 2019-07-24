@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 00:08:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/17 14:02:59 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:31:25 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,12 @@ void	champ_too_big(t_env *e)
 		ft_dprintf(2, "{R}");
 }
 
-void	invalid_cmd(t_env *e, char *error, int cmd)
+void	invalid_cmd(t_env *e, char *error)
 {
 	t_line	*line;
-	char	*scmd;
 
 	++e->file->warning;
 	line = e->file->begin;
-	scmd = (cmd == NAME_CMD ? NAME_CMD_STRING : COMMENT_CMD_STRING);
 	ft_dprintf(2, line_error(WARNING_LINE, e->tty2),
 		e->file->name, line->y, error - line->s + 1);
 	ft_dprintf(2, "invalid command '%.*s'{R}\n",

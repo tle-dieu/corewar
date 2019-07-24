@@ -6,16 +6,17 @@
 #    By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/18 03:20:05 by tle-dieu          #+#    #+#              #
-#    Updated: 2019/06/21 14:35:42 by tle-dieu         ###   ########.fr        #
+#    Updated: 2019/07/24 16:35:19 by tle-dieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PROGRAMMES = $(VM) $(ASM)
 VM = corewar
 ASM = asm
+MAKEFLAGS += --no-print-directory
 
-CFLAGS = -Wall -Werror -Wextra
 CC = clang
+CFLAGS = -Wall -Werror -Wextra -Werror=unused-value
 VISU = -lncurses
 LDFLAG = -L./$(LIBFT_DIR) -lft
 
@@ -100,48 +101,43 @@ LIBFT_INCLUDES = $(LIBFT_DIR)includes/
 # --------------- Style ---------------- #
 
 GREEN = \033[38;2;12;231;58m
-YELLOW = \033[38;2;251;196;15m
 RED = \033[38;2;255;60;51m
-BLUE = \033[38;2;0;188;218m
+YELLOW = \033[38;2;251;196;15m
 RMLINE = \033[2K
 RESET = \033[0m
+
 HIDE = tput civis
 SHOW = tput cnorm
 SLEEP = sleep 0.01
 
 # --------------- Options --------------- #
 
-ifneq (,$(filter $(flags),n no))
-	CFLAGS =
-endif
-
-ifneq (,$(filter $(fsanitize), y yes))
-	CFLAGS += -g3
+ifneq (,$(filter $(fsanitize),y yes))
+        CFLAGS += -g3
+        CC = clang
 ifeq ($(shell uname -s),Linux)
-	CFLAGS += -fsanitize=address,undefined,integer,bounds,builtin
+        CFLAGS += -fsanitize=address,undefined,integer,bounds,builtin
 else
-	CFLAGS += -fsanitize=address,undefined,integer,bounds
+        CFLAGS += -fsanitize=address,undefined,integer,bounds
 endif
 endif
 
 ifneq (,$(filter $(silent), y yes))
-	SLEEP :=
 	HIDE :=
-	REDIRECT := > /dev/null
+	REDIRECT := > /dev/null 2>&1
 endif
 
-all: $(PROGRAMMES) Makefile
-
+all: $(PROGRAMMES)
 
 $(ASM): $(LIBFT) $(ASM_OBJECTS) Makefile
-	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
+	$(SHOW)
 	$(CC) $(CFLAGS) -o $(ASM) $(ASM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(ASM) has been created$(RESET)\n" $(REDIRECT)
 
 $(VM): $(LIBFT) $(VM_OBJECTS) Makefile
-	$(SHOW)
 	printf "$(RMLINE)$(YELLOW)🌘  All compiled$(RESET)\n" $(REDIRECT)
+	$(SHOW)
 	$(CC) $(CFLAGS) $(VISU) -o $(VM) $(VM_OBJECTS) $(LDFLAG)
 	printf "$(GREEN)$(VM) has been created$(RESET)\n" $(REDIRECT)
 
@@ -150,14 +146,12 @@ $(ASM_OBJECTS_DIR)%.o: $(ASM_SOURCES_DIR)%.c $(ASM_INCLUDES) Makefile
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $< 
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
-	$(SLEEP)
 
 $(VM_OBJECTS_DIR)%.o: $(VM_SOURCES_DIR)%.c $(VM_INCLUDES) Makefile
 	$(HIDE)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -I $(LIBFT_INCLUDES) -o $@ -c $< 
 	printf "$(RMLINE)\r🚀 $(GREEN)$(YELLOW) Compiling:$(RESET) $(notdir $<)\r" $(REDIRECT)
-	$(SLEEP)
 
 $(LIBFT): force
 	$(MAKE) silent=$(silent) fsanitize=$(fsanitize) flags=$(flags) -C $(LIBFT_DIR)

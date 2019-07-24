@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 13:04:44 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/11 01:39:06 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:32:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,8 @@ int			generate_disass_file(t_env *e, t_disass *d, t_buff_d *ptr)
 
 int			split_champ(t_env *e, t_disass *d, unsigned char *line)
 {
-	int		k;
 	int		ret;
 
-	k = 0;
 	if (!(d->content = (unsigned char *)malloc(sizeof(unsigned char)
 					* (d->size + 2))))
 		alloc_error(e);

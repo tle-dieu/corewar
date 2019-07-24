@@ -6,7 +6,7 @@
 /*   By: tle-dieu <tle-dieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 14:43:32 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/05/18 02:36:36 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:32:10 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void		get_cmd(t_env *e, unsigned char *cp, char *line)
 		cmd = COMMENT_CMD;
 	}
 	if (cmd == -1 || !ft_strchr(SPACES"\"", *line))
-		invalid_cmd(e, cmd != -1 ? tmp : line, -1);
+		invalid_cmd(e, cmd != -1 ? tmp : line);
 	else
 		cmd == NAME_CMD ? parse_cmd(e, line, cp, cmd)
 		: parse_cmd(e, line, cp + PROG_NAME_LENGTH + 8, cmd);

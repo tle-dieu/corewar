@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_sprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 20:04:11 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/23 15:24:27 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/23 15:51:22 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int			ft_printf(char const *format, ...)
+int	ft_sprintf(char *str, const char *format, ...)
 {
 	va_list	arg;
 	t_print	buff;
@@ -24,10 +24,10 @@ int			ft_printf(char const *format, ...)
 	buff.total = 0;
 	buff.error = 0;
 	buff.fd = 1;
-	buff.str = buff.sbuff;
-	buff.print = 1;
+	buff.str = str;
+	buff.print = 0;
 	apply_format(arg, &buff, format);
-	empty_buff(&buff);
 	va_end(arg);
-	return (buff.error ? -1 : buff.total);
+	buff.str[buff.i] = '\0';
+	return (buff.error ? -1 : buff.i);
 }

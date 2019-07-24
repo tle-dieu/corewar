@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 21:48:56 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/06/05 16:51:30 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/23 15:51:06 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@
 
 typedef struct		s_print
 {
-	char			str[BS_PRINTF + 1];
+	char			sbuff[BS_PRINTF + 1];
+	char			*str;
 	int				i;
+	int				print;
 	int				fd;
 	int				error;
 	int				total;
@@ -55,6 +57,16 @@ uintmax_t			get_unsigned(va_list arg, t_flag *flags);
 int					base_len(uintmax_t nb, int base);
 char				*atoi_jr(char *format, int *nb);
 
+/*
+** -------------------FORMAT------------------
+*/
+int					more_conv(va_list arg, t_print *buff, t_flag *flags,
+		char **format);
+int					get_conv(va_list arg, t_print *buff, t_flag *flags,
+		char **format);
+int					check_color(t_print *buff, char **format);
+void				apply_format(va_list arg, t_print *buff,
+		char const *format);
 /*
 ** --------------------FLAG--------------------
 */

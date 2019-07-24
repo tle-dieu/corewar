@@ -6,7 +6,7 @@
 /*   By: tle-dieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 18:09:18 by tle-dieu          #+#    #+#             */
-/*   Updated: 2019/03/07 15:22:35 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/06/23 15:32:56 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ void	field_in_buff(t_print *buff, int width, char zero)
 
 void	empty_buff(t_print *buff)
 {
-	int i;
-
-	i = buff->i;
-	buff->i = 0;
-	buff->total += (int)write(buff->fd, buff->str, i);
+	if (buff->print)
+	{
+		buff->total += (int)write(buff->fd, buff->str, buff->i);
+		buff->i = 0;
+	}
+	else
+		buff->total += buff->i;
 	if (buff->total < 0)
 		buff->error = 1;
 }

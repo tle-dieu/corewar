@@ -6,7 +6,7 @@
 /*   By: acompagn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:52:57 by acompagn          #+#    #+#             */
-/*   Updated: 2019/06/11 02:12:46 by tle-dieu         ###   ########.fr       */
+/*   Updated: 2019/07/24 16:30:37 by tle-dieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,12 @@
 
 static int			put_header(t_env *e, t_disass *d)
 {
-	int		i;
-
-	i = -1;
 	d->buff_d = NULL;
 	d->main_ptr = NULL;
 	d->content = NULL;
 	d->i = 0;
 	if (!check_champ_disass(e, d) || !add_buff_link(e, d))
 		return (free_buff_disass(d));
-	i = -1;
 	d->x = 0;
 	str_in_buff(d, ".name \"");
 	str_in_buff(d, d->name);
